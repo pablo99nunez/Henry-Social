@@ -1,11 +1,8 @@
-
 ![Logo](https://assets.soyhenry.com/henry-landing/assets/Henry/logo-white.png)
-
 
 # Social HENRY
 
 Red social para los estudiantes de henry
-
 
 ## Authors
 
@@ -17,16 +14,12 @@ Red social para los estudiantes de henry
 - [@DavidDeadly](https://github.com/DavidDeadly)
 - [@GianmarcoVc](https://github.com/GianmarcoVc)
 
-
-
-
 ## Features
 
 - Seccion de Booms
 - Trabajos
 - Chat Grupal
 - Noticias
-
 
 ## Commit
 
@@ -43,12 +36,12 @@ Red social para los estudiantes de henry
 - revert– revierte una confirmación anterior
 
 ## Examples
+
 ```
 git commit -m "feat: improve performance with lazy load implementation for images"
 git commit -m "chore: update npm dependency to latest version"
 git commit -m "Fix: bug preventing users from submitting the subscribe form"
 
 ```
+
 ## Documentation
-
-
