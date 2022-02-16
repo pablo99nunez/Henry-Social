@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node --loader ts-node/esm index.ts",
     "server": "nodemon index.ts",
-    "dev":"cd client && npm run build && npm run dev",
+    "dev": "cd client && npm run build && npm run dev",
     "test": "nyc _mocha --timeout 10000 --exit --report lcovonly -- -R spec",
     "lint": "eslint --fix --config .eslintrc.json \"**/*.js\""
   },
