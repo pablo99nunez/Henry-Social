@@ -1,6 +1,6 @@
-import { load } from 'dotenv/types'
+
 import React, { useState } from 'react'
-import {signUpWithEmail} from '../../../login-methods'
+import {signUpWithEmail,signUpWithGmail} from '../../../login-methods'
 
 export default function Login() {
 
@@ -24,10 +24,13 @@ export default function Login() {
 
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
         <input type="email"  onChange={(e)=>{setEmail(e.target.value)}}/>
         <input type="password"  onChange={(e)=>{setPassword(e.target.value)}}/>
         <button disabled={loading} type="submit"> Sign Up </button>
     </form>
+    <button onClick={()=>signUpWithGmail()}>Sign in with Google</button>
+    </>
   )
 }
