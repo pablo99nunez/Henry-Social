@@ -3,8 +3,7 @@ import {Schema, model} from 'mongoose';
 interface User{
     name: string,
     email:string
-    username: string,
-    password: string,
+    username: string
     avatar?: Buffer,    
     createdAt: string
 }
@@ -14,11 +13,11 @@ const userSchema = new Schema<User>({
         type: String,
         require:true
     },
-    password: {
+    username: {
         type: String,
         require:true
     },
-    username: {
+    email: {
         type: String,
         require:true
     },
