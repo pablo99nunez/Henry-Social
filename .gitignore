@@ -273,3 +273,8 @@ Temporary Items
 
 # Directories potentially created on remote AFP share
 
+/.idea/.gitignore
+/.idea/Henry-Social.iml
+/.idea/modules.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
