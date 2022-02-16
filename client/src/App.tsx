@@ -1,18 +1,15 @@
-import React, { useState } from 'react'
 import {Routes, Route} from 'react-router-dom'
 import User from './components/User/User'
-import logo from './logo.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-  
+
   return (
-    <React.Fragment>
+    <div>
       <Routes>
-        <Route path='/' element={<User/>}/>
+        <Route path='/' element={<User/>}/>  {/*path='/user/:id'  ==> Ver si el id corresponde*/}
       </Routes>
-    </React.Fragment>
+      </div>
   )
 }
 
