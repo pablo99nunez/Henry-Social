@@ -1,11 +1,12 @@
 import {Schema, model} from 'mongoose';
+import '../../db.ts'
 
 interface User{
     name: string,
     email:string
-    username: string
+    username?: string
     avatar?: Buffer,    
-    createdAt: string
+    createdAt: object
 }
 
 const userSchema = new Schema<User>({
@@ -15,13 +16,16 @@ const userSchema = new Schema<User>({
     },
     username: {
         type: String,
-        require:true
+        default: null
     },
     email: {
         type: String,
         require:true
     },
-    avatar: Buffer,
-    createdAt: new Date().toDateString()
+    avatar: String,
+    createdAt: {
+        type: Date,
+        default: new Date().toDateString()
+    }
 })
 export default model<User>('User', userSchema) 
