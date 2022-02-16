@@ -2,7 +2,7 @@ import 'dotenv/config.js'
 const mongoose = require('mongoose')
 
 function main() {
-  console.log(process.env.MONGO_PASSWORD)
+
   mongoose
     .connect(
       `mongodb+srv://HenrySocial:${process.env.MONGO_PASSWORD}@cluster0.cvmsj.mongodb.net/HS-DB?retryWrites=true&w=majority`
