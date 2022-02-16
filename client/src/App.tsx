@@ -1,14 +1,19 @@
 import { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import Login from './Pages/Login'
+
+import './reset.scss';
+import Login from './Pages/Login';
+
+import Posts from './components/Posts/Posts'
 
 function App() {
   const [count, setCount] = useState(0)
   
   return (
     <div className="App">
-      <Login></Login>
+      {/* <Login></Login> */}
+      <Posts />
     </div>
   )
 }
