@@ -1,24 +1,25 @@
-import { model, Schema } from "mongoose";
+import { model, ObjectId, Schema } from "mongoose";
+import { IUser } from "./User";
 
 interface Post {
   body: string;
   postTime: string;
   nLikes: number;
   numComments: number;
-  author: any;
+  author: IUser;
 }
 
 interface Comments {
-  postId: any; // Reference to blogs
+  postId: ObjectId; // Reference to blogs
   postTime: string;
   text: string;
-  author: any;
+  author: IUser;
 }
 
 interface Likes {
-  referenceId: any; // Reference to post
+  referenceId: ObjectId; // Reference to post
   likeTime: string;
-  author: any;
+  author: IUser;
 }
 
 const postSchema = new Schema({
@@ -31,7 +32,7 @@ const postSchema = new Schema({
   numComments: Number,
   author: {
     type: Schema.Types.ObjectId,
-    // ref: "User"
+    ref: "User",
   },
 });
 
@@ -44,19 +45,19 @@ const commentSchema = new Schema({
   text: String,
   author: {
     type: Schema.Types.ObjectId,
-    // ref: "User"
+    ref: "User",
   },
 });
 
 const likeSchema = new Schema({
   referenceId: {
     type: Schema.Types.ObjectId,
-    // ref: "Post"
+    ref: "Post",
   },
   likeTime: { type: Date, default: Date.now },
   author: {
     type: Schema.Types.ObjectId,
-    // ref: "User"
+    ref: "User",
   },
 });
 
