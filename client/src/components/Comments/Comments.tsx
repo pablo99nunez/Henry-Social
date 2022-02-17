@@ -1,8 +1,9 @@
-import Comment from '../Comment/Comment'
 import './Comments.scss'
+import Comment from '../Comment/Comment'
 
-// export default function Comments({comments}) { Recibe comments por props
-export default function Comments() {
+// Recibe comments por props
+// export default function Comments({comments} : any) { 
+export default function Comments() { 
 
   // comentarios de prueba
   const comments = [
@@ -50,8 +51,8 @@ export default function Comments() {
 
   return (
     <div className='comments'>
-      {comments.map(p => 
-        <Comment data={p}/>
+      {comments.map((p,i) => 
+        <Comment key={i} data={p}/>
       )}
     </div>
   )

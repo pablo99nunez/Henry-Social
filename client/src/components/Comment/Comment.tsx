@@ -1,14 +1,19 @@
 import './Comment.scss'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { FaRegHeart, FaRegComments, FaEllipsisH, FaBan, FaRegFrown, FaHeart } from 'react-icons/fa'
 
-const Comment = ({data} : any) => {
+const Comment = ({key, data} : any) => {
 
-  const [ liked, setLiked ] = useState(false)
-  const [ options, setOptions ] = useState(false)
+  const [ comment, setComment ] = useState(
+    {
+      liked: false,
+      options: false
+    }
+  )
 
   return (
-    <div className="comment">
+    <div className="comment" key={key}>
 
       <div className="picture">
         <img className='photo' src={data.img} alt={data.name}/>
@@ -26,33 +31,45 @@ const Comment = ({data} : any) => {
         </div>
 
         <div className="likesComments">
-          <div className="sizeLikes" onClick={() => setLiked(!liked)}>
-            <i title='Likes' className={`${liked ? 'fas' : 'far'} fa-heart icon`}/>
+          <div className="sizeLikes" onClick={() => setComment({...comment, liked: !comment.liked})}>
+            {comment.liked 
+              ? <FaHeart title='Likes' className='fas icon'/>
+              : <FaRegHeart title='Likes' className='icon'/>
+            }
             {data.countLikes &&
               <p className='count'>{data.countLikes}</p>
             }
           </div>
+          {/* Al presionar en el icono o el numero de comentarios llevaria a tipo un posteo
+              con el comentario y sus comentarios */}
+          {/* <Link to={${data.name}/posts${data.id}} className="sizeComments"> */}
           <div className="sizeComments">
-            <i title='Comentarios' className={`far fa-comment${data.countComments > 1 ? 's' : ''} icon`}/>
+            <FaRegComments title='Comentarios' className={`far icon`}/>
             {data.countComments &&
               <p className='count'>{data.countComments}</p>
             }
             </div>
         </div>
+        {/* </Link> */}
       </div>
           
       <div className="options">
-        <i title='Más' className='fas fa-ellipsis-h icon' onClick={() => setOptions(true)}/>
+        <FaEllipsisH title='Más' className='fas fa-ellipsis-h icon' onClick={() => setComment({...comment, options: true})}/>
         <div 
-          className={`menu ${options ? 'view' : 'hide'}`}
+          className={`menu ${comment.options ? 'view' : 'hide'}`}
           onMouseOver= {() => document.onclick = null}
           onMouseOut={() => document.onclick = () => {
-            setOptions(false)
+            setComment({...comment, options:false})
             return document.onclick = null
           }} 
         >
-          <p className='item'><i className='fas fa-frown'/>Este comentario no es útil.</p>
-          <p className='item'><i className='fas fa-ban'/>Bloquear usuario</p>
+          <p className='item'>
+            <FaRegFrown className='fas fa-frown'/>
+            Este comentario no es útil.
+          </p>
+          <p className='item'>
+            <FaBan className='fas fa-ban'/>Bloquear usuario
+          </p>
         </div>
       </div>
     </div>  

@@ -1,14 +1,11 @@
-import PostDetail from './components/PostDetail/PostDetail'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import PostDetail from './Pages/PostDetail/PostDetail'
+import { Route, Routes } from 'react-router-dom'
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* <Route path='/post/:id' element={<PostDetail/>}/> */}
-        <Route path='/' element={<PostDetail/>}/>
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path='/post/:id' element={<PostDetail/>}/>
+    </Routes>
   )
 }
 

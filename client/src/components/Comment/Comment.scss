@@ -1,6 +1,10 @@
+@import "../../Styles/mixins.scss";
+@import "../../Styles/variables.scss";
+
 .comment{
   gap: 15px;
   width: 100%;
+  // @include flex-aic;
   display: flex;
   padding: 15px;
   position: relative;
@@ -50,29 +54,27 @@
     }
     .likesComments{
       gap: 40px;
-      display: flex;
-      align-items: center;
+      @include flex-aic;
       .sizeLikes, .sizeComments{
         gap: 10px;
-        display: flex;
-        cursor: pointer;
+        @include flex-aic;
         font-size: 14px;
-        align-items: center;
+        cursor: pointer;
         .icon, .count{
           color: rgb(150, 150, 150);
         }
       }
       .sizeLikes{
         &:hover .icon{
-          color: #FFFF01;
+          color: $yellow;
         }
         .icon.fas{
-          color: #FFFF01;
+          color: $yellow;
         }
       }
       .sizeComments:hover{
         .icon, .count{
-          color: rgb(87, 161, 245);
+          color: $skyblue;
         }
       }
     }
@@ -84,6 +86,7 @@
     >.fas{
       padding: 8px;
       color: gray;
+      font-size: 30px;
       cursor: pointer;
       border-radius: 50%;
       transition: all .15s ease-in;
@@ -95,6 +98,7 @@
       top: 3px;
       right: 3px;
       display: none;
+      color: $white;
       font-size: 14px;
       position: absolute;
       width: max-content;
@@ -105,9 +109,8 @@
         .item{
           gap: 8px;
           padding: 8px;
-          display: flex;
+          @include flex-aic;
           cursor: pointer;
-          align-items: center;
         }
       }
     }
