@@ -1,0 +1,16 @@
+@import "../../Styles/variables.scss";
+.chat {
+    background-color: $white;
+    position: fixed;
+    z-index: 1;
+    text-align: center;
+    bottom: 0;
+    right: .8rem;
+    width: 20rem;
+    padding: .4rem;
+    border-radius: .5rem;
+    font-size: 1.2rem;
+    span {
+        font-size: 1.5rem;
+    }
+}

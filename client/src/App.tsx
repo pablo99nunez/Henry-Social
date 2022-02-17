@@ -1,19 +1,19 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
-import Login from './Pages/Login'
-import ModalAddPost from './Pages/ModalAddPost';
+import React from 'react'
+import Login from './Pages/Login/Login'
+import Home from './Pages/Home/Home'
 
+import { Routes, Route } from 'react-router-dom'
 
 function App() {
-  const [count, setCount] = useState(0)
-
+ 
   return (
     <div className="App">
-      <Login></Login>
-      <ModalAddPost></ModalAddPost>
+      <Routes>
+        <Route path="/login" element={<Login/>}></Route>
+        <Route path="/home" element={<Home/>}></Route>
+      </Routes>
     </div>
   )
 }
 
-export default App
+export default App;
