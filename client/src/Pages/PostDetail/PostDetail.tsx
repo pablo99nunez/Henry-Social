@@ -2,7 +2,7 @@ import './PostDetail.scss'
 // import { useEffect } from 'react';
 // import { useParams } from 'react-router-dom';
 // import { getPostDetail } from '../../redux/actions'
-import Comments from '../../components/Comments/Comments';
+import Comments from '../../Components/Comments/Comments';
 // import { useDispatch , useSelector } from 'react-redux';
 
 export default function PostDetail() {
