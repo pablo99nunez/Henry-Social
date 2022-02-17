@@ -15,7 +15,7 @@ router.post('/user', (req, res) => {
 router.post('/findUser', (req, res) => {
   const query = req.body;
   console.log(query);
-  User.find(query)
+  User.findOne(query)
     .then((e) => {
       console.log(e);
       res.json(e);
