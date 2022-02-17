@@ -1,10 +1,18 @@
 import { auth } from './firebase';
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
-import { User } from '../../models/User';
+import User, { IUser } from '../../models/User';
 
 const url = 'http://localhost:3001';
 
-export async function signUpWithEmail(userInfo: User) {
+async function defaultUsername(name: string | null): Promise<string> {
+  name = name ?? 'username';
+  let refactor = name.toLowerCase().split(' ').join('-');
+  let foundUserWithTheSameUsername = await User.findOne({ username: refactor }).exec();
+  if (foundUserWithTheSameUsername) return defaultUsername(name + Math.floor(Math.random() * 3000));
+  else return refactor;
+}
+
+export async function signUpWithEmail(userInfo: IUser) {
   const { name, username, email, avatar, password } = userInfo;
   if (password == undefined) throw new Error('Necesitas ingresar una contraseña');
   try {
@@ -40,6 +48,7 @@ export function signUpWithGmail() {
             name: displayName,
             email,
             avatar: photoURL,
+            username: defaultUsername(displayName),
           }),
         });
       } catch (e) {
@@ -66,6 +75,7 @@ export function signUpWithGitHub() {
             name: displayName,
             email,
             avatar: photoURL,
+            username: defaultUsername(displayName),
           }),
         });
       } catch (e) {
