@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import '../db.ts';
 
-export interface User {
+export interface IUser {
   name: string;
   email: string;
   username?: string;
@@ -10,7 +10,7 @@ export interface User {
   createdAt: object;
 }
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<IUser>({
   name: {
     type: String,
     require: true,
@@ -29,4 +29,4 @@ const userSchema = new Schema<User>({
     default: new Date().toDateString(),
   },
 });
-export default model<User>('User', userSchema);
+export default model<IUser>('User', userSchema);
