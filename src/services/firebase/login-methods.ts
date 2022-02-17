@@ -1,6 +1,6 @@
 import { auth } from './firebase';
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
-import { User } from './src/models/User';
+import { User } from '../../models/User';
 
 const url = 'http://localhost:3001';
 

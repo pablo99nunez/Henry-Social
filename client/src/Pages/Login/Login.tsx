@@ -1,8 +1,8 @@
 
 import React, {  useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { auth } from '../../../../firebase'
-import {signUpWithEmail,signUpWithGmail,signUpWithGitHub} from '../../../../login-methods'
+import {auth} from '../../../../src/services/firebase/firebase'
+import {signUpWithEmail,signUpWithGmail,signUpWithGitHub} from '../../../../src/services/firebase/login-methods'
 import {User} from '../../../../src/models/User'
 
 
@@ -41,6 +41,7 @@ export default function Login() {
         
         await signUpWithEmail(input)
         alert("Usuario creado con exito")
+        navigate("/home")
         setLoading(false)
       }catch(e){
         alert(e)
@@ -58,6 +59,7 @@ export default function Login() {
         const result= await cb()
         if(!!result){
           alert("Usuario logueado con exito")
+          navigate("/home")
         }
       }catch(e){
         alert(e)

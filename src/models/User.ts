@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import '../../db.ts';
+import '../db.ts';
 
 export interface User {
   name: string;
