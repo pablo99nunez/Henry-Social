@@ -76,4 +76,6 @@ export function signUpWithGitHub() {
     .catch((e) => {
       throw new Error('Algo salio mal' + e);
     });
+
 }
+

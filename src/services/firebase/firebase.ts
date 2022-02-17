@@ -20,4 +20,6 @@ const firebase = {
 
 // Initialize Firebase
 const app = initializeApp(firebase);
+
 export const auth = getAuth(app)
+
