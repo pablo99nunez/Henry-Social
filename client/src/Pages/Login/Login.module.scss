@@ -1,3 +1,6 @@
+@import "../../Styles/variables.scss";
+@import "../../Styles/mixins.scss";
+
 #cont {
   font-family: Roboto;
   background-color: #1C1C1C;
@@ -17,7 +20,7 @@
     width: 100%;
     
     
-    #title-cont {
+    #title_cont {
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -29,15 +32,14 @@
       }
     }
 
-    #btns-cont {
-      display: flex;
-      flex-direction: column;
+    #btns_cont {
+      @include flex-column;
       align-items: center;
       justify-content: center;
       gap: 15px;
 
-      #sign-in,
-      #log-in {
+      #sign_in,
+      #log_in {
         background-color: #1C1C1C;
         color: #FFFF01;
         border: .5px #FFFF01 solid;
@@ -53,7 +55,7 @@
     }
   }
 
-  #form-cont {
+  #form_cont {
     position: relative;
     width: 90%;
     height: 50%;
@@ -65,8 +67,7 @@
     -o-border-radius: 10px;
 
     form {
-      display: flex;
-      flex-direction: column;
+      @include flex-column;
       justify-content: center;
       gap: 3.75rem;
       align-items: center;
@@ -106,7 +107,7 @@
       }
     }
 
-    #cls-btn {
+    #cls_btn {
       position: absolute;
       top: 15px;
       right: 20px;
@@ -120,20 +121,19 @@
       -o-border-radius: 50px;
     }
 
-    #alt-cont {
+    #alt_cont {
       display: flex;
       justify-content: center;
       gap: 25px;
       top: 55px;
       position: relative;
 
-      #google-btn,
-      #github-btn {
+      #google_btn,
+      #github_btn {
         background-color: #FFFF01;
         border: none;
         padding: 5px;
         font-size: 20px;
-        
         border-radius: 10px;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
@@ -141,7 +141,6 @@
         -o-border-radius: 10px;
       }
     }
-
     
   }
 }
