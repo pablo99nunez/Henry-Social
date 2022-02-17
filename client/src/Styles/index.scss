@@ -1,12 +1,12 @@
 @import "./variables";
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 body {
-  font-family: $font;
+  margin: 0;
   background-color:$bg-color;
+  font-family: $font;
+}
+img {
+    width: 100%;
+    height: 100%;
 }
 a {
   text-decoration: none;

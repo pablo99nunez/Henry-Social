@@ -50,7 +50,7 @@ export default function Comments() {
   ]
 
   return (
-    <div className='comments'>
+    <div className='commentsPost'>
       {comments.map((p,i) => 
         <Comment key={i} data={p}/>
       )}
