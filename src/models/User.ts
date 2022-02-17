@@ -1,28 +1,34 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
+import '../db.ts';
 
-interface User {
+export interface IUser {
   name: string;
   email: string;
-  username: string;
-  password: string;
-  avatar?: Buffer;
-  createdAt: string;
+  username?: string;
+  avatar?: string;
+  password?: string;
+  createdAt: object;
 }
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<IUser>({
   name: {
-    type: String,
-    require: true,
-  },
-  password: {
     type: String,
     require: true,
   },
   username: {
     type: String,
+    default: null,
+  },
+  email: {
+    type: String,
     require: true,
   },
-  avatar: Buffer,
-  createdAt: new Date().toDateString(),
+  avatar: String,
+  createdAt: {
+    type: Date,
+    default: new Date().toDateString(),
+  },
 });
-export default model<User>("User", userSchema);
+
+export default model<IUser>('User', userSchema);
+

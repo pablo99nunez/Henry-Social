@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --loader ts-node/esm index.ts",
+    "server": "nodemon src/index.ts",
+    "deploy": "cd client && npm run build && cd.. && firebase deploy",
+    "testDeploy":"cd client && npm run build && cd.. && firebase hosting:channel:deploy testingDeploy",
+    "dev": "cd client && npm run build && npm run dev",
+    "test": "nyc _mocha --timeout 10000 --exit --report lcovonly -- -R spec",
+    "lint": "eslint --fix --config .eslintrc.json \"**/*.js\""
   },
   "keywords": [],
   "author": "",
@@ -18,7 +24,9 @@
     "helmet": "^5.0.2",
     "joi": "^17.6.0",
     "mongoose": "^6.2.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.3.1",
+    "standard": "^16.0.4"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.12.0",
