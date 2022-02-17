@@ -1,10 +1,27 @@
 import { auth } from './firebase';
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
-import { User } from '../../models/User';
+import modelUser, { IUser } from '../../models/User';
 
 const url = 'http://localhost:3001';
 
-export async function signUpWithEmail(userInfo: User) {
+async function defaultUsername(name: string | null): Promise<string> {
+  name = name ?? 'username';
+  let refactor = name.toLowerCase().split(' ').join('-');
+  console.log(refactor);
+  let foundUserWithTheSameUsername = await fetch(url + '/findUser', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: refactor,
+    }),
+  }).then((res) => res.json());
+  if (foundUserWithTheSameUsername[0]) return defaultUsername(name + Math.floor(Math.random() * 10));
+  else return refactor;
+}
+
+export async function signUpWithEmail(userInfo: IUser) {
   const { name, username, email, avatar, password } = userInfo;
   if (password == undefined) throw new Error('Necesitas ingresar una contraseña');
   try {
@@ -30,6 +47,7 @@ export function signUpWithGmail() {
   return signInWithPopup(auth, provider)
     .then(async (result) => {
       const { email, displayName, photoURL } = result.user;
+      let username = await defaultUsername(displayName);
       try {
         await fetch(url + '/user', {
           method: 'POST',
@@ -40,6 +58,7 @@ export function signUpWithGmail() {
             name: displayName,
             email,
             avatar: photoURL,
+            username,
           }),
         });
       } catch (e) {
@@ -56,6 +75,7 @@ export function signUpWithGitHub() {
   return signInWithPopup(auth, provider)
     .then(async (result) => {
       const { email, displayName, photoURL } = result.user;
+      let username = await defaultUsername(displayName);
       try {
         await fetch(url + '/user', {
           method: 'POST',
@@ -66,6 +86,7 @@ export function signUpWithGitHub() {
             name: displayName,
             email,
             avatar: photoURL,
+            username,
           }),
         });
       } catch (e) {

@@ -3,14 +3,14 @@ import React, {  useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import {auth} from '../../../../src/services/firebase/firebase'
 import {signUpWithEmail,signUpWithGmail,signUpWithGitHub} from '../../../../src/services/firebase/login-methods'
-import {User} from '../../../../src/models/User'
+import {IUser} from '../../../../src/models/User'
 
 
 
 
 export default function Login() {
 
-	const [input,setInput] = useState<User> ({
+	const [input,setInput] = useState<IUser> ({
     name:"",
     username:"",
     password:"",
