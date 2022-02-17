@@ -1,8 +1,10 @@
-import './App.css';
-import Login from './Pages/Login/Login';
+
+import React from 'react'
+import Login from './Pages/Login/Login'
+import Home from './Pages/Home/Home'
+
 import User from './Pages/User/User';
-import Home from './Pages/Home';
-import { Routes, Route } from 'react-router-dom';
+import { Routes,Route } from 'react-router-dom'
 
 function App() {
   return (
@@ -16,4 +18,6 @@ function App() {
   );
 }
 
+
 export default App;
+

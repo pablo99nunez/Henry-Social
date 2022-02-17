@@ -5,9 +5,6 @@ import {auth} from '../../../../src/services/firebase/firebase'
 import {signUpWithEmail,signUpWithGmail,signUpWithGitHub} from '../../../../src/services/firebase/login-methods'
 import {IUser} from '../../../../src/models/User'
 
-
-
-
 export default function Login() {
 
 	const [input,setInput] = useState<IUser> ({

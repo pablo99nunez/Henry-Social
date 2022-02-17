@@ -24,7 +24,4 @@ app.use("/",router)
 app.listen(process.env.PORT, () => {
   console.log('Server listening at ' + process.env.PORT);
 });
-
-
-  
 export default app;
