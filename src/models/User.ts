@@ -29,4 +29,6 @@ const userSchema = new Schema<User>({
     default: new Date().toDateString(),
   },
 });
+
 export default model<User>('User', userSchema);
+

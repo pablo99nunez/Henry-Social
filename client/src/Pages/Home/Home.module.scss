@@ -1,0 +1,17 @@
+@import "../../Styles/variables.scss";
+@import "../../Styles/mixins.scss";
+
+.home {
+    @include flex-column;
+    gap: 6rem;
+    .home_position {
+        // display: flex;
+        // gap: 2rem;
+        // justify-content: space-around;
+        padding: 0 3rem;
+        display: grid; 
+        grid-auto-columns: 1fr; 
+        grid-template-columns: 0.8fr 2fr 0.8fr; 
+        gap: 2rem 2rem; 
+    }
+}
