@@ -1,16 +1,18 @@
 import React from 'react'
-import Login from './Pages/Login/Login'
-import Home from './Pages/Home/Home'
+import { Route, Routes } from 'react-router-dom'
 
-import { Routes,Route } from 'react-router-dom'
+import Home from './Pages/Home/Home'
+import Login from './Pages/Login/Login'
+import PostDetail from './Pages/PostDetail/PostDetail'
 
 function App() {
- 
+
   return (
     <div className="App">
       <Routes>
-        <Route path="/login" element={<Login/>}></Route>
-        <Route path="/home" element={<Home/>}></Route>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/home" element={<Home/>}/>
+        <Route path='/post/:id' element={<PostDetail/>}/>
       </Routes>
     </div>
   )
