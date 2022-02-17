@@ -1,14 +1,13 @@
-import { useState } from 'react'
-import logo from './logo.svg'
+import Login from './Pages/Login/Login'
+import { Route, Routes } from 'react-router'
 import './App.css'
-import Login from './Pages/Login'
 
-function App() {
-  const [count, setCount] = useState(0)
-  
+function App(): JSX.Element {
   return (
     <div className="App">
-      <Login></Login>
+      <Routes>
+        <Route path="/login" element={<Login/>}/>
+      </Routes>
     </div>
   )
 }

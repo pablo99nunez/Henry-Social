@@ -1,0 +1,148 @@
+#cont {
+  font-family: Roboto;
+  background-color: #1C1C1C;
+  height: 100vh;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+
+  header {
+    display: flex;
+    position: fixed;
+    justify-content: space-around;
+    height: 15vh;
+    background-color: black;
+    top: 0;
+    left: 0;
+    width: 100%;
+    
+    
+    #title-cont {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      h1 {
+        font-size: 25px;
+        color: white;
+      }
+    }
+
+    #btns-cont {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+
+      #sign-in,
+      #log-in {
+        background-color: #1C1C1C;
+        color: #FFFF01;
+        border: .5px #FFFF01 solid;
+        border-radius: 5px;
+        width: max-content;
+        height: max-content;
+        padding: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;  
+      }
+    }
+  }
+
+  #form-cont {
+    position: relative;
+    width: 90%;
+    height: 50%;
+    background-color: #FFFF01;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3.75rem;
+      align-items: center;
+      height: 50vh;
+
+      h3 {
+        position: relative;
+        top: 25px;
+        text-align: center;
+      }
+
+      input {
+        font-size: 16px;
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid #1C1C1C;
+        line-height: 1.5rem;
+        width: 80vw;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      button[type="submit"] {
+        background-color: #000000;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        width: max-content;
+        height: max-content;
+        padding: 10px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+      }
+    }
+
+    #cls-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background-color: transparent;
+      color: #000000;
+      border: 2px solid #000000;
+      border-radius: 50px;
+      -webkit-border-radius: 50px;
+      -moz-border-radius: 50px;
+      -ms-border-radius: 50px;
+      -o-border-radius: 50px;
+    }
+
+    #alt-cont {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      top: 55px;
+      position: relative;
+
+      #google-btn,
+      #github-btn {
+        background-color: #FFFF01;
+        border: none;
+        padding: 5px;
+        font-size: 20px;
+        
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        -ms-border-radius: 10px;
+        -o-border-radius: 10px;
+      }
+    }
+
+    
+  }
+}
+
