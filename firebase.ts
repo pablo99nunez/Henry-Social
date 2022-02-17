@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import {createUserWithEmailAndPassword, getAuth} from "firebase/auth";
+import { getAuth} from "firebase/auth";
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -8,7 +9,7 @@ import {createUserWithEmailAndPassword, getAuth} from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebase = {
-  apiKey: process.env.FIREBASE_API_KEY,
+  apiKey: "AIzaSyAv6CgHAFfhMGe2ubnhwA8qWqHIxl6mbJU" , //process.env.FIREBASE_API_KEY
   authDomain: "henry-social.firebaseapp.com",
   projectId: "henry-social",
   storageBucket: "henry-social.appspot.com",
@@ -21,6 +22,3 @@ const firebase = {
 const app = initializeApp(firebase);
 export const auth = getAuth(app)
 
-export function signUpWithEmail(email:string,password:string){
-  return createUserWithEmailAndPassword(auth,email,password)
-}
