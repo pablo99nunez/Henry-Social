@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node --loader ts-node/esm index.ts",
+    "start": "ts-node src/index.ts",
     "server": "nodemon src/index.ts",
     "deploy": "cd client && npm run build && cd.. && firebase deploy",
     "testDeploy": "cd client && npm run build && cd.. && firebase hosting:channel:deploy testingDeploy",
