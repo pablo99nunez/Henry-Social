@@ -1,0 +1,35 @@
+
+#postDetail{
+    position: relative;
+    background: #1c1c1c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    #navbar{
+        top: 0;
+        z-index: 10;
+        width: 100%;
+        height: 80px;
+        position: fixed;
+        background: black;
+    }
+    #content{
+        margin: 120px 0px;
+        gap: 30px;
+        display: flex;
+        #boxPost{
+            width: 500px;
+            #post{
+                width: 100%;
+                height: 300px;
+                border-radius: 10px;
+                background: #2b2b2b;
+            }
+        }
+        #follow-bar, #messages{
+            height: 500px;
+            width: 250px;
+            background: rgb(37, 37, 37);
+        }
+    }
+}

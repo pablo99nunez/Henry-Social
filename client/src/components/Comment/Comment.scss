@@ -1,0 +1,115 @@
+.comment{
+  gap: 15px;
+  width: 100%;
+  display: flex;
+  padding: 15px;
+  position: relative;
+  height: max-content;
+  background-color: black;    
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+  &:last-child{
+    border-bottom: none;
+  }
+  .picture{
+      text-align: center;
+      .photo{
+          width: 50px;
+          height: 50px;
+          object-fit: cover;
+          border-radius: 50%;
+      }
+  }    
+  .info{
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    .author{
+      gap: 10px;
+      display: flex;
+      font-size: 15px;
+      align-items: center;
+      .name{
+        font-weight: 500;
+        text-decoration: none;
+        color: rgb(241, 241, 241);
+      }
+      .cohorteDate{
+        color: rgb(150, 150, 150);
+      }
+    }
+    .content{
+      gap: 10px;
+      display: flex;
+      flex-direction: column;
+      // Lo dejo listo por si debajo de la desc va una imagen
+      .desc{
+        font-size: 14px;
+        line-height: 1.5;
+        color: rgb(226, 226, 226);
+      }
+    }
+    .likesComments{
+      gap: 40px;
+      display: flex;
+      align-items: center;
+      .sizeLikes, .sizeComments{
+        gap: 10px;
+        display: flex;
+        cursor: pointer;
+        font-size: 14px;
+        align-items: center;
+        .icon, .count{
+          color: rgb(150, 150, 150);
+        }
+      }
+      .sizeLikes{
+        &:hover .icon{
+          color: #FFFF01;
+        }
+        .icon.fas{
+          color: #FFFF01;
+        }
+      }
+      .sizeComments:hover{
+        .icon, .count{
+          color: rgb(87, 161, 245);
+        }
+      }
+    }
+  }
+  .options{
+    top: 3px;
+    right: 3px;
+    position: absolute;
+    >.fas{
+      padding: 8px;
+      color: gray;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: all .15s ease-in;
+      &:hover{
+        background: rgba(128, 128, 128, 0.2);
+      }
+    }
+    .menu{
+      top: 3px;
+      right: 3px;
+      display: none;
+      font-size: 14px;
+      position: absolute;
+      width: max-content;
+      background: #141414;
+      &.view{
+        display: flex;
+        flex-direction: column;
+        .item{
+          gap: 8px;
+          padding: 8px;
+          display: flex;
+          cursor: pointer;
+          align-items: center;
+        }
+      }
+    }
+  }
+}
