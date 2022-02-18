@@ -24,7 +24,7 @@ const ModalAddPost: React.FunctionComponent = ()=>{
    }
 
    const handleSubmit = (e: any) => {
-      fetch(`http://localhost:3001/activity/`, {
+      fetch(`http://localhost:3001/post`, {
       method: "POST", // or "PUT"
       body: JSON.stringify({...buttons ,textarea: textarea}), // data can be `string` or {object}!
       headers: {
@@ -38,7 +38,7 @@ const ModalAddPost: React.FunctionComponent = ()=>{
         return data;
       });
    }
-   console.log(buttons);
+   //console.log(buttons);
   return(
     <aside className="modal-add-post">
       <div className="add-post-title">

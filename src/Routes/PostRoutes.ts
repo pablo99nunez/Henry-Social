@@ -7,7 +7,7 @@ let Post: Model<''>;
 
 router.get('/posts', async (req, res) => {
   try {
-    const posts = await Post.find({});
+    const posts = await Post.find();
     res.json(posts);
   } catch (e) {
     res.status(401).json({ error: e });
