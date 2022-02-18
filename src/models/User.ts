@@ -13,6 +13,7 @@ export interface IUser {
   linkedin?: string;
   github?: string;
   createdAt?: object;
+  admin?:boolean;
 }
 
 const userSchema = new Schema<IUser>({
