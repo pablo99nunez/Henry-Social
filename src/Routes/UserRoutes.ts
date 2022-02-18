@@ -4,6 +4,7 @@ import User, { IUser } from '../models/User';
 const router = Router();
 
 router.post('/user', (req, res) => {
+  console.log(req.body);
   const { name, username, email, avatar, createAt } = req.body;
   User.create({ name, username, email, avatar, createAt })
     .then((result) => {
