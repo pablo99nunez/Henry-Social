@@ -5,7 +5,7 @@ export interface IUser {
   name: string;
   email: string;
   username?: string;
-  avatar?: string;
+  avatar?: string | File | null;
   cohorte?: string;
   password?: string;
   linkedin?: string;
@@ -22,10 +22,13 @@ const userSchema = new Schema<IUser>({
   username: {
     type: String,
     default: null,
+    unique: true,
+    require: true,
   },
   email: {
     type: String,
     require: true,
+    unique: true,
   },
   avatar: String,
   cohorte: String,

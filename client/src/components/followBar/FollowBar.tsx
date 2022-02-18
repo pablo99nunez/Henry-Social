@@ -1,39 +1,27 @@
 import react from 'react';
 import { Follows } from './followExample';
-import './followBar.scss'
-
+import './followBar.scss';
 
 export default function FollowBar() {
-    let nuevo: Follows[] = [
-        {name: 'Alguien', avatar:'https://avatars.githubusercontent.com/u/9113740?v=4'}, 
-        {name:'Alejandro', avatar:'https://avatars.githubusercontent.com/u/78025342?v=4'},
-        {name: 'Rei', avatar:'https://avatars.githubusercontent.com/u/68031974?v=4'}
-    ]
-    interface Estilos {
-        background: string
-    }
+  let seguidos: Follows[] = [
+    { name: 'Alguien', avatar: 'https://avatars.githubusercontent.com/u/9113740?v=4' },
+    { name: 'Alejandro', avatar: 'https://avatars.githubusercontent.com/u/78025342?v=4' },
+    { name: 'Rei', avatar: 'https://avatars.githubusercontent.com/u/68031974?v=4' },
+  ];
 
-    function estilado(entrada:any) {
-        let estilos: Estilos ={
-            background: `url(${entrada}) center/contain no-repeat`,
-
-        }
-        return estilos
-    }
-
-    let prueba;
-    
-    return(
-        <div>
-        {
-            nuevo && nuevo.map(x => 
-                <div className='user'>
-                <p>{x.name}</p>
-                <div className='image' style={prueba=estilado(x.avatar)}>
-                </div>
-                </div>
-                )
-        }
-        </div>
-    )
+  return (
+    <div className="followBar">
+      <h2>Siguiendo</h2>
+      <div className="users">
+        {seguidos &&
+          seguidos.map((x) => (
+            <div className="user" key={x.name}>
+              <p>{x.name}</p>
+              <img src={x.avatar} alt="user avatar" />
+            </div>
+          ))}
+      </div>
+      <h4>Ver mas...</h4>
+    </div>
+  );
 }

@@ -1,43 +1,57 @@
-@import "../../Styles/variables.scss";
+@import '../../Styles/variables.scss';
 .nav {
-    background-color: $bg-secondary-color;
-    display: flex;
+  background-color: $bg-secondary-color;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  .nav_wrap {
     justify-content: space-between;
     place-items: center;
-    padding: .5rem 1rem;
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
     .nav_logo {
-        height: 3rem;
+      display: flex;
+      cursor: pointer;
+      color: $white;
+      align-items: center;
+      img {
+        height: 80px;
+        width: 80px;
+      }
     }
-    .nav_search{
-        input {
-            width: 30rem;
-            padding: 1rem 2rem;
-            border: 1px solid $white;
-            border-radius: .5rem;
-            background-color: transparent;
-            font-size: .8rem;
-            color: $white;
-        }
+    .nav_search {
+      input {
+        width: 30rem;
+        padding: 1rem 2rem;
+        border: 1px solid $white;
+        border-radius: 8px;
+        background-color: transparent;
+        font-size: 0.8rem;
+        color: $white;
+      }
     }
-    .nav_button_profile{
-        display: flex;
-        place-items: center;
-        gap:1.5rem;
-        .nav_icon_notification {
-            color: $white;
-            font-size: 1.8rem;
-        }
-        .nav_profile_img {
-            width: 4.5rem;
-            height: 4.5rem;
-            border: 1.5px solid $yellow;
-            border-radius: 100%;
-            background: url("https://assets.soyhenry.com/henry-landing/assets/peopleImages/sofi.jpg");
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-        .nav_profile_info {
-            color: $white;
-        }
+    .nav_icon_notification {
+      color: $white;
+      font-size: 1.8rem;
     }
+    .nav_button_profile {
+      display: flex;
+      gap: 1.5rem;
+      cursor: pointer;
+      align-items: center;
+      img {
+        width: 50px;
+        object-fit: cover;
+        height: 50px;
+        border: 1.5px solid $yellow;
+        border-radius: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .nav_profile_info {
+        color: $white;
+      }
+    }
+  }
 }

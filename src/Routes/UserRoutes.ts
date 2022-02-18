@@ -5,6 +5,7 @@ import User from '../models/User';
 const router = Router();
 
 router.post('/user', (req, res) => {
+  console.log(req.body);
   const { name, username, email, avatar, createAt } = req.body;
   User.create({ name, username, email, avatar, createAt })
     .then((result) => {
@@ -12,13 +13,18 @@ router.post('/user', (req, res) => {
     })
     .catch((e) => res.status(400).json({ error: e }));
 });
-
+router.get('/users', async (req, res) => {
+  try {
+    let users = await User.find({});
+    res.json(users);
+  } catch (e) {
+    res.status(401).json({ error: e });
+  }
+});
 router.post('/findUser', (req, res) => {
   const query = req.body;
-  console.log(query);
   User.findOne(query)
     .then((e) => {
-      console.log(e);
       res.json(e);
     })
     .catch((e) => {
