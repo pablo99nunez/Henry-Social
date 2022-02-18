@@ -9,58 +9,73 @@ import './User.scss';
 import linkedin from '../../img/linkedin.png';
 import github from '../../img/github.png';
 import coffee from '../../img/coffee-cup.png';
+import { IUser } from '../../../../src/models/User';
 
 export default function User() {
-  const [profile, setProfile] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [isOwner, setisOwner] = useState(false);
   const [follow, setFollow] = useState('');
-  var { username } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<IUser>();
   var dispatch = useDispatch();
-  let usuario: Example = {
-    username: 'Miguel',
-    photoUser: 'https://avatars.githubusercontent.com/u/86069194?v=4',
-    userdata: 'Cohorte 20B',
-    numFollow: 20,
-    numFollowers: 30,
+  var { username } = useParams();
+  let usuario: IUser = {
+    name: 'Miguel',
+    email: 'miguel@asdfsc.com',
+    username: 'Miguel52',
+    avatar: 'https://avatars.githubusercontent.com/u/86069194?v=4',
+    cohorte: '20B',
+    following: 20,
+    followers: 30,
     linkedin: 'miguelcoronel93',
     github: 'miketr32',
-    owner: false,
   };
-
+  async function getUser() {
+    setLoading(true);
+    let user = await fetch('http://localhost:3001/findUser', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+      }),
+    }).then((res) => res.json());
+    if (user === null) return alert('No existe el usuario');
+    setUser(user);
+    console.log(user);
+    setLoading(false);
+  }
+  useEffect(() => {
+    getUser();
+    if (user?.username === username) setisOwner(true);
+  }, []);
   const editProfile = () => {
-    return setProfile(true);
+    return setEdit(true);
   };
-  interface Estilos {
-    background: string;
-  }
 
-  function estilado() {
-    let estilos: Estilos = {
-      background: 'url(https://avatars.githubusercontent.com/u/86069194?v=4) center/contain no-repeat',
-    };
-    return estilos;
-  }
-
-  const prueba = estilado();
   return (
     <div className="User">
       <div className="ejemplo-navBar"> </div>
       <div className="head-profile">
         <div className="header"> </div>
         <div className="head-profile-central">
-          <div className="photo" style={prueba}></div>
+          <div className="photo">
+            <img src={user?.avatar} alt="" />
+          </div>
           <div className="details">
             <div className="follows">
-              <p>{usuario.numFollow} Siguiendo</p>
-              <p>{usuario.numFollowers}Seguidores</p>
+              <p>{user?.following} Siguiendo</p>
+              <p>{user?.followers}Seguidores</p>
             </div>
             <div className="userInfo">
               <p>
-                <strong>{usuario.username}</strong>
+                <strong>{user?.name}</strong>
               </p>
-              <p>{usuario.userdata}</p>
+              <p>{user?.cohorte}</p>
             </div>
             <div className="buttons">
-              {usuario.owner ? (
+              {isOwner ? (
                 <button onClick={editProfile}>{'edit-profile'}</button>
               ) : (
                 <div className="buttons">
@@ -73,7 +88,7 @@ export default function User() {
               )}
             </div>
             <div className="social-logos">
-              {usuario.linkedin.length !== 0 ? (
+              {user?.linkedin ? (
                 <a href={`https://www.linkedin.com/in/${usuario.linkedin}`}>
                   <div>
                     <img src={linkedin} alt="linkedin-profile" className="linkedin-logo" />
@@ -84,7 +99,7 @@ export default function User() {
                   <img src={linkedin} alt="linkedin-profile" className="linkedin-logo" />
                 </div>
               )}
-              {usuario.github.length !== 0 ? (
+              {user?.github ? (
                 <a href={`https://www.github.com/${usuario.github}`}>
                   <div>
                     <img src={github} alt="github-logo" className="github-logo" />
