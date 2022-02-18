@@ -58,7 +58,7 @@ export default function User() {
 
   if(edit === false){
   return (
-    <div className="Userb">
+    <div className="User">
       <div className="ejemplo-navBar"> </div>
       <div className="head-profile">
         <div className="header"> </div>
@@ -150,7 +150,7 @@ export default function User() {
       return(
         <div>
           <Settings />
-        <div className="User">
+        <div className="Userb">
       <div className="ejemplo-navBar"> </div>
       <div className="head-profile">
         <div className="header"> </div>
