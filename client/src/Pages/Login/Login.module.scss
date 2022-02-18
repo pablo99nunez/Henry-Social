@@ -3,9 +3,10 @@
 
 #cont {
   font-family: Roboto;
-  background-color: #1C1C1C;
-  height: 100vh;
-  min-height: 100vh;
+  background-color: $bg-color;
+  min-height: 70vh;
+  position: relative;
+  top: 12vh;
   display: grid;
   place-items: center;
 
@@ -13,53 +14,56 @@
     display: flex;
     position: fixed;
     justify-content: space-around;
-    height: 15vh;
+    height: 13vh;
     background-color: black;
     top: 0;
     left: 0;
     width: 100%;
     
-    
     #title_cont {
+      width: 100%;
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
+
+      img {
+        width: max-content;
+        height: auto;
+        margin-left: 1.5rem;
+      }
 
       h1 {
         font-size: 25px;
-        color: white;
+        color: $white;
       }
     }
 
-    #btns_cont {
-      @include flex-column;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-
-      #sign_in,
-      #log_in {
-        background-color: #1C1C1C;
-        color: #FFFF01;
-        border: .5px #FFFF01 solid;
+      .act_btn {
+        position: absolute;
+        top: 40%;
+        right: 25px;
+        font-size: 1rem;
+        background-color: $yellow;
+        color: $bg-color;
+        border: none;
         border-radius: 5px;
         width: max-content;
         height: max-content;
-        padding: 5px;
+        padding: 8px;
         -webkit-border-radius: 5px;
         -moz-border-radius: 5px;
         -ms-border-radius: 5px;
         -o-border-radius: 5px;  
       }
-    }
   }
 
   #form_cont {
     position: relative;
     width: 90%;
-    height: 50%;
-    background-color: #FFFF01;
+    height: 25rem;
+    background-color: $yellow;
+    box-shadow: $yellow 1px 1px 10px;
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -68,10 +72,10 @@
 
     form {
       @include flex-column;
-      justify-content: center;
-      gap: 3.75rem;
+      justify-content: space-around;
       align-items: center;
-      height: 50vh;
+      gap: 1.5rem;
+      height: 23.125rem;
 
       h3 {
         position: relative;
@@ -83,7 +87,7 @@
         font-size: 16px;
         background-color: transparent;
         border: none;
-        border-bottom: 1px solid #1C1C1C;
+        border-bottom: 1px solid $bg-color;
         line-height: 1.5rem;
         width: 80vw;
 
@@ -93,8 +97,8 @@
       }
 
       button[type="submit"] {
-        background-color: #000000;
-        color: white;
+        background-color: $bg-secondary-color;
+        color: $white;
         border: none;
         border-radius: 5px;
         width: max-content;
@@ -107,20 +111,6 @@
       }
     }
 
-    #cls_btn {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      background-color: transparent;
-      color: #000000;
-      border: 2px solid #000000;
-      border-radius: 50px;
-      -webkit-border-radius: 50px;
-      -moz-border-radius: 50px;
-      -ms-border-radius: 50px;
-      -o-border-radius: 50px;
-    }
-
     #alt_cont {
       display: flex;
       justify-content: center;
@@ -128,11 +118,10 @@
       top: 55px;
       position: relative;
 
-      #google_btn,
-      #github_btn {
-        background-color: #FFFF01;
+      .alt_btns {
+        background-color: $yellow;
         border: none;
-        padding: 5px;
+        padding: 10px;
         font-size: 20px;
         border-radius: 10px;
         -webkit-border-radius: 10px;
@@ -143,5 +132,108 @@
     }
     
   }
+}
+
+@media (min-width: 750px) {
+  #cont {
+    position: static;
+    min-height: 100%;
+
+    button {
+      cursor: pointer;
+      transition: transform ease-in 300ms;
+      -webkit-transition: transform ease-in 300ms;
+      -moz-transition: transform ease-in 300ms;
+      -ms-transition: transform ease-in 300ms;
+      -o-transition: transform ease-in 300ms;
+
+      &:hover {
+        transform: scale(1.1);
+        -webkit-transform: scale(1.11);
+        -moz-transform: scale(1.11);
+        -ms-transform: scale(1.11);
+        -o-transform: scale(1.11);
+      }
+    }
+    
+    header {
+      height: 5rem;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      #title_cont {
+        position: relative;
+        right: 11.25rem;
+        width: max-content;
+        margin-left: 4rem;
+      }
+
+      .act_btn {
+        width: 7rem;
+        position: static;
+        background-color:$bg-color;
+        color:$yellow;
+        border: .5px solid $yellow;
+        transition: 300ms ease-out;
+        transition-property: backgroud-color color;
+        -webkit-transition: 300ms ease-out;
+        -moz-transition: 300ms ease-out;
+        -ms-transition: 300ms ease-out;
+        -o-transition: 300ms ease-out;
+
+        &:hover {
+          background-color:$yellow;
+          color:$bg-color;
+        }
+        
+      }
+    }
+
+    #form_cont {
+      margin-top: 9rem;
+      width: 80%;
+      height: 80%;
+      padding: 20px 0;
+      border-radius: 8px;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      -ms-border-radius: 8px;
+      -o-border-radius: 8px;
+
+      form {
+        width: 60%;
+        margin: auto;
+        position: relative;
+
+        input {
+          width: 100%;
+        }
+
+        button[type="submit"] {
+          align-self: flex-start;
+        }
+      }
+
+      #alt_cont {
+        .alt_btns {
+          border: 1px solid $bg-secondary-color;
+          transition: 300ms ease-in;
+          transition-property: background-color color;
+          -webkit-transition: 300ms ease-in;
+          -moz-transition: 300ms ease-in;
+          -ms-transition: 300ms ease-in;
+          -o-transition: 300ms ease-in;
+          
+          &:hover {
+            color: $yellow;
+            background-color: $bg-secondary-color;
+          }
+        }
+      }
+
+    }
+
+  }   
 }
 

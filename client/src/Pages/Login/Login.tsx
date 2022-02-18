@@ -6,9 +6,14 @@ import { signUpWithEmail, signUpWithGmail, signUpWithGitHub } from '../../../../
 import { IUser } from '../../../../src/models/User'
 import style from './Login.module.scss';
 
+enum USER_ACTION  {
+  register,
+  signUp
+}
+
 export default function Login(): JSX.Element {
 
-	const [ input,setInput ] = useState<IUser> ({
+	const [ input, setInput ] = useState<IUser> ({
     name: "",
     username: "",
     password: "",
@@ -17,6 +22,7 @@ export default function Login(): JSX.Element {
     createdAt: {}
   })
   const [ loading, setLoading ] = useState(false)
+  const [ action, setAction ] = useState(USER_ACTION.signUp)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -62,14 +68,18 @@ export default function Login(): JSX.Element {
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
     const property = e.target.name
-    console.log(e)
-    if(property===null) throw new Error() 
+    if(property === null) throw new Error() 
     else {
       setInput({
         ...input,
         [property]:e.target.value
       })
     }
+  }
+
+  const handleActionChange = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const Act = action ? "register" : "signUp"
+    setAction(USER_ACTION[Act]);
   }
 
   return (
@@ -80,40 +90,36 @@ export default function Login(): JSX.Element {
           <img src="#" alt="icon" />
           <h1> | Social </h1>
         </div>
-        <div id={style.btns_cont}>
-          <button id={style.sign_in}> Registrarse </button>
-          <button id={style.log_in}> Iniciar sesión </button>
-        </div>
+        <button className={style.act_btn}
+          onClick={handleActionChange}
+        > {action ? "Iniciar sesión" : "Registrarse"} </button>
       </header>
       <div id={style.form_cont}>
         <form onSubmit={handleSubmit}>
           <h3> Hola, ¡Bienvenida/o a Henry Social! </h3>
-          <input type="email" id={style.email} name="email" placeholder="Ingresa tu email" onChange={handleInputChange}/>
-          <input type="password" id={style.pass} name="password" placeholder="Ingresa tu contraseña" onChange={handleInputChange}/>
-          <button disabled={loading} type="submit"> Sign Up </button>
+          <input type="email" id={style.email} name="email" placeholder="Email" onChange={handleInputChange}/>
+          <input type="password" id={style.pass} name="password" placeholder="Contraseña" onChange={handleInputChange}/>
+          {
+            action ? 
+            <>
+              <input type="text" name="name" onChange={handleInputChange} placeholder="Nombre"/>
+              <input type="text" name="username" onChange={handleInputChange} placeholder="Username"/>
+              <input type="text" name="avatar" onChange={handleInputChange} placeholder="Avatar"/>
+            </>
+            : <></>
+          }
+          <button disabled={loading} type="submit"> { action ? "Registrate" : "Inicia sesión"} </button>
         </form>
         <div id={style.alt_cont}>
-          <button id={style.google_btn}
+          <button className={style.alt_btns}
             onClick={() => handleLogin(signUpWithGmail)}
           > With Google </button>
-          <button id={style.github_btn}
+          <button className={style.alt_btns}
             onClick={() => handleLogin(signUpWithGitHub)}
           > With Github </button>
         </div>
       </div>
     </div>
-
-    {/* <form onSubmit={handleSubmit}>
-        <input type="email" name="email"  onChange={handleInputChange}/>
-        <input type="password" name="password"  onChange={handleInputChange}/>
-        <input type="text"  name="username" onChange={handleInputChange}/>
-        <input type="text"  name="name" onChange={handleInputChange}/>
-        <input type="text"  name="avatar" onChange={handleInputChange}/>
-        
-        <button disabled={loading} type="submit"> Sign Up </button>
-    </form>
-    <button onClick={()=>handleLogin(signUpWithGmail)}>Sign in with Google</button>
-    <button onClick={()=>handleLogin(signUpWithGitHub)}>Sign in with GitHub</button> */}
     </>
   )
 }
