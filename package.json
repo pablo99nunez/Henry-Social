@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node --loader ts-node/esm index.ts",
+    "start": "ts-node index.ts",
     "server": "nodemon src/index.ts",
     "deploy": "cd client && npm run build && cd.. && firebase deploy",
     "testDeploy":"cd client && npm run build && cd.. && firebase hosting:channel:deploy testingDeploy",
@@ -26,6 +26,7 @@
     "mongoose": "^6.2.1",
     "morgan": "~1.9.0",
     "nodemailer": "^6.3.1",
+    "ts-node": "^10.5.0",
     "standard": "^16.0.4"
   },
   "devDependencies": {
@@ -35,7 +36,6 @@
     "mocha": "^6.2.2",
     "nodemon": "^1.19.4",
     "nyc": "^14.1.1",
-    "ts-node": "^10.5.0",
     "tslint": "^6.1.3",
     "typescript": "^4.5.5"
   }
