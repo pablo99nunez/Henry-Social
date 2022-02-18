@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import User from '../models/User';
+import User, { IUser } from '../models/User';
 
 const router = Router();
 
@@ -20,7 +20,7 @@ router.get('/users', async (req, res) => {
   }
 });
 router.post('/findUser', (req, res) => {
-  const { query } = req.body;
+  const query = req.body;
   User.findOne(query)
     .then((e) => {
       res.json(e);
