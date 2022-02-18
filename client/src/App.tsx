@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Route, Routes } from 'react-router-dom';
 
@@ -6,8 +6,10 @@ import User from './Pages/User/User';
 import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
 import PostDetail from './Pages/PostDetail/PostDetail';
+import useUser from './Hooks/useUser';
 
 function App() {
+  useUser();
   return (
     <div className="App">
       <Routes>
