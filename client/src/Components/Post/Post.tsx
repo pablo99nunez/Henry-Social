@@ -1,7 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
 import style from "./Post.module.scss";
 import { BsThreeDots, BsHeartFill, BsChatSquareDots, BsShareFill} from "react-icons/bs";
+import ModalAddPost from "../../Pages/ModalAddPost";
 const Post = ()=> {
+   /* const [showModal, setShowModal] = useState(false);
+
+   const handleClick = (e: any)=>{
+      if(showModal){
+         setShowModal(false)
+      } else {
+         setShowModal(true);
+      }
+      console.log(showModal);
+   } */
     return (
         <div className={style.post}>
             <div className={style.post_profile}>
@@ -37,9 +48,12 @@ const Post = ()=> {
                     </div>
                 </div>
                 <div className={style.post_icon}>
-                    <BsShareFill/>
+                    <BsShareFill />
                 </div>
             </div>
+            {/* {
+               showModal && <ModalAddPost />
+            } */}
         </div>
     )
 }
