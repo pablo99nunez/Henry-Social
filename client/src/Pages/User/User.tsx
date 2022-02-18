@@ -10,6 +10,7 @@ import linkedin from '../../img/linkedin.png';
 import github from '../../img/github.png';
 import coffee from '../../img/coffee-cup.png';
 import { IUser } from '../../../../src/models/User';
+import NavSearch from '../../Components/NavSearch/NavSearch';
 
 export default function User() {
   const [edit, setEdit] = useState(false);
@@ -55,78 +56,82 @@ export default function User() {
   };
 
   return (
-    <div className="User">
-      <div className="ejemplo-navBar"> </div>
-      <div className="head-profile">
-        <div className="header"> </div>
-        <div className="head-profile-central">
-          <div className="photo">
-            <img src={user?.avatar} alt="" />
-          </div>
-          <div className="details">
-            <div className="follows">
-              <p>{user?.following} Siguiendo</p>
-              <p>{user?.followers}Seguidores</p>
+    <>
+      <NavSearch></NavSearch>
+      <div className="User">
+        <div className="header"></div>
+        <div className="head-profile">
+          <div className="head-profile-central">
+            <div className="photo">
+              <img src={user?.avatar} alt="" />
             </div>
-            <div className="userInfo">
-              <p>
-                <strong>{user?.name}</strong>
-              </p>
-              <p>{user?.cohorte}</p>
-            </div>
-            <div className="buttons">
-              {isOwner ? (
-                <button onClick={editProfile}>{'edit-profile'}</button>
-              ) : (
-                <div className="buttons">
-                  <button>
-                    Invitame un cafe
-                    <img src={coffee} alt="coffee-logo" className="coffee" />
+            <div className="details">
+              <div className="buttons">
+                {isOwner ? (
+                  <button onClick={editProfile} className="button">
+                    {'edit-profile'}
                   </button>
-                  <button>{'follow'}</button>
-                </div>
-              )}
-            </div>
-            <div className="social-logos">
-              {user?.linkedin ? (
-                <a href={`https://www.linkedin.com/in/${usuario.linkedin}`}>
+                ) : (
+                  <div className="buttons">
+                    <button className="button">
+                      Invitame un cafe
+                      <img src={coffee} alt="coffee-logo" className="coffee" />
+                    </button>
+                    <button className="button">{'follow'}</button>
+                  </div>
+                )}
+              </div>
+              <div className="userInfo">
+                <p>
+                  <strong>{user?.name}</strong>
+                </p>
+                <p>{user?.cohorte}</p>
+              </div>
+              <div className="follows">
+                <p>{user?.following} Siguiendo</p>
+                <p>{user?.followers} Seguidores</p>
+              </div>
+              <div className="social-logos">
+                {user?.linkedin ? (
+                  <a href={`https://www.linkedin.com/in/${usuario.linkedin}`}>
+                    <div>
+                      <img src={linkedin} alt="linkedin-profile" className="linkedin-logo" />
+                    </div>
+                  </a>
+                ) : (
                   <div>
                     <img src={linkedin} alt="linkedin-profile" className="linkedin-logo" />
                   </div>
-                </a>
-              ) : (
-                <div>
-                  <img src={linkedin} alt="linkedin-profile" className="linkedin-logo" />
-                </div>
-              )}
-              {user?.github ? (
-                <a href={`https://www.github.com/${usuario.github}`}>
+                )}
+                {user?.github ? (
+                  <a href={`https://www.github.com/${usuario.github}`}>
+                    <div>
+                      <img src={github} alt="github-logo" className="github-logo" />
+                    </div>
+                  </a>
+                ) : (
                   <div>
                     <img src={github} alt="github-logo" className="github-logo" />
                   </div>
-                </a>
-              ) : (
-                <div>
-                  <img src={github} alt="github-logo" className="github-logo" />
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="body-profile">
-        <div className="follow-bar">
-          <h4>Siguiendo</h4>
-          <FollowBar />
-          <a>Ver mas</a>
+        <div className="body-profile">
+          <div className="follow-bar">
+            <h4>Siguiendo</h4>
+            <FollowBar />
+            <a>Ver mas</a>
+          </div>
+          <div className="central-profile">
+            <Post />
+          </div>
+          <div className="mistery-box">{'Misterious NavBar'}</div>
         </div>
-        <div className="central-profile">
-          <Post />
-        </div>
-        <div className="mistery-box">{'Misterious NavBar'}</div>
+        <Chat />
       </div>
-      <Chat />
-    </div>
+    </>
   );
 }
 
