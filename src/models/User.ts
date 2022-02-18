@@ -6,8 +6,13 @@ export interface IUser {
   email: string;
   username?: string;
   avatar?: string;
+  cohorte?: string;
   password?: string;
-  createdAt: object;
+  following: number;
+  followers: number;
+  linkedin?: string;
+  github?: string;
+  createdAt?: object;
 }
 
 const userSchema = new Schema<IUser>({
@@ -24,6 +29,19 @@ const userSchema = new Schema<IUser>({
     require: true,
   },
   avatar: String,
+  cohorte: String,
+  followers: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  following: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  github: String,
+  linkedin: String,
   createdAt: {
     type: Date,
     default: new Date().toDateString(),
@@ -31,4 +49,3 @@ const userSchema = new Schema<IUser>({
 });
 
 export default model<IUser>('User', userSchema);
-
