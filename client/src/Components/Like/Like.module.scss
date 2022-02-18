@@ -1,0 +1,15 @@
+@import '../../Styles/variables.scss';
+
+.like {
+  cursor: pointer;
+  .heart {
+    transition: color 0.3s ease;
+    color: $yellow;
+  }
+  .heart:hover {
+    filter: brightness(0.7);
+  }
+  p:hover {
+    text-decoration: underline;
+  }
+}
