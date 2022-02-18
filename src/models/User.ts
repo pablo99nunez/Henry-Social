@@ -1,6 +1,11 @@
 import { Schema, model } from 'mongoose';
 import '../db.ts';
 
+enum Roles{
+  Estudiante="Estudiante",
+  Instructor="Instructor",
+  TA="TA"
+}
 export interface IUser {
   name: string;
   email: string;
@@ -13,6 +18,9 @@ export interface IUser {
   linkedin?: string;
   github?: string;
   createdAt?: object;
+  role?:Roles;
+  portfolio?:string;
+  bio?:string;
   admin:boolean
 }
 
@@ -50,6 +58,12 @@ const userSchema = new Schema<IUser>({
   },
   github: String,
   linkedin: String,
+  portfolio: String,
+  bio:String,
+  role:{
+    type:String,
+    default: Roles.Estudiante
+  },
   createdAt: {
     type: Date,
     default: new Date().toDateString(),
