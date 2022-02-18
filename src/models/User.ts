@@ -5,14 +5,15 @@ export interface IUser {
   name: string;
   email: string;
   username?: string;
-  avatar?: string;
+  avatar?: string | File | null;
   cohorte?: string;
   password?: string;
-  following: number;
-  followers: number;
+  following?: number;
+  followers?: number;
   linkedin?: string;
   github?: string;
   createdAt?: object;
+  admin:boolean
 }
 
 const userSchema = new Schema<IUser>({
@@ -23,10 +24,13 @@ const userSchema = new Schema<IUser>({
   username: {
     type: String,
     default: null,
+    unique: true,
+    require: true,
   },
   email: {
     type: String,
     require: true,
+    unique: true,
   },
   avatar: String,
   cohorte: String,
@@ -39,6 +43,10 @@ const userSchema = new Schema<IUser>({
     type: Number,
     required: true,
     default: 0,
+  },
+  admin:{
+    type: Boolean,
+    default: false
   },
   github: String,
   linkedin: String,

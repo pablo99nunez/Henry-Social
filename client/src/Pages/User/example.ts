@@ -6,5 +6,6 @@ export interface Example {
     numFollowers: number,
     linkedin: string,
     github: string,
-    owner: boolean
+    owner: boolean,
+    admin: boolean
 }
