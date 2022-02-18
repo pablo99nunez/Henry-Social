@@ -1,0 +1,11 @@
+.user {
+	display: flex;
+	justify-content: space-around;
+	margin-top: 20px;
+}
+.image {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	border: rgba(255, 255, 1, 1) solid 1.5px;
+}

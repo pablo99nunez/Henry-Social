@@ -17,7 +17,7 @@ async function defaultUsername(name: string | null): Promise<string> {
       username: refactor,
     }),
   }).then((res) => res.json());
-  if (foundUserWithTheSameUsername[0]) return defaultUsername(name + Math.floor(Math.random() * 10));
+  if (!foundUserWithTheSameUsername) return defaultUsername(name + Math.floor(Math.random() * 10));
   else return refactor;
 }
 
@@ -97,4 +97,6 @@ export function signUpWithGitHub() {
     .catch((e) => {
       throw new Error('Algo salio mal' + e);
     });
+
 }
+
