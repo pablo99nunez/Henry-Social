@@ -15,7 +15,7 @@ export default function FollowBar() {
       <div className="users">
         {seguidos &&
           seguidos.map((x) => (
-            <div className="user">
+            <div className="user" key={x.name}>
               <p>{x.name}</p>
               <img src={x.avatar} alt="user avatar" />
             </div>
