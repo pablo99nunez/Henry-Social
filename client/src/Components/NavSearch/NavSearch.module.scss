@@ -42,6 +42,7 @@
       align-items: center;
       img {
         width: 50px;
+        object-fit: cover;
         height: 50px;
         border: 1.5px solid $yellow;
         border-radius: 100%;
