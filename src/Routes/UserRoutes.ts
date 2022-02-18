@@ -1,5 +1,5 @@
 import { Router } from 'express';
-
+const axios = require("axios");
 import User from '../models/User';
 
 const router = Router();
@@ -26,15 +26,47 @@ router.post('/findUser', (req, res) => {
     });
 });
 
-router.post('/follow/:username',async (req,res)=> {
-  const { username } = req.params;
+
+async function isFollowing(userA:string,userB:string){
+  const isFollowing=await User.findOne({
+    username:userA,
+    following: {$in: [userB]}
+  })
+  if(!isFollowing) return true;
+  return false;
+}
+
+router.post('/follow',async (req,res)=> {
+  const { seguidor,seguido } = req.body;
   try {
-      const user = await User.find({
-          username
-      })
-      res.status(201).json(user);
+     if(await isFollowing(seguidor,seguido)){ //Si el seguidor ya sigue al seguido
+      const result = await axios.post("/unfollow",{seguido,seguidor}) //Deja de seguir al usuario
+    }else{
+      const userSeguidor=await axios.post("/findUser",{username:seguidor})
+      const userSeguido=await axios.post("/findUser",{username:seguido})
+      userSeguidor.following.push(userSeguido)
+      userSeguido.followers.push(userSeguidor)
+    }
   } catch (error) {
       res.status(400).json({error:error})
   }
 })
+
+router.post("/unfollow",async (req,res)=>{ 
+  const {seguido,seguidor}= req.body;
+  try {
+    const unfollow = User.updateMany({},
+    {
+      $pull:{
+          followers: {
+              $in: seguido
+          }
+      }
+    }   
+    )
+  } catch (error) {
+    res.status(400).json({error:error})
+  }
+})
+
 export default router;
