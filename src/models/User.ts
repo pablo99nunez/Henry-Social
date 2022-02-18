@@ -13,6 +13,7 @@ export interface IUser {
   linkedin?: string;
   github?: string;
   createdAt?: object;
+  admin:boolean
 }
 
 const userSchema = new Schema<IUser>({
@@ -42,6 +43,10 @@ const userSchema = new Schema<IUser>({
     type: Number,
     required: true,
     default: 0,
+  },
+  admin:{
+    type: Boolean,
+    default: false
   },
   github: String,
   linkedin: String,

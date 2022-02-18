@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import FollowBar from '../../Components/followBar/FollowBar';
+import FollowBar from '../../Components/FollowBar/FollowBar';
 import Chat from '../../Components/Chat/Chat';
 import Post from '../../Components/Post/Post';
 import style from './User.module.scss';
@@ -11,6 +11,7 @@ import coffee from '../../assets/icons/coffee-cup3.png';
 import { IUser } from '../../../../src/models/User';
 import NavSearch from '../../Components/NavSearch/NavSearch';
 import Button from '../../Components/Button/Button';
+import Settings from '../../Components/Settings/Settings';
 
 export default function User() {
   const [edit, setEdit] = useState(false);
@@ -18,9 +19,10 @@ export default function User() {
   const [follow, setFollow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<IUser>();
+  
   var dispatch = useDispatch();
   var { username } = useParams();
-  let usuario: IUser = {
+  let userLogeado: IUser = { //useUser()
     name: 'Miguel',
     email: 'miguel@asdfsc.com',
     username: 'Miguel52',
@@ -30,6 +32,7 @@ export default function User() {
     followers: 30,
     linkedin: 'miguelcoronel93',
     github: 'miketr32',
+    admin:false
   };
   async function getUser() {
     setLoading(true);
@@ -56,6 +59,7 @@ export default function User() {
   return (
     <>
       <NavSearch></NavSearch>
+      <Settings></Settings>
       <div className={style.User}>
         <div className={style.head_profile}>
           <div className={style.head_profile_central}>
@@ -64,6 +68,7 @@ export default function User() {
             </div>
             <div className={style.details}>
               <div className={style.buttons}>
+                {userLogeado?.admin ? user?.admin ? <Button>Eliminar rol de Admin</Button> : <Button>Hacer Admin</Button> : null}
                 {isOwner ? (
                   <Button onClick={editProfile}>{'edit-profile'}</Button>
                 ) : (
@@ -105,7 +110,7 @@ export default function User() {
 
                 <div>
                   {user?.linkedin ? (
-                    <a href={`https://www.linkedin.com/in/${usuario.linkedin}`}>
+                    <a href={`https://www.linkedin.com/in/${user.linkedin}`}>
                       <div>
                         <img src={linkedin} alt="linkedin-profile" className={style.linkedin_logo} />
                       </div>
@@ -116,7 +121,7 @@ export default function User() {
                     </div>
                   )}
                   {user?.github ? (
-                    <a href={`https://www.github.com/${usuario.github}`}>
+                    <a href={`https://www.github.com/${user.github}`}>
                       <div>
                         <img src={github} alt="github-logo" className={style.github_logo} />
                       </div>
@@ -129,7 +134,6 @@ export default function User() {
                 </div>
               </div>
             </div>
-          </div>
         </div>
         <div className={style.body_profile}>
           <div className={style.follow_bar}>
@@ -147,6 +151,8 @@ export default function User() {
         </div>
         <Chat />
       </div>
+      </div>
+
     </>
   );
 }
