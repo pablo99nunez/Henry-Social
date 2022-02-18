@@ -12,6 +12,7 @@ import { IUser } from '../../../../src/models/User';
 import NavSearch from '../../Components/NavSearch/NavSearch';
 import Button from '../../Components/Button/Button';
 import Settings from '../../Components/Settings/Settings';
+import useUser from '../../Hooks/useUser'
 
 export default function User() {
   const [edit, setEdit] = useState(false);
@@ -20,20 +21,10 @@ export default function User() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<IUser>();
   
-  var dispatch = useDispatch();
+
   var { username } = useParams();
-  let userLogeado: IUser = { //useUser()
-    name: 'Miguel',
-    email: 'miguel@asdfsc.com',
-    username: 'Miguel52',
-    avatar: 'https://avatars.githubusercontent.com/u/86069194?v=4',
-    cohorte: '20B',
-    following: 20,
-    followers: 30,
-    linkedin: 'miguelcoronel93',
-    github: 'miketr32',
-    admin:false
-  };
+  let userLogeado = useUser()
+
   async function getUser() {
     setLoading(true);
     let user = await fetch('http://localhost:3001/findUser', {
@@ -51,6 +42,7 @@ export default function User() {
   }
   useEffect(() => {
     getUser();
+    if(username===userLogeado?.username) setisOwner(true)
   }, []);
   const editProfile = () => {
     return setEdit(true);
@@ -59,18 +51,22 @@ export default function User() {
   return (
     <>
       <NavSearch></NavSearch>
-      <Settings></Settings>
+      {<Settings open={edit}></Settings>}
       <div className={style.User}>
         <div className={style.head_profile}>
           <div className={style.head_profile_central}>
             <div className={style.photo}>
-              <img src={user?.avatar} alt="" />
+           
+              <img src={
+                typeof user?.avatar =="string" ?
+                  user?.avatar: "https://s5.postimg.cc/537jajaxj/default.png"
+                } alt="" />
             </div>
             <div className={style.details}>
               <div className={style.buttons}>
                 {userLogeado?.admin ? user?.admin ? <Button>Eliminar rol de Admin</Button> : <Button>Hacer Admin</Button> : null}
                 {isOwner ? (
-                  <Button onClick={editProfile}>{'edit-profile'}</Button>
+                  <Button onClick={editProfile}>Editar Perfil</Button>
                 ) : (
                   <div className={style.buttons}>
                     <Button>

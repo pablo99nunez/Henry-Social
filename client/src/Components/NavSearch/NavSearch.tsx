@@ -34,7 +34,9 @@ const NavSearch = () => {
               navigate('/profile/' + user?.username);
             }}
           >
-            <img src={user?.avatar} alt="" />
+            <img src={
+              typeof user?.avatar == "string"?
+              user?.avatar : 'https://s5.postimg.cc/537jajaxj/default.png'} alt="" />
             <div className={styles.nav_profile_info}>
               <h3>
                 <strong>{user?.name}</strong>
