@@ -3,24 +3,24 @@
     position: fixed;
     z-index: 20;
     background-color: rgba(255, 255, 1, 1);
-    width: 1080px;
-    height: 780px;
-    border-radius: 15px;
-    margin-left: 420px;
-    margin-top: 75px;
+    width: 80vw;
+    height: 50vh;
+    border-radius: 8px;
+    margin: 0 auto;
     box-shadow: -2px -2px 4px 2px rgba(255, 254, 254, 0.61), 2px 2px 4px 2px rgba(255, 254, 254, 0.61);
-}
+    backdrop-filter: blur(3px);
+    .header-settings{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding-top: 20px;
+            p {
+                font-weight: bold;
+                font-size: 23px;
+            }
+    }
 
-.header-settings{
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding-top: 20px;
-        p {
-            font-weight: bold;
-            font-size: 23px;
-        }
-}
+
 
 .settings-photo{
     background-color: white;
@@ -121,4 +121,5 @@
     background-color: rgba(255, 255, 1, 1);
     font-weight: bold;
     text-decoration:underline;
+}
 }
