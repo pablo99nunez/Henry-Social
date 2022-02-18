@@ -23,17 +23,17 @@ Red social para los estudiantes de henry
 
 ## Commit
 
-- feat– se introduce una nueva característica con los cambios
-- fix– se ha producido una corrección de errores
-- chore– cambios que no se relacionan con una corrección o función y no modifican src o archivos de prueba (por ejemplo, actualizar dependencias)
-- refactor– código refactorizado que no corrige un error ni agrega una función
-- docs– actualizaciones de la documentación, como el LÉAME u otros archivos de rebajas
-- style– cambios que no afectan el significado del código, probablemente relacionados con el formato del código, como espacios en blanco, puntos y coma faltantes, etc.
-- test– incluir pruebas nuevas o corregir pruebas anteriores
-- perf– mejoras de rendimiento
-- ci– relacionados con la integración continua
-- build– cambios que afectan el sistema de compilación o las dependencias externas
-- revert– revierte una confirmación anterior
+- feat: se introduce una nueva característica con los cambios
+- fix: se ha producido una corrección de errores
+- chore: cambios que no se relacionan con una corrección o función y no modifican src o archivos de prueba (por ejemplo, actualizar dependencias)
+- refactor: código refactorizado que no corrige un error ni agrega una función
+- docs: actualizaciones de la documentación, como el README u otros archivos de rebajas
+- style: cambios que no afectan el significado del código, probablemente relacionados con el formato del código, como espacios en blanco, puntos y coma faltantes, etc.
+- test: incluir pruebas nuevas o corregir pruebas anteriores
+- perf: mejoras de rendimiento
+- ci: relacionados con la integración continua
+- build: cambios que afectan el sistema de compilación o las dependencias externas
+- revert: revierte una confirmación anterior
 
 ## Examples
 
