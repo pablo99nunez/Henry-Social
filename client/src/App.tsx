@@ -7,9 +7,12 @@ import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
 import PostDetail from './Pages/PostDetail/PostDetail';
 import useLogin from './Hooks/useLogin';
+import useisLogged from './Hooks/useisLogged';
+import { useNavigate } from 'react-router';
 
 function App() {
   useLogin();
+
   return (
     <div className="App">
       <Routes>

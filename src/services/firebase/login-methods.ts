@@ -1,23 +1,18 @@
 import { auth } from './firebase';
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
 import modelUser, { IUser } from '../../models/User';
+import axios from 'axios';
 
 const url = 'http://localhost:3001';
 
 async function defaultUsername(name: string | null): Promise<string> {
   name = name ?? 'username';
   let refactor = name.toLowerCase().split(' ').join('-');
-  console.log(refactor);
-  let foundUserWithTheSameUsername = await fetch(url + '/findUser', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      username: refactor,
-    }),
-  }).then((res) => res.json());
-  if (!foundUserWithTheSameUsername) return defaultUsername(name + Math.floor(Math.random() * 10));
+  let foundUserWithTheSameUsername = await axios
+    .post('http://localhost:3001/findUser', { username: refactor })
+    .then((e) => e.data);
+  console.log(foundUserWithTheSameUsername);
+  if (!!foundUserWithTheSameUsername) return defaultUsername(name + Math.floor(Math.random() * 10));
   else return refactor;
 }
 
@@ -97,6 +92,4 @@ export function signUpWithGitHub() {
     .catch((e) => {
       throw new Error('Algo salio mal' + e);
     });
-
 }
-

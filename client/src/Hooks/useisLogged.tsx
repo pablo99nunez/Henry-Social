@@ -3,6 +3,6 @@ import { IState } from '../redux/reducer';
 
 export default function useisLogged() {
   const user = useSelector((state: IState) => state.user);
-  if (user) return true;
+  if (!!user?.username) return true;
   else return false;
 }

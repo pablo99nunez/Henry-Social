@@ -23,10 +23,13 @@ const userSchema = new Schema<IUser>({
   username: {
     type: String,
     default: null,
+    unique: true,
+    require: true,
   },
   email: {
     type: String,
     require: true,
+    unique: true,
   },
   avatar: String,
   cohorte: String,
