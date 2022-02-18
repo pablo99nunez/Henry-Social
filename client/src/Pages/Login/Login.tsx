@@ -64,7 +64,7 @@ export default function Login(): JSX.Element {
         alert(e)
       }
     }
-  }
+  };
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
     const property = e.target.name

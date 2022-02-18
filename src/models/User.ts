@@ -8,8 +8,8 @@ export interface IUser {
   avatar?: string;
   cohorte?: string;
   password?: string;
-  following: number;
-  followers: number;
+  following?: number;
+  followers?: number;
   linkedin?: string;
   github?: string;
   createdAt?: object;
