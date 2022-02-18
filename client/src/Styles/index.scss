@@ -1,14 +1,16 @@
 @import "./variables";
 body {
   margin: 0;
+  padding: 0;
   background-color:$bg-color;
   font-family: $font;
+  box-sizing: border-box;
 }
+
 img {
     width: 100%;
     height: 100%;
 }
-
 a {
   text-decoration: none;
 }
