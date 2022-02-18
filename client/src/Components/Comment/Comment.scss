@@ -1,0 +1,118 @@
+@import "../../Styles/mixins.scss";
+@import "../../Styles/variables.scss";
+
+.comment{
+  gap: 15px;
+  width: 100%;
+  // @include flex-aic;
+  display: flex;
+  padding: 15px;
+  position: relative;
+  height: max-content;
+  background-color: black;    
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+  &:last-child{
+    border-bottom: none;
+  }
+  .picture{
+      text-align: center;
+      .photo{
+          width: 50px;
+          height: 50px;
+          object-fit: cover;
+          border-radius: 50%;
+      }
+  }    
+  .info{
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    .author{
+      gap: 10px;
+      display: flex;
+      font-size: 15px;
+      align-items: center;
+      .name{
+        font-weight: 500;
+        text-decoration: none;
+        color: rgb(241, 241, 241);
+      }
+      .cohorteDate{
+        color: rgb(150, 150, 150);
+      }
+    }
+    .content{
+      gap: 10px;
+      display: flex;
+      flex-direction: column;
+      // Lo dejo listo por si debajo de la desc va una imagen
+      .desc{
+        font-size: 14px;
+        line-height: 1.5;
+        color: rgb(226, 226, 226);
+      }
+    }
+    .likesComments{
+      gap: 40px;
+      @include flex-aic;
+      .sizeLikes, .sizeComments{
+        gap: 10px;
+        @include flex-aic;
+        font-size: 14px;
+        cursor: pointer;
+        .icon, .count{
+          color: rgb(150, 150, 150);
+        }
+      }
+      .sizeLikes{
+        &:hover .icon{
+          color: $yellow;
+        }
+        .icon.fas{
+          color: $yellow;
+        }
+      }
+      .sizeComments:hover{
+        .icon, .count{
+          color: $skyblue;
+        }
+      }
+    }
+  }
+  .options{
+    top: 3px;
+    right: 3px;
+    position: absolute;
+    >.fas{
+      padding: 8px;
+      color: gray;
+      font-size: 30px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: all .15s ease-in;
+      &:hover{
+        background: rgba(128, 128, 128, 0.2);
+      }
+    }
+    .menu{
+      top: 3px;
+      right: 3px;
+      display: none;
+      color: $white;
+      font-size: 14px;
+      position: absolute;
+      width: max-content;
+      background: #141414;
+      &.view{
+        display: flex;
+        flex-direction: column;
+        .item{
+          gap: 8px;
+          padding: 8px;
+          @include flex-aic;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
