@@ -2,13 +2,13 @@ import React from 'react';
 import styles from './NavSearch.module.scss';
 import { BsBellFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router';
-import useUser from '../../Hooks/useUser';
 import { useSelector } from 'react-redux';
 import { IUser } from '../../../../src/models/User';
 import { IState } from '../../redux/reducer';
+import useUser from '../../Hooks/useUser';
 const NavSearch = () => {
   const navigate = useNavigate();
-  const user = useSelector((state: IState) => state.user);
+  const user = useUser();
   return (
     <nav className={styles.nav}>
       <div className={styles.nav_wrap}>
@@ -34,11 +34,15 @@ const NavSearch = () => {
               navigate('/profile/' + user?.username);
             }}
           >
-            <img src={user.avatar} alt="" />
+            <img src={user?.avatar} alt="" />
             <div className={styles.nav_profile_info}>
-              <h3>{user?.name}</h3>
+              <h3>
+                <strong>{user?.name}</strong>
+              </h3>
 
-              <p>Student - {user?.cohorte || 'FT-20B'}</p>
+              <p>
+                Student - <strong>{user?.cohorte || 'FT-20B'}</strong>
+              </p>
             </div>
           </div>
         </div>

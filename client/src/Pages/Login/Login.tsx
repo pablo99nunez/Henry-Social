@@ -3,6 +3,9 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { auth } from '../../../../src/services/firebase/firebase';
 import { signUpWithEmail, signUpWithGmail, signUpWithGitHub } from '../../../../src/services/firebase/login-methods';
 import { IUser } from '../../../../src/models/User';
+import { useSelector } from 'react-redux';
+import useUser from '../../Hooks/useUser';
+import useisLogged from '../../Hooks/useisLogged';
 
 export default function Login() {
   const [input, setInput] = useState<IUser>({
@@ -15,11 +18,10 @@ export default function Login() {
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const isLogged = useisLogged();
 
   useEffect(() => {
-    if (!!auth.currentUser) {
-      navigate('/');
-    } else console.log();
+    if (isLogged) navigate('/');
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
