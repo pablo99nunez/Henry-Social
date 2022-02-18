@@ -1,4 +1,4 @@
 export interface Follows {
-    userName: string,
-    photo: string
+    name: string,
+    avatar: string
 }

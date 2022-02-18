@@ -35,7 +35,8 @@
 }
 .details {
 	display: grid;
-	grid-template-columns: 1.5fr 2fr 1fr;
+	grid-template-columns: 1.5fr 1.5fr 1fr;
+	grid-template-rows: 1fr 1fr 2fr;
 	grid-gap: 5px 5px;
 }
 .follows {
@@ -47,7 +48,9 @@
 }
 .userInfo {
 	margin-top: 120px;
-	margin-left: 160px;
+	margin-left: 120px;
+	height: fit-content;
+	width: fit-content;
 }
 .buttons {
 	display: flex;
@@ -56,26 +59,46 @@
 	margin-top: 20px;
 	margin-right: 20px;
 	button {
+		display: flex;
+		align-items: center;
 		color: rgba(255, 255, 1, 1);
 		background-color: black;
 		border-radius: 8px;
 		border: 1px rgba(255, 255, 1, 1) solid;
-		font-size: 20px;
+		font-size: 17px;
+		height: 50px;
+		padding: 0px 5px 0px 5px;
+	}
+	button:hover{
+		background-color: gray;
+		color: white;
+	}
+	button:checked{
+		background-color:  rgba(255, 255, 1, 1);
+		color: black;
 	}
 }
+
+.coffee{
+	max-width: 25px;
+	max-height: 40px;
+}
+
 .social-logos {
+	position: absolute;
 	display: flex;
-	margin-left: 280%;
-	margin-top: -50px;
+	margin-left: 65%;
+	margin-top: 300px;
 }
 .linkedin-logo {
-	max-width: 30px;
+	max-width: 50px;
 	max-height: 30px;
 }
 .github-logo {
 	max-width: 30px;
 	max-height: 30px;
 }
+
 .body-profile {
 	display: grid;
 	grid-template-columns: 1fr 2.5fr 1fr;
@@ -95,8 +118,6 @@
 	}
 }
 .central-profile {
-	background: white;
-	opacity: 0.5;
 	width: 750px;
 	height: 600px;
 }

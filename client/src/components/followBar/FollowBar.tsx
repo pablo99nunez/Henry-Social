@@ -5,9 +5,9 @@ import './followBar.scss'
 
 export default function FollowBar() {
     let nuevo: Follows[] = [
-        {userName: 'Alguien', photo:'https://avatars.githubusercontent.com/u/9113740?v=4'}, 
-        {userName:'Alejandro', photo:'https://avatars.githubusercontent.com/u/78025342?v=4'},
-        {userName: 'Rei', photo:'https://avatars.githubusercontent.com/u/68031974?v=4'}
+        {name: 'Alguien', avatar:'https://avatars.githubusercontent.com/u/9113740?v=4'}, 
+        {name:'Alejandro', avatar:'https://avatars.githubusercontent.com/u/78025342?v=4'},
+        {name: 'Rei', avatar:'https://avatars.githubusercontent.com/u/68031974?v=4'}
     ]
     interface Estilos {
         background: string
@@ -28,8 +28,8 @@ export default function FollowBar() {
         {
             nuevo && nuevo.map(x => 
                 <div className='user'>
-                <p>{x.userName}</p>
-                <div className='image' style={prueba=estilado(x.photo)}>
+                <p>{x.name}</p>
+                <div className='image' style={prueba=estilado(x.avatar)}>
                 </div>
                 </div>
                 )

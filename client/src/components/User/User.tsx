@@ -3,11 +3,16 @@ import {useParams, Link } from 'react-router-dom';
 import { useDispatch , useSelector } from 'react-redux';
 import { Example } from './example';
 import FollowBar from '../followBar/FollowBar';
+import Chat from '../Chat/Chat';
+import Post from '../Post/Post';
 import './User.scss';
 import linkedin from '../../img/linkedin.png'
 import github from '../../img/github.png'
+import coffee from '../../img/coffee-cup.png'
 
 export default function User() {
+    const [profile, setProfile] = useState(false);
+    const [follow, setFollow] = useState('')
     var { id } = useParams();
     var dispatch = useDispatch();
     let usuario: Example = {
@@ -18,7 +23,11 @@ export default function User() {
         numFollowers: 30,
         linkedin:'miguelcoronel93',
         github: 'miketr32',
-        owner: true,
+        owner: false,
+    }
+
+    const editProfile = () => {
+        return setProfile(true);
     }
     interface Estilos {
         background: string
@@ -52,11 +61,13 @@ export default function User() {
                         <p>{usuario.userdata}</p>
                     </div>
                     <div className='buttons'>
-                        <button>{'coffee'}</button>
                         { 
                         usuario.owner ? (
-                        <button>{'edit-profile'}</button>): (
+                        <button onClick={editProfile}>{'edit-profile'}</button>): (
+                            <div className='buttons'>
+                        <button>Invitame un cafe<img src={coffee} alt='coffee-logo' className='coffee'/></button>
                         <button>{'follow'}</button>
+                        </div>
                         )
                         }
                     </div>
@@ -94,17 +105,13 @@ export default function User() {
                 <a>Ver mas</a>
             </div>
             <div className='central-profile'> 
-                {/*Aca irian los posteos realizados por el usuario:
-                    Creo que podrian recibirse de dos formas:
-                    1- Un componente ya renderizado
-                    2- Renderizar cada uno de los datos recibidos ===> Arreglo de objetos
-                */} 
+                    <Post />
             </div>
             <div className='mistery-box'>
                 {'Misterious NavBar'}
             </div>
             </div>
-            {/*Aca iria el chat */}
+            <Chat />
         </div>
     )
 }
