@@ -5,13 +5,14 @@ export interface IUser {
   name: string;
   email: string;
   username?: string;
-  avatar?: string | File | null;
+  avatar?: string | null;
   cohorte?: string;
   password?: string;
   linkedin?: string;
   github?: string;
   createdAt?: object;
-  contactos:any
+  following: IUser[]
+  followers: IUser[]
 }
 
 const userSchema = new Schema<IUser>({
@@ -37,10 +38,7 @@ const userSchema = new Schema<IUser>({
   createdAt: {
     type: Date,
     default: new Date().toDateString(),
-  },
-  contactos: [{ type: Schema.Types.ObjectId, ref: 'contactos'}]
+  }
 });
-
-
 
 export default model<IUser>('User', userSchema);

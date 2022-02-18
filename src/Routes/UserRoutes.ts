@@ -1,9 +1,7 @@
 import { Router } from 'express';
 const axios = require("axios");
 import User from '../models/User';
-
 const router = Router();
-
 router.post('/user', (req, res) => {
   console.log(req.body);
   const { name, username, email, avatar, createAt } = req.body;
@@ -31,7 +29,6 @@ router.post('/findUser', (req, res) => {
       res.status(400).send(e);
     });
 });
-
 
 async function isFollowing(userA:string,userB:string){
   const isFollowing=await User.findOne({
@@ -61,7 +58,7 @@ router.post('/follow',async (req,res)=> {
 router.post("/unfollow",async (req,res)=>{ 
   const {seguido,seguidor}= req.body;
   try {
-    const unfollow = User.updateMany({},
+    const unfollow = await User.updateMany({},
     {
       $pull:{
           followers: {
@@ -74,5 +71,4 @@ router.post("/unfollow",async (req,res)=>{
     res.status(400).json({error:error})
   }
 })
-
 export default router;
