@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import User from '../models/User';
 
 const router = Router();
@@ -25,4 +26,15 @@ router.post('/findUser', (req, res) => {
     });
 });
 
+router.post('/follow/:username',async (req,res)=> {
+  const { username } = req.params;
+  try {
+      const user = await User.find({
+          username
+      })
+      res.status(201).json(user);
+  } catch (error) {
+      res.status(400).json({error:error})
+  }
+})
 export default router;
