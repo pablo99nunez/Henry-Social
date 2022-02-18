@@ -5,7 +5,7 @@ export interface IUser {
   name: string;
   email: string;
   username?: string;
-  avatar?: string;
+  avatar?: string | File | null;
   cohorte?: string;
   password?: string;
   following?: number;

@@ -62,9 +62,10 @@ export default function Login() {
   };
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const property = e.target.name;
-    console.log(e);
     if (property === null) throw new Error();
-    else {
+    if (property === 'avatar' && e.target.files) {
+      setInput({ ...input, [property]: e.target.files[0] });
+    } else {
       setInput({ ...input, [property]: e.target.value });
     }
   }
@@ -76,7 +77,7 @@ export default function Login() {
         <input type="password" name="password" onChange={handleInputChange} />
         <input type="text" name="username" onChange={handleInputChange} />
         <input type="text" name="name" onChange={handleInputChange} />
-        <input type="text" name="avatar" onChange={handleInputChange} />
+        <input type="file" name="avatar" onChange={handleInputChange} />
 
         <button disabled={loading} type="submit">
           {' '}
