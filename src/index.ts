@@ -3,8 +3,9 @@ import express from 'express';
 const cors = require('cors');
 const morgan = require('morgan');
 import 'dotenv/config.js';
-import userRouter from './Routes/UserRoutes';
-import postRouter from './Routes/PostRoutes'
+import userRouter from './routes/UserRoutes';
+import postRouter from './routes/PostRoutes';
+
 const app = express();
 app.use(cors());
 

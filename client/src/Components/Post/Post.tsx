@@ -3,6 +3,15 @@ import style from './Post.module.scss';
 import { BsThreeDots, BsHeartFill, BsChatSquareDots, BsShareFill } from 'react-icons/bs';
 import Like from '../Like/Like';
 const Post = () => {
+   const [showModal, setShowModal] = useState(false);
+   const handleClick = (e: any)=>{
+      if(showModal){
+         setShowModal(false)
+      } else {
+         setShowModal(true);
+      }
+      console.log(showModal);
+   }
   return (
     <div className={style.post}>
       <div className={style.post_profile_img}>
@@ -35,8 +44,11 @@ const Post = () => {
             </div>
           </div>
           <div className={style.post_icon}>
-            <BsShareFill />
+            <BsShareFill onClick={(e)=>handleClick(e)} />
           </div>
+          {
+               showModal && <ModalAddPost />
+            }
         </div>
       </div>
     </div>
@@ -44,3 +56,8 @@ const Post = () => {
 };
 
 export default Post;
+
+            
+            
+
+   

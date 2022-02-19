@@ -1,4 +1,4 @@
-import 'dotenv/config.js'
+require("dotenv").config();
 const mongoose = require('mongoose')
 
 function main() {
