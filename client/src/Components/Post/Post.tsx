@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import style from "./Post.module.scss";
 import {
   BsThreeDots,
@@ -52,7 +52,10 @@ const Post = () => {
               <span>70</span>
             </div>
         </div>
-    );
-};
+        </div>
+        </div>
+        </div>
+);
 
+  }
 export default Post;
