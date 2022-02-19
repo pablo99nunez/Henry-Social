@@ -8,25 +8,27 @@ import { auth } from "../../../../src/services/firebase/firebase";
 import { useNavigate } from "react-router";
 
 import style from "./Home.module.scss";
+import useUser from "../../Hooks/useUser";
 
 const Home = () => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!auth.currentUser) {
-      navigate("/login");
-    }
-  });
-  return (
-    <div className={style.home}>
-      <NavSearch />
-      <div className={style.home_position}>
-        <SideTags />
-        <Posts />
-        <SideMessages />
-      </div>
-      <Chat />
-    </div>
-  );
+    const navigate = useNavigate();
+    const user = useUser();
+    useEffect(() => {
+        if (!user?.username) {
+            navigate("/login");
+        }
+    });
+    return (
+        <div className={style.home}>
+            <NavSearch />
+            <div className={style.home_position}>
+                <SideTags />
+                <Posts />
+                <SideMessages />
+            </div>
+            <Chat />
+        </div>
+    );
 };
 
 export default Home;

@@ -1,149 +1,127 @@
 @import "../../Styles/variables.scss";
 
 .settings_wrap {
-  display: grid;
-  place-content: center;
-  width: 100vw;
-  height: 100vh;
-  background-color: #00000011;
-  backdrop-filter: blur(3px);
-  position: fixed;
-  z-index: 30000;
-  top: 0;
-  left: 0;
-  .central_settings {
-    background-color: rgba(255, 255, 1, 1);
-    top: 10vh;
     z-index: 2000;
-    width: 80vw;
     padding: 2rem;
     border-radius: 8px;
     display: flex;
-    flex-direction: column;
     gap: 1rem;
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 20px;
-      h1 {
-        font-weight: bold;
-      }
-      img {
+
+    img {
         border-radius: 50%;
         object-fit: cover;
-      }
+        width: 100px;
     }
+
     .inputBox {
-      display: flex;
-      flex-direction: column;
-      h3 {
-        font-weight: bold;
-      }
+        display: flex;
+        flex-direction: column;
+        h3 {
+            font-weight: bold;
+        }
     }
 
     .buttons {
-      display: flex;
-      gap: 1rem;
+        display: flex;
+        gap: 1rem;
     }
     .settings_photo {
-      background-color: white;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
+        background-color: white;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
     }
 
     .name {
-      margin-left: 160px;
-      margin-top: 40px;
-      font-weight: bold;
+        margin-left: 160px;
+        margin-top: 40px;
+        font-weight: bold;
     }
 
     .hr {
-      width: 750px;
-      margin-bottom: 25px;
+        width: 750px;
+        margin-bottom: 25px;
     }
 
     .body_settings {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      width: 750px;
-      margin-left: 160px;
-      align-items: flex-start;
-      height: 180px;
-      margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 750px;
+        margin-left: 160px;
+        align-items: flex-start;
+        height: 180px;
+        margin-bottom: 20px;
     }
 
     .text_area {
-      width: 750px;
-      height: 120px;
-      border-radius: 10px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 18px;
+        width: 750px;
+        height: 120px;
+        border-radius: 10px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 18px;
     }
 
     .option_buttons {
-      display: flex;
-      justify-content: space-around;
-      width: 270px;
-      button {
-        background-color: rgb(255, 255, 1);
-        border-radius: 5px;
-        border: black 1.5px solid;
-        font-weight: bold;
-        padding: 5px 7px 5px 7px;
-      }
-      button:hover {
-        background-color: rgba(248, 248, 109, 0.897);
-      }
+        display: flex;
+        justify-content: space-around;
+        width: 270px;
+        button {
+            background-color: rgb(255, 255, 1);
+            border-radius: 5px;
+            border: black 1.5px solid;
+            font-weight: bold;
+            padding: 5px 7px 5px 7px;
+        }
+        button:hover {
+            background-color: rgba(248, 248, 109, 0.897);
+        }
     }
 
     .footer_settings {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-evenly;
-      height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        height: 200px;
     }
 
     .input {
-      width: 750px;
-      height: 40px;
-      background-color: rgba(255, 255, 1, 1);
-      border: rgba(255, 255, 1, 1) 1px solid;
-      border-bottom: black 1px solid;
-      font-size: 16px;
+        width: 750px;
+        height: 40px;
+        background-color: rgba(255, 255, 1, 1);
+        border: rgba(255, 255, 1, 1) 1px solid;
+        border-bottom: black 1px solid;
+        font-size: 16px;
     }
 
     .input:focus {
-      outline: rgba(255, 255, 1, 1);
+        outline: rgba(255, 255, 1, 1);
     }
 
     .footer_buttons {
-      width: 300px;
-      height: 35px;
-      display: flex;
-      justify-content: space-around;
-      margin-left: 160px;
-      margin-top: 20px;
+        width: 300px;
+        height: 35px;
+        display: flex;
+        justify-content: space-around;
+        margin-left: 160px;
+        margin-top: 20px;
     }
 
     .submit_button {
-      border-radius: 10px;
-      background-color: black;
-      color: white;
-      font-weight: bold;
-      border: black 1px solid;
-      padding: 0px 15px 0px 15px;
+        border-radius: 10px;
+        background-color: black;
+        color: white;
+        font-weight: bold;
+        border: black 1px solid;
+        padding: 0px 15px 0px 15px;
     }
 
     .cancel_button {
-      border-radius: 5px;
-      border: rgba(255, 255, 1, 1) 1px solid;
-      background-color: rgba(255, 255, 1, 1);
-      font-weight: bold;
-      text-decoration: underline;
+        border-radius: 5px;
+        border: rgba(255, 255, 1, 1) 1px solid;
+        background-color: rgba(255, 255, 1, 1);
+        font-weight: bold;
+        text-decoration: underline;
     }
-  }
 }

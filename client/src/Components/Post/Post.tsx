@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import style from "./Post.module.scss";
 import {
   BsThreeDots,
@@ -51,22 +51,11 @@ const Post = () => {
               <BsChatSquareDots />
               <span>70</span>
             </div>
-          </div>
-          <div className={style.post_icon}>
-            <BsShareFill onClick={(e)=>handleClick(e)} />
-          </div>
-          {
-               showModal && <ModalAddPost />
-            }
         </div>
-      </div>
-    </div>
-  );
-};
+        </div>
+        </div>
+        </div>
+);
 
+  }
 export default Post;
-
-            
-            
-
-   
