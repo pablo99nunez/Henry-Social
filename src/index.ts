@@ -1,10 +1,12 @@
 import express from "express";
 // const bodyParser = require('body-parser');
-const cors = require("cors");
-const morgan = require("morgan");
-import "dotenv/config.js";
-import userRouter from "./Routes/UserRoutes";
-import postRouter from "./Routes/PostRoutes";
+
+const cors = require('cors');
+const morgan = require('morgan');
+import 'dotenv/config.js';
+import userRouter from './routes/UserRoutes';
+import postRouter from './routes/PostRoutes';
+
 const app = express();
 app.use(cors());
 
