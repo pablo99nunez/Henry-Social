@@ -28,8 +28,14 @@ const postSchema = new Schema({
     require: true,
   },
   postTime: { type: Date, default: Date.now },
-  nLikes: Number,
-  numComments: Number,
+  nLikes: {
+    type:Number,
+    default:0
+  },
+  numComments: {
+    type:Number,
+    default:0
+  },
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -61,6 +67,6 @@ const likeSchema = new Schema({
   },
 });
 
-export const Post = model<Post>("Post", postSchema);
+export default model<Post>("Post", postSchema);
 export const Comments = model<Comments>("Comments", commentSchema);
 export const Likes = model<Likes>("Likes", likeSchema);
