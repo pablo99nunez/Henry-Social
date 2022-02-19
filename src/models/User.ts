@@ -1,5 +1,5 @@
-import { Schema, model, ObjectId } from 'mongoose';
-import '../db.ts';
+import { Schema, model, ObjectId } from "mongoose";
+import "../db.ts";
 
 export interface IUser {
   name: string;
@@ -11,8 +11,8 @@ export interface IUser {
   linkedin?: string;
   github?: string;
   createdAt?: object;
-  following: IUser[]
-  followers: IUser[]
+  following: IUser[];
+  followers: IUser[];
 }
 
 const userSchema = new Schema<IUser>({
@@ -32,13 +32,23 @@ const userSchema = new Schema<IUser>({
     unique: true,
   },
   avatar: String,
+  followers: {
+    type: [],
+    ref: "User",
+    default: [],
+  },
+  following: {
+    type: [],
+    ref: "User",
+    default: [],
+  },
   cohorte: String,
   github: String,
   linkedin: String,
   createdAt: {
     type: Date,
     default: new Date().toDateString(),
-  }
+  },
 });
 
-export default model<IUser>('User', userSchema);
+export default model<IUser>("User", userSchema);
