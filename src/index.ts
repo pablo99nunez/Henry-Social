@@ -3,7 +3,8 @@ import express from 'express';
 const cors = require('cors');
 const morgan = require('morgan');
 import 'dotenv/config.js';
-import router from './Routes/UserRoutes';
+import router from './routes/UserRoutes';
+import PostRouter from './routes/PostRoutes';
 
 const app = express();
 app.use(cors());
@@ -23,7 +24,17 @@ app.get('/', (req, res) => {
   res.render(__dirname + '/public/index.html');
 });
 
+app.use(
+   cors({
+     origin: "*",
+     credentials: true,
+     methods: ["GET", "POST"],
+     allowedHeaders: ["Content-Type", "Authorization"],
+   })
+ );
+
 app.use('/', router);
+app.use('/', PostRouter);
 
 app.listen(process.env.PORT, () => {
   console.log('Server listening at ' + process.env.PORT);
