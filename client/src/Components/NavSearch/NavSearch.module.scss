@@ -4,6 +4,8 @@
   display: flex;
   justify-content: center;
   width: 100vw;
+  z-index: 3000;
+  position: sticky;
   .nav_wrap {
     justify-content: space-between;
     place-items: center;

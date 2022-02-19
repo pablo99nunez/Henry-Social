@@ -1,25 +1,28 @@
-import { auth, storage } from './firebase';
+import { auth, storage } from "./firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
   GithubAuthProvider,
   signInWithEmailAndPassword,
-} from 'firebase/auth';
-import modelUser, { IUser } from '../../models/User';
-import axios from 'axios';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+} from "firebase/auth";
+import modelUser, { IUser } from "../../models/User";
+import axios from "axios";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-const url = 'http://localhost:3001';
+const url = "https://henry-social-back.herokuapp.com";
 
 async function defaultUsername(name: string | null): Promise<string> {
-  name = name ?? 'username';
-  let refactor = name.toLowerCase().split(' ').join('-');
+  name = name ?? "username";
+  let refactor = name.toLowerCase().split(" ").join("-");
   let foundUserWithTheSameUsername = await axios
-    .post('http://localhost:3001/findUser', { username: refactor })
+    .post("https://henry-social-back.herokuapp.com/findUser", {
+      username: refactor,
+    })
     .then((e) => e.data);
   console.log(foundUserWithTheSameUsername);
-  if (!!foundUserWithTheSameUsername) return defaultUsername(name + Math.floor(Math.random() * 10));
+  if (!!foundUserWithTheSameUsername)
+    return defaultUsername(name + Math.floor(Math.random() * 10));
   else return refactor;
 }
 export const signInWithEmail = (email: string, password: string) => {
@@ -27,23 +30,24 @@ export const signInWithEmail = (email: string, password: string) => {
 };
 export async function signUpWithEmail(userInfo: IUser) {
   let { name, username, email, avatar, password } = userInfo;
-  if (password == undefined) throw new Error('Necesitas ingresar una contraseña');
+  if (password == undefined)
+    throw new Error("Necesitas ingresar una contraseña");
   try {
     let downloadURL;
     if (avatar instanceof File) {
-      let storageRef = ref(storage, 'avatars/' + avatar.name);
+      let storageRef = ref(storage, "avatars/" + avatar.name);
       downloadURL = await uploadBytes(storageRef, avatar).then((snapshot) => {
-        console.log('Snapshot', snapshot);
+        console.log("Snapshot", snapshot);
         return getDownloadURL(snapshot.ref).then((downloadURL) => {
           return downloadURL;
         });
       });
     }
-    console.log('avatar2', avatar);
-    await fetch(url + '/user', {
-      method: 'POST',
+    console.log("avatar2", avatar);
+    await fetch(url + "/user", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         name,
@@ -53,13 +57,14 @@ export async function signUpWithEmail(userInfo: IUser) {
       }),
     })
       .then(() => {
-        if (password) return createUserWithEmailAndPassword(auth, email, password);
+        if (password)
+          return createUserWithEmailAndPassword(auth, email, password);
       })
       .catch((e) => {
         throw new Error(e);
       });
   } catch (e) {
-    throw new Error('ERROR ' + e);
+    throw new Error("ERROR " + e);
   }
 }
 export function signUpWithGmail() {
@@ -70,10 +75,10 @@ export function signUpWithGmail() {
       let username = await defaultUsername(displayName);
 
       try {
-        await fetch(url + '/user', {
-          method: 'POST',
+        await fetch(url + "/user", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             name: displayName,
@@ -83,12 +88,12 @@ export function signUpWithGmail() {
           }),
         });
       } catch (e) {
-        throw new Error('ERROR' + e);
+        throw new Error("ERROR" + e);
       }
       return result.user;
     })
     .catch((e) => {
-      console.error('Ha ocurrido un error', e);
+      console.error("Ha ocurrido un error", e);
     });
 }
 export function signUpWithGitHub() {
@@ -98,10 +103,10 @@ export function signUpWithGitHub() {
       const { email, displayName, photoURL } = result.user;
       let username = await defaultUsername(displayName);
       try {
-        await fetch(url + '/user', {
-          method: 'POST',
+        await fetch(url + "/user", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             name: displayName,
@@ -111,11 +116,11 @@ export function signUpWithGitHub() {
           }),
         });
       } catch (e) {
-        throw new Error('ERROR' + e);
+        throw new Error("ERROR" + e);
       }
       return result.user;
     })
     .catch((e) => {
-      throw new Error('Algo salio mal' + e);
+      throw new Error("Algo salio mal" + e);
     });
 }
