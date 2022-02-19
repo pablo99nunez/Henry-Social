@@ -32,6 +32,7 @@ export const closeSession = () => {
 export const signInWithEmail = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
 };
+
 export async function signUpWithEmail(userInfo: IUser) {
     let { name, username, email, avatar, password } = userInfo;
     if (password == undefined)
@@ -77,6 +78,7 @@ export async function signUpWithEmail(userInfo: IUser) {
         throw new Error("ERROR " + e);
     }
 }
+
 export function signUpWithGmail() {
     const provider = new GoogleAuthProvider();
     return signInWithPopup(auth, provider)
@@ -106,6 +108,7 @@ export function signUpWithGmail() {
             console.error("Ha ocurrido un error", e);
         });
 }
+
 export function signUpWithGitHub() {
     const provider = new GithubAuthProvider();
     return signInWithPopup(auth, provider)

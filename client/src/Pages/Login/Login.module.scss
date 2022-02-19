@@ -19,7 +19,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    
+
     #title_cont {
       width: 100%;
       display: flex;
@@ -39,23 +39,23 @@
       }
     }
 
-      .act_btn {
-        position: absolute;
-        top: 40%;
-        right: 25px;
-        font-size: 1rem;
-        background-color: $yellow;
-        color: $bg-color;
-        border: none;
-        border-radius: 5px;
-        width: max-content;
-        height: max-content;
-        padding: 8px;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        -ms-border-radius: 5px;
-        -o-border-radius: 5px;  
-      }
+    .act_btn {
+      position: absolute;
+      top: 40%;
+      right: 25px;
+      font-size: 1rem;
+      background-color: $yellow;
+      color: $bg-color;
+      border: none;
+      border-radius: 5px;
+      width: max-content;
+      height: max-content;
+      padding: 8px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+      -o-border-radius: 5px;
+    }
   }
 
   #form_cont {
@@ -130,7 +130,6 @@
         -o-border-radius: 10px;
       }
     }
-    
   }
 }
 
@@ -155,7 +154,7 @@
         -o-transform: scale(1.11);
       }
     }
-    
+
     header {
       height: 5rem;
       display: flex;
@@ -172,9 +171,9 @@
       .act_btn {
         width: 7rem;
         position: static;
-        background-color:$bg-color;
-        color:$yellow;
-        border: .5px solid $yellow;
+        background-color: $bg-color;
+        color: $yellow;
+        border: 0.5px solid $yellow;
         transition: 300ms ease-out;
         transition-property: backgroud-color color;
         -webkit-transition: 300ms ease-out;
@@ -183,10 +182,9 @@
         -o-transition: 300ms ease-out;
 
         &:hover {
-          background-color:$yellow;
-          color:$bg-color;
+          background-color: $yellow;
+          color: $bg-color;
         }
-        
       }
     }
 
@@ -224,16 +222,13 @@
           -moz-transition: 300ms ease-in;
           -ms-transition: 300ms ease-in;
           -o-transition: 300ms ease-in;
-          
+
           &:hover {
             color: $yellow;
             background-color: $bg-secondary-color;
           }
         }
       }
-
     }
-
-  }   
+  }
 }
-

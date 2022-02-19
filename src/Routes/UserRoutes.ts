@@ -2,6 +2,7 @@ import { Router } from "express";
 const axios = require("axios");
 import User from "../models/User";
 const router = Router();
+
 router.post("/user", (req, res) => {
     User.create(req.body)
         .then((result) => {
@@ -9,6 +10,7 @@ router.post("/user", (req, res) => {
         })
         .catch((e) => res.status(400).json({ error: e }));
 });
+
 router.get("/users", async (req, res) => {
     try {
         let users = await User.find({});
@@ -17,6 +19,7 @@ router.get("/users", async (req, res) => {
         res.status(401).json({ error: e });
     }
 });
+
 router.post("/findUser", (req, res) => {
     const query = req.body;
     User.findOne(query)
@@ -144,6 +147,7 @@ router.post("/unfollow", async (req, res) => {
         res.status(400).json({ error: error });
     }
 });
+
 router.get("/PELIGRO", async (req, res) => {
     await User.deleteMany({});
 

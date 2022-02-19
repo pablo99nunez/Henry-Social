@@ -1,10 +1,7 @@
-import React from "react";
 import styles from "./NavSearch.module.scss";
 import { BsBellFill } from "react-icons/bs";
 import { useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { IUser } from "../../../../src/models/User";
-import { IState } from "../../redux/reducer";
+import { useDispatch } from "react-redux";
 import useUser from "../../Hooks/useUser";
 import { closeSession } from "../../../../src/services/firebase/login-methods";
 import Button from "../Button/Button";
