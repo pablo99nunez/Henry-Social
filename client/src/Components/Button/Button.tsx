@@ -1,6 +1,6 @@
+import React from 'react';
 import style from './Button.module.scss';
 import { motion } from 'framer-motion';
-import React from 'react';
 
 export default function Button({ children, onClick, active }: any) {
   const variants = {

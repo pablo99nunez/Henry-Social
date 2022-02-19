@@ -103,7 +103,7 @@ export default function Login(): JSX.Element {
             <>
               <input type="text" name="name" onChange={handleInputChange} placeholder="Nombre"/>
               <input type="text" name="username" onChange={handleInputChange} placeholder="Username"/>
-              <input type="text" name="avatar" onChange={handleInputChange} placeholder="Avatar"/>
+              <input type="file" name="avatar" onChange={handleInputChange} placeholder="Avatar"/>
             </>
             : <></>
           }
