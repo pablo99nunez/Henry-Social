@@ -1,12 +1,11 @@
-import './PostDetail.scss'
+import "./PostDetail.scss";
 // import { useEffect } from 'react';
 // import { useParams } from 'react-router-dom';
 // import { getPostDetail } from '../../redux/actions'
-import Comments from '../../Components/Comments/Comments';
+import Comments from "../../Components/Comments/Comments";
 // import { useDispatch , useSelector } from 'react-redux';
 
 export default function PostDetail() {
-
   // const { id } = useParams()
   // const dispatch = useDispatch()
   // const details = useSelector(state => state.postDetail)
@@ -16,10 +15,10 @@ export default function PostDetail() {
   // }, [])
 
   return (
-    <div id='postDetail'>
+    <div id="postDetail">
       {/* El navbar, follow-bar, post, messages serán reemplazados por sus debidos componentes*/}
-      
-      <nav id='navbar'></nav>
+
+      <nav id="navbar"></nav>
 
       <div id="content">
         <div id="follow-bar"></div>
@@ -35,8 +34,8 @@ export default function PostDetail() {
                 countComments={details.countComments}
               /> 
           */}
-          <Comments 
-            // comments={details.comments}
+          <Comments
+          // comments={details.comments}
           />
         </div>
 
@@ -44,7 +43,7 @@ export default function PostDetail() {
         {/* <Messages/> */}
       </div>
     </div>
-  )
+  );
 }
 
 /* 

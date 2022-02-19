@@ -1,12 +1,21 @@
-import react from 'react';
-import { Follows } from './followExample';
-import './followBar.scss';
+import react from "react";
+import { Follows } from "./followExample";
+import "./followBar.scss";
 
 export default function FollowBar() {
   let seguidos: Follows[] = [
-    { name: 'Alguien', avatar: 'https://avatars.githubusercontent.com/u/9113740?v=4' },
-    { name: 'Alejandro', avatar: 'https://avatars.githubusercontent.com/u/78025342?v=4' },
-    { name: 'Rei', avatar: 'https://avatars.githubusercontent.com/u/68031974?v=4' },
+    {
+      name: "Alguien",
+      avatar: "https://avatars.githubusercontent.com/u/9113740?v=4",
+    },
+    {
+      name: "Alejandro",
+      avatar: "https://avatars.githubusercontent.com/u/78025342?v=4",
+    },
+    {
+      name: "Rei",
+      avatar: "https://avatars.githubusercontent.com/u/68031974?v=4",
+    },
   ];
 
   return (

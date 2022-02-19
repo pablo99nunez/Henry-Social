@@ -1,10 +1,10 @@
-import axios, { AxiosResponse } from 'axios';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { IUser } from '../../../src/models/User';
-import { auth } from '../../../src/services/firebase/firebase';
-import { getUser } from '../redux/actions/actions';
+import axios, { AxiosResponse } from "axios";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { IUser } from "../../../src/models/User";
+import { auth } from "../../../src/services/firebase/firebase";
+import { getUser } from "../redux/actions/actions";
 
 export default function useLogin() {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ export default function useLogin() {
       if (user && user.email) {
         dispatch(getUser(user.email));
       } else {
-        navigate('/login');
+        navigate("/login");
       }
     });
   }, []);

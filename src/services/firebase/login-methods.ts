@@ -25,15 +25,18 @@ async function defaultUsername(name: string | null): Promise<string> {
     return defaultUsername(name + Math.floor(Math.random() * 10));
   else return refactor;
 }
+
 export const signInWithEmail = (email: string, password: string) => {
   return signInWithEmailAndPassword(auth, email, password);
 };
+
 export async function signUpWithEmail(userInfo: IUser) {
   let { name, username, email, avatar, password } = userInfo;
   if (password == undefined)
     throw new Error("Necesitas ingresar una contraseña");
   try {
     let downloadURL;
+    // @ts-ignore
     if (avatar instanceof File) {
       let storageRef = ref(storage, "avatars/" + avatar.name);
       downloadURL = await uploadBytes(storageRef, avatar).then((snapshot) => {
@@ -67,6 +70,7 @@ export async function signUpWithEmail(userInfo: IUser) {
     throw new Error("ERROR " + e);
   }
 }
+
 export function signUpWithGmail() {
   const provider = new GoogleAuthProvider();
   return signInWithPopup(auth, provider)
@@ -96,6 +100,7 @@ export function signUpWithGmail() {
       console.error("Ha ocurrido un error", e);
     });
 }
+
 export function signUpWithGitHub() {
   const provider = new GithubAuthProvider();
   return signInWithPopup(auth, provider)

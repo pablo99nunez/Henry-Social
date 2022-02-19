@@ -1,4 +1,4 @@
-@import './variables';
+@import "./variables";
 
 * {
   box-sizing: border-box;
@@ -9,7 +9,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color:$bg-color;
+  background-color: $bg-color;
   font-family: $font;
   box-sizing: border-box;
 }

@@ -1,4 +1,4 @@
-@import '../../Styles/variables.scss';
+@import "../../Styles/variables.scss";
 
 .User {
   background-color: rgba(28, 28, 28, 1);
@@ -10,7 +10,7 @@
   justify-content: center;
   align-items: center;
   .head_profile::after {
-    content: '';
+    content: "";
     background-color: rgba(255, 255, 1, 1);
     height: 100vh;
     width: 100vw;
@@ -55,7 +55,7 @@
           align-self: flex-end;
           justify-content: right;
           gap: 1rem;
-          color:$yellow;
+          color: $yellow;
           width: fit-content;
           flex-wrap: wrap;
           max-width: 100%;
@@ -84,7 +84,8 @@
           align-items: center;
           position: relative;
           img {
-            filter: invert(85%) sepia(100%) saturate(6179%) hue-rotate(342deg) brightness(111%) contrast(103%);
+            filter: invert(85%) sepia(100%) saturate(6179%) hue-rotate(342deg)
+              brightness(111%) contrast(103%);
             width: 3rem;
             height: 3rem;
             cursor: pointer;

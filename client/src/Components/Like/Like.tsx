@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { BsHeart, BsHeartFill } from 'react-icons/bs';
-import { motion } from 'framer-motion';
-import style from './Like.module.scss';
+import React, { useEffect, useRef, useState } from "react";
+import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { motion } from "framer-motion";
+import style from "./Like.module.scss";
 
 export default function Like() {
   let icon = useRef<HTMLDivElement>(null);
@@ -17,7 +17,7 @@ export default function Like() {
     <div className={style.like}>
       <motion.div
         variants={variants}
-        animate={like ? 'liked' : 'disliked'}
+        animate={like ? "liked" : "disliked"}
         transition={{
           duration: 0.3,
         }}
