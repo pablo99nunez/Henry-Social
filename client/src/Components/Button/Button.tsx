@@ -1,10 +1,16 @@
 import React from "react";
-import style from "./Button.module.scss";
+import styles from "./Button.module.scss";
 import { motion } from "framer-motion";
 
-export default function Button({ children, onClick, active }: any) {
+export default function Button({
+    children,
+    onClick,
+    active,
+    style,
+    className,
+}: any) {
     const variants = {
-        active: { backgroundColor: "#000", color: "#ff1" },
+        active: { backgroundColor: "#ff1", color: "#000" },
     };
     return (
         <motion.button
@@ -17,7 +23,8 @@ export default function Button({ children, onClick, active }: any) {
             whileTap={{
                 scale: 1.07,
             }}
-            className={style.button}
+            style={style}
+            className={styles.button}
         >
             {children}
         </motion.button>

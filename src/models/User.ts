@@ -16,8 +16,8 @@ export interface IUser {
     linkedin?: string;
     github?: string;
     createdAt?: object;
-    following?: IUser[];
-    followers?: IUser[];
+    following?: string[];
+    followers?: string[];
     isFollowing?: boolean;
     role?: Roles;
     portfolio?: string;

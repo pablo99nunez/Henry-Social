@@ -3,9 +3,7 @@ const axios = require("axios");
 import User from "../models/User";
 const router = Router();
 router.post("/user", (req, res) => {
-    console.log(req.body);
-    const { name, username, email, avatar, createAt } = req.body;
-    User.create({ name, username, email, avatar, createAt })
+    User.create(req.body)
         .then((result) => {
             res.status(201).json(result);
         })
@@ -43,7 +41,7 @@ router.post("/admin", async (req, res) => {
     }
 });
 
-export async function isFollowing(userA: string, userB: string) {
+async function isFollowing(userA: string, userB: string) {
     try {
         const isFollowing = await User.findOne({
             username: userA,
@@ -51,7 +49,7 @@ export async function isFollowing(userA: string, userB: string) {
         });
         if (isFollowing) return true;
     } catch (e) {
-        throw new Error("Fallo al buscar el usuario: " + userA);
+        return "Fallo al buscar el usuario: " + userA + e;
     }
     return false;
 }
@@ -114,11 +112,11 @@ router.post("/follow", async (req, res) => {
 
                 res.status(200).json({ userSeguidor, userSeguido });
             } catch (e) {
-                res.status(400).json({ error: e });
+                res.status(401).json({ error: e });
             }
         }
     } catch (error) {
-        res.status(400).json({ error: error });
+        res.status(403).json({ error: error });
     }
 });
 
@@ -148,6 +146,7 @@ router.post("/unfollow", async (req, res) => {
 });
 router.get("/PELIGRO", async (req, res) => {
     await User.deleteMany({});
+
     res.json("DB Clean");
 });
 

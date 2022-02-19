@@ -5,14 +5,16 @@ import {
     signUpWithEmail,
     signUpWithGmail,
     signUpWithGitHub,
+    signInWithEmail,
 } from "../../../../src/services/firebase/login-methods";
 import { IUser } from "../../../../src/models/User";
 import style from "./Login.module.scss";
 import useUser from "../../Hooks/useUser";
+import { auth } from "../../../../src/services/firebase/firebase";
 
 enum USER_ACTION {
     register,
-    signUp,
+    signIn,
 }
 
 export default function Login(): JSX.Element {
@@ -26,25 +28,31 @@ export default function Login(): JSX.Element {
         createdAt: {},
     });
     const [loading, setLoading] = useState(false);
-    const [action, setAction] = useState(USER_ACTION.signUp);
+    const [action, setAction] = useState(USER_ACTION.signIn);
     const navigate = useNavigate();
     const user = useUser();
 
     useEffect(() => {
-        if (!!user) navigate("/");
-    }, []);
+        if (user?.username) navigate("/");
+    }, [user]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!!user) {
+        if (user?.username) {
             alert("Ya estas logeado, redirigiendo a Home");
             navigate("/");
         } else {
             try {
                 setLoading(true);
-                await signUpWithEmail(input);
-                alert("Usuario creado con exito");
+
+                if (action == USER_ACTION.register) {
+                    await signUpWithEmail(input);
+                    alert("Usuario creado con exito");
+                } else if (input.password != undefined) {
+                    await signInWithEmail(input.email, input.password);
+                }
+
                 navigate("/");
                 setLoading(false);
             } catch (e) {
@@ -55,7 +63,7 @@ export default function Login(): JSX.Element {
     };
 
     const handleLogin = async (cb: Function) => {
-        if (!!user) {
+        if (user?.username) {
             alert("Ya estas logeado, redirigiendo a Home");
             navigate("/");
         } else {
@@ -81,7 +89,7 @@ export default function Login(): JSX.Element {
     }
 
     const handleActionChange = (e: React.MouseEvent<HTMLButtonElement>) => {
-        const Act = action ? "register" : "signUp";
+        const Act = action ? "register" : "signIn";
         setAction(USER_ACTION[Act]);
     };
 
@@ -98,7 +106,9 @@ export default function Login(): JSX.Element {
                         onClick={handleActionChange}
                     >
                         {" "}
-                        {action ? "Iniciar sesión" : "Registrarse"}{" "}
+                        {action === USER_ACTION.register
+                            ? "Iniciar sesión"
+                            : "Registrarse"}{" "}
                     </button>
                 </header>
                 <div id={style.form_cont}>
@@ -118,7 +128,7 @@ export default function Login(): JSX.Element {
                             placeholder="Contraseña"
                             onChange={handleInputChange}
                         />
-                        {action ? (
+                        {action === USER_ACTION.register ? (
                             <>
                                 <input
                                     type="text"
@@ -144,7 +154,9 @@ export default function Login(): JSX.Element {
                         )}
                         <button disabled={loading} type="submit">
                             {" "}
-                            {action ? "Registrate" : "Inicia sesión"}{" "}
+                            {action === USER_ACTION.register
+                                ? "Registrate"
+                                : "Inicia sesión"}{" "}
                         </button>
                     </form>
                     <div id={style.alt_cont}>

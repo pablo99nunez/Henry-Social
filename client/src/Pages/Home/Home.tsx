@@ -14,7 +14,7 @@ const Home = () => {
     const navigate = useNavigate();
     const user = useUser();
     useEffect(() => {
-        if (!user) {
+        if (!user?.username) {
             navigate("/login");
         }
     });
