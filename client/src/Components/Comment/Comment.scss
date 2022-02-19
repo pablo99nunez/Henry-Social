@@ -1,7 +1,7 @@
 @import "../../Styles/mixins.scss";
 @import "../../Styles/variables.scss";
 
-.comment{
+.comment {
   gap: 15px;
   width: 100%;
   // @include flex-aic;
@@ -9,92 +9,95 @@
   padding: 15px;
   position: relative;
   height: max-content;
-  background-color: black;    
+  background-color: black;
   border-bottom: 1px solid rgba(128, 128, 128, 0.5);
-  &:last-child{
+  &:last-child {
     border-bottom: none;
   }
-  .picture{
-      text-align: center;
-      .photo{
-          width: 50px;
-          height: 50px;
-          object-fit: cover;
-          border-radius: 50%;
-      }
-  }    
-  .info{
+  .picture {
+    text-align: center;
+    .photo {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+  .info {
     gap: 10px;
     display: flex;
     flex-direction: column;
-    .author{
+    .author {
       gap: 10px;
       display: flex;
       font-size: 15px;
       align-items: center;
-      .name{
+      .name {
         font-weight: 500;
         text-decoration: none;
         color: rgb(241, 241, 241);
       }
-      .cohorteDate{
+      .cohorteDate {
         color: rgb(150, 150, 150);
       }
     }
-    .content{
+    .content {
       gap: 10px;
       display: flex;
       flex-direction: column;
       // Lo dejo listo por si debajo de la desc va una imagen
-      .desc{
+      .desc {
         font-size: 14px;
         line-height: 1.5;
         color: rgb(226, 226, 226);
       }
     }
-    .likesComments{
+    .likesComments {
       gap: 40px;
       @include flex-aic;
-      .sizeLikes, .sizeComments{
+      .sizeLikes,
+      .sizeComments {
         gap: 10px;
         @include flex-aic;
         font-size: 14px;
         cursor: pointer;
-        .icon, .count{
+        .icon,
+        .count {
           color: rgb(150, 150, 150);
         }
       }
-      .sizeLikes{
-        &:hover .icon{
+      .sizeLikes {
+        &:hover .icon {
           color: $yellow;
         }
-        .icon.fas{
+        .icon.fas {
           color: $yellow;
         }
       }
-      .sizeComments:hover{
-        .icon, .count{
+      .sizeComments:hover {
+        .icon,
+        .count {
           color: $skyblue;
         }
       }
     }
   }
-  .options{
+  .options {
     top: 3px;
     right: 3px;
     position: absolute;
-    >.fas{
+    > .fas {
       padding: 8px;
       color: gray;
       font-size: 30px;
       cursor: pointer;
       border-radius: 50%;
-      transition: all .15s ease-in;
-      &:hover{
+      transition: all 0.15s ease-in;
+      &:hover {
         background: rgba(128, 128, 128, 0.2);
       }
     }
-    .menu{
+    .menu {
       top: 3px;
       right: 3px;
       display: none;
@@ -103,10 +106,10 @@
       position: absolute;
       width: max-content;
       background: #141414;
-      &.view{
+      &.view {
         display: flex;
         flex-direction: column;
-        .item{
+        .item {
           gap: 8px;
           padding: 8px;
           @include flex-aic;

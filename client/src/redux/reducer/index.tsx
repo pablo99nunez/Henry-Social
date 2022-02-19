@@ -1,5 +1,5 @@
-import { IUser } from '../../../../src/models/User';
-import { GET_USER, IAction } from '../actions/actions';
+import { IUser } from "../../../../src/models/User";
+import { GET_USER, IAction } from "../actions/actions";
 
 export interface IState {
   user: IUser;
