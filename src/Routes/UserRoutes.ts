@@ -30,5 +30,19 @@ router.post('/findUser', (req, res) => {
       res.status(400).send(e);
     });
 });
+router.post("/admin",async(req,res)=>{
+  const {username}=req.body
+  try{
+
+    let user=await User.findOne({username})
+    if(!!user) {
+      user.admin=!user.admin
+      await user.save()
+      res.json(user)
+    }
+  }catch(e){
+    res.status(400).json({error:e})
+  }
+})
 
 export default router;
