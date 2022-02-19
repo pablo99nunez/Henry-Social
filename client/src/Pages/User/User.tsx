@@ -15,10 +15,12 @@ import Settings from "../../Components/Settings/Settings";
 import useUser from "../../Hooks/useUser";
 import Modal from "../../Components/Modal/Modal";
 import axios from "axios";
+import { isFollowing } from "../../../../src/Routes/UserRoutes";
 
 export default function User() {
     const [edit, setEdit] = useState(false);
     const [isOwner, setisOwner] = useState(false);
+    const [isFollow, setIsFollow] = useState(false);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<IUser>();
     var { username } = useParams();
@@ -55,6 +57,7 @@ export default function User() {
         setUser(user);
         setLoading(false);
     }
+
     useEffect(() => {
         getUser();
         if (username === userLogeado?.username) setisOwner(true);
@@ -109,9 +112,11 @@ export default function User() {
                                             onClick={() => {
                                                 follow();
                                             }}
-                                            active={follow}
+                                            active={user?.isFollowing}
                                         >
-                                            {follow ? "Siguiendo" : "Seguir"}
+                                            {user?.isFollowing
+                                                ? "Siguiendo"
+                                                : "Seguir"}
                                         </Button>
                                     </div>
                                 )}

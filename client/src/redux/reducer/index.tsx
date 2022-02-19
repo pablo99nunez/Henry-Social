@@ -1,21 +1,30 @@
-import { IUser } from '../../../../src/models/User';
-import { GET_USER, IAction } from '../actions/actions';
+import { IUser } from "../../../../src/models/User";
+import { GET_USER, IAction, IS_FOLLOWING } from "../actions/actions";
 
 export interface IState {
-  user: IUser;
+    user: IUser;
 }
 
 const initialState = {
-  user: {},
+    user: {},
 } as IState;
 
 export default function rootReducer(state = initialState, action: IAction) {
-  switch (action.type) {
-    case GET_USER: {
-      return { ...state, user: action.payload };
-    }
+    switch (action.type) {
+        case GET_USER: {
+            return { ...state, user: action.payload };
+        }
+        case IS_FOLLOWING: {
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    isFollowing: action.payload,
+                },
+            };
+        }
 
-    default:
-      return state;
-  }
+        default:
+            return state;
+    }
 }
