@@ -16,7 +16,7 @@ router.get('/posts', async (req, res) => {
 
 router.post('/post', async (req, res) => {
   try {
-    let post = await Post.create(req.body);
+    const post = await Post.create(req.body);
     res.json(post);
   } catch (e) {
     res.status(401).json({ error: e });
@@ -25,9 +25,11 @@ router.post('/post', async (req, res) => {
 router.delete('/post', async (req, res) => {
   try {
     const { _id } = req.body;
-    let post = await Post.deleteOne({ _id });
+    //let post = await Post.deleteOne({ _id });
     res.json;
   } catch (e) {
     res.status(401).json({ error: e });
   }
 });
+
+export default router;
