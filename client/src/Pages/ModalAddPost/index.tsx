@@ -38,7 +38,7 @@ const ModalAddPost: React.FunctionComponent = ()=>{
         return data;
       });
    }
-   //console.log(buttons);
+   console.log(buttons);
   return(
     <aside className="modal-add-post">
       <div className="add-post-title">
