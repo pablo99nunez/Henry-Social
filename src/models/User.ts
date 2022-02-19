@@ -1,18 +1,27 @@
-import { Schema, model } from 'mongoose';
-import '../db.ts';
+import { Schema, model, ObjectId } from "mongoose";
+import "../db.ts";
 
+enum Roles {
+  Estudiante = "Estudiante",
+  Instructor = "Instructor",
+  TA = "TA",
+}
 export interface IUser {
   name: string;
   email: string;
   username?: string;
-  avatar?: string;
+  avatar?: string | null;
   cohorte?: string;
   password?: string;
-  following?: number;
-  followers?: number;
   linkedin?: string;
   github?: string;
   createdAt?: object;
+  following: IUser[];
+  followers: IUser[];
+  role?: Roles;
+  portfolio?: string;
+  bio?: string;
+  admin: boolean;
 }
 
 const userSchema = new Schema<IUser>({
@@ -23,29 +32,38 @@ const userSchema = new Schema<IUser>({
   username: {
     type: String,
     default: null,
+    unique: true,
+    require: true,
   },
   email: {
     type: String,
     require: true,
+    unique: true,
   },
   avatar: String,
-  cohorte: String,
   followers: {
-    type: Number,
-    required: true,
-    default: 0,
+    type: [],
+    ref: "User",
+    default: [],
   },
   following: {
-    type: Number,
-    required: true,
-    default: 0,
+    type: [],
+    ref: "User",
+    default: [],
   },
+  cohorte: String,
   github: String,
   linkedin: String,
+  portfolio: String,
+  bio: String,
+  role: {
+    type: String,
+    default: Roles.Estudiante,
+  },
   createdAt: {
     type: Date,
     default: new Date().toDateString(),
   },
 });
 
-export default model<IUser>('User', userSchema);
+export default model<IUser>("User", userSchema);

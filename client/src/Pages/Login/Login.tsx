@@ -19,6 +19,7 @@ export default function Login(): JSX.Element {
     password: "",
     email: "",
     avatar: "",
+    admin:false,
     createdAt: {}
   })
   const [ loading, setLoading ] = useState(false)
@@ -65,15 +66,13 @@ export default function Login(): JSX.Element {
       }
     }
   };
-
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
-    const property = e.target.name
-    if(property === null) throw new Error() 
-    else {
-      setInput({
-        ...input,
-        [property]:e.target.value
-      })
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const property = e.target.name;
+    if (property === null) throw new Error();
+    if (property === 'avatar' && e.target.files) {
+      setInput({ ...input, 'avatar': e.target.files[0] });
+    } else {
+      setInput({ ...input, [property]: e.target.value });
     }
   }
 
@@ -104,7 +103,7 @@ export default function Login(): JSX.Element {
             <>
               <input type="text" name="name" onChange={handleInputChange} placeholder="Nombre"/>
               <input type="text" name="username" onChange={handleInputChange} placeholder="Username"/>
-              <input type="text" name="avatar" onChange={handleInputChange} placeholder="Avatar"/>
+              <input type="file" name="avatar" onChange={handleInputChange} placeholder="Avatar"/>
             </>
             : <></>
           }

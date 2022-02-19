@@ -6,10 +6,13 @@ import User from './Pages/User/User';
 import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
 import PostDetail from './Pages/PostDetail/PostDetail';
-import useUser from './Hooks/useUser';
+import useLogin from './Hooks/useLogin';
+import useisLogged from './Hooks/useisLogged';
+import { useNavigate } from 'react-router';
 
 function App() {
-  useUser();
+  useLogin();
+
   return (
     <div className="App">
       <Routes>

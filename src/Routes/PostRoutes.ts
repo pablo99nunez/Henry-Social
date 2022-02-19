@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { Model } from 'mongoose';
-// import Post from '../models/Post';
+import Post from '../models/Post';
 
 const router = Router();
-let Post: Model<''>;
+
 
 router.get('/posts', async (req, res) => {
   try {
@@ -25,11 +25,11 @@ router.post('/post', async (req, res) => {
 router.delete('/post', async (req, res) => {
   try {
     const { _id } = req.body;
-    //let post = await Post.deleteOne({ _id });
-    res.json;
+    let result=await Post.findOneAndDelete({ _id })
+    if(result === null) throw new Error("No se encontro el post")
+    res.send(result) 
   } catch (e) {
     res.status(401).json({ error: e });
   }
 });
-
-export default router;
+export default router
