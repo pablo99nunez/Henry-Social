@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 import './Comments.scss'
 import Comment from '../Comment/Comment'
 import { CommentStructure } from './commentExample';
-=======
-import "./Comments.scss";
-import Comment from "../Comment/Comment";
->>>>>>> dev
 
 // Recibe comments por props
 // export default function Comments({comments} : any) {
