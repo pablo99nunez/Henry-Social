@@ -1,4 +1,4 @@
-import React, { useState, FC } from "react";
+import React, { useState, FC, useRef } from "react";
 import style from "./Post.module.scss";
 import {
     BsThreeDots,
@@ -16,8 +16,16 @@ type Props = {
 
 const Post: FC<Props> = ({ post }) => {
     const navigate = useNavigate();
+    const postRef = useRef(null);
+    const contentRef = useRef(null);
+    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (e.target === postRef.current || e) {
+            navigate("/post/" + post._id);
+        }
+    };
+
     return (
-        <div className={style.post}>
+        <div className={style.post} onClick={handleClick} ref={postRef}>
             <div
                 className={style.post_profile_img}
                 onClick={() => {
@@ -48,7 +56,9 @@ const Post: FC<Props> = ({ post }) => {
                 <div className={style.post_options}>
                     <BsThreeDots />
                 </div>
-                <div className={style.post_content}>{post?.body}</div>
+                <div className={style.post_content} ref={contentRef}>
+                    {post?.body}
+                </div>
                 <div className={style.post_interacciones}>
                     <div className={style.post_like_comments}>
                         <Like post={post}></Like>

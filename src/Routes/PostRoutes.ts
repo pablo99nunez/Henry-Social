@@ -3,17 +3,31 @@ import Post from "../models/Post";
 
 const router = Router();
 
-router.get("/posts", async (req, res) => {
+router.post("/posts", async (req, res) => {
     try {
-        const posts = await Post.find({}).populate("author").populate("nLikes");
+        const { _id } = req.body;
+
+        const posts = _id
+            ? await Post.find({
+                  author: {
+                      _id,
+                  },
+              })
+                  .populate("author")
+                  .populate("nLikes")
+            : await Post.find({}).populate("author").populate("nLikes");
+
         res.json(posts);
     } catch (e) {
         res.status(401).json({ error: e });
     }
 });
+
 router.get("/post/:id", async (req, res) => {
     try {
-        const post = await Post.findById(req.params.id);
+        const post = await Post.findById(req.params.id)
+            .populate("author")
+            .populate("nLikes");
         res.json(post);
     } catch (e) {
         res.status(401).json({ error: e });

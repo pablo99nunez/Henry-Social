@@ -56,11 +56,15 @@ export function getProfile(username: string) {
     };
 }
 
-export function getPosts() {
+export function getPosts(_id: string) {
     return function (dispatch: Function) {
-        axios.get("http://localhost:3001/posts").then((res) => {
-            return dispatch({ type: GET_POSTS, payload: res.data });
-        });
+        _id
+            ? axios.post("http://localhost:3001/posts").then((res) => {
+                  return dispatch({ type: GET_POSTS, payload: res.data });
+              })
+            : axios.post("http://localhost:3001/posts", { _id }).then((res) => {
+                  return dispatch({ type: GET_POSTS, payload: res.data });
+              });
     };
 }
 export function getPost(id: String) {

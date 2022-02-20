@@ -21,13 +21,15 @@
             }
         }
         svg {
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: $yellow;
             cursor: pointer;
+            z-index: 5000;
         }
     }
     .posts {
         display: flex;
+        gap: 1rem;
         flex-direction: column;
     }
 }

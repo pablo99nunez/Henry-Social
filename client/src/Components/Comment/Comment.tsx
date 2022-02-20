@@ -3,10 +3,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Like } from "../Like/Like";
 import { FaRegComment, FaEllipsisH, FaBan, FaRegFrown } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { IState } from "../../redux/reducer";
 
-const Comment = ({ key, data, post }: any) => {
+const Comment = ({ key, data }: any) => {
     const [options, setOptions] = useState(false);
-
+    const post = useSelector((state: IState) => state.post);
     return (
         <div className="comment" key={key}>
             <div className="picture">
