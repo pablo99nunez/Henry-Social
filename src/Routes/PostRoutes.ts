@@ -12,8 +12,15 @@ router.get("/posts", async (req, res) => {
     res.status(401).json({ error: e });
   }
 });
-
-router.post("/post", async (req, res) => {
+router.get('/post/:id', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    res.json(post);
+  } catch (e) {
+    res.status(401).json({ error: e });
+  }
+});
+router.post('/post', async (req, res) => {
   try {
     const post = await Post.create(req.body);
     res.json(post);
