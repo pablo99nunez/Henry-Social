@@ -1,9 +1,10 @@
-@import '../../Styles/variables.scss';
+@import "../../Styles/variables.scss";
 .button {
   cursor: pointer;
-  background: transparent;
-  color: $yellow;
-  border: 2px $yellow solid;
+  background: inherit;
+  color: currentColor;
+  border: 2px solid;
+  border-color: currentColor;
   border-radius: 8px;
   align-items: center;
 
