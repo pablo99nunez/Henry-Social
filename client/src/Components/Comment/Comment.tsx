@@ -10,13 +10,11 @@ const Comment = ({key, data} : any) => {
 
   return (
     <div className="comment" key={key}>
-
       <div className="picture">
         <img className='photo' src={data.img} alt={data.author}/>
       </div>
 
       <div className="info">
-
         <div className="author">
           <Link className='name' to={`/profile/${data.postId}`}>{data.author}</Link>
           <span className='cohorteDate'>{data.cohorte} · {data.postTime}</span>
@@ -45,7 +43,7 @@ const Comment = ({key, data} : any) => {
         </div>
         {/* </Link> */}
       </div>
-          
+
       <div className="options">
         <FaEllipsisH title='Más' className='icon' onClick={() => setOptions(true)}/>
         <div 
@@ -64,8 +62,8 @@ const Comment = ({key, data} : any) => {
           </p>
         </div>
       </div>
-    </div>  
-  )
-}
+    </div>
+  );
+};
 
-export default Comment
+export default Comment;

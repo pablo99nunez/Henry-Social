@@ -1,11 +1,15 @@
+<<<<<<< HEAD
 import './Comments.scss'
 import Comment from '../Comment/Comment'
 import { CommentStructure } from './commentExample';
+=======
+import "./Comments.scss";
+import Comment from "../Comment/Comment";
+>>>>>>> dev
 
 // Recibe comments por props
-// export default function Comments({comments} : any) { 
-export default function Comments() { 
-
+// export default function Comments({comments} : any) {
+export default function Comments() {
   // comentarios de prueba
   let comments: CommentStructure[] = [
     {
@@ -47,14 +51,14 @@ export default function Comments() {
       text: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum, exercitationem.',
       countLikes: 23,
       countComments: 10,
-    }
-  ]
+    },
+  ];
 
   return (
-    <div className='commentsPost'>
-      {comments.map((p,i) => 
-        <Comment key={i} data={p}/>
-      )}
+    <div className="commentsPost">
+      {comments.map((p, i) => (
+        <Comment key={i} data={p} />
+      ))}
     </div>
-  )
+  );
 }
