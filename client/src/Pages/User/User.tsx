@@ -182,14 +182,7 @@ export default function User() {
                         <div className={style.follow_bar}>
                             <FollowBar />
                         </div>
-                        <div className={style.posts}>
-                            <Post />
-                            <Post />
-                            <Post />
-                            <Post />
-                            <Post />
-                            <Post />
-                        </div>
+                        <div className={style.posts}></div>
                         <div className={style.mistery_box}>
                             {"Misterious NavBar"}
                         </div>

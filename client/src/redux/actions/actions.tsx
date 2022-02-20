@@ -1,8 +1,13 @@
 import axios from "axios";
+import { IPost } from "../../../../src/models/Post";
+import { IUser } from "../../../../src/models/User";
 export const GET_USER = "GET_USER";
 export const FOLLOW_USER = "FOLLOW_USER";
 export const SIGN_OUT = "SIGN_OUT";
 export const GET_PROFILE = "GET_PROFILE";
+export const GET_POSTS = "GET_POSTS";
+export const GET_POST = "GET_POST";
+export const LIKE_POST = "LIKE_POST";
 
 export interface IAction {
     type: string;
@@ -46,8 +51,32 @@ export function getProfile(username: string) {
         axios
             .post("http://localhost:3001/findUser", { username })
             .then((res) => {
-                console.log("DISPATCH:", res);
                 return dispatch({ type: GET_PROFILE, payload: res.data });
             });
+    };
+}
+
+export function getPosts() {
+    return function (dispatch: Function) {
+        axios.get("http://localhost:3001/posts").then((res) => {
+            return dispatch({ type: GET_POSTS, payload: res.data });
+        });
+    };
+}
+export function getPost(id: String) {
+    return function (dispatch: Function) {
+        axios.get("http://localhost:3001/post/" + id).then((res) => {
+            return dispatch({ type: GET_POST, payload: res.data });
+        });
+    };
+}
+export function likePost(post: IPost, user: IUser) {
+    return (dispatch: Function) => {
+        axios
+            .post("http://localhost:3001/like", {
+                _id: post._id,
+                author: user,
+            })
+            .then((e) => dispatch({ type: LIKE_POST, payload: e.data }));
     };
 }

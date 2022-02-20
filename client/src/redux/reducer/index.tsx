@@ -1,15 +1,21 @@
 import { IUser } from "../../../../src/models/User";
+import { IPost } from "../../../../src/models/Post";
 import {
     FOLLOW_USER,
+    GET_POST,
+    GET_POSTS,
     GET_PROFILE,
     GET_USER,
     IAction,
+    LIKE_POST,
     SIGN_OUT,
 } from "../actions/actions";
 
 export interface IState {
     user: IUser;
     profile: IUser;
+    posts: IPost[];
+    post: IPost;
 }
 
 const initialState = {
@@ -39,6 +45,26 @@ export default function rootReducer(state = initialState, action: IAction) {
             return {
                 ...state,
                 profile: action.payload,
+            };
+        }
+        case GET_POSTS: {
+            return {
+                ...state,
+                posts: action.payload,
+            };
+        }
+        case GET_POST: {
+            return {
+                ...state,
+                post: action.payload,
+            };
+        }
+        case LIKE_POST: {
+            return {
+                ...state,
+                posts: state.posts.map((e) => {
+                    return e._id === action.payload._id ? action.payload : e;
+                }),
             };
         }
         default:

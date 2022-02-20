@@ -1,72 +1,61 @@
-import { model, ObjectId, Schema } from "mongoose";
+import { model, ObjectId, Schema, PopulatedDoc } from "mongoose";
 import { IUser } from "./User";
 
-interface Post {
-  body: string;
-  postTime: string;
-  nLikes: number;
-  numComments: number;
-  author: IUser;
+export interface IPost {
+    body: string;
+    postTime: string;
+    nLikes: [IUser];
+    numComments: number;
+    author: IUser;
+    _id: number;
 }
 
-interface Comments {
-  postId: ObjectId; // Reference to blogs
-  postTime: string;
-  text: string;
-  author: IUser;
+interface Comment {
+    postId: ObjectId; // Reference to blogs
+    postTime: string;
+    text: string;
+    author: IUser;
 }
 
-interface Likes {
-  referenceId: ObjectId; // Reference to post
-  likeTime: string;
-  author: IUser;
+interface Like {
+    referenceId: ObjectId; // Reference to post
+    likeTime: string;
+    author: IUser;
 }
 
 const postSchema = new Schema({
-  body: {
-    type: String,
-    require: true,
-  },
-  postTime: { type: Date, default: Date.now },
-  nLikes: {
-    type: Number,
-    default: 0,
-  },
-  numComments: {
-    type: Number,
-    default: 0,
-  },
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
+    body: {
+        type: String,
+        require: true,
+    },
+    postTime: { type: Date, default: Date.now },
+    nLikes: {
+        type: [Schema.Types.ObjectId],
+        ref: "User",
+        default: [],
+    },
+    numComments: {
+        type: Number,
+        default: 0,
+    },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    },
 });
 
 const commentSchema = new Schema({
-  postId: {
-    type: Schema.Types.ObjectId,
-    // ref: "postSchema"
-  },
-  postTime: { type: Date, default: Date.now },
-  text: String,
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
+    postId: {
+        type: Schema.Types.ObjectId,
+        // ref: "postSchema"
+    },
+    postTime: { type: Date, default: Date.now },
+    text: String,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    },
 });
 
-const likeSchema = new Schema({
-  referenceId: {
-    type: Schema.Types.ObjectId,
-    ref: "Post",
-  },
-  likeTime: { type: Date, default: Date.now },
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
-});
-
-export default model<Post>("Post", postSchema);
-export const Comments = model<Comments>("Comments", commentSchema);
-export const Likes = model<Likes>("Likes", likeSchema);
+export default model<IPost>("Post", postSchema);
+export const Comment = model<Comment>("Comment", commentSchema);
