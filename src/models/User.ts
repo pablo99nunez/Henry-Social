@@ -62,6 +62,10 @@ const userSchema = new Schema<IUser>({
         type: String,
         default: Roles.Estudiante,
     },
+    admin: {
+        type: Boolean,
+        default: false,
+    },
     createdAt: {
         type: Date,
         default: new Date().toDateString(),

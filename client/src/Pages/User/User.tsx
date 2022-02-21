@@ -13,7 +13,12 @@ import Button from "../../Components/Button/Button";
 import Settings from "../../Components/Settings/Settings";
 import useUser from "../../Hooks/useUser";
 import Modal from "../../Components/Modal/Modal";
-import { followUser, getPosts, getProfile } from "../../redux/actions/actions";
+import {
+    followUser,
+    getPosts,
+    getProfile,
+    makeAdmin,
+} from "../../redux/actions/actions";
 import { useProfile } from "../../Hooks/useProfile";
 import { IState } from "../../redux/reducer";
 
@@ -34,6 +39,9 @@ export default function User() {
             setIsFollowing(!isFollowing);
         }
     }
+    function handleAdmin() {
+        if (username) dispatch(makeAdmin(username));
+    }
     useEffect(() => {
         if (userLogeado?.following && user?.username)
             setIsFollowing(userLogeado.following.includes(user.username));
@@ -49,7 +57,7 @@ export default function User() {
     return !loading ? (
         <>
             <NavSearch></NavSearch>
-            <Modal isOpen={edit} setIsOpen={setEdit}>
+            <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
                 <Settings cancel={() => setEdit(false)}></Settings>
             </Modal>
 
@@ -69,7 +77,7 @@ export default function User() {
                         <div className={style.details}>
                             <div className={style.buttons}>
                                 {userLogeado?.admin ? (
-                                    <Button>
+                                    <Button onClick={handleAdmin}>
                                         {user?.admin
                                             ? "Eliminar rol de Admin"
                                             : "Hacer Admin"}
@@ -80,7 +88,7 @@ export default function User() {
                                         Editar Perfil
                                     </Button>
                                 ) : (
-                                    <div className={style.buttons}>
+                                    <>
                                         <Button>
                                             Invitame un cafe
                                             <img
@@ -96,7 +104,7 @@ export default function User() {
                                                 ? "Siguiendo"
                                                 : "Seguir"}
                                         </Button>
-                                    </div>
+                                    </>
                                 )}
                             </div>
                             <div className={style.userInfo}>

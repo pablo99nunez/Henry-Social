@@ -1,20 +1,21 @@
 @import "../../Styles/variables.scss";
 .button {
-  cursor: pointer;
-  background: inherit;
-  color: currentColor;
-  border: 2px solid;
-  border-color: currentColor;
-  border-radius: 8px;
-  align-items: center;
-
-  font-size: 1.3rem;
-  font-weight: 700;
-  padding: 0.3rem 0.3rem;
-  display: flex;
-  gap: 0.5rem;
-  img {
-    width: 1rem;
-    object-fit: cover;
-  }
+    cursor: pointer;
+    background: inherit;
+    color: currentColor;
+    border: 2px solid;
+    border-color: currentColor;
+    border-radius: 8px;
+    align-items: center;
+    width: max-content;
+    height: fit-content;
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding: 0.3rem 0.3rem;
+    display: flex;
+    gap: 0.5rem;
+    img {
+        width: 1rem;
+        object-fit: cover;
+    }
 }

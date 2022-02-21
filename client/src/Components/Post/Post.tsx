@@ -51,7 +51,7 @@ const Post: FC<Props> = ({ post }) => {
                     >
                         {post?.author?.name}
                     </h3>
-                    <h4>{post?.postTime}</h4>
+                    <h4>{new Date(post?.postTime).toLocaleString()}</h4>
                 </div>
                 <div className={style.post_options}>
                     <BsThreeDots />

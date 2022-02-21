@@ -8,6 +8,7 @@ import {
     GET_USER,
     IAction,
     LIKE_POST,
+    MAKE_ADMIN,
     SIGN_OUT,
 } from "../actions/actions";
 
@@ -65,6 +66,12 @@ export default function rootReducer(state = initialState, action: IAction) {
                 posts: state.posts.map((e) => {
                     return e._id === action.payload._id ? action.payload : e;
                 }),
+            };
+        }
+        case MAKE_ADMIN: {
+            return {
+                ...state,
+                profile: action.payload,
             };
         }
         default:

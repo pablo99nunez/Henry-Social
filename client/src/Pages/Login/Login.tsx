@@ -11,6 +11,8 @@ import { IUser } from "../../../../src/models/User";
 import style from "./Login.module.scss";
 import useUser from "../../Hooks/useUser";
 import { auth } from "../../../../src/services/firebase/firebase";
+import Button from "../../Components/Button/Button";
+import { BsGoogle, BsGithub } from "react-icons/bs";
 
 enum USER_ACTION {
     register,
@@ -98,7 +100,10 @@ export default function Login(): JSX.Element {
             <div id={style.cont}>
                 <header>
                     <div id={style.title_cont}>
-                        <img src="#" alt="icon" />
+                        <img
+                            src="https://assets.soyhenry.com/assets/LOGO-HENRY-03.png"
+                            alt="icon"
+                        />
                         <h1> | Social </h1>
                     </div>
                     <button
@@ -160,20 +165,26 @@ export default function Login(): JSX.Element {
                         </button>
                     </form>
                     <div id={style.alt_cont}>
-                        <button
+                        <Button
                             className={style.alt_btns}
                             onClick={() => handleLogin(signUpWithGmail)}
+                            style={{ fontWeight: "normal" }}
                         >
-                            {" "}
-                            With Google{" "}
-                        </button>
-                        <button
+                            {action === USER_ACTION.register
+                                ? "Registrate"
+                                : "Inicia sesion"}{" "}
+                            con Google <BsGoogle></BsGoogle>
+                        </Button>
+                        <Button
                             className={style.alt_btns}
+                            style={{ fontWeight: "normal" }}
                             onClick={() => handleLogin(signUpWithGitHub)}
                         >
-                            {" "}
-                            With Github{" "}
-                        </button>
+                            {action === USER_ACTION.register
+                                ? "Registrate"
+                                : "Inicia sesion"}{" "}
+                            con GitHub <BsGithub></BsGithub>
+                        </Button>
                     </div>
                 </div>
             </div>

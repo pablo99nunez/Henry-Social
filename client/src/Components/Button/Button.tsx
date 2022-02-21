@@ -7,10 +7,14 @@ export default function Button({
     onClick,
     active,
     style,
+    color = "inherit",
     className,
 }: any) {
     const variants = {
-        active: { backgroundColor: "#ff1", color: "#000" },
+        active: {
+            backgroundColor: color === "#ff1" ? "#001" : "#ff1",
+            color: color === "#ff1" ? "#ff1" : "#000",
+        },
     };
     return (
         <motion.button
@@ -22,6 +26,10 @@ export default function Button({
             }}
             whileTap={{
                 scale: 1.07,
+            }}
+            transition={{
+                duration: 0.3,
+                type: "tween",
             }}
             style={style}
             className={styles.button}

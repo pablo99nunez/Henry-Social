@@ -2,233 +2,231 @@
 @import "../../Styles/mixins.scss";
 
 #cont {
-  font-family: Roboto;
-  background-color: $bg-color;
-  min-height: 70vh;
-  position: relative;
-  top: 12vh;
-  display: grid;
-  place-items: center;
-
-  header {
-    display: flex;
-    position: fixed;
-    justify-content: space-around;
-    height: 13vh;
-    background-color: black;
-    top: 0;
-    left: 0;
-    width: 100%;
-
-    #title_cont {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: center;
-
-      img {
-        width: max-content;
-        height: auto;
-        margin-left: 1.5rem;
-      }
-
-      h1 {
-        font-size: 25px;
-        color: $white;
-      }
-    }
-
-    .act_btn {
-      position: absolute;
-      top: 40%;
-      right: 25px;
-      font-size: 1rem;
-      background-color: $yellow;
-      color: $bg-color;
-      border: none;
-      border-radius: 5px;
-      width: max-content;
-      height: max-content;
-      padding: 8px;
-      -webkit-border-radius: 5px;
-      -moz-border-radius: 5px;
-      -ms-border-radius: 5px;
-      -o-border-radius: 5px;
-    }
-  }
-
-  #form_cont {
+    font-family: Roboto;
+    background-color: $bg-color;
+    min-height: 70vh;
     position: relative;
-    width: 90%;
-    height: 25rem;
-    background-color: $yellow;
-    box-shadow: $yellow 1px 1px 10px;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 10px;
-    -o-border-radius: 10px;
+    top: 12vh;
+    display: grid;
+    place-items: center;
 
-    form {
-      @include flex-column;
-      justify-content: space-around;
-      align-items: center;
-      gap: 1.5rem;
-      height: 23.125rem;
+    header {
+        display: flex;
+        position: fixed;
+        justify-content: space-around;
+        height: 13vh;
+        background-color: black;
+        top: 0;
+        left: 0;
+        width: 100%;
 
-      h3 {
-        position: relative;
-        top: 25px;
-        text-align: center;
-      }
+        #title_cont {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
 
-      input {
-        font-size: 16px;
-        background-color: transparent;
-        border: none;
-        border-bottom: 1px solid $bg-color;
-        line-height: 1.5rem;
-        width: 80vw;
+            img {
+                width: auto;
+                height: 80px;
+                margin-left: 1.5rem;
+            }
 
-        &:focus {
-          outline: none;
+            h1 {
+                font-size: 25px;
+                color: $white;
+            }
         }
-      }
 
-      button[type="submit"] {
-        background-color: $bg-secondary-color;
-        color: $white;
-        border: none;
-        border-radius: 5px;
-        width: max-content;
-        height: max-content;
-        padding: 10px;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        -ms-border-radius: 5px;
-        -o-border-radius: 5px;
-      }
+        .act_btn {
+            position: absolute;
+            top: 40%;
+            right: 25px;
+            font-size: 1rem;
+            background-color: $yellow;
+            color: $bg-color;
+            border: none;
+            border-radius: 5px;
+            width: max-content;
+            height: max-content;
+            padding: 8px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -ms-border-radius: 5px;
+            -o-border-radius: 5px;
+        }
     }
 
-    #alt_cont {
-      display: flex;
-      justify-content: center;
-      gap: 25px;
-      top: 55px;
-      position: relative;
-
-      .alt_btns {
+    #form_cont {
+        position: relative;
+        width: 90%;
+        height: 25rem;
         background-color: $yellow;
-        border: none;
-        padding: 10px;
-        font-size: 20px;
+        box-shadow: $yellow 1px 1px 10px;
         border-radius: 10px;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
         -ms-border-radius: 10px;
         -o-border-radius: 10px;
-      }
+
+        form {
+            @include flex-column;
+            justify-content: space-around;
+            align-items: center;
+            gap: 1.5rem;
+            height: 23.125rem;
+
+            h3 {
+                position: relative;
+                top: 25px;
+                text-align: center;
+            }
+
+            input {
+                font-size: 16px;
+                background-color: transparent;
+                border: none;
+                border-bottom: 1px solid $bg-color;
+                line-height: 1.5rem;
+                width: 80vw;
+
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            button[type="submit"] {
+                background-color: $bg-secondary-color;
+                color: $white;
+                border: none;
+                border-radius: 5px;
+                width: max-content;
+                height: max-content;
+                padding: 10px;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                -ms-border-radius: 5px;
+                -o-border-radius: 5px;
+            }
+        }
+
+        #alt_cont {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+
+            .alt_btns {
+                background-color: $yellow;
+                border: none;
+                padding: 10px;
+                font-size: 20px;
+                border-radius: 10px;
+                -webkit-border-radius: 10px;
+                -moz-border-radius: 10px;
+                -ms-border-radius: 10px;
+                -o-border-radius: 10px;
+            }
+        }
     }
-  }
 }
 
 @media (min-width: 750px) {
-  #cont {
-    position: static;
-    min-height: 100%;
-
-    button {
-      cursor: pointer;
-      transition: transform ease-in 300ms;
-      -webkit-transition: transform ease-in 300ms;
-      -moz-transition: transform ease-in 300ms;
-      -ms-transition: transform ease-in 300ms;
-      -o-transition: transform ease-in 300ms;
-
-      &:hover {
-        transform: scale(1.1);
-        -webkit-transform: scale(1.11);
-        -moz-transform: scale(1.11);
-        -ms-transform: scale(1.11);
-        -o-transform: scale(1.11);
-      }
-    }
-
-    header {
-      height: 5rem;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-
-      #title_cont {
-        position: relative;
-        right: 11.25rem;
-        width: max-content;
-        margin-left: 4rem;
-      }
-
-      .act_btn {
-        width: 7rem;
+    #cont {
         position: static;
-        background-color: $bg-color;
-        color: $yellow;
-        border: 0.5px solid $yellow;
-        transition: 300ms ease-out;
-        transition-property: backgroud-color color;
-        -webkit-transition: 300ms ease-out;
-        -moz-transition: 300ms ease-out;
-        -ms-transition: 300ms ease-out;
-        -o-transition: 300ms ease-out;
+        min-height: 100%;
 
-        &:hover {
-          background-color: $yellow;
-          color: $bg-color;
+        button {
+            cursor: pointer;
+            /* transition: transform ease-in 300ms;
+            -webkit-transition: transform ease-in 300ms;
+            -moz-transition: transform ease-in 300ms;
+            -ms-transition: transform ease-in 300ms;
+            -o-transition: transform ease-in 300ms; */
+
+            &:hover {
+                transform: scale(1.1);
+                -webkit-transform: scale(1.11);
+                -moz-transform: scale(1.11);
+                -ms-transform: scale(1.11);
+                -o-transform: scale(1.11);
+            }
         }
-      }
+
+        header {
+            height: 5rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+            #title_cont {
+                position: relative;
+                right: 11.25rem;
+                width: max-content;
+                margin-left: 4rem;
+            }
+
+            .act_btn {
+                width: 7rem;
+                position: static;
+                background-color: $bg-color;
+                color: $yellow;
+                border: 0.5px solid $yellow;
+                transition: 300ms ease-out;
+                transition-property: backgroud-color color;
+                -webkit-transition: 300ms ease-out;
+                -moz-transition: 300ms ease-out;
+                -ms-transition: 300ms ease-out;
+                -o-transition: 300ms ease-out;
+
+                &:hover {
+                    background-color: $yellow;
+                    color: $bg-color;
+                }
+            }
+        }
+
+        #form_cont {
+            margin-top: 9rem;
+            width: 80%;
+            height: 80%;
+            padding: 20px 0;
+            border-radius: 8px;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            -ms-border-radius: 8px;
+            -o-border-radius: 8px;
+
+            form {
+                width: 60%;
+                margin: auto;
+                position: relative;
+
+                input {
+                    width: 100%;
+                }
+
+                button[type="submit"] {
+                    align-self: flex-start;
+                }
+            }
+
+            #alt_cont {
+                .alt_btns {
+                    border: 1px solid $bg-secondary-color;
+                    transition: 300ms ease-in;
+                    transition-property: background-color color;
+                    -webkit-transition: 300ms ease-in;
+                    -moz-transition: 300ms ease-in;
+                    -ms-transition: 300ms ease-in;
+                    -o-transition: 300ms ease-in;
+
+                    &:hover {
+                        color: $yellow;
+                        background-color: $bg-secondary-color;
+                    }
+                }
+            }
+        }
     }
-
-    #form_cont {
-      margin-top: 9rem;
-      width: 80%;
-      height: 80%;
-      padding: 20px 0;
-      border-radius: 8px;
-      -webkit-border-radius: 8px;
-      -moz-border-radius: 8px;
-      -ms-border-radius: 8px;
-      -o-border-radius: 8px;
-
-      form {
-        width: 60%;
-        margin: auto;
-        position: relative;
-
-        input {
-          width: 100%;
-        }
-
-        button[type="submit"] {
-          align-self: flex-start;
-        }
-      }
-
-      #alt_cont {
-        .alt_btns {
-          border: 1px solid $bg-secondary-color;
-          transition: 300ms ease-in;
-          transition-property: background-color color;
-          -webkit-transition: 300ms ease-in;
-          -moz-transition: 300ms ease-in;
-          -ms-transition: 300ms ease-in;
-          -o-transition: 300ms ease-in;
-
-          &:hover {
-            color: $yellow;
-            background-color: $bg-secondary-color;
-          }
-        }
-      }
-    }
-  }
 }

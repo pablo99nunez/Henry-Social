@@ -55,6 +55,7 @@ const Posts = () => {
                 </div>
                 <motion.div
                     variants={plusVariants}
+                    className={styles.addLogo}
                     animate={showModal ? "active" : "normal"}
                     transition={{
                         type: "tween",
@@ -77,11 +78,17 @@ const Posts = () => {
                 initial="hidden"
                 animate="show"
             >
-                {posts?.map((e) => (
-                    <motion.div key={e._id} variants={postVariants}>
-                        <Post post={e}></Post>
-                    </motion.div>
-                ))}
+                {posts
+                    ?.sort((a, b) => {
+                        return new Date(a.postTime) < new Date(b.postTime)
+                            ? 1
+                            : -1;
+                    })
+                    .map((e) => (
+                        <motion.div key={e._id} variants={postVariants}>
+                            <Post post={e}></Post>
+                        </motion.div>
+                    ))}
             </motion.div>
         </div>
     );

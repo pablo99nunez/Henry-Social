@@ -36,6 +36,7 @@ router.post("/admin", async (req, res) => {
         let user = await User.findOne({ username });
         if (!!user) {
             user.admin = !user.admin;
+            console.log(user.admin);
             await user.save();
             res.json(user);
         }
