@@ -23,7 +23,7 @@ export const Like: FC<Props> = ({ post }) => {
     };
     useEffect(() => {
         if (user) {
-            const isLiked = !!post.nLikes.filter(
+            const isLiked = !!post?.nLikes.filter(
                 (e) => e.username == user.username
             )[0];
             setLike(isLiked);

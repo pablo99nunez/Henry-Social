@@ -2,30 +2,32 @@
 @import "../../Styles/mixins.scss";
 
 .aside_messages {
-  background-color: $bg-secondary-color;
-  padding: 1rem;
-  border-radius: 0.8rem;
-  border: 1px solid $white;
-  color: $white;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  place-content: center;
-  h2 {
-    text-align: center;
-  }
-  .aside_resume_messages {
+    background-color: $bg-secondary-color;
+    padding: 1rem;
+    border-radius: 0.8rem;
+    border: 1px solid $white;
+    color: $white;
+    height: fit-content;
+    position: sticky;
+    top: 100px;
     display: flex;
-    gap: 1rem;
-    place-items: center;
+    flex-direction: column;
     place-content: center;
-    .aside_message_img {
-      width: 3rem;
-      height: 3rem;
-      border-radius: 100%;
-      background: url("https://assets.soyhenry.com/henry-landing/assets/peopleImages/sofi.jpg");
-      background-repeat: no-repeat;
-      background-size: cover;
+    h2 {
+        text-align: center;
     }
-  }
+    .aside_resume_messages {
+        display: flex;
+        gap: 1rem;
+        place-items: center;
+        place-content: center;
+        .aside_message_img {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 100%;
+            background: url("https://assets.soyhenry.com/henry-landing/assets/peopleImages/sofi.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    }
 }

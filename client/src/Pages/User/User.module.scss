@@ -1,132 +1,132 @@
 @import "../../Styles/variables.scss";
 
 .User {
-  background-color: rgba(28, 28, 28, 1);
-  color: white;
-  width: 100vw;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  .head_profile::after {
-    content: "";
-    background-color: rgba(255, 255, 1, 1);
-    height: 100vh;
+    background-color: rgba(28, 28, 28, 1);
+    color: white;
     width: 100vw;
-    position: absolute;
-    z-index: -10;
-    bottom: 70%;
-  }
-  .head_profile {
+    min-height: 100vh;
     display: flex;
-    z-index: 20;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    width: 100vw;
-    margin-top: 8.5vw;
-    .head_profile_central {
-      position: relative;
-      top: -5%;
-      background-color: black;
-      width: 75%;
-      border-radius: 8px;
-      z-index: -1;
-      .photo {
-        img {
-          border-radius: 50%;
-          outline: 7px $yellow solid;
-          width: 15vw;
-          height: 15vw;
-          object-fit: cover;
-          position: absolute;
-          left: calc(50% - 7.5vw);
-          top: -7.5vw;
-        }
-      }
-      .details {
+    .head_profile::after {
+        content: "";
+        background-color: rgba(255, 255, 1, 1);
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        z-index: -10;
+        bottom: 60%;
+    }
+    .head_profile {
         display: flex;
-        height: 100%;
+        z-index: 20;
         flex-direction: column;
-        justify-content: space-between;
-        padding: 2rem;
-        .buttons {
-          display: flex;
-          align-self: flex-end;
-          justify-content: right;
-          gap: 1rem;
-          color: $yellow;
-          width: fit-content;
-          flex-wrap: wrap;
-          max-width: 100%;
-        }
-        .userInfo {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-          width: 100%;
-          min-height: 14vw;
-          h1 {
-            font-weight: bold;
-          }
-          .bio {
-            text-align: center;
-            margin-top: 1rem;
-          }
-        }
-
-        .details_bottom {
-          display: flex;
-          width: 100%;
-          justify-content: space-between;
-          align-items: center;
-          position: relative;
-          img {
-            filter: invert(85%) sepia(100%) saturate(6179%) hue-rotate(342deg)
-              brightness(111%) contrast(103%);
-            width: 3rem;
-            height: 3rem;
-            cursor: pointer;
-          }
-
-          div {
-            display: flex;
-            gap: 1rem;
-            div {
-              gap: 1ch;
-              h3 {
-                color: $grey;
-                font-weight: 400;
-              }
-
-              h3:first-child {
-                color: $white;
-                font-weight: 700;
-              }
+        align-items: center;
+        width: 100vw;
+        margin-top: 8.5vw;
+        .head_profile_central {
+            position: relative;
+            top: -5%;
+            background-color: black;
+            width: 75%;
+            border-radius: 8px;
+            z-index: -1;
+            .photo {
+                img {
+                    border-radius: 50%;
+                    outline: 7px $yellow solid;
+                    width: 15vw;
+                    height: 15vw;
+                    object-fit: cover;
+                    position: absolute;
+                    left: calc(50% - 7.5vw);
+                    top: -7.5vw;
+                }
             }
-          }
+            .details {
+                display: flex;
+                height: 100%;
+                flex-direction: column;
+                justify-content: space-between;
+                padding: 2rem;
+                .buttons {
+                    display: flex;
+                    align-self: flex-end;
+                    justify-content: right;
+                    gap: 1rem;
+                    color: $yellow;
+                    width: fit-content;
+                    flex-wrap: wrap;
+                    max-width: calc(50% - 8vw);
+                }
+                .userInfo {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    width: 100%;
+                    min-height: 14vw;
+                    h1 {
+                        font-weight: bold;
+                    }
+                    .bio {
+                        text-align: center;
+                        margin-top: 1rem;
+                    }
+                }
+
+                .details_bottom {
+                    display: flex;
+                    width: 100%;
+                    justify-content: space-between;
+                    align-items: center;
+                    position: relative;
+                    img {
+                        filter: invert(85%) sepia(100%) saturate(6179%)
+                            hue-rotate(342deg) brightness(111%) contrast(103%);
+                        width: 3rem;
+                        height: 3rem;
+                        cursor: pointer;
+                    }
+
+                    div {
+                        display: flex;
+                        gap: 1rem;
+                        div {
+                            gap: 1ch;
+                            h3 {
+                                color: $grey;
+                                font-weight: 400;
+                            }
+
+                            h3:first-child {
+                                color: $white;
+                                font-weight: 700;
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
     }
-  }
-  .body_profile {
-    display: grid;
-    margin-top: 3rem;
-    gap: 1rem;
-    grid-template-columns: 1.3fr 2.5fr 1fr;
-    width: 75%;
-    .posts {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+    .body_profile {
+        display: grid;
+        margin-top: 3rem;
+        gap: 1rem;
+        grid-template-columns: 1.3fr 2.5fr 1fr;
+        width: 75%;
+        .posts {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
     }
-  }
-  .mistery_box {
-    height: 200px;
-    background-color: $black;
-    border-radius: 8px;
-    border: 1px solid $grey;
-  }
+    .mistery_box {
+        height: 200px;
+        background-color: $black;
+        border-radius: 8px;
+        border: 1px solid $grey;
+    }
 }

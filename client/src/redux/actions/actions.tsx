@@ -8,6 +8,7 @@ export const GET_PROFILE = "GET_PROFILE";
 export const GET_POSTS = "GET_POSTS";
 export const GET_POST = "GET_POST";
 export const LIKE_POST = "LIKE_POST";
+export const MAKE_ADMIN = "MAKE_ADMIN";
 
 export interface IAction {
     type: string;
@@ -84,5 +85,12 @@ export function likePost(post: IPost, user: IUser) {
                 author: user,
             })
             .then((e) => dispatch({ type: LIKE_POST, payload: e.data }));
+    };
+}
+export function makeAdmin(username: string) {
+    return (dispatch: Function) => {
+        axios
+            .post("/admin", { username })
+            .then((e) => dispatch({ type: MAKE_ADMIN, payload: e.data }));
     };
 }
