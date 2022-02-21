@@ -3,6 +3,11 @@ const axios = require("axios");
 import User from "../models/User";
 const router = Router();
 
+axios.defaults.baseUrl =
+    process.env.NODE_ENV === "PRODUCTION"
+        ? "https://henry-social-back.herokuapp.com"
+        : "http://localhost:3001";
+
 router.post("/user", (req, res) => {
     User.create(req.body)
         .then((result) => {
@@ -84,17 +89,17 @@ router.post("/follow", async (req, res) => {
     try {
         if (await isFollowing(seguidor, seguido)) {
             //Si el seguidor ya sigue al seguido
-            const result = await axios.post("http://localhost:3001/unfollow", {
+            const result = await axios.post("/unfollow", {
                 seguido,
                 seguidor,
             }); //Deja de seguir al usuario
             const userSeguidor = await axios
-                .post("http://localhost:3001/findUser", {
+                .post("/findUser", {
                     username: seguidor,
                 })
                 .then((e: any) => e.data);
             const userSeguido = await axios
-                .post("http://localhost:3001/findUser", {
+                .post("/findUser", {
                     username: seguido,
                 })
                 .then((e: any) => e.data);
@@ -103,12 +108,12 @@ router.post("/follow", async (req, res) => {
             try {
                 await addFollower(seguido, seguidor);
                 const userSeguidor = await axios
-                    .post("http://localhost:3001/findUser", {
+                    .post("/findUser", {
                         username: seguidor,
                     })
                     .then((e: any) => e.data);
                 const userSeguido = await axios
-                    .post("http://localhost:3001/findUser", {
+                    .post("/findUser", {
                         username: seguido,
                     })
                     .then((e: any) => e.data);

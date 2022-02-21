@@ -14,9 +14,14 @@ export interface IAction {
     payload: any;
 }
 
+axios.defaults.baseURL = import.meta.env.PROD
+    ? "https://henry-social-back.herokuapp.com"
+    : "http://localhost:3001";
+
 export function getUser(email: string) {
     return function (dispatch: Function) {
-        axios.post("http://localhost:3001/findUser", { email }).then((res) => {
+        console.log(axios.defaults.baseURL, import.meta.env.PROD);
+        axios.post("/findUser", { email }).then((res) => {
             return dispatch({ type: GET_USER, payload: res.data });
         });
     };
@@ -30,7 +35,7 @@ export function signOut() {
 export function followUser(seguidor: string, seguido: string) {
     return function (dispatch: Function) {
         axios
-            .post("http://localhost:3001/follow", {
+            .post("/follow", {
                 seguidor,
                 seguido,
             })
@@ -48,29 +53,26 @@ export function followUser(seguidor: string, seguido: string) {
 
 export function getProfile(username: string) {
     return function (dispatch: Function) {
-        axios
-            .post("http://localhost:3001/findUser", { username })
-            .then((res) => {
-                return dispatch({ type: GET_PROFILE, payload: res.data });
-            });
+        axios.post("/findUser", { username }).then((res) => {
+            return dispatch({ type: GET_PROFILE, payload: res.data });
+        });
     };
 }
 
 export function getPosts(_id: string | undefined = "") {
     return function (dispatch: Function) {
-        console.log(_id);
         _id
-            ? axios.post("http://localhost:3001/posts", { _id }).then((res) => {
+            ? axios.post("/posts", { _id }).then((res) => {
                   return dispatch({ type: GET_POSTS, payload: res.data });
               })
-            : axios.post("http://localhost:3001/posts").then((res) => {
+            : axios.post("/posts").then((res) => {
                   return dispatch({ type: GET_POSTS, payload: res.data });
               });
     };
 }
 export function getPost(id: String) {
     return function (dispatch: Function) {
-        axios.get("http://localhost:3001/post/" + id).then((res) => {
+        axios.get("/post/" + id).then((res) => {
             return dispatch({ type: GET_POST, payload: res.data });
         });
     };
@@ -78,7 +80,7 @@ export function getPost(id: String) {
 export function likePost(post: IPost, user: IUser) {
     return (dispatch: Function) => {
         axios
-            .post("http://localhost:3001/like", {
+            .post("/like", {
                 _id: post._id,
                 author: user,
             })
