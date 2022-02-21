@@ -56,7 +56,7 @@ export function getProfile(username: string) {
     };
 }
 
-export function getPosts(_id: string | undefined) {
+export function getPosts(_id: string | undefined = "") {
     return function (dispatch: Function) {
         console.log(_id);
         _id

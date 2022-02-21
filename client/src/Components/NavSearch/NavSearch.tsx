@@ -1,5 +1,6 @@
 import styles from "./NavSearch.module.scss";
 import { BsBellFill } from "react-icons/bs";
+import { FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import useUser from "../../Hooks/useUser";
@@ -74,9 +75,14 @@ const NavSearch = () => {
                             </p>
                         </div>
                     </div>
-                    <Button style={{ color: "white" }} onClick={handleSignOut}>
-                        Cerrar sesión
-                    </Button>
+                    <FaSignOutAlt
+                        style={{
+                            color: "#ff1",
+                            fontSize: "1.5rem",
+                            cursor: "pointer",
+                        }}
+                        onClick={handleSignOut}
+                    ></FaSignOutAlt>
                 </div>
             </div>
         </nav>
