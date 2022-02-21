@@ -16,7 +16,7 @@ const Posts = () => {
     const [showModal, setShowModal] = useState(false);
     const plusVariants = {
         normal: { scale: 1 },
-        active: { scale: 50, rotateZ: 180, x: 200 },
+        active: { scale: 50, rotateZ: 180, x: 200, zIndex: 5000 },
     };
     const postsVariants = {
         hidden: { opacity: 0 },

@@ -1,32 +1,35 @@
 @import "../../Styles/variables.scss";
 @import "../../Styles/mixins.scss";
 .aside_tags {
-  background-color: $bg-secondary-color;
-  display: flex;
-  flex-direction: column;
-  padding: 3rem 2rem;
-  border-radius: 0.5rem;
-  border: 1px solid $white;
-  h2 {
-    color: $yellow;
-  }
-  .aside_sections {
-    color: $white;
-    a {
-      color: $white;
+    background-color: $bg-secondary-color;
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 2rem;
+    border-radius: 0.5rem;
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+    border: 1px solid $white;
+    h2 {
+        color: $yellow;
     }
-  }
-  .aside_tags_popular {
-    a {
-      color: $white;
+    .aside_sections {
+        color: $white;
+        a {
+            color: $white;
+        }
     }
-  }
-  .aside_enlaces {
-    a {
-      color: $white;
+    .aside_tags_popular {
+        a {
+            color: $white;
+        }
     }
-  }
+    .aside_enlaces {
+        a {
+            color: $white;
+        }
+    }
 }
 .aside_tags_enlaces {
-  @include flex-column;
+    @include flex-column;
 }

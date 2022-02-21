@@ -10,7 +10,6 @@ import {
 import { IUser } from "../../../../src/models/User";
 import style from "./Login.module.scss";
 import useUser from "../../Hooks/useUser";
-import { auth } from "../../../../src/services/firebase/firebase";
 import Button from "../../Components/Button/Button";
 import { BsGoogle, BsGithub } from "react-icons/bs";
 
@@ -30,7 +29,7 @@ export default function Login(): JSX.Element {
         createdAt: {},
     });
     const [loading, setLoading] = useState(false);
-    const [action, setAction] = useState(USER_ACTION.signIn);
+    const [action, setAction] = useState(USER_ACTION.register);
     const navigate = useNavigate();
     const user = useUser();
 
@@ -118,7 +117,10 @@ export default function Login(): JSX.Element {
                 </header>
                 <div id={style.form_cont}>
                     <form onSubmit={handleSubmit}>
-                        <h3> Hola, ¡Bienvenida/o a Henry Social! </h3>
+                        <h1>
+                            {" "}
+                            Hola, ¡Bienvenida/o a <strong>Henry Social!</strong>
+                        </h1>
                         <input
                             type="email"
                             id={style.email}
