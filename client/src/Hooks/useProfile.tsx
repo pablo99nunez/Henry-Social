@@ -16,7 +16,6 @@ export const useProfile = (username: string | undefined) => {
     }, []);
     useEffect(() => {
         if (username === userLogeado?.username) {
-            console.log("Owner:", user);
             setisOwner(true);
         } else setisOwner(false);
     }, [username, userLogeado]);

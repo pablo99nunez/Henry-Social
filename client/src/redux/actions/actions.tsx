@@ -20,7 +20,6 @@ axios.defaults.baseURL = import.meta.env.PROD
 
 export function getUser(email: string) {
     return function (dispatch: Function) {
-        console.log(axios.defaults.baseURL, import.meta.env.PROD);
         axios.post("/findUser", { email }).then((res) => {
             return dispatch({ type: GET_USER, payload: res.data });
         });

@@ -41,7 +41,6 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                     author: user,
                 })
                 .then((data) => {
-                    console.log("Success:", data);
                     alert("Publicado");
                     setOpen(false);
                     dispatch(getPosts());
@@ -49,7 +48,6 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 })
                 .catch((error) => console.error("Error:", error));
     };
-    console.log(buttons);
     return (
         <div className={styles.modal_add_post}>
             <div className={styles.add_post_textarea}>
