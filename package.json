@@ -6,9 +6,8 @@
     "scripts": {
         "start": "ts-node src/index.ts",
         "server": "nodemon src/index.ts",
-        "build": "cd client && npm run build",
-        "deploy": "npm run build && && firebase deploy",
-        "testDeploy": "git push heroku Deployment:main && cd client && npm run build && cd.. && firebase hosting:channel:deploy testingDeploy",
+        "deploy": "cd client && npm run build && firebase deploy --only hosting",
+        "testDeploy": "git push heroku Deployment:main && cd client && npm run build && firebase hosting:channel:deploy testingDeploy",
         "dev": "cd client && npm run dev",
         "test": "nyc _mocha --timeout 10000 --exit --report lcovonly -- -R spec",
         "lint": "eslint --fix --config .eslintrc.json \"**/*.js\""
