@@ -11,13 +11,11 @@ import modelUser, { IUser } from "../../models/User";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-const url = "http://localhost:3001"; //"https://henry-social-back.herokuapp.com";
-
 async function defaultUsername(name: string | null): Promise<string> {
     name = name ?? "username";
     let refactor = name.toLowerCase().split(" ").join("-");
     let foundUserWithTheSameUsername = await axios
-        .post("http://localhost:3001/findUser", {
+        .post("/findUser", {
             username: refactor,
         })
         .then((e) => e.data);
@@ -51,18 +49,13 @@ export async function signUpWithEmail(userInfo: IUser) {
             );
         }
         console.log("avatar2", avatar);
-        await fetch(url + "/user", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
+        await axios
+            .post("/user", {
                 name,
                 username,
                 email,
                 avatar: downloadURL,
-            }),
-        })
+            })
             .then(() => {
                 if (password)
                     return createUserWithEmailAndPassword(
@@ -87,17 +80,11 @@ export function signUpWithGmail() {
             let username = await defaultUsername(displayName);
 
             try {
-                await fetch(url + "/user", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        name: displayName,
-                        email,
-                        avatar: photoURL,
-                        username,
-                    }),
+                await axios.post("/user", {
+                    name: displayName,
+                    email,
+                    avatar: photoURL,
+                    username,
                 });
             } catch (e) {
                 throw new Error("ERROR" + e);
@@ -116,17 +103,11 @@ export function signUpWithGitHub() {
             const { email, displayName, photoURL } = result.user;
             let username = await defaultUsername(displayName);
             try {
-                await fetch(url + "/user", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        name: displayName,
-                        email,
-                        avatar: photoURL,
-                        username,
-                    }),
+                await axios.post("/user", {
+                    name: displayName,
+                    email,
+                    avatar: photoURL,
+                    username,
                 });
             } catch (e) {
                 throw new Error("ERROR" + e);

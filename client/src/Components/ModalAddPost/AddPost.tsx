@@ -36,9 +36,9 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     const handleSubmit = (e: any) => {
         if (user)
             axios
-                .post(`http://localhost:3001/post`, {
+                .post(`/post`, {
                     body: textarea,
-                    author: user
+                    author: user,
                 })
                 .then((data) => {
                     console.log("Success:", data);

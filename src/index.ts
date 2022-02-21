@@ -4,9 +4,14 @@ import express from "express";
 const cors = require("cors");
 const morgan = require("morgan");
 import "dotenv/config.js";
+import axios from "axios";
 import userRouter from "./Routes/UserRoutes";
 import postRouter from "./Routes/PostRoutes";
 
+axios.defaults.baseURL =
+    process.env.NODE_ENV === "PRODUCTION"
+        ? "https://henry-social-back.herokuapp.com"
+        : "http://localhost:3001";
 const app = express();
 app.use(cors());
 

@@ -3,11 +3,6 @@ const axios = require("axios");
 import User from "../models/User";
 const router = Router();
 
-axios.defaults.baseUrl =
-    process.env.NODE_ENV === "PRODUCTION"
-        ? "https://henry-social-back.herokuapp.com"
-        : "http://localhost:3001";
-
 router.post("/user", (req, res) => {
     User.create(req.body)
         .then((result) => {
