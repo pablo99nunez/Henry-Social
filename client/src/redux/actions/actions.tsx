@@ -56,13 +56,14 @@ export function getProfile(username: string) {
     };
 }
 
-export function getPosts(_id: string) {
+export function getPosts(_id: string | undefined) {
     return function (dispatch: Function) {
+        console.log(_id);
         _id
-            ? axios.post("http://localhost:3001/posts").then((res) => {
+            ? axios.post("http://localhost:3001/posts", { _id }).then((res) => {
                   return dispatch({ type: GET_POSTS, payload: res.data });
               })
-            : axios.post("http://localhost:3001/posts", { _id }).then((res) => {
+            : axios.post("http://localhost:3001/posts").then((res) => {
                   return dispatch({ type: GET_POSTS, payload: res.data });
               });
     };

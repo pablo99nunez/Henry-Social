@@ -6,7 +6,7 @@ const router = Router();
 router.post("/posts", async (req, res) => {
     try {
         const { _id } = req.body;
-
+        console.log(_id);
         const posts = _id
             ? await Post.find({
                   author: {

@@ -13,12 +13,9 @@ import Button from "../../Components/Button/Button";
 import Settings from "../../Components/Settings/Settings";
 import useUser from "../../Hooks/useUser";
 import Modal from "../../Components/Modal/Modal";
-import { followUser, getProfile } from "../../redux/actions/actions";
+import { followUser, getPosts, getProfile } from "../../redux/actions/actions";
 import { useProfile } from "../../Hooks/useProfile";
-
-interface Params {
-    param: string;
-}
+import { IState } from "../../redux/reducer";
 
 export default function User() {
     const [edit, setEdit] = useState(false);
@@ -27,7 +24,7 @@ export default function User() {
 
     const [user, isOwner] = useProfile(username);
     const [isFollowing, setIsFollowing] = useState(false);
-
+    const posts = useSelector((state: IState) => state.posts);
     let userLogeado = useUser();
     let dispatch = useDispatch();
 
@@ -42,8 +39,8 @@ export default function User() {
             setIsFollowing(userLogeado.following.includes(user.username));
     }, [username, userLogeado]);
     useEffect(() => {
-        // if (username) dispatch(getProfile(username));
-    }, [isFollowing]);
+        if (user) dispatch(getPosts(user._id));
+    }, [user]);
 
     const editProfile = () => {
         return setEdit(true);
@@ -182,7 +179,11 @@ export default function User() {
                         <div className={style.follow_bar}>
                             <FollowBar />
                         </div>
-                        <div className={style.posts}></div>
+                        <div className={style.posts}>
+                            {posts?.map((e) => (
+                                <Post post={e}></Post>
+                            ))}
+                        </div>
                         <div className={style.mistery_box}>
                             {"Misterious NavBar"}
                         </div>

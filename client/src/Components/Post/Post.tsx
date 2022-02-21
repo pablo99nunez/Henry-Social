@@ -19,7 +19,8 @@ const Post: FC<Props> = ({ post }) => {
     const postRef = useRef(null);
     const contentRef = useRef(null);
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        if (e.target === postRef.current || e) {
+        console.log(e.target, postRef.current);
+        if (e.target === postRef.current || e.target === contentRef.current) {
             navigate("/post/" + post._id);
         }
     };

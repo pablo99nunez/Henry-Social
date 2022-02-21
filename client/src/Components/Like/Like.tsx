@@ -27,7 +27,6 @@ export const Like: FC<Props> = ({ post }) => {
                 (e) => e.username == user.username
             )[0];
             setLike(isLiked);
-            console.log("Liked:", post.nLikes, user, isLiked);
         }
     }, [user, post]);
     const variants = {

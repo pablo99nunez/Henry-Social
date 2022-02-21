@@ -31,7 +31,7 @@ const Comment = ({ key, data }: any) => {
 
                 <div className="likesComments">
                     <div className="sizeLikes">
-                        <Like post={post} />
+                        {/* <Like post={post} /> */}
                         {/* {data.countLikes &&
               <p className='count'>{data.countLikes}</p>
             } */}
