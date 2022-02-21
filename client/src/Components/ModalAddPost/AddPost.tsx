@@ -20,6 +20,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     };
 
     const handleClick = (e: any) => {
+        console.log(buttons.tag)
         if (e.target.textContent === "Foto/Video") {
             setButtons({
                 ...buttons,
@@ -34,11 +35,13 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     };
 
     const handleSubmit = (e: any) => {
+        console.log(buttons.tag)
         if (user)
             axios
                 .post(`/post`, {
                     body: textarea,
                     author: user,
+                    typePost: buttons.tag
                 })
                 .then((data) => {
                     alert("Publicado");
