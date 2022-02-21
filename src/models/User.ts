@@ -7,6 +7,7 @@ enum Roles {
     TA = "TA",
 }
 export interface IUser {
+    _id?: string;
     name: string;
     email: string;
     username?: string;

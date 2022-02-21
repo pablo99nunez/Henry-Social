@@ -7,6 +7,7 @@
   // @include flex-aic;
   display: flex;
   padding: 15px;
+  color: white;
   position: relative;
   height: max-content;
   background-color: black;
@@ -55,30 +56,11 @@
     .likesComments {
       gap: 40px;
       @include flex-aic;
-      .sizeLikes,
-      .sizeComments {
+      .sizeLikes div, .sizeComments{
         gap: 10px;
-        @include flex-aic;
         font-size: 14px;
         cursor: pointer;
-        .icon,
-        .count {
-          color: rgb(150, 150, 150);
-        }
-      }
-      .sizeLikes {
-        &:hover .icon {
-          color: $yellow;
-        }
-        .icon.fas {
-          color: $yellow;
-        }
-      }
-      .sizeComments:hover {
-        .icon,
-        .count {
-          color: $skyblue;
-        }
+        @include flex-aic;
       }
     }
   }
@@ -86,7 +68,7 @@
     top: 3px;
     right: 3px;
     position: absolute;
-    > .fas {
+    .icon{
       padding: 8px;
       color: gray;
       font-size: 30px;

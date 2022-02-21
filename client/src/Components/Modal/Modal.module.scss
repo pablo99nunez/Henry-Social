@@ -7,6 +7,7 @@
     background-color: #00000011;
     backdrop-filter: blur(3px);
     top: 0;
+    left: 0;
     display: grid;
     place-content: center;
     z-index: 40000;
@@ -15,6 +16,7 @@
         background-color: $yellow;
         color: $black;
         padding: 1rem;
+
         height: fit-content;
         width: fit-content;
         min-height: 100px;
@@ -25,6 +27,9 @@
         h1 {
             border-bottom: 1px solid black;
             font-weight: bold;
+        }
+        .content {
+            padding: 1rem;
         }
     }
 }
