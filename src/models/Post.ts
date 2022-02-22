@@ -8,6 +8,7 @@ export interface IPost {
     numComments: number;
     author: IUser;
     _id: number;
+    typePost:string;
 }
 
 interface Comment {
@@ -42,6 +43,10 @@ const postSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
     },
+    typePost: {
+        type: String,
+        require: true,
+    }
 });
 
 const commentSchema = new Schema({
