@@ -11,7 +11,6 @@ const url =
 axios.defaults.baseURL = url;
 
 router.post("/user", (req, res) => {
-  console.log(url);
   User.create(req.body)
     .then((result) => {
       res.status(201).json(result);
@@ -30,6 +29,7 @@ router.get("/users", async (req, res) => {
 
 router.post("/findUser", (req, res) => {
   const query = req.body;
+  console.log(url);
   User.findOne(query)
     .then((e) => {
       res.json(e);
