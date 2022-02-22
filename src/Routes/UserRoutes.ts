@@ -122,7 +122,15 @@ router.post("/follow", async (req, res) => {
           .catch((e) => {
             throw new Error(e);
           });
-
+        axios.post("/notification", {
+          type: NotificationType.Follow,
+          emisor: userSeguidor,
+          receptor: userSeguido,
+          link:
+            process.env.MODE === "PRODUCTION"
+              ? "https://henry-social.web.app"
+              : "http://localhost:3000" + "/profile/" + userSeguidor.username,
+        });
         res.status(200).json({ userSeguidor, userSeguido });
       } catch (e) {
         res.status(401).json({ error: e });
@@ -160,60 +168,65 @@ router.post("/unfollow", async (req, res) => {
 
 router.post("/notification", async (req, res) => {
   let notification: INotification = req.body;
+  console.log(notification);
   try {
-    const receptor = await axios
-      .post("/findUser", { _id: notification.receptor })
-      .then((e) => e.data);
-    const emisor = await axios
-      .post("/findUser", { _id: notification.emisor })
-      .then((e) => e.data);
-
-    switch (notification.type) {
-      case NotificationType.Follow:
+    const receptor = await User.findById(notification.receptor);
+    const emisor = await User.findById(notification.emisor);
+    console.log(receptor, emisor);
+    if (receptor && emisor) {
+      switch (notification.type) {
+        case NotificationType.Follow:
+          {
+            notification = {
+              content: `${emisor.name} ha comenzado a seguirte`,
+              type: notification.type,
+              link: notification.link,
+              receptor,
+              emisor,
+            };
+          }
+          break;
+        case NotificationType.Like:
+          {
+            notification = {
+              content: `${emisor.name} le ha dado like a tu publicacion`,
+              link: notification.link,
+              type: notification.type,
+              receptor,
+              emisor,
+            };
+          }
+          break;
+        case NotificationType.Comment:
+          {
+            notification = {
+              content: `${emisor.name} ha comentado tu publicacion`,
+              link: notification.link,
+              type: notification.type,
+              receptor,
+              emisor,
+            };
+          }
+          break;
+      }
+      await User.updateOne(
+        { _id: notification.receptor },
         {
-          notification = {
-            content: `${emisor.name} ha comenzado a seguirte`,
-            type: notification.type,
-            link: notification.link,
-            receptor,
-            emisor,
-          };
-        }
-        break;
-      case NotificationType.Like:
-        {
-          notification = {
-            content: `${emisor.name} le ha dado like a tu publicacion`,
-            link: notification.link,
-            type: notification.type,
-            receptor,
-            emisor,
-          };
-        }
-        break;
-      case NotificationType.Comment:
-        {
-          notification = {
-            content: `${emisor.name} ha comentado tu publicacion`,
-            link: notification.link,
-            type: notification.type,
-            receptor,
-            emisor,
-          };
-        }
-        break;
-    }
-    await User.updateOne(
-      { _id: notification.receptor },
-      {
-        $addToSet: {
-          notifications: notification,
+          $addToSet: {
+            notifications: notification,
+          },
         },
-      },
-      { new: true }
-    ).then((e) => res.json(e));
+        { new: true }
+      )
+        .then((e) => res.json(e))
+        .catch((e) => {
+          throw new Error(e);
+        });
+    } else {
+      throw new Error("No se encontraron los usuarios");
+    }
   } catch (e) {
-    res.status(404).send("Error: " + e);
+    res.status(400).send("Error: " + e);
   }
 });
 

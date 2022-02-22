@@ -1,6 +1,7 @@
 import { Router } from "express";
 import Post from "../models/Post";
-import { postValidate } from "../models/Post";
+import { NotificationType } from "../models/User";
+import axios from "axios";
 
 const router = Router();
 
@@ -53,6 +54,7 @@ router.post("/like", async (req, res) => {
     const isLikedAlready = !!post?.nLikes.filter(
       (e) => e.username === author.username
     )[0];
+
     console.log(
       post?.nLikes.filter((e) => {
         console.log(e, author.username);
@@ -70,6 +72,19 @@ router.post("/like", async (req, res) => {
       )
         .populate("author")
         .populate("nLikes")
+        .catch((e) => {
+          throw new Error(e);
+        });
+      await axios
+        .post("/notification", {
+          type: NotificationType.Like,
+          receptor: result?.author._id,
+          emisor: author._id,
+          link:
+            process.env.MODE === "PRODUCTION"
+              ? "https://henry-social.web.app"
+              : "http://localhost:3000" + "/post/" + _id,
+        })
         .catch((e) => {
           throw new Error(e);
         });
