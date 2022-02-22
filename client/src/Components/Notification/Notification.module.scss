@@ -1,0 +1,12 @@
+@import "../../Styles/variables.scss";
+.notification {
+  display: flex;
+  padding: 1rem;
+  width: 100%;
+  align-items: center;
+  justify-content: start;
+  border-bottom: 1px solid $black;
+  img {
+    border-radius: 50%;
+  }
+}
