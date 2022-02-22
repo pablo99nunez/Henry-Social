@@ -36,7 +36,7 @@ app.use("/", postRouter);
 app.listen(process.env.PORT, () => {
   console.log("Server listening at " + process.env.PORT);
   axios.defaults.baseURL =
-    process.env.NODE_ENV === "PRODUCTION"
+    process.env.MODE === "PRODUCTION"
       ? "https://henry-social-back.herokuapp.com"
       : "http://localhost:3001";
 });

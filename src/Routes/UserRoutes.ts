@@ -3,12 +3,6 @@ import { Router } from "express";
 import axios from "axios";
 import User from "../models/User";
 const router = Router();
-const url = "https://henry-social-back.herokuapp.com";
-/*   process.env.NODE_ENV === "PRODUCTION"
-    ? "https://henry-social-back.herokuapp.com"
-    : "http://localhost:3001";
- */
-axios.defaults.baseURL = url;
 
 router.post("/user", (req, res) => {
   User.create(req.body)
@@ -89,7 +83,6 @@ async function addFollower(seguido: string, seguidor: string) {
 
 router.post("/follow", async (req, res) => {
   const { seguidor, seguido } = req.body;
-  console.log(url);
   try {
     if (await isFollowing(seguidor, seguido)) {
       //Si el seguidor ya sigue al seguido
@@ -98,12 +91,12 @@ router.post("/follow", async (req, res) => {
         seguidor,
       }); //Deja de seguir al usuario
       const userSeguidor = await axios
-        .post(url + "/findUser", {
+        .post("/findUser", {
           username: seguidor,
         })
         .then((e: any) => e.data);
       const userSeguido = await axios
-        .post(url + "/findUser", {
+        .post("/findUser", {
           username: seguido,
         })
         .then((e: any) => e.data);
@@ -112,7 +105,7 @@ router.post("/follow", async (req, res) => {
       try {
         await addFollower(seguido, seguidor);
         const userSeguidor = await axios
-          .post(url + "/findUser", {
+          .post("/findUser", {
             username: seguidor,
           })
           .then((e: any) => e.data)
@@ -120,7 +113,7 @@ router.post("/follow", async (req, res) => {
             throw new Error(e);
           });
         const userSeguido = await axios
-          .post(url + "/findUser", {
+          .post("/findUser", {
             username: seguido,
           })
           .then((e: any) => e.data)
