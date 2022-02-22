@@ -8,6 +8,8 @@
   border: 1px solid $white;
   color: $white;
   height: fit-content;
+  position: sticky;
+  top: 100px;
   display: flex;
   flex-direction: column;
   place-content: center;

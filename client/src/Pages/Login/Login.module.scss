@@ -28,8 +28,8 @@
       align-items: center;
 
       img {
-        width: max-content;
-        height: auto;
+        width: auto;
+        height: 80px;
         margin-left: 1.5rem;
       }
 
@@ -115,8 +115,6 @@
       display: flex;
       justify-content: center;
       gap: 25px;
-      top: 55px;
-      position: relative;
 
       .alt_btns {
         background-color: $yellow;
@@ -140,11 +138,11 @@
 
     button {
       cursor: pointer;
-      transition: transform ease-in 300ms;
-      -webkit-transition: transform ease-in 300ms;
-      -moz-transition: transform ease-in 300ms;
-      -ms-transition: transform ease-in 300ms;
-      -o-transition: transform ease-in 300ms;
+      /* transition: transform ease-in 300ms;
+            -webkit-transition: transform ease-in 300ms;
+            -moz-transition: transform ease-in 300ms;
+            -ms-transition: transform ease-in 300ms;
+            -o-transition: transform ease-in 300ms; */
 
       &:hover {
         transform: scale(1.1);

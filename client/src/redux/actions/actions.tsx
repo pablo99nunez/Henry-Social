@@ -8,80 +8,89 @@ export const GET_PROFILE = "GET_PROFILE";
 export const GET_POSTS = "GET_POSTS";
 export const GET_POST = "GET_POST";
 export const LIKE_POST = "LIKE_POST";
+export const MAKE_ADMIN = "MAKE_ADMIN";
 
 export interface IAction {
-    type: string;
-    payload: any;
+  type: string;
+  payload: any;
 }
 
+axios.defaults.baseURL = import.meta.env.PROD
+  ? "https://henry-social-back.herokuapp.com"
+  : "http://localhost:3001";
+
 export function getUser(email: string) {
-    return function (dispatch: Function) {
-        axios.post("http://localhost:3001/findUser", { email }).then((res) => {
-            return dispatch({ type: GET_USER, payload: res.data });
-        });
-    };
+  return function (dispatch: Function) {
+    axios.post("/findUser", { email }).then((res) => {
+      return dispatch({ type: GET_USER, payload: res.data });
+    });
+  };
 }
 export function signOut() {
-    return function (dispatch: Function) {
-        return dispatch({ type: SIGN_OUT });
-    };
+  return function (dispatch: Function) {
+    return dispatch({ type: SIGN_OUT });
+  };
 }
 
 export function followUser(seguidor: string, seguido: string) {
-    return function (dispatch: Function) {
-        axios
-            .post("http://localhost:3001/follow", {
-                seguidor,
-                seguido,
-            })
-            .then((res) => {
-                return dispatch({
-                    type: FOLLOW_USER,
-                    payload: {
-                        seguidor: res.data.userSeguidor,
-                        seguido: res.data.userSeguido,
-                    },
-                });
-            });
-    };
+  return function (dispatch: Function) {
+    axios
+      .post("/follow", {
+        seguidor,
+        seguido,
+      })
+      .then((res) => {
+        return dispatch({
+          type: FOLLOW_USER,
+          payload: {
+            seguidor: res.data.userSeguidor,
+            seguido: res.data.userSeguido,
+          },
+        });
+      });
+  };
 }
 
 export function getProfile(username: string) {
-    return function (dispatch: Function) {
-        axios
-            .post("http://localhost:3001/findUser", { username })
-            .then((res) => {
-                return dispatch({ type: GET_PROFILE, payload: res.data });
-            });
-    };
+  return function (dispatch: Function) {
+    axios.post("/findUser", { username }).then((res) => {
+      return dispatch({ type: GET_PROFILE, payload: res.data });
+    });
+  };
 }
 
-export function getPosts(_id: string | undefined) {
-    return function (dispatch: Function) {
-        console.log(_id);
-        _id
-            ? axios.post("http://localhost:3001/posts", { _id }).then((res) => {
-                  return dispatch({ type: GET_POSTS, payload: res.data });
-              })
-            : axios.post("http://localhost:3001/posts").then((res) => {
-                  return dispatch({ type: GET_POSTS, payload: res.data });
-              });
-    };
+export function getPosts(_id: string | undefined = "") {
+  return function (dispatch: Function) {
+    _id
+      ? axios.post("/posts", { _id }).then((res) => {
+          return dispatch({ type: GET_POSTS, payload: res.data });
+        })
+      : axios.post("/posts").then((res) => {
+          return dispatch({ type: GET_POSTS, payload: res.data });
+        });
+  };
 }
 export function getPost(id: String) {
-    return function (dispatch: Function) {
-        axios.get("http://localhost:3001/post/" + id).then((res) => {
-            return dispatch({ type: GET_POST, payload: res.data });
-        });
-    };
+  return function (dispatch: Function) {
+    axios.get("/post/" + id).then((res) => {
+      return dispatch({ type: GET_POST, payload: res.data });
+    });
+  };
 }
 export function likePost(post: IPost, user: IUser) {
-    return (dispatch: Function) => {
-        axios
-            .post("http://localhost:3001/like", {
-                _id: post._id,
-                author: user,
-            })
-            .then((e) => dispatch({ type: LIKE_POST, payload: e.data }));
-    };
+  return (dispatch: Function) => {
+    axios
+      .post("/like", {
+        _id: post._id,
+        author: user,
+      })
+      .then((e) => dispatch({ type: LIKE_POST, payload: e.data }));
+  };
+}
+export function makeAdmin(username: string) {
+  return (dispatch: Function) => {
+    axios
+      .post("/admin", { username })
+      .then((e) => dispatch({ type: MAKE_ADMIN, payload: e.data }));
+  };
 }

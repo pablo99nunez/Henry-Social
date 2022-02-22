@@ -16,7 +16,7 @@
     width: 100vw;
     position: absolute;
     z-index: -10;
-    bottom: 70%;
+    bottom: 60%;
   }
   .head_profile {
     display: flex;
@@ -58,7 +58,7 @@
           color: $yellow;
           width: fit-content;
           flex-wrap: wrap;
-          max-width: 100%;
+          max-width: calc(50% - 8vw);
         }
         .userInfo {
           display: flex;

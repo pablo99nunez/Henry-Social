@@ -1,41 +1,41 @@
 @import "../../Styles/variables.scss";
 .followBar {
+  display: flex;
+  color: $white;
+  flex-direction: column;
+  padding: 1rem;
+  background: $black;
+  border-radius: 8px;
+  gap: 1rem;
+  border: 1px solid $grey;
+  align-items: center;
+  h2 {
+    font-weight: bold;
+  }
+  .users {
+    width: 90%;
     display: flex;
-    color: $white;
     flex-direction: column;
-    padding: 1rem;
-    background: $black;
-    border-radius: 8px;
     gap: 1rem;
-    border: 1px solid $grey;
-    align-items: center;
-    h2 {
-        font-weight: bold;
+    .user {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: left;
+      gap: 1rem;
+      p {
+        font-size: 1.1rem;
+      }
+      img {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        border: rgba(255, 255, 1, 1) solid 1.5px;
+      }
     }
-    .users {
-        width: 90%;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        .user {
-            display: flex;
-            flex-direction: row-reverse;
-            align-items: center;
-            justify-content: left;
-            gap: 1rem;
-            p {
-                font-size: 1.1rem;
-            }
-            img {
-                width: 3rem;
-                height: 3rem;
-                border-radius: 50%;
-                border: rgba(255, 255, 1, 1) solid 1.5px;
-            }
-        }
-    }
-    h4 {
-        color: $yellow;
-        cursor: pointer;
-    }
+  }
+  h4 {
+    color: $yellow;
+    cursor: pointer;
+  }
 }

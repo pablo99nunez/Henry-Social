@@ -6,6 +6,9 @@
   flex-direction: column;
   padding: 3rem 2rem;
   border-radius: 0.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
   border: 1px solid $white;
   h2 {
     color: $yellow;
