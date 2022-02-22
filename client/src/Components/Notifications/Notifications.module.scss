@@ -13,14 +13,21 @@
   flex-direction: column-reverse;
   backdrop-filter: blur(10px);
 }
-/* .container::after {
-  content: "";
-  width: 2rem;
-  height: 2rem;
-  background-color: inherit;
-  position: absolute;
-  top: -0.6rem;
-  left: 0.9rem;
-  transform: rotateZ(45deg);
+.icon_wrap {
+  position: relative;
+  .icon {
+    color: $white;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+  .news {
+    width: 13px;
+    box-shadow: 3px 3px 10px $black;
+    height: 13px;
+    border-radius: 50%;
+    background-color: $yellow;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
- */

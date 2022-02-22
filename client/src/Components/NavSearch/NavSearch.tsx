@@ -57,13 +57,8 @@ const NavSearch = () => {
           }}
           className={styles.notifications}
         >
-          <div>
-            <BsBellFill
-              className={styles.nav_icon_notification}
-              onClick={() => setOpenNotifications(!openNotifications)}
-            />
-            <Notifications open={openNotifications}></Notifications>
-          </div>
+          <Notifications open={openNotifications}></Notifications>
+
           <div
             className={styles.nav_button_profile}
             onClick={() => {
