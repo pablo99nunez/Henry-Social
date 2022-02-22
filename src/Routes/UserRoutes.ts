@@ -89,6 +89,7 @@ async function addFollower(seguido: string, seguidor: string) {
 
 router.post("/follow", async (req, res) => {
   const { seguidor, seguido } = req.body;
+  console.log(url);
   try {
     if (await isFollowing(seguidor, seguido)) {
       //Si el seguidor ya sigue al seguido
