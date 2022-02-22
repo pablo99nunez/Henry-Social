@@ -9,6 +9,7 @@ import {
   IAction,
   LIKE_POST,
   MAKE_ADMIN,
+  SEE_NOTIFICATION,
   SIGN_OUT,
 } from "../actions/actions";
 
@@ -72,6 +73,12 @@ export default function rootReducer(state = initialState, action: IAction) {
       return {
         ...state,
         profile: action.payload,
+      };
+    }
+    case SEE_NOTIFICATION: {
+      return {
+        ...state,
+        user: action.payload,
       };
     }
     default:

@@ -10,6 +10,7 @@ export const GET_POSTS = "GET_POSTS";
 export const GET_POST = "GET_POST";
 export const LIKE_POST = "LIKE_POST";
 export const MAKE_ADMIN = "MAKE_ADMIN";
+export const SEE_NOTIFICATION = "SEE_NOTIFICATION";
 
 export interface IAction {
   type: string;
@@ -94,5 +95,12 @@ export function makeAdmin(username: string) {
     axios
       .post("/admin", { username })
       .then((e) => dispatch({ type: MAKE_ADMIN, payload: e.data }));
+  };
+}
+export function seeNotification(id: number, userId: string) {
+  return (dispatch: Function) => {
+    axios.put("/notification", { id, userId }).then((e) => {
+      return dispatch({ type: SEE_NOTIFICATION, payload: e.data });
+    });
   };
 }

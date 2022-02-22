@@ -35,8 +35,8 @@ export default function Notifications({ open }: Props) {
         animate={open ? "open" : "close"}
         className={styles.container}
       >
-        {notifications?.map((e: INotification) => {
-          return <Notification detail={e}></Notification>;
+        {notifications?.map((e: INotification, i) => {
+          return <Notification detail={e} key={i} id={i}></Notification>;
         })}
       </motion.div>
     </AnimatePresence>

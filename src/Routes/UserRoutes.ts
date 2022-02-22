@@ -6,11 +6,15 @@ import { INotification, NotificationType } from "../models/User";
 const router = Router();
 
 router.post("/user", (req, res) => {
-  User.create(req.body)
-    .then((result) => {
-      res.status(201).json(result);
-    })
-    .catch((e) => res.status(400).json({ error: e }));
+  User.findOne(req.body).then((e) => {
+    if (e) {
+      User.create(req.body)
+        .then((result) => {
+          res.status(201).json(result);
+        })
+        .catch((e) => res.status(400).json({ error: e }));
+    } else res.send(200);
+  });
 });
 
 router.get("/users", async (req, res) => {
@@ -162,7 +166,19 @@ router.post("/unfollow", async (req, res) => {
     res.status(400).json({ error: error });
   }
 });
-
+router.put("/notification", async (req, res) => {
+  const { id, userId } = req.body;
+  const user = await User.findById(userId);
+  if (user) {
+    user.notifications[id].new = false;
+    user.markModified("notifications");
+    await user.save().then((user) => {
+      res.json(user);
+    });
+  } else {
+    res.status(400).send("User not found");
+  }
+});
 router.post("/notification", async (req, res) => {
   let notification: INotification = req.body;
   console.log(notification);
@@ -234,6 +250,15 @@ router.get("/PELIGRO", async (req, res) => {
   await User.deleteMany({});
 
   res.json("DB Clean");
+});
+router.get("/deleteNotis", async (req, res) => {
+  await User.updateMany(
+    {},
+    {
+      notifications: [],
+    }
+  );
+  res.send("Notificaciones eliminadas");
 });
 
 export default router;
