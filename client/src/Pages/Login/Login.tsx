@@ -12,6 +12,7 @@ import style from "./Login.module.scss";
 import useUser from "../../Hooks/useUser";
 import Button from "../../Components/Button/Button";
 import { BsGoogle, BsGithub } from "react-icons/bs";
+import { InfoAlert } from "../../Components/Alert/Alert";
 
 enum USER_ACTION {
   register,
@@ -41,7 +42,10 @@ export default function Login(): JSX.Element {
     e.preventDefault();
 
     if (user?.username) {
-      alert("Ya estas logeado, redirigiendo a Home");
+      InfoAlert.fire({
+        title: "Ya estas logeado, redirigiendo a Home",
+        icon: "info",
+      });
       navigate("/");
     } else {
       try {
@@ -49,7 +53,7 @@ export default function Login(): JSX.Element {
 
         if (action == USER_ACTION.register) {
           await signUpWithEmail(input).then(() => {
-            alert("Usuario creado con exito");
+            InfoAlert.fire("Usuario creado con exito");
           });
         } else if (input.password != undefined) {
           await signInWithEmail(input.email, input.password);
@@ -58,7 +62,8 @@ export default function Login(): JSX.Element {
         navigate("/");
         setLoading(false);
       } catch (e) {
-        alert(e);
+        console.error(e);
+        InfoAlert.fire({ title: "Algo salio mal", icon: "error" });
         setLoading(false);
       }
     }
@@ -67,17 +72,25 @@ export default function Login(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/ban-types
   const handleLogin = async (cb: Function) => {
     if (user?.username) {
-      alert("Ya estas logeado, redirigiendo a Home");
+      InfoAlert.fire({
+        title: "Ya estas logeado, redirigiendo a Home",
+        icon: "info",
+      });
       navigate("/");
     } else {
       try {
         const result = await cb();
         if (result) {
-          alert("Usuario logueado con exito");
+          InfoAlert.fire({
+            title: "Usuario logueado con exito",
+            icon: "success",
+          });
+          // alert("Usuario logueado con exito");
           navigate("/");
         }
       } catch (e) {
-        alert(e);
+        console.error(e);
+        InfoAlert.fire({ title: "Algo salio mal", icon: "error" });
       }
     }
   };

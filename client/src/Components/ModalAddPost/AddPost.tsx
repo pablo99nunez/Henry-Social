@@ -3,9 +3,11 @@ import React, { useState, FC } from "react";
 import { useDispatch } from "react-redux";
 import useUser from "../../Hooks/useUser";
 import { getPosts } from "../../redux/actions/actions";
+import { InfoAlert } from "../Alert/Alert";
 import styles from "./AddPost.module.scss";
 
 type Props = {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   setOpen: Function;
 };
 
@@ -15,11 +17,11 @@ const AddPost: FC<Props> = ({ setOpen }) => {
   const dispatch = useDispatch();
   const user = useUser();
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextarea(e.target.value);
   };
 
-  const handleClick = (e: any) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     console.log(buttons.tag);
     if (e.target.textContent === "Foto/Video") {
       setButtons({
@@ -34,7 +36,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     }
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = () => {
     console.log(buttons.tag);
     if (user)
       axios
@@ -44,7 +46,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
           typePost: buttons.tag,
         })
         .then((data) => {
-          alert("Publicado");
+          InfoAlert.fire("Publicado");
           setOpen(false);
           dispatch(getPosts());
           return data;
@@ -69,7 +71,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
         <button onClick={(e) => handleClick(e)}>Pregunta</button>
       </div>
       <div className={styles.add_post_buttons}>
-        <button onClick={(e) => handleSubmit(e)}>Publicar</button>
+        <button onClick={() => handleSubmit()}>Publicar</button>
         <button onClick={() => setOpen(false)}>Cancelar</button>
       </div>
     </div>

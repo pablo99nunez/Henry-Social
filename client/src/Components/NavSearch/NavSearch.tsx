@@ -7,6 +7,7 @@ import useUser from "../../Hooks/useUser";
 import { closeSession } from "../../../../src/services/firebase/login-methods";
 import Button from "../Button/Button";
 import { signOut } from "../../redux/actions/actions";
+import { InfoAlert } from "../Alert/Alert";
 const NavSearch = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -16,9 +17,14 @@ const NavSearch = () => {
     await closeSession()
       .then(() => {
         dispatch(signOut());
-        alert("Has cerrado sesion");
+        InfoAlert.fire("Has cerrado sesion");
       })
-      .catch((e: any) => alert("No pudiste cerrar sesion" + e.message));
+      .catch((e) =>
+        InfoAlert.fire({
+          title: "No pudiste cerrar sesion" + e.message,
+          icon: "error",
+        })
+      );
 
     navigate("/login");
   };

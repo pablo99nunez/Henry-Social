@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 
 import style from "./Home.module.scss";
 import useUser from "../../Hooks/useUser";
+import { InfoAlert } from "../../Components/Alert/Alert";
 
 const Home = () => {
   const navigate = useNavigate();
