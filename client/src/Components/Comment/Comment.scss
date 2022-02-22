@@ -56,7 +56,8 @@
     .likesComments {
       gap: 40px;
       @include flex-aic;
-      .sizeLikes div, .sizeComments{
+      .sizeLikes div,
+      .sizeComments {
         gap: 10px;
         font-size: 14px;
         cursor: pointer;
@@ -68,7 +69,7 @@
     top: 3px;
     right: 3px;
     position: absolute;
-    .icon{
+    .icon {
       padding: 8px;
       color: gray;
       font-size: 30px;

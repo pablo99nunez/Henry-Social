@@ -1,60 +1,60 @@
 @import "../../Styles/variables.scss";
 .nav {
-    background-color: $bg-secondary-color;
+  background-color: $bg-secondary-color;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  z-index: 3000;
+  position: sticky;
+  top: 0;
+  .nav_wrap {
+    justify-content: space-between;
+    place-items: center;
     display: flex;
-    justify-content: center;
-    width: 100vw;
-    z-index: 3000;
-    position: sticky;
-    top: 0;
-    .nav_wrap {
-        justify-content: space-between;
-        place-items: center;
-        display: flex;
-        max-width: 1200px;
-        width: 100%;
-        .nav_logo {
-            display: flex;
-            cursor: pointer;
-            color: $white;
-            align-items: center;
-            img {
-                height: 80px;
-                width: 80px;
-            }
-        }
-        .nav_search {
-            input {
-                width: 30rem;
-                padding: 1rem 2rem;
-                border: 1px solid $white;
-                border-radius: 8px;
-                background-color: transparent;
-                font-size: 0.8rem;
-                color: $white;
-            }
-        }
-        .nav_icon_notification {
-            color: $white;
-            font-size: 1.8rem;
-        }
-        .nav_button_profile {
-            display: flex;
-            gap: 1.5rem;
-            cursor: pointer;
-            align-items: center;
-            img {
-                width: 50px;
-                object-fit: cover;
-                height: 50px;
-                border: 1.5px solid $yellow;
-                border-radius: 100%;
-                background-repeat: no-repeat;
-                background-size: cover;
-            }
-            .nav_profile_info {
-                color: $white;
-            }
-        }
+    max-width: 1200px;
+    width: 100%;
+    .nav_logo {
+      display: flex;
+      cursor: pointer;
+      color: $white;
+      align-items: center;
+      img {
+        height: 80px;
+        width: 80px;
+      }
     }
+    .nav_search {
+      input {
+        width: 30rem;
+        padding: 1rem 2rem;
+        border: 1px solid $white;
+        border-radius: 8px;
+        background-color: transparent;
+        font-size: 0.8rem;
+        color: $white;
+      }
+    }
+    .nav_icon_notification {
+      color: $white;
+      font-size: 1.8rem;
+    }
+    .nav_button_profile {
+      display: flex;
+      gap: 1.5rem;
+      cursor: pointer;
+      align-items: center;
+      img {
+        width: 50px;
+        object-fit: cover;
+        height: 50px;
+        border: 1.5px solid $yellow;
+        border-radius: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .nav_profile_info {
+        color: $white;
+      }
+    }
+  }
 }

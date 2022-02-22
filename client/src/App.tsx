@@ -9,18 +9,18 @@ import PostDetail from "./Pages/PostDetail/PostDetail";
 import useLogin from "./Hooks/useLogin";
 
 function App() {
-    useLogin();
+  useLogin();
 
-    return (
-        <div className="App">
-            <Routes>
-                <Route path="/" element={<Home />}></Route>
-                <Route path="/login" element={<Login />}></Route>
-                <Route path="/profile/:username" element={<User />}></Route>
-                <Route path="/post/:id" element={<PostDetail />} />
-            </Routes>
-        </div>
-    );
+  return (
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/profile/:username" element={<User />}></Route>
+        <Route path="/post/:id" element={<PostDetail />} />
+      </Routes>
+    </div>
+  );
 }
 
 export default App;
