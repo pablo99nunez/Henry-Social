@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from "express";
 import axios from "axios";
-import User from "../models/User";
-import { userValidate } from "../models/User";
+import User, { IUser } from "../models/User";
+import { INotification, NotificationType } from "../models/User";
 const router = Router();
 
 router.post("/user", (req, res) => {
@@ -155,6 +155,65 @@ router.post("/unfollow", async (req, res) => {
     res.json({ resultA, resultB });
   } catch (error) {
     res.status(400).json({ error: error });
+  }
+});
+
+router.post("/notification", async (req, res) => {
+  let notification: INotification = req.body;
+  try {
+    const receptor = await axios
+      .post("/findUser", { _id: notification.receptor })
+      .then((e) => e.data);
+    const emisor = await axios
+      .post("/findUser", { _id: notification.emisor })
+      .then((e) => e.data);
+
+    switch (notification.type) {
+      case NotificationType.Follow:
+        {
+          notification = {
+            content: `${emisor.name} ha comenzado a seguirte`,
+            type: notification.type,
+            link: notification.link,
+            receptor,
+            emisor,
+          };
+        }
+        break;
+      case NotificationType.Like:
+        {
+          notification = {
+            content: `${emisor.name} le ha dado like a tu publicacion`,
+            link: notification.link,
+            type: notification.type,
+            receptor,
+            emisor,
+          };
+        }
+        break;
+      case NotificationType.Comment:
+        {
+          notification = {
+            content: `${emisor.name} ha comentado tu publicacion`,
+            link: notification.link,
+            type: notification.type,
+            receptor,
+            emisor,
+          };
+        }
+        break;
+    }
+    await User.updateOne(
+      { _id: notification.receptor },
+      {
+        $addToSet: {
+          notifications: notification,
+        },
+      },
+      { new: true }
+    ).then((e) => res.json(e));
+  } catch (e) {
+    res.status(404).send("Error: " + e);
   }
 });
 
