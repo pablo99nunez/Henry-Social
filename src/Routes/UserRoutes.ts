@@ -3,6 +3,12 @@ import { Router } from "express";
 import axios from "axios";
 import User from "../models/User";
 const router = Router();
+const url =
+  process.env.NODE_ENV === "PRODUCTION"
+    ? "https://henry-social-back.herokuapp.com"
+    : "http://localhost:3001";
+
+axios.defaults.baseURL = url;
 
 router.post("/user", (req, res) => {
   User.create(req.body)
@@ -91,12 +97,12 @@ router.post("/follow", async (req, res) => {
         seguidor,
       }); //Deja de seguir al usuario
       const userSeguidor = await axios
-        .post("/findUser", {
+        .post(url + "/findUser", {
           username: seguidor,
         })
         .then((e: any) => e.data);
       const userSeguido = await axios
-        .post("/findUser", {
+        .post(url + "/findUser", {
           username: seguido,
         })
         .then((e: any) => e.data);
@@ -105,7 +111,7 @@ router.post("/follow", async (req, res) => {
       try {
         await addFollower(seguido, seguidor);
         const userSeguidor = await axios
-          .post("/findUser", {
+          .post(url + "/findUser", {
             username: seguidor,
           })
           .then((e: any) => e.data)
@@ -113,7 +119,7 @@ router.post("/follow", async (req, res) => {
             throw new Error(e);
           });
         const userSeguido = await axios
-          .post("/findUser", {
+          .post(url + "/findUser", {
             username: seguido,
           })
           .then((e: any) => e.data)
