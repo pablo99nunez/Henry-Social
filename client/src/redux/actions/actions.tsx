@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import axios from "axios";
 import { IPost } from "../../../../src/models/Post";
 import { IUser } from "../../../../src/models/User";
@@ -12,6 +13,7 @@ export const MAKE_ADMIN = "MAKE_ADMIN";
 
 export interface IAction {
   type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any;
 }
 

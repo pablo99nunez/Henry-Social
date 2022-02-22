@@ -18,6 +18,7 @@ export interface INotification {
   link: string;
   receptor: IUser;
   emisor: IUser;
+  new: boolean;
 }
 export interface IUser {
   _id?: string;
@@ -37,7 +38,7 @@ export interface IUser {
   portfolio?: string;
   bio?: string;
   admin: boolean;
-  notifications: Notification[];
+  notifications: INotification[];
 }
 
 const userSchema = new Schema<IUser>({

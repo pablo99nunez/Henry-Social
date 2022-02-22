@@ -126,10 +126,7 @@ router.post("/follow", async (req, res) => {
           type: NotificationType.Follow,
           emisor: userSeguidor,
           receptor: userSeguido,
-          link:
-            process.env.MODE === "PRODUCTION"
-              ? "https://henry-social.web.app"
-              : "http://localhost:3000" + "/profile/" + userSeguidor.username,
+          link: "/profile/" + userSeguidor.username,
         });
         res.status(200).json({ userSeguidor, userSeguido });
       } catch (e) {
@@ -183,6 +180,7 @@ router.post("/notification", async (req, res) => {
               link: notification.link,
               receptor,
               emisor,
+              new: true,
             };
           }
           break;
@@ -194,6 +192,7 @@ router.post("/notification", async (req, res) => {
               type: notification.type,
               receptor,
               emisor,
+              new: true,
             };
           }
           break;
@@ -205,6 +204,7 @@ router.post("/notification", async (req, res) => {
               type: notification.type,
               receptor,
               emisor,
+              new: true,
             };
           }
           break;

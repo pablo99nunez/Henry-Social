@@ -1,19 +1,24 @@
 import styles from "./Notifications.module.scss";
 import { motion, AnimatePresence } from "framer-motion";
 import Notification from "../Notification/Notification";
+import useNotifications from "../../Hooks/useNotifications";
+import { INotification } from "../../../../src/models/User";
 type Props = {
   open: boolean;
 };
 
 export default function Notifications({ open }: Props) {
+  const notifications = useNotifications();
   const variants = {
     open: {
       scale: 1,
+      rotateZ: 0,
       originX: "2rem",
       originY: 0,
       opacity: 1,
     },
     close: {
+      rotateZ: -45,
       originX: "2rem",
       originY: 0,
       scale: 0,
@@ -30,10 +35,9 @@ export default function Notifications({ open }: Props) {
         animate={open ? "open" : "close"}
         className={styles.container}
       >
-        <Notification></Notification>
-        <Notification></Notification>
-        <Notification></Notification>
-        <Notification></Notification>
+        {notifications?.map((e: INotification) => {
+          return <Notification detail={e}></Notification>;
+        })}
       </motion.div>
     </AnimatePresence>
   );

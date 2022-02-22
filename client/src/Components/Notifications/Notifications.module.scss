@@ -4,17 +4,16 @@
   width: 15vw;
   height: fit-content;
   min-height: 5vh;
-  background-color: $greyDarker;
   position: absolute;
   border-radius: 8px;
   top: 150%;
   left: -1rem;
-  padding: 1rem;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  flex-direction: column-reverse;
+  backdrop-filter: blur(10px);
 }
-.container::after {
+/* .container::after {
   content: "";
   width: 2rem;
   height: 2rem;
@@ -24,3 +23,4 @@
   left: 0.9rem;
   transform: rotateZ(45deg);
 }
+ */

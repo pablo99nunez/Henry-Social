@@ -80,10 +80,7 @@ router.post("/like", async (req, res) => {
           type: NotificationType.Like,
           receptor: result?.author._id,
           emisor: author._id,
-          link:
-            process.env.MODE === "PRODUCTION"
-              ? "https://henry-social.web.app"
-              : "http://localhost:3000" + "/post/" + _id,
+          link: "/post/" + _id,
         })
         .catch((e) => {
           throw new Error(e);
