@@ -108,12 +108,18 @@ router.post("/follow", async (req, res) => {
           .post("/findUser", {
             username: seguidor,
           })
-          .then((e: any) => e.data);
+          .then((e: any) => e.data)
+          .catch((e) => {
+            throw new Error(e);
+          });
         const userSeguido = await axios
           .post("/findUser", {
             username: seguido,
           })
-          .then((e: any) => e.data);
+          .then((e: any) => e.data)
+          .catch((e) => {
+            throw new Error(e);
+          });
 
         res.status(200).json({ userSeguidor, userSeguido });
       } catch (e) {
