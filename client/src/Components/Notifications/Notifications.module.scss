@@ -1,0 +1,26 @@
+@import "../../Styles/variables.scss";
+
+.container {
+  width: 15vw;
+  height: fit-content;
+  min-height: 5vh;
+  position: absolute;
+  border-radius: 8px;
+  top: 150%;
+  left: -1rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+  backdrop-filter: blur(10px);
+}
+/* .container::after {
+  content: "";
+  width: 2rem;
+  height: 2rem;
+  background-color: inherit;
+  position: absolute;
+  top: -0.6rem;
+  left: 0.9rem;
+  transform: rotateZ(45deg);
+}
+ */

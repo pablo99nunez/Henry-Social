@@ -8,10 +8,13 @@ import { closeSession } from "../../../../src/services/firebase/login-methods";
 import Button from "../Button/Button";
 import { signOut } from "../../redux/actions/actions";
 import { InfoAlert } from "../Alert/Alert";
+import { useState } from "react";
+import Notifications from "../Notifications/Notifications";
 const NavSearch = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useUser();
+  const [openNotifications, setOpenNotifications] = useState(false);
 
   const handleSignOut = async () => {
     await closeSession()
@@ -52,9 +55,14 @@ const NavSearch = () => {
             alignItems: "center",
             gap: "1rem",
           }}
+          className={styles.notifications}
         >
           <div>
-            <BsBellFill className={styles.nav_icon_notification} />
+            <BsBellFill
+              className={styles.nav_icon_notification}
+              onClick={() => setOpenNotifications(!openNotifications)}
+            />
+            <Notifications open={openNotifications}></Notifications>
           </div>
           <div
             className={styles.nav_button_profile}

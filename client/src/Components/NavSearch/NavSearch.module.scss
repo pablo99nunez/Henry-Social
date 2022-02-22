@@ -34,12 +34,17 @@
         color: $white;
       }
     }
+    .notifications {
+      position: relative;
+    }
     .nav_icon_notification {
       color: $white;
       font-size: 1.8rem;
+      cursor: pointer;
     }
     .nav_button_profile {
       display: flex;
+      user-select: none;
       gap: 1.5rem;
       cursor: pointer;
       align-items: center;

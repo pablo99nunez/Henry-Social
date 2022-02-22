@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from "express";
 import axios from "axios";
-import User from "../models/User";
-import { userValidate } from "../models/User";
+import User, { IUser } from "../models/User";
+import { INotification, NotificationType } from "../models/User";
 const router = Router();
 
 router.post("/user", (req, res) => {
@@ -122,7 +122,12 @@ router.post("/follow", async (req, res) => {
           .catch((e) => {
             throw new Error(e);
           });
-
+        axios.post("/notification", {
+          type: NotificationType.Follow,
+          emisor: userSeguidor,
+          receptor: userSeguido,
+          link: "/profile/" + userSeguidor.username,
+        });
         res.status(200).json({ userSeguidor, userSeguido });
       } catch (e) {
         res.status(401).json({ error: e });
@@ -155,6 +160,73 @@ router.post("/unfollow", async (req, res) => {
     res.json({ resultA, resultB });
   } catch (error) {
     res.status(400).json({ error: error });
+  }
+});
+
+router.post("/notification", async (req, res) => {
+  let notification: INotification = req.body;
+  console.log(notification);
+  try {
+    const receptor = await User.findById(notification.receptor);
+    const emisor = await User.findById(notification.emisor);
+    console.log(receptor, emisor);
+    if (receptor && emisor) {
+      switch (notification.type) {
+        case NotificationType.Follow:
+          {
+            notification = {
+              content: `${emisor.name} ha comenzado a seguirte`,
+              type: notification.type,
+              link: notification.link,
+              receptor,
+              emisor,
+              new: true,
+            };
+          }
+          break;
+        case NotificationType.Like:
+          {
+            notification = {
+              content: `${emisor.name} le ha dado like a tu publicacion`,
+              link: notification.link,
+              type: notification.type,
+              receptor,
+              emisor,
+              new: true,
+            };
+          }
+          break;
+        case NotificationType.Comment:
+          {
+            notification = {
+              content: `${emisor.name} ha comentado tu publicacion`,
+              link: notification.link,
+              type: notification.type,
+              receptor,
+              emisor,
+              new: true,
+            };
+          }
+          break;
+      }
+      await User.updateOne(
+        { _id: notification.receptor },
+        {
+          $addToSet: {
+            notifications: notification,
+          },
+        },
+        { new: true }
+      )
+        .then((e) => res.json(e))
+        .catch((e) => {
+          throw new Error(e);
+        });
+    } else {
+      throw new Error("No se encontraron los usuarios");
+    }
+  } catch (e) {
+    res.status(400).send("Error: " + e);
   }
 });
 
