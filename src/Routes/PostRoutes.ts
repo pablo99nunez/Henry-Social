@@ -5,16 +5,21 @@ import { postValidate } from "../models/Post";
 const router = Router();
 
 router.post("/posts", async (req, res) => {
-  const { error } = postValidate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
   try {
-    const { _id } = req.body;
+    const { _id, liked } = req.body;
     console.log(_id);
     const posts = _id
       ? await Post.find({
           author: {
             _id,
+          },
+        })
+          .populate("author")
+          .populate("nLikes")
+      : liked
+      ? await Post.find({
+          nLikes: {
+            _id: liked,
           },
         })
           .populate("author")
@@ -45,7 +50,7 @@ router.post("/like", async (req, res) => {
       .catch((e) => {
         throw new Error(e);
       });
-    let isLikedAlready = !!post?.nLikes.filter(
+    const isLikedAlready = !!post?.nLikes.filter(
       (e) => e.username === author.username
     )[0];
     console.log(
@@ -112,7 +117,7 @@ router.delete("/posts", async (req, res) => {
 router.delete("/post", async (req, res) => {
   try {
     const { _id } = req.body;
-    let result = await Post.findOneAndDelete({ _id });
+    const result = await Post.findOneAndDelete({ _id });
     if (result === null) throw new Error("No se encontro el post");
     res.send(result);
   } catch (e) {

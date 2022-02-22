@@ -1,4 +1,4 @@
-import { model, ObjectId, Schema, PopulatedDoc } from "mongoose";
+import { model, ObjectId, Schema } from "mongoose";
 import { IUser } from "./User";
 import Joi from "joi";
 
@@ -9,6 +9,7 @@ export interface IPost {
   numComments: number;
   author: IUser;
   _id: number;
+  typePost: string;
 }
 
 interface Comment {
@@ -42,6 +43,10 @@ const postSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
+  },
+  typePost: {
+    type: String,
+    require: true,
   },
 });
 

@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
-import FollowBar from "../../Components/followBar/FollowBar";
+import FollowBar from "../../Components/FollowBar/FollowBar";
 import Post from "../../Components/Post/Post";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import SideMessages from "../../Components/SideMessages/SideMessages";

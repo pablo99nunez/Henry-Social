@@ -7,20 +7,20 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import modelUser, { IUser } from "../../models/User";
+import { IUser } from "../../models/User";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 async function defaultUsername(name: string | null): Promise<string> {
   name = name ?? "username";
-  let refactor = name.toLowerCase().split(" ").join("-");
-  let foundUserWithTheSameUsername = await axios
+  const refactor = name.toLowerCase().split(" ").join("-");
+  const foundUserWithTheSameUsername = await axios
     .post("/findUser", {
       username: refactor,
     })
     .then((e) => e.data);
   console.log(foundUserWithTheSameUsername);
-  if (!!foundUserWithTheSameUsername)
+  if (foundUserWithTheSameUsername)
     return defaultUsername(name + Math.floor(Math.random() * 10));
   else return refactor;
 }
@@ -32,13 +32,13 @@ export const signInWithEmail = (email: string, password: string) => {
 };
 
 export async function signUpWithEmail(userInfo: IUser) {
-  let { name, username, email, avatar, password } = userInfo;
+  const { name, username, email, avatar, password } = userInfo;
   if (password == undefined)
     throw new Error("Necesitas ingresar una contraseña");
   try {
     let downloadURL;
     if (avatar instanceof File) {
-      let storageRef = ref(storage, "avatars/" + avatar.name);
+      const storageRef = ref(storage, "avatars/" + avatar.name);
       downloadURL = await uploadBytes(storageRef, avatar).then((snapshot) => {
         console.log("Snapshot", snapshot);
         return getDownloadURL(snapshot.ref).then((downloadURL) => {
@@ -46,7 +46,6 @@ export async function signUpWithEmail(userInfo: IUser) {
         });
       });
     }
-    console.log("avatar2", avatar);
     await axios
       .post("/user", {
         name,
@@ -54,7 +53,8 @@ export async function signUpWithEmail(userInfo: IUser) {
         email,
         avatar: downloadURL,
       })
-      .then(() => {
+      .then((doc) => {
+        console.log(doc.data);
         if (password)
           return createUserWithEmailAndPassword(auth, email, password);
       })
@@ -71,7 +71,7 @@ export function signUpWithGmail() {
   return signInWithPopup(auth, provider)
     .then(async (result) => {
       const { email, displayName, photoURL } = result.user;
-      let username = await defaultUsername(displayName);
+      const username = await defaultUsername(displayName);
 
       try {
         await axios.post("/user", {
@@ -95,7 +95,7 @@ export function signUpWithGitHub() {
   return signInWithPopup(auth, provider)
     .then(async (result) => {
       const { email, displayName, photoURL } = result.user;
-      let username = await defaultUsername(displayName);
+      const username = await defaultUsername(displayName);
       try {
         await axios.post("/user", {
           name: displayName,

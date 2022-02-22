@@ -1,13 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from "express";
-const axios = require("axios");
+import axios from "axios";
 import User from "../models/User";
 import { userValidate } from "../models/User";
 const router = Router();
 
 router.post("/user", (req, res) => {
-  const { error } = userValidate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
   User.create(req.body)
     .then((result) => {
       res.status(201).json(result);
@@ -17,7 +15,7 @@ router.post("/user", (req, res) => {
 
 router.get("/users", async (req, res) => {
   try {
-    let users = await User.find({});
+    const users = await User.find({});
     res.json(users);
   } catch (e) {
     res.status(401).json({ error: e });
@@ -38,8 +36,8 @@ router.post("/findUser", (req, res) => {
 router.post("/admin", async (req, res) => {
   const { username } = req.body;
   try {
-    let user = await User.findOne({ username });
-    if (!!user) {
+    const user = await User.findOne({ username });
+    if (user) {
       user.admin = !user.admin;
       console.log(user.admin);
       await user.save();
@@ -64,7 +62,7 @@ async function isFollowing(userA: string, userB: string) {
 }
 
 async function addFollower(seguido: string, seguidor: string) {
-  let userA = await User.updateOne(
+  const userA = await User.updateOne(
     { username: seguido },
     {
       $addToSet: {
@@ -73,7 +71,7 @@ async function addFollower(seguido: string, seguidor: string) {
     },
     { returnOriginal: false }
   );
-  let userB = await User.updateOne(
+  const userB = await User.updateOne(
     { username: seguidor },
     {
       $addToSet: {
@@ -90,7 +88,7 @@ router.post("/follow", async (req, res) => {
   try {
     if (await isFollowing(seguidor, seguido)) {
       //Si el seguidor ya sigue al seguido
-      const result = await axios.post("/unfollow", {
+      await axios.post("/unfollow", {
         seguido,
         seguidor,
       }); //Deja de seguir al usuario
@@ -112,12 +110,18 @@ router.post("/follow", async (req, res) => {
           .post("/findUser", {
             username: seguidor,
           })
-          .then((e: any) => e.data);
+          .then((e: any) => e.data)
+          .catch((e) => {
+            throw new Error(e);
+          });
         const userSeguido = await axios
           .post("/findUser", {
             username: seguido,
           })
-          .then((e: any) => e.data);
+          .then((e: any) => e.data)
+          .catch((e) => {
+            throw new Error(e);
+          });
 
         res.status(200).json({ userSeguidor, userSeguido });
       } catch (e) {

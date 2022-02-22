@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import FollowBar from "../../Components/followBar/FollowBar";
+import FollowBar from "../../Components/FollowBar/FollowBar";
 import Chat from "../../Components/Chat/Chat";
 import Post from "../../Components/Post/Post";
 import style from "./User.module.scss";
@@ -13,25 +13,20 @@ import Button from "../../Components/Button/Button";
 import Settings from "../../Components/Settings/Settings";
 import useUser from "../../Hooks/useUser";
 import Modal from "../../Components/Modal/Modal";
-import {
-  followUser,
-  getPosts,
-  getProfile,
-  makeAdmin,
-} from "../../redux/actions/actions";
+import { followUser, getPosts, makeAdmin } from "../../redux/actions/actions";
 import { useProfile } from "../../Hooks/useProfile";
 import { IState } from "../../redux/reducer";
 
 export default function User() {
   const [edit, setEdit] = useState(false);
   const { username } = useParams();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [user, isOwner] = useProfile(username);
   const [isFollowing, setIsFollowing] = useState(false);
   const posts = useSelector((state: IState) => state.posts);
-  let userLogeado = useUser();
-  let dispatch = useDispatch();
+  const userLogeado = useUser();
+  const dispatch = useDispatch();
 
   function handleFollow() {
     if (userLogeado?.username && user?.username && userLogeado.following) {
@@ -47,7 +42,10 @@ export default function User() {
       setIsFollowing(userLogeado.following.includes(user.username));
   }, [username, userLogeado]);
   useEffect(() => {
-    if (user) dispatch(getPosts(user._id));
+    if (user) {
+      dispatch(getPosts(user._id));
+      setLoading(false);
+    }
   }, [user]);
 
   const editProfile = () => {

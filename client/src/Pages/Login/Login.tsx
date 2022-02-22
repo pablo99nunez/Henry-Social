@@ -48,8 +48,9 @@ export default function Login(): JSX.Element {
         setLoading(true);
 
         if (action == USER_ACTION.register) {
-          await signUpWithEmail(input);
-          alert("Usuario creado con exito");
+          await signUpWithEmail(input).then(() => {
+            alert("Usuario creado con exito");
+          });
         } else if (input.password != undefined) {
           await signInWithEmail(input.email, input.password);
         }
@@ -63,6 +64,7 @@ export default function Login(): JSX.Element {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const handleLogin = async (cb: Function) => {
     if (user?.username) {
       alert("Ya estas logeado, redirigiendo a Home");
@@ -70,7 +72,7 @@ export default function Login(): JSX.Element {
     } else {
       try {
         const result = await cb();
-        if (!!result) {
+        if (result) {
           alert("Usuario logueado con exito");
           navigate("/");
         }
@@ -89,7 +91,7 @@ export default function Login(): JSX.Element {
     }
   }
 
-  const handleActionChange = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleActionChange = () => {
     const Act = action ? "register" : "signIn";
     setAction(USER_ACTION[Act]);
   };

@@ -1,11 +1,6 @@
-import React, { useState, FC, useRef } from "react";
+import React, { FC, useRef } from "react";
 import style from "./Post.module.scss";
-import {
-  BsThreeDots,
-  BsHeartFill,
-  BsChatSquareDots,
-  BsShareFill,
-} from "react-icons/bs";
+import { BsThreeDots, BsChatSquareDots } from "react-icons/bs";
 import { Like } from "../Like/Like";
 import { IPost } from "../../../../src/models/Post";
 import { useNavigate } from "react-router";
