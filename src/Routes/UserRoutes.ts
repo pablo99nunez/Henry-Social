@@ -3,11 +3,11 @@ import { Router } from "express";
 import axios from "axios";
 import User from "../models/User";
 const router = Router();
-const url =
-  process.env.NODE_ENV === "PRODUCTION"
+const url = "https://henry-social-back.herokuapp.com";
+/*   process.env.NODE_ENV === "PRODUCTION"
     ? "https://henry-social-back.herokuapp.com"
     : "http://localhost:3001";
-
+ */
 axios.defaults.baseURL = url;
 
 router.post("/user", (req, res) => {
@@ -29,7 +29,6 @@ router.get("/users", async (req, res) => {
 
 router.post("/findUser", (req, res) => {
   const query = req.body;
-  console.log(url);
   User.findOne(query)
     .then((e) => {
       res.json(e);
