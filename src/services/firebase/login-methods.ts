@@ -11,6 +11,11 @@ import { IUser } from "../../models/User";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "PRODUCTION"
+    ? "https://henry-social-back.herokuapp.com"
+    : "http://localhost:3001";
+
 async function defaultUsername(name: string | null): Promise<string> {
   name = name ?? "username";
   const refactor = name.toLowerCase().split(" ").join("-");
@@ -46,7 +51,6 @@ export async function signUpWithEmail(userInfo: IUser) {
         });
       });
     }
-    console.log("avatar2", avatar);
     await axios
       .post("/user", {
         name,
@@ -54,7 +58,8 @@ export async function signUpWithEmail(userInfo: IUser) {
         email,
         avatar: downloadURL,
       })
-      .then(() => {
+      .then((doc) => {
+        console.log(doc.data);
         if (password)
           return createUserWithEmailAndPassword(auth, email, password);
       })
