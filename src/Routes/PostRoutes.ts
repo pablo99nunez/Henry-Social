@@ -49,7 +49,7 @@ router.post("/like", async (req, res) => {
       .catch((e) => {
         throw new Error(e);
       });
-    let isLikedAlready = !!post?.nLikes.filter(
+    const isLikedAlready = !!post?.nLikes.filter(
       (e) => e.username === author.username
     )[0];
     console.log(
@@ -116,7 +116,7 @@ router.delete("/posts", async (req, res) => {
 router.delete("/post", async (req, res) => {
   try {
     const { _id } = req.body;
-    let result = await Post.findOneAndDelete({ _id });
+    const result = await Post.findOneAndDelete({ _id });
     if (result === null) throw new Error("No se encontro el post");
     res.send(result);
   } catch (e) {
