@@ -11,6 +11,7 @@ const url =
 axios.defaults.baseURL = url;
 
 router.post("/user", (req, res) => {
+  console.log(url);
   User.create(req.body)
     .then((result) => {
       res.status(201).json(result);
