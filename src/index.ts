@@ -1,13 +1,18 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import express from "express";
 // const bodyParser = require('body-parser');
 
-import cors from "cors";
-import morgan from "morgan";
+const cors = require("cors");
+const morgan = require("morgan");
 import "dotenv/config.js";
 import axios from "axios";
 import userRouter from "./Routes/UserRoutes";
 import postRouter from "./Routes/PostRoutes";
 
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "PRODUCTION"
+    ? "https://henry-social-back.herokuapp.com"
+    : "http://localhost:3001";
 const app = express();
 app.use(cors());
 
@@ -33,10 +38,6 @@ app.use("/", userRouter);
 app.use("/", postRouter);
 
 app.listen(process.env.PORT, () => {
-  axios.defaults.baseURL =
-    process.env.NODE_ENV === "PRODUCTION"
-      ? "https://henry-social-back.herokuapp.com"
-      : "http://localhost:3001";
   console.log("Server listening at " + process.env.PORT);
 });
 

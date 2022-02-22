@@ -8,52 +8,52 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
-import FollowBar from "../../Components/followBar/FollowBar";
+import FollowBar from "../../Components/FollowBar/FollowBar";
 import Post from "../../Components/Post/Post";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import SideMessages from "../../Components/SideMessages/SideMessages";
 // import { useDispatch , useSelector } from 'react-redux';
 
 export default function PostDetail() {
-    const { id } = useParams();
-    const dispatch = useDispatch();
-    const details = useSelector((state: IState) => state.post);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const details = useSelector((state: IState) => state.post);
 
-    useEffect(() => {
-        if (id) {
-            dispatch(getPost(id));
-        }
-    }, [id]);
+  useEffect(() => {
+    if (id) {
+      dispatch(getPost(id));
+    }
+  }, [id]);
 
-    return (
-        <>
-            <NavSearch></NavSearch>
-            <div id="postDetail">
-                {/* El navbar, follow-bar, post, messages serán reemplazados por sus debidos componentes*/}
+  return (
+    <>
+      <NavSearch></NavSearch>
+      <div id="postDetail">
+        {/* El navbar, follow-bar, post, messages serán reemplazados por sus debidos componentes*/}
 
-                <nav id="navbar"></nav>
+        <nav id="navbar"></nav>
 
-                <div id="content">
-                    <div id="follow-bar">
-                        <FollowBar />
-                    </div>
+        <div id="content">
+          <div id="follow-bar">
+            <FollowBar />
+          </div>
 
-                    <div id="boxPost">
-                        <div id="post">
-                            <Post post={details} />
-                            <Comments
-                            // comments={details.comments}
-                            />
-                        </div>
-                    </div>
-
-                    <div id="messages">
-                        <SideMessages />
-                    </div>
-                </div>
+          <div id="boxPost">
+            <div id="post">
+              <Post post={details} />
+              <Comments
+              // comments={details.comments}
+              />
             </div>
-        </>
-    );
+          </div>
+
+          <div id="messages">
+            <SideMessages />
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
 
 /* 
