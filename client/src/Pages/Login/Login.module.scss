@@ -96,18 +96,37 @@
         }
       }
 
+      .invalid {
+        border-bottom: dotted;
+        border-color: red;
+      }
+
       button[type="submit"] {
         background-color: $bg-secondary-color;
         color: $white;
         border: none;
         border-radius: 5px;
-        width: max-content;
-        height: max-content;
-        padding: 10px;
         -webkit-border-radius: 5px;
         -moz-border-radius: 5px;
         -ms-border-radius: 5px;
         -o-border-radius: 5px;
+        width: max-content;
+        height: max-content;
+        padding: 10px;
+
+
+        &:disabled {
+          background-color: gray;
+
+          &:hover {
+            cursor: default;
+            transform: none;
+            -webkit-transform: none;
+            -moz-transform: none;
+            -ms-transform: none;
+            -o-transform: none;
+          }
+        }
       }
     }
 
@@ -138,11 +157,6 @@
 
     button {
       cursor: pointer;
-      /* transition: transform ease-in 300ms;
-            -webkit-transition: transform ease-in 300ms;
-            -moz-transition: transform ease-in 300ms;
-            -ms-transition: transform ease-in 300ms;
-            -o-transition: transform ease-in 300ms; */
 
       &:hover {
         transform: scale(1.1);
@@ -208,6 +222,11 @@
 
         button[type="submit"] {
           align-self: flex-start;
+          transition: transform ease-out 300ms;
+          -webkit-transition: transform ease-out 300ms;
+          -moz-transition: transform ease-out 300ms;
+          -ms-transition: transform ease-out 300ms;
+          -o-transition: transform ease-out 300ms;
         }
       }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -13,6 +13,7 @@ import useUser from "../../Hooks/useUser";
 import Button from "../../Components/Button/Button";
 import { BsGoogle, BsGithub } from "react-icons/bs";
 import { InfoAlert } from "../../Components/Alert/Alert";
+import valForm from "./valForm"
 
 enum USER_ACTION {
   register,
@@ -30,13 +31,18 @@ export default function Login(): JSX.Element {
     createdAt: {},
   });
   const [loading, setLoading] = useState(false);
+  const [formComplete, setFromComplete] = useState(false)
   const [action, setAction] = useState(USER_ACTION.register);
   const navigate = useNavigate();
   const user = useUser();
 
   useEffect(() => {
+    const { name, username, password, email } = input;
+    name && username  && password && email && setFromComplete(true)
+
     if (user?.username) navigate("/");
-  }, [user]);
+
+  }, [user, input]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -95,13 +101,24 @@ export default function Login(): JSX.Element {
     }
   };
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const property = e.target.name;
+    const target = e.target;
+    const property = target.name;
+    const isValid = valForm(target, property);
+    const { childNodes: [,,,,,, btn ] } = target.parentElement
+    
+    if(!isValid) {
+      btn.disabled = true;
+      return
+    }
+    
     if (property === null) throw new Error();
     if (property === "avatar" && e.target.files) {
       setInput({ ...input, avatar: e.target.files[0] });
     } else {
       setInput({ ...input, [property]: e.target.value });
     }
+
+    if(formComplete) btn.disabled = false;
   }
 
   const handleActionChange = () => {
@@ -135,14 +152,12 @@ export default function Login(): JSX.Element {
             </h1>
             <input
               type="email"
-              id={style.email}
               name="email"
               placeholder="Email"
               onChange={handleInputChange}
             />
             <input
               type="password"
-              id={style.pass}
               name="password"
               placeholder="Contraseña"
               onChange={handleInputChange}
