@@ -9,7 +9,7 @@ import axios from "axios";
 import userRouter from "./Routes/UserRoutes";
 import postRouter from "./Routes/PostRoutes";
 
-const app = express();
+const app: express.Application = express();
 app.use(cors());
 
 // app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
@@ -27,7 +27,8 @@ app.use((req, res, next) => {
   next();
 });
 app.get("/", (req, res) => {
-  res.render(__dirname + "/public/index.html");
+  // res.render(__dirname + "/public/index.html");
+  res.send("working");
 });
 
 app.use("/", userRouter);

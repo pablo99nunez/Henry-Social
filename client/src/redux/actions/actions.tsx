@@ -11,6 +11,8 @@ export const GET_POST = "GET_POST";
 export const LIKE_POST = "LIKE_POST";
 export const MAKE_ADMIN = "MAKE_ADMIN";
 export const SEE_NOTIFICATION = "SEE_NOTIFICATION";
+export const GET_USERS = "GET_USERS";
+export const GET_USERNAMES = "GET_USERNAMES";
 
 export interface IAction {
   type: string;
@@ -29,6 +31,32 @@ export function getUser(email: string) {
     });
   };
 }
+
+export function getUsers (onlyUsernames?: boolean): Function {
+  return async (dispatch: Function) => {
+    if (onlyUsernames) {
+      const { data: usernames } = await axios.get("/users", {
+        params: {
+          onlyUsernames: true
+        }
+      });
+
+      return dispatch({
+        type: GET_USERNAMES,
+        payload: usernames
+      })
+    }
+    axios.get("/users")
+      .then(res => {
+        return dispatch({
+        type: GET_USERS,
+        payload: res.data
+      })
+      }
+      );
+  }
+}
+
 export function signOut() {
   return function (dispatch: Function) {
     return dispatch({ type: SIGN_OUT });

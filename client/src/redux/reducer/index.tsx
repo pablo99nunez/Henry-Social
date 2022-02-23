@@ -6,6 +6,8 @@ import {
   GET_POSTS,
   GET_PROFILE,
   GET_USER,
+  GET_USERS,
+  GET_USERNAMES,
   IAction,
   LIKE_POST,
   MAKE_ADMIN,
@@ -29,6 +31,18 @@ export default function rootReducer(state = initialState, action: IAction) {
   switch (action.type) {
     case GET_USER: {
       return { ...state, user: action.payload };
+    }
+    case GET_USERNAMES: {
+      return {
+        ...state,
+        usernames: action.payload
+      }
+    }
+    case GET_USERS: {
+      return {
+        ...state,
+        users: action.payload
+      }
     }
     case FOLLOW_USER: {
       return {

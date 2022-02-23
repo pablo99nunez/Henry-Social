@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { BsGoogle, BsGithub } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   signUpWithEmail,
@@ -11,9 +13,9 @@ import { IUser } from "../../../../src/models/User";
 import style from "./Login.module.scss";
 import useUser from "../../Hooks/useUser";
 import Button from "../../Components/Button/Button";
-import { BsGoogle, BsGithub } from "react-icons/bs";
 import { InfoAlert } from "../../Components/Alert/Alert";
 import valForm from "./valForm"
+import { getUsers } from "../../redux/actions/actions";
 
 enum USER_ACTION {
   register,
@@ -34,13 +36,21 @@ export default function Login(): JSX.Element {
   const [formComplete, setFromComplete] = useState(false)
   const [action, setAction] = useState(USER_ACTION.register);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const usernames = useSelector(state => state.usernames);
   const user = useUser();
 
   useEffect(() => {
     const { name, username, password, email } = input;
-    name && username  && password && email && setFromComplete(true)
+    if (user?.username) return navigate("/");
 
-    if (user?.username) navigate("/");
+    name && username  && password && email && setFromComplete(true);
+
+    const gettingUsernames = async (): Promise<void> => {
+      await dispatch(getUsers(true));
+    }
+
+    gettingUsernames();
 
   }, [user, input]);
 
@@ -103,7 +113,9 @@ export default function Login(): JSX.Element {
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const target = e.target;
     const property = target.name;
-    const isValid = valForm(target, property);
+    const isValid = property === "username" ?
+      valForm(target, property, usernames)
+    : valForm(target, property);
     const { childNodes: [,,,,,, btn ] } = target.parentElement
     
     if(!isValid) {
