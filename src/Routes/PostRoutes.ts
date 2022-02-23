@@ -42,12 +42,11 @@ router.get("/post/:id", async (req, res) => {
 router.post("/like", async (req, res) => {
   try {
     const { _id, author } = req.body;
-    const post = await Post.findById(_id)
-      .populate("nLikes")
-      .catch((e) => {
-        throw new Error(e);
-      });
-    const isLikedAlready = !!post?.nLikes.filter((e) => e === author._id)[0];
+    const post = await Post.findById(_id).catch((e) => {
+      throw new Error(e);
+    });
+    console.log(post?.nLikes.includes(author._id));
+    const isLikedAlready = post?.nLikes.includes(author._id);
 
     if (!isLikedAlready) {
       console.log("Liking");
@@ -58,12 +57,11 @@ router.post("/like", async (req, res) => {
         },
         { new: true }
       )
-        .populate("author")
-        .populate("nLikes")
+        .populate("author", "name username avatar")
         .catch((e) => {
           throw new Error(e);
         });
-      await axios
+      axios
         .post("/notification", {
           type: NotificationType.Like,
           receptor: result?.author._id,
@@ -85,8 +83,7 @@ router.post("/like", async (req, res) => {
         },
         { new: true }
       )
-        .populate("author")
-        .populate("nLikes")
+        .populate("author", "name username avatar")
         .catch((e) => {
           console.log(e);
           throw new Error(e);
