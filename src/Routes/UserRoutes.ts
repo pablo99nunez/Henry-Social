@@ -6,14 +6,23 @@ import { INotification, NotificationType } from "../models/User";
 const router = Router();
 
 router.post("/user", (req, res) => {
-  User.findOne(req.body).then((e) => {
-    if (e) {
+
+
+
+
+  User.findOne({ username: req.body.username }).then((e) => {
+
+
+    if (!e) {
       User.create(req.body)
         .then((result) => {
           res.status(201).json(result);
         })
         .catch((e) => res.status(400).json({ error: e }));
-    } else res.send(200);
+    }
+
+
+    else res.json(e)
   });
 });
 
