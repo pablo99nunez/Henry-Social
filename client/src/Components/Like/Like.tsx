@@ -29,8 +29,7 @@ export const Like: FC<Props> = ({ post }) => {
   };
   useEffect(() => {
     if (user?._id && post) {
-      console.log(post, user._id);
-      const isLiked = post?.nLikes.some((e) => e === user._id);
+      const isLiked = post.nLikes.includes(user._id);
       if (isLiked) setSum(false);
       setLike(isLiked);
     }

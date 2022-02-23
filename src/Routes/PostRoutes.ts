@@ -31,9 +31,7 @@ router.post("/posts", async (req, res) => {
 
 router.get("/post/:id", async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id)
-      .populate("author")
-      .populate("nLikes");
+    const post = await Post.findById(req.params.id).populate("author");
     res.json(post);
   } catch (e) {
     res.status(401).json({ error: e });

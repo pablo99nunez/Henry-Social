@@ -41,6 +41,7 @@ export default function PostDetail() {
           <div id="boxPost">
             <div id="post">
               <Post post={details} />
+              {console.log(details)}
               <Comments
               // comments={details.comments}
               />
