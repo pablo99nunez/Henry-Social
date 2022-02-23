@@ -12,6 +12,12 @@
   display: flex;
   flex-direction: column-reverse;
   backdrop-filter: blur(10px);
+  .noNotification {
+    padding: 1rem;
+    color: $black;
+    font-weight: 500;
+    background-color: #c4c4c4aa;
+  }
 }
 .icon_wrap {
   position: relative;
