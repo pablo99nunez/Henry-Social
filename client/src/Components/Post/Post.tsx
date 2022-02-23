@@ -4,6 +4,7 @@ import { BsThreeDots, BsChatSquareDots } from "react-icons/bs";
 import { Like } from "../Like/Like";
 import { IPost } from "../../../../src/models/Post";
 import { useNavigate } from "react-router";
+import Avatar from "../Avatar/Avatar";
 
 type Props = {
   post: IPost;
@@ -27,15 +28,7 @@ const Post: FC<Props> = ({ post }) => {
           navigate("/profile/" + post?.author.username);
         }}
       >
-        <img
-          src={
-            typeof post?.author?.avatar === "string"
-              ? post.author?.avatar
-              : "default"
-          }
-          alt="avatar"
-          referrerPolicy="no-referrer"
-        />
+        <Avatar avatar={post?.author?.avatar}></Avatar>
       </div>
       <div className={style.post_wrap}>
         <div className={style.post_profile}>
