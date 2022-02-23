@@ -7,14 +7,14 @@ import { registerVersion } from "firebase/app";
 const router = Router();
 
 router.post("/user", (req, res) => {
-  User.findOne(req.body).then((e) => {
-    if (e) {
+  User.findOne({ username: req.body.username }).then((e) => {
+    if (!e) {
       User.create(req.body)
         .then((result) => {
           res.status(201).json(result);
         })
         .catch((e) => res.status(400).json({ error: e }));
-    } else res.send(200);
+    } else res.json(e);
   });
 });
 
@@ -190,52 +190,56 @@ router.put("/notification", async (req, res) => {
 });
 router.post("/notification", async (req, res) => {
   let notification: INotification = req.body;
-  console.log(notification);
   try {
     const receptor = await User.findById(notification.receptor);
     const emisor = await User.findById(notification.emisor);
     console.log(receptor, emisor);
     if (receptor && emisor) {
-      switch (notification.type) {
-        case NotificationType.Follow:
-          {
-            notification = {
-              content: `${emisor.name} ha comenzado a seguirte`,
-              type: notification.type,
-              link: notification.link,
-              receptor,
-              emisor,
-              new: true,
-            };
-          }
-          break;
-        case NotificationType.Like:
-          {
-            notification = {
-              content: `${emisor.name} le ha dado like a tu publicacion`,
-              link: notification.link,
-              type: notification.type,
-              receptor,
-              emisor,
-              new: true,
-            };
-          }
-          break;
-        case NotificationType.Comment:
-          {
-            notification = {
-              content: `${emisor.name} ha comentado tu publicacion`,
-              link: notification.link,
-              type: notification.type,
-              receptor,
-              emisor,
-              new: true,
-            };
-          }
-          break;
-      }
-      await User.updateOne(
-        { _id: notification.receptor },
+      if (
+        typeof receptor.username === "string" &&
+        typeof emisor.username === "string" &&
+        typeof emisor.avatar === "string"
+      )
+        switch (notification.type) {
+          case NotificationType.Follow:
+            {
+              notification = {
+                content: `${emisor.name} ha comenzado a seguirte`,
+                type: notification.type,
+                link: notification.link,
+                emisor: emisor.username,
+                avatar: emisor.avatar,
+                new: true,
+              };
+            }
+            break;
+          case NotificationType.Like:
+            {
+              notification = {
+                content: `${emisor.name} le ha dado like a tu publicacion`,
+                link: notification.link,
+                type: notification.type,
+                emisor: emisor.username,
+                avatar: emisor.avatar,
+                new: true,
+              };
+            }
+            break;
+          case NotificationType.Comment:
+            {
+              notification = {
+                content: `${emisor.name} ha comentado tu publicacion`,
+                link: notification.link,
+                type: notification.type,
+                emisor: emisor.username,
+                avatar: emisor.avatar,
+                new: true,
+              };
+            }
+            break;
+        }
+      await User.findByIdAndUpdate(
+        receptor._id,
         {
           $addToSet: {
             notifications: notification,

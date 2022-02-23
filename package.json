@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "ts-node src/index.ts",
+        "start": "npx ts-node src/index.ts",
         "server": "nodemon src/index.ts",
         "deploy": "cd client && npm run build && firebase deploy --only hosting",
         "testDeploy": "git push heroku Deployment:main && cd client && npm run build && firebase hosting:channel:deploy testingDeploy",
