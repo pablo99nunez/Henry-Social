@@ -1,7 +1,6 @@
 import React from "react";
-import { IUser } from "../../../../src/models/User";
 type Props = {
-  avatar: string;
+  avatar: string | undefined;
 };
 import styles from "./Avatar.module.scss";
 
@@ -10,6 +9,7 @@ export default function Avatar({ avatar }: Props) {
     <img
       src={avatar || "https://s5.postimg.cc/537jajaxj/default.png"}
       className={styles.avatar}
+      referrerPolicy={"no-referrer"}
     ></img>
   );
 }
