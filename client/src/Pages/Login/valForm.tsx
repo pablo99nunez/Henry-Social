@@ -1,7 +1,6 @@
-import style from "./Login.module.scss";
+import style from "../../Components/LoginInput/LoginInput.module.scss";
 
 export default function (input: HTMLInputElement, name: string, usernames?: Array<string>): boolean {
-  console.log(usernames);
   let regExp;
   switch (name) {
     case "email":
@@ -15,8 +14,7 @@ export default function (input: HTMLInputElement, name: string, usernames?: Arra
       return validate(regExp.test(input.value))
     case "username":
       regExp = new RegExp(/^[a-zA-Z0-9_-]{3,15}$/);
-       validate(regExp.test(input.value) && !usernames?.includes(input.value));
-      return true
+      return validate(regExp.test(input.value) && !usernames?.includes(input.value));
     default:
       return false
   }

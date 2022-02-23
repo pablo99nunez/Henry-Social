@@ -83,24 +83,6 @@
         text-align: center;
       }
 
-      input {
-        font-size: 16px;
-        background-color: transparent;
-        border: none;
-        border-bottom: 1px solid $bg-color;
-        line-height: 1.5rem;
-        width: 80vw;
-
-        &:focus {
-          outline: none;
-        }
-      }
-
-      .invalid {
-        border-bottom: dotted;
-        border-color: red;
-      }
-
       button[type="submit"] {
         background-color: $bg-secondary-color;
         color: $white;
@@ -215,10 +197,6 @@
         width: 60%;
         margin: auto;
         position: relative;
-
-        input {
-          width: 100%;
-        }
 
         button[type="submit"] {
           align-self: flex-start;

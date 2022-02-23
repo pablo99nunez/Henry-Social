@@ -14,6 +14,7 @@ import style from "./Login.module.scss";
 import useUser from "../../Hooks/useUser";
 import Button from "../../Components/Button/Button";
 import { InfoAlert } from "../../Components/Alert/Alert";
+import LoginInput from "../../Components/LoginInput/LoginInput";
 import valForm from "./valForm"
 import { getUsers } from "../../redux/actions/actions";
 
@@ -32,6 +33,9 @@ export default function Login(): JSX.Element {
     admin: false,
     createdAt: {},
   });
+  const [ errors, setErrors ] = useState({
+    name: false, username: false, password: false, email: false,
+  })
   const [loading, setLoading] = useState(false);
   const [formComplete, setFromComplete] = useState(false)
   const [action, setAction] = useState(USER_ACTION.register);
@@ -116,9 +120,13 @@ export default function Login(): JSX.Element {
     const isValid = property === "username" ?
       valForm(target, property, usernames)
     : valForm(target, property);
-    const { childNodes: [,,,,,, btn ] } = target.parentElement
+    const { childNodes: [,,,,,, btn ] } = target?.parentElement?.parentElement;
     
     if(!isValid) {
+      setErrors({
+        ...errors,
+        [property]: true
+      })
       btn.disabled = true;
       return
     }
@@ -128,6 +136,10 @@ export default function Login(): JSX.Element {
       setInput({ ...input, avatar: e.target.files[0] });
     } else {
       setInput({ ...input, [property]: e.target.value });
+      setErrors({
+        ...errors,
+        [property]: false
+      })
     }
 
     if(formComplete) btn.disabled = false;
@@ -162,13 +174,19 @@ export default function Login(): JSX.Element {
               {" "}
               Hola, ¡Bienvenida/o a <strong>Henry Social!</strong>
             </h1>
-            <input
+            <LoginInput
+              valid={!errors.email}
+              id="email"
+              title="example@gmail.com"
               type="email"
               name="email"
               placeholder="Email"
               onChange={handleInputChange}
             />
-            <input
+            <LoginInput 
+              valid={!errors.password}
+              id="password"
+              title="8 characters long: numbers, 1 uppercase is required"
               type="password"
               name="password"
               placeholder="Contraseña"
@@ -176,19 +194,26 @@ export default function Login(): JSX.Element {
             />
             {action === USER_ACTION.register ? (
               <>
-                <input
+                <LoginInput
+                  valid={!errors.name}
+                  id="name"
                   type="text"
+                  title="The names must start with a capital letter"
                   name="name"
                   onChange={handleInputChange}
                   placeholder="Nombre"
                 />
-                <input
+                <LoginInput 
+                  valid={!errors.username}
+                  id="username"
                   type="text"
+                  title="The username must be unique, 3 characters long, and not special characteres"
                   name="username"
                   onChange={handleInputChange}
                   placeholder="Username"
                 />
-                <input
+                <LoginInput 
+                  id="avatar"
                   type="file"
                   name="avatar"
                   onChange={handleInputChange}
