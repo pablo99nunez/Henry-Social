@@ -14,14 +14,14 @@ router.post("/posts", async (req, res) => {
           author: {
             _id,
           },
-        })
+        }).populate("author", "name avatar username")
       : liked
       ? await Post.find({
           nLikes: {
             _id: liked,
           },
-        })
-      : await Post.find({}).populate("author");
+        }).populate("author", "name avatar username")
+      : await Post.find({}).populate("author", "name avatar username");
 
     res.json(posts);
   } catch (e) {
