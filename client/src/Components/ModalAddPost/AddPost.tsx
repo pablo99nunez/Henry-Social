@@ -42,7 +42,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       axios
         .post(`/post`, {
           body: textarea,
-          author: user,
+          author: user._id,
           typePost: buttons.tag,
         })
         .then((data) => {
