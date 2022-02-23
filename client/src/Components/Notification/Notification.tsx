@@ -25,7 +25,7 @@ export default function Notification({ detail, id }: Props) {
       className={`${styles.notification} ${detail?.new && styles.active}`}
       onClick={handleClick}
     >
-      <Avatar user={detail?.emisor}></Avatar>
+      <Avatar avatar={detail.avatar}></Avatar>
       <div>
         <h3>{detail?.content}</h3>
       </div>
