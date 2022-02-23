@@ -118,3 +118,4 @@ dist
 *.sass.map
 *.scss.map
 /.idea/
+package-lock.json

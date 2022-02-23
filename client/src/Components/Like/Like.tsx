@@ -12,20 +12,25 @@ type Props = {
 };
 
 export const Like: FC<Props> = ({ post }) => {
-  let icon = useRef<HTMLDivElement>(null);
-  const [like, setLike] = useState<Boolean>();
+  const icon = useRef<HTMLDivElement>(null);
+  const [like, setLike] = useState<boolean>(false);
   const dispatch = useDispatch();
   const user = useUser();
   const handleLike = () => {
     if (user) {
       dispatch(likePost(post, user));
+      //   setLike(!like);
+      //   axios
+      //     .post("/like", {
+      //       _id: post._id,
+      //       author: user,
+      //     })
+      //     .then(() => console.log("Likeado"));
     }
   };
   useEffect(() => {
-    if (user) {
-      const isLiked = !!post?.nLikes.filter(
-        (e) => e.username == user.username
-      )[0];
+    if (user?._id) {
+      const isLiked = !!post?.nLikes.filter((e) => e == user._id)[0];
       setLike(isLiked);
     }
   }, [user, post]);

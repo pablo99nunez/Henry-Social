@@ -20,7 +20,8 @@
     "react-router-dom": "^6.2.1",
     "redux-thunk": "^2.4.1",
     "sass": "^1.49.7",
-    "sweetalert2": "^11.4.4"
+    "sweetalert2": "^11.4.4",
+    "tinycolor2": "^1.4.2"
   },
   "devDependencies": {
     "@types/react": "^17.0.39",

@@ -14,18 +14,14 @@ router.post("/posts", async (req, res) => {
           author: {
             _id,
           },
-        })
-          .populate("author")
-          .populate("nLikes")
+        }).populate("author", "name avatar username")
       : liked
       ? await Post.find({
           nLikes: {
             _id: liked,
           },
-        })
-          .populate("author")
-          .populate("nLikes")
-      : await Post.find({}).populate("author").populate("nLikes");
+        }).populate("author", "name avatar username")
+      : await Post.find({}).populate("author", "name avatar username");
 
     res.json(posts);
   } catch (e) {
@@ -51,16 +47,8 @@ router.post("/like", async (req, res) => {
       .catch((e) => {
         throw new Error(e);
       });
-    const isLikedAlready = !!post?.nLikes.filter(
-      (e) => e.username === author.username
-    )[0];
+    const isLikedAlready = !!post?.nLikes.filter((e) => e === author._id)[0];
 
-    console.log(
-      post?.nLikes.filter((e) => {
-        console.log(e, author.username);
-        return e._id == author._id;
-      })
-    );
     if (!isLikedAlready) {
       console.log("Liking");
       const result = await Post.findByIdAndUpdate(
@@ -118,7 +106,7 @@ router.post("/post", async (req, res) => {
     res.status(401).json({ error: e });
   }
 });
-router.delete("/posts", async (req, res) => {
+router.get("/deletePosts", async (req, res) => {
   try {
     await Post.deleteMany({});
     res.send("Posts Deleted");

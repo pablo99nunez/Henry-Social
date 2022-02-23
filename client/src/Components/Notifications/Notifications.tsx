@@ -42,9 +42,13 @@ export default function Notifications() {
         >
           {typeof notifications !== "boolean" &&
             notifications &&
-            notifications.map((e: INotification, i: number) => {
-              return <Notification detail={e} key={i} id={i}></Notification>;
-            })}
+            (notifications.length ? (
+              notifications.map((e: INotification, i: number) => {
+                return <Notification detail={e} key={i} id={i}></Notification>;
+              })
+            ) : (
+              <h3 className={styles.noNotification}>No hay notificaciones</h3>
+            ))}
         </motion.div>
       </AnimatePresence>
     </div>
