@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 
 require("dotenv").config();
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 function main() {
   mongoose

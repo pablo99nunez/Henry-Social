@@ -9,26 +9,27 @@ import { useNavigate } from "react-router";
 
 import style from "./Home.module.scss";
 import useUser from "../../Hooks/useUser";
+import { InfoAlert } from "../../Components/Alert/Alert";
 
 const Home = () => {
-    const navigate = useNavigate();
-    const user = useUser();
-    useEffect(() => {
-        if (!user?.username) {
-            navigate("/login");
-        }
-    });
-    return (
-        <div className={style.home}>
-            <NavSearch />
-            <div className={style.home_position}>
-                <SideTags />
-                <Posts />
-                <SideMessages />
-            </div>
-            <Chat />
-        </div>
-    );
+  const navigate = useNavigate();
+  const user = useUser();
+  useEffect(() => {
+    if (!user?.username) {
+      navigate("/login");
+    }
+  });
+  return (
+    <div className={style.home}>
+      <NavSearch />
+      <div className={style.home_position}>
+        <SideTags />
+        <Posts />
+        <SideMessages />
+      </div>
+      <Chat />
+    </div>
+  );
 };
 
 export default Home;

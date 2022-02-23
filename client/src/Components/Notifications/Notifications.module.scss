@@ -1,0 +1,33 @@
+@import "../../Styles/variables.scss";
+
+.container {
+  width: 15vw;
+  height: fit-content;
+  min-height: 5vh;
+  position: absolute;
+  border-radius: 8px;
+  top: 150%;
+  left: -1rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+  backdrop-filter: blur(10px);
+}
+.icon_wrap {
+  position: relative;
+  .icon {
+    color: $white;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+  .news {
+    width: 13px;
+    box-shadow: 3px 3px 10px $black;
+    height: 13px;
+    border-radius: 50%;
+    background-color: $yellow;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}

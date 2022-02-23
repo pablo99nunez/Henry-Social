@@ -1,157 +1,273 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from "express";
-const axios = require("axios");
-import User from "../models/User";
+import axios from "axios";
+import User, { IUser } from "../models/User";
+import { INotification, NotificationType } from "../models/User";
 const router = Router();
 
 router.post("/user", (req, res) => {
-    User.create(req.body)
+
+
+
+
+  User.findOne({ username: req.body.username }).then((e) => {
+
+
+    if (!e) {
+      User.create(req.body)
         .then((result) => {
-            res.status(201).json(result);
+          res.status(201).json(result);
         })
         .catch((e) => res.status(400).json({ error: e }));
+    }
+
+
+    else res.json(e)
+  });
 });
 
 router.get("/users", async (req, res) => {
-    try {
-        let users = await User.find({});
-        res.json(users);
-    } catch (e) {
-        res.status(401).json({ error: e });
-    }
+  try {
+    const users = await User.find({});
+    res.json(users);
+  } catch (e) {
+    res.status(401).json({ error: e });
+  }
 });
 
 router.post("/findUser", (req, res) => {
-    const query = req.body;
-    User.findOne(query)
-        .then((e) => {
-            res.json(e);
-        })
-        .catch((e) => {
-            res.status(400).send(e);
-        });
+  const query = req.body;
+  User.findOne(query)
+    .then((e) => {
+      res.json(e);
+    })
+    .catch((e) => {
+      res.status(400).send(e);
+    });
 });
+
 router.post("/admin", async (req, res) => {
-    const { username } = req.body;
-    try {
-        let user = await User.findOne({ username });
-        if (!!user) {
-            user.admin = !user.admin;
-            await user.save();
-            res.json(user);
-        }
-    } catch (e) {
-        res.status(400).json({ error: e });
+  const { username } = req.body;
+  try {
+    const user = await User.findOne({ username });
+    if (user) {
+      user.admin = !user.admin;
+      console.log(user.admin);
+      await user.save();
+      res.json(user);
     }
+  } catch (e) {
+    res.status(400).json({ error: e });
+  }
 });
 
 async function isFollowing(userA: string, userB: string) {
-    try {
-        const isFollowing = await User.findOne({
-            username: userA,
-            following: { $in: userB },
-        });
-        if (isFollowing) return true;
-    } catch (e) {
-        return "Fallo al buscar el usuario: " + userA + e;
-    }
-    return false;
+  try {
+    const isFollowing = await User.findOne({
+      username: userA,
+      following: { $in: userB },
+    });
+    if (isFollowing) return true;
+  } catch (e) {
+    return "Fallo al buscar el usuario: " + userA + e;
+  }
+  return false;
 }
 
 async function addFollower(seguido: string, seguidor: string) {
-    let userA = await User.updateOne(
-        { username: seguido },
-        {
-            $addToSet: {
-                followers: seguidor,
-            },
-        },
-        { returnOriginal: false }
-    );
-    let userB = await User.updateOne(
-        { username: seguidor },
-        {
-            $addToSet: {
-                following: seguido,
-            },
-        },
-        { returnOriginal: false }
-    );
-    return { userA, userB };
+  const userA = await User.updateOne(
+    { username: seguido },
+    {
+      $addToSet: {
+        followers: seguidor,
+      },
+    },
+    { returnOriginal: false }
+  );
+  const userB = await User.updateOne(
+    { username: seguidor },
+    {
+      $addToSet: {
+        following: seguido,
+      },
+    },
+    { returnOriginal: false }
+  );
+  return { userA, userB };
 }
 
 router.post("/follow", async (req, res) => {
-    const { seguidor, seguido } = req.body;
-    try {
-        if (await isFollowing(seguidor, seguido)) {
-            //Si el seguidor ya sigue al seguido
-            const result = await axios.post("http://localhost:3001/unfollow", {
-                seguido,
-                seguidor,
-            }); //Deja de seguir al usuario
-            const userSeguidor = await axios
-                .post("http://localhost:3001/findUser", {
-                    username: seguidor,
-                })
-                .then((e: any) => e.data);
-            const userSeguido = await axios
-                .post("http://localhost:3001/findUser", {
-                    username: seguido,
-                })
-                .then((e: any) => e.data);
-            res.json({ userSeguidor, userSeguido });
-        } else {
-            try {
-                await addFollower(seguido, seguidor);
-                const userSeguidor = await axios
-                    .post("http://localhost:3001/findUser", {
-                        username: seguidor,
-                    })
-                    .then((e: any) => e.data);
-                const userSeguido = await axios
-                    .post("http://localhost:3001/findUser", {
-                        username: seguido,
-                    })
-                    .then((e: any) => e.data);
-
-                res.status(200).json({ userSeguidor, userSeguido });
-            } catch (e) {
-                res.status(401).json({ error: e });
-            }
-        }
-    } catch (error) {
-        res.status(403).json({ error: error });
+  const { seguidor, seguido } = req.body;
+  try {
+    if (await isFollowing(seguidor, seguido)) {
+      //Si el seguidor ya sigue al seguido
+      await axios.post("/unfollow", {
+        seguido,
+        seguidor,
+      }); //Deja de seguir al usuario
+      const userSeguidor = await axios
+        .post("/findUser", {
+          username: seguidor,
+        })
+        .then((e: any) => e.data);
+      const userSeguido = await axios
+        .post("/findUser", {
+          username: seguido,
+        })
+        .then((e: any) => e.data);
+      res.json({ userSeguidor, userSeguido });
+    } else {
+      try {
+        await addFollower(seguido, seguidor);
+        const userSeguidor = await axios
+          .post("/findUser", {
+            username: seguidor,
+          })
+          .then((e: any) => e.data)
+          .catch((e) => {
+            throw new Error(e);
+          });
+        const userSeguido = await axios
+          .post("/findUser", {
+            username: seguido,
+          })
+          .then((e: any) => e.data)
+          .catch((e) => {
+            throw new Error(e);
+          });
+        axios.post("/notification", {
+          type: NotificationType.Follow,
+          emisor: userSeguidor,
+          receptor: userSeguido,
+          link: "/profile/" + userSeguidor.username,
+        });
+        res.status(200).json({ userSeguidor, userSeguido });
+      } catch (e) {
+        res.status(401).json({ error: e });
+      }
     }
+  } catch (error) {
+    res.status(403).json({ error: error });
+  }
 });
 
 router.post("/unfollow", async (req, res) => {
-    const { seguido, seguidor } = req.body;
-    try {
-        const resultA = await User.updateOne(
-            { username: seguido },
-            {
-                $pull: {
-                    followers: { $in: [seguidor] },
-                },
-            }
-        );
-        const resultB = await User.updateOne(
-            { username: seguidor },
-            {
-                $pull: {
-                    following: { $in: [seguido] },
-                },
-            }
-        );
-        res.json({ resultA, resultB });
-    } catch (error) {
-        res.status(400).json({ error: error });
+  const { seguido, seguidor } = req.body;
+  try {
+    const resultA = await User.updateOne(
+      { username: seguido },
+      {
+        $pull: {
+          followers: { $in: [seguidor] },
+        },
+      }
+    );
+    const resultB = await User.updateOne(
+      { username: seguidor },
+      {
+        $pull: {
+          following: { $in: [seguido] },
+        },
+      }
+    );
+    res.json({ resultA, resultB });
+  } catch (error) {
+    res.status(400).json({ error: error });
+  }
+});
+router.put("/notification", async (req, res) => {
+  const { id, userId } = req.body;
+  const user = await User.findById(userId);
+  if (user) {
+    user.notifications[id].new = false;
+    user.markModified("notifications");
+    await user.save().then((user) => {
+      res.json(user);
+    });
+  } else {
+    res.status(400).send("User not found");
+  }
+});
+router.post("/notification", async (req, res) => {
+  let notification: INotification = req.body;
+  console.log(notification);
+  try {
+    const receptor = await User.findById(notification.receptor);
+    const emisor = await User.findById(notification.emisor);
+    console.log(receptor, emisor);
+    if (receptor && emisor) {
+      switch (notification.type) {
+        case NotificationType.Follow:
+          {
+            notification = {
+              content: `${emisor.name} ha comenzado a seguirte`,
+              type: notification.type,
+              link: notification.link,
+              receptor,
+              emisor,
+              new: true,
+            };
+          }
+          break;
+        case NotificationType.Like:
+          {
+            notification = {
+              content: `${emisor.name} le ha dado like a tu publicacion`,
+              link: notification.link,
+              type: notification.type,
+              receptor,
+              emisor,
+              new: true,
+            };
+          }
+          break;
+        case NotificationType.Comment:
+          {
+            notification = {
+              content: `${emisor.name} ha comentado tu publicacion`,
+              link: notification.link,
+              type: notification.type,
+              receptor,
+              emisor,
+              new: true,
+            };
+          }
+          break;
+      }
+      await User.updateOne(
+        { _id: notification.receptor },
+        {
+          $addToSet: {
+            notifications: notification,
+          },
+        },
+        { new: true }
+      )
+        .then((e) => res.json(e))
+        .catch((e) => {
+          throw new Error(e);
+        });
+    } else {
+      throw new Error("No se encontraron los usuarios");
     }
+  } catch (e) {
+    res.status(400).send("Error: " + e);
+  }
 });
 
 router.get("/PELIGRO", async (req, res) => {
-    await User.deleteMany({});
+  await User.deleteMany({});
 
-    res.json("DB Clean");
+  res.json("DB Clean");
+});
+router.get("/deleteNotis", async (req, res) => {
+  await User.updateMany(
+    {},
+    {
+      notifications: [],
+    }
+  );
+  res.send("Notificaciones eliminadas");
 });
 
 export default router;
