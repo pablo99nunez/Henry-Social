@@ -11,6 +11,7 @@ export const GET_POST = "GET_POST";
 export const LIKE_POST = "LIKE_POST";
 export const MAKE_ADMIN = "MAKE_ADMIN";
 export const SEE_NOTIFICATION = "SEE_NOTIFICATION";
+export const FILTER_BY_TYPE = "FILTER_BY_TYPE";
 
 export interface IAction {
   type: string;
@@ -62,16 +63,33 @@ export function getProfile(username: string) {
   };
 }
 
-export function getPosts(_id: string | undefined = "") {
+export function getPosts(_id: string | undefined = "", typePost: string | undefined = "") {
   return function (dispatch: Function) {
     _id
-      ? axios.post("/posts", { _id }).then((res) => {
+      ? axios.post("/posts", { _id}).then((res) => {
           return dispatch({ type: GET_POSTS, payload: res.data });
         })
-      : axios.post("/posts").then((res) => {
+      : axios.post("/posts",).then((res) => {
           return dispatch({ type: GET_POSTS, payload: res.data });
         });
+
   };
+}
+
+export function filterBySection( typePost:string ) {
+  return async function (dispatch:Function) {
+      try {
+          const res = await axios.post("/posts",{props:{
+            typePost
+          }})
+          return dispatch({
+            type:FILTER_BY_TYPE,
+            payload: res.data
+          })
+      } catch (error) {
+          console.log(error)
+      }
+  }
 }
 export function getPost(id: String) {
   return function (dispatch: Function) {

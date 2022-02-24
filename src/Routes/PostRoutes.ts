@@ -7,23 +7,26 @@ const router = Router();
 
 router.post("/posts", async (req, res) => {
   try {
-    const { _id, liked } = req.body;
-    console.log(_id);
-    const posts = _id
-      ? await Post.find({
-          author: {
-            _id,
-          },
-        }).populate("author", "name avatar username")
-      : liked
-      ? await Post.find({
-          nLikes: {
-            _id: liked,
-          },
-        }).populate("author", "name avatar username")
-      : await Post.find({}).populate("author", "name avatar username");
+    const { _id, liked, props } = req.body;
+    console.log("props",props)
+    console.log("Body", req.body)
 
-    res.json(posts);
+    const posts = _id
+        ? await Post.find({
+            author: {
+              _id,
+            },
+          }).populate("author", "name avatar username")
+        : liked
+        ? await Post.find({
+            nLikes: {
+              _id: liked,
+            },
+          }).populate("author", "name avatar username")
+        : await Post.find({
+          ...props
+        }).populate("author", "name avatar username");
+      res.json(posts);
   } catch (e) {
     res.status(401).json({ error: e });
   }

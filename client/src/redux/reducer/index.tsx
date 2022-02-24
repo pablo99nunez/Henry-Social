@@ -11,6 +11,7 @@ import {
   MAKE_ADMIN,
   SEE_NOTIFICATION,
   SIGN_OUT,
+  FILTER_BY_TYPE,
 } from "../actions/actions";
 
 export interface IState {
@@ -50,6 +51,12 @@ export default function rootReducer(state = initialState, action: IAction) {
       };
     }
     case GET_POSTS: {
+      return {
+        ...state,
+        posts: action.payload,
+      };
+    }
+    case FILTER_BY_TYPE: {
       return {
         ...state,
         posts: action.payload,
