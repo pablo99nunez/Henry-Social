@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Post from "../models/Post";
+import Post, { Comment } from "../models/Post";
 import { NotificationType } from "../models/User";
 import axios from "axios";
 
@@ -118,6 +118,30 @@ router.delete("/post", async (req, res) => {
   } catch (e) {
     res.status(401).json({ error: e });
   }
+});
+
+router.post("/comment", async (req, res) => {
+  const { postId, text, author } = req.body;
+  try {
+    Comment.create({ postId, author, text }, { new: true })
+      .then((e) => {
+        Post.findByIdAndUpdate(postId, { $inc: { numComments: 1 } }).then(
+          () => {
+            res.json(e);
+          }
+        );
+      })
+      .catch((e) => {
+        throw new Error(e);
+      });
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+});
+router.get("/comments/:id", (req, res) => {
+  Comment.find({ postId: req.params.id }).then((e) => {
+    res.json(e);
+  });
 });
 
 export default router;
