@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BsGoogle, BsGithub } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
 import {
   signUpWithEmail,
@@ -16,7 +15,7 @@ import Button from "../../Components/Button/Button";
 import { InfoAlert } from "../../Components/Alert/Alert";
 import LoginInput from "../../Components/LoginInput/LoginInput";
 import valForm from "./valForm"
-import { getUsers } from "../../redux/actions/actions";
+import axios from "axios";
 
 enum USER_ACTION {
   signUp,
@@ -32,6 +31,7 @@ export default function Login(): JSX.Element {
     avatar: "",
     admin: false,
     createdAt: {},
+    notifications: []
   });
   const [ errors, setErrors ] = useState({
     name: false, username: false, password: false, email: false,
@@ -40,21 +40,14 @@ export default function Login(): JSX.Element {
   const [formComplete, setFromComplete] = useState(false)
   const [action, setAction] = useState(USER_ACTION.logIn);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const usernames = useSelector(state => state.usernames);
   const user = useUser();
+  const btn = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const { name, username, password, email } = input;
     if (user?.username) return navigate("/");
 
     name && username  && password && email && setFromComplete(true);
-
-    const gettingUsernames = async (): Promise<void> => {
-      await dispatch(getUsers(true));
-    }
-
-    gettingUsernames();
 
   }, [user, input]);
 
@@ -114,20 +107,46 @@ export default function Login(): JSX.Element {
       }
     }
   };
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+
+  let typerTimer:NodeJS.Timeout;
+  interface InputUsername { target: HTMLInputElement };
+  
+  function validateUsername ({ target }: InputUsername){
+    axios.get("/user", {
+      params: {
+        username: target.value
+      }
+    }).then((user)=>{
+      if(!valForm(target, target.name, user?.data?.username) && user.data){
+        setErrors({
+          ...errors,
+          [target.name]: true
+        })
+        if(btn.current) btn.current.disabled = true;
+      } else {
+        setErrors({
+          ...errors,
+          [target.name]: false
+        })
+        if(formComplete && btn.current) btn.current.disabled = false;
+      }
+    })
+
+  }
+
+
+
+  function handleInputChange (e: React.ChangeEvent<HTMLInputElement>) {
     const target = e.target;
     const property = target.name;
-    const isValid = property === "username" ?
-      valForm(target, property, usernames)
-    : valForm(target, property);
-    const { childNodes: [,,,,,, btn ] } = target?.parentElement?.parentElement;
-    
+    const isValid = valForm(target, property);
+  
     if(!isValid) {
       setErrors({
         ...errors,
         [property]: true
       })
-      btn.disabled = true;
+      if(btn.current) btn.current.disabled = true;
       return
     }
     
@@ -142,7 +161,7 @@ export default function Login(): JSX.Element {
       })
     }
 
-    if(formComplete) btn.disabled = false;
+    if(formComplete && btn.current) btn.current.disabled = false;
   }
 
   const handleActionChange = () => {
@@ -194,6 +213,23 @@ export default function Login(): JSX.Element {
             />
             {action === USER_ACTION.signUp ? (
               <>
+                <LoginInput 
+                  valid={!errors.username}
+                  id="username"
+                  type="text"
+                  title="The username must be unique, 3 characters long, and not special characteres"
+                  name="username"
+                  onChange={handleInputChange}
+                  onKeyUp={(e) => {
+                    clearTimeout(typerTimer);
+                    typerTimer = setTimeout(() => validateUsername(e), 150);
+                  }}
+                  onKeyDown={() => {
+                    clearTimeout(typerTimer);
+                  }}
+                  placeholder="Username"
+                  
+                />
                 <LoginInput
                   valid={!errors.name}
                   id="name"
@@ -202,15 +238,6 @@ export default function Login(): JSX.Element {
                   name="name"
                   onChange={handleInputChange}
                   placeholder="Nombre"
-                />
-                <LoginInput 
-                  valid={!errors.username}
-                  id="username"
-                  type="text"
-                  title="The username must be unique, 3 characters long, and not special characteres"
-                  name="username"
-                  onChange={handleInputChange}
-                  placeholder="Username"
                 />
                 <LoginInput 
                   id="avatar"
@@ -223,7 +250,7 @@ export default function Login(): JSX.Element {
             ) : (
               <></>
             )}
-            <button disabled={loading} type="submit">
+            <button disabled={loading} type="submit" ref={btn}>
               {" "}
               {action === USER_ACTION.signUp
                 ? "Registrate"

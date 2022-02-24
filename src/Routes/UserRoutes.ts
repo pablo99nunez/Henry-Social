@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Router, Request } from "express";
+import { Router } from "express";
 import axios from "axios";
-import User, { IUser } from "../models/User";
+import User from "../models/User";
 import { INotification, NotificationType } from "../models/User";
-import { registerVersion } from "firebase/app";
+
 const router = Router();
 
 router.post("/user", (req, res) => {
@@ -18,21 +18,10 @@ router.post("/user", (req, res) => {
   });
 });
 
-router.get("/users", async (req, res) => {
-  const { onlyUsernames }  = req.query;
-  
-  try {
-    const users = await User.find({});
-
-    if(onlyUsernames) {
-      const usernames = users.map(u => u.username);
-      return res.json(usernames)
-    }
-
-    res.json(users);
-  } catch (e) {
-    res.status(401).json({ error: e });
-  }
+router.get("/user", async (req, res) => {
+  const { username } = req.query;
+  const user = await User.findOne({ username }) 
+  res.status(200).json(user);
 });
 
 router.post("/findUser", (req, res) => {

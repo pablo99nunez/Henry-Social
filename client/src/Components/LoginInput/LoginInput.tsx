@@ -10,7 +10,9 @@ interface InputProps {
   name: string,
   valid?: boolean
   placeholder?: string
-  onChange(e: React.ChangeEvent<HTMLInputElement>): void
+  onChange?(e: React.ChangeEvent<HTMLInputElement>): void,
+  onKeyUp?(e: React.KeyboardEvent<HTMLInputElement>): void;
+  onKeyDown?(e: React.KeyboardEvent<HTMLInputElement>): void;
 }
 
 const eyeStyles: CSS.Properties = {
@@ -25,7 +27,9 @@ export default function LoginInput({
   name,
   valid,
   placeholder,
-  onChange
+  onChange,
+  onKeyUp,
+  onKeyDown
 }: InputProps): JSX.Element{
 
   const [visibility, setVisibility] = useState(false);
@@ -65,7 +69,9 @@ export default function LoginInput({
         }
         name={name}
         placeholder={placeholder}
-        onChange={onChange}
+        onChange={onChange && onChange}
+        onKeyUp={onKeyUp && onKeyUp}
+        onKeyDown={onKeyDown && onKeyDown}
       />
     </div>
   )
