@@ -25,7 +25,7 @@ const Post: FC<Props> = ({ post }) => {
     };
 
     return(
-<div className={post?.typePost === 'boom' ? style.post : post?.typePost === 'job' ? style.post : style.post} onClick={handleClick} ref={postRef}>
+<div className={post?.typePost === 'boom' ? style.post : post?.typePost === 'empleo' ? style.post : style.post} onClick={handleClick} ref={postRef}>
             <div
                 className={style.post_profile_img}
                 onClick={() => {
@@ -73,7 +73,7 @@ const Post: FC<Props> = ({ post }) => {
                         <p>💥💥💥Contratad@ para {post?.company} como {post?.position}💥💥💥</p>
                         {post?.body}
                     </div>
-                ) : post?.typePost === 'job' ? (
+                ) : post?.typePost === 'empleo' ? (
                     <div className={style.post_content} ref={contentRef}>
                         <p>Busqueda laboral:</p>
                         <p>{post?.company} esta buscando {post?.position}</p>

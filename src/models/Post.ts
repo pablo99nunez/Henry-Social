@@ -52,7 +52,11 @@ const postSchema = new Schema({
   typePost: {
     type: String,
     require: true,
+    default: 'normal'
   },
+  company: {
+    type: String,
+  }
 });
 
 const commentSchema = new Schema({
