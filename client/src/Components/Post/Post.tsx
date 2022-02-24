@@ -1,10 +1,11 @@
-import React, { FC, useRef } from "react";
+import React, { FC, useRef, useState } from "react";
 import style from "./Post.module.scss";
 import { BsThreeDots, BsChatSquareDots } from "react-icons/bs";
 import { Like } from "../Like/Like";
 import { IPost } from "../../../../src/models/Post";
 import { useNavigate } from "react-router";
 import Avatar from "../Avatar/Avatar";
+import CommentModal from "../CommentModal/CommentModal";
 
 type Props = {
   post: IPost;
@@ -13,6 +14,7 @@ type Props = {
 const Post: FC<Props> = ({ post }) => {
   const navigate = useNavigate();
   const postRef = useRef(null);
+  const [openComment, setOpenComment] = useState(false);
   const contentRef = useRef(null);
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target === postRef.current || e.target === contentRef.current) {
@@ -21,42 +23,50 @@ const Post: FC<Props> = ({ post }) => {
   };
 
   return (
-    <div className={style.post} onClick={handleClick} ref={postRef}>
-      <div
-        className={style.post_profile_img}
-        onClick={() => {
-          navigate("/profile/" + post?.author.username);
-        }}
-      >
-        <Avatar avatar={post?.author?.avatar}></Avatar>
-      </div>
-      <div className={style.post_wrap}>
-        <div className={style.post_profile}>
-          <h3
-            onClick={() => {
-              navigate("/profile/" + post.author.username);
-            }}
-          >
-            {post?.author?.name}
-          </h3>
-          <h4>{new Date(post?.postTime).toLocaleString()}</h4>
+    <div className={style.postContainer}>
+      <div className={style.post} onClick={handleClick} ref={postRef}>
+        <div
+          className={style.post_profile_img}
+          onClick={() => {
+            navigate("/profile/" + post?.author.username);
+          }}
+        >
+          {typeof post?.author?.avatar === "string" && (
+            <Avatar avatar={post?.author?.avatar}></Avatar>
+          )}
         </div>
-        <div className={style.post_options}>
-          <BsThreeDots />
-        </div>
-        <div className={style.post_content} ref={contentRef}>
-          {post?.body}
-        </div>
-        <div className={style.post_interacciones}>
-          <div className={style.post_like_comments}>
-            <Like post={post}></Like>
-            <div className={style.post_icon}>
-              <BsChatSquareDots />
-              <span>{post?.numComments}</span>
+        <div className={style.post_wrap}>
+          <div className={style.post_profile}>
+            <h3
+              onClick={() => {
+                navigate("/profile/" + post.author.username);
+              }}
+            >
+              {post?.author?.name}
+            </h3>
+            <h4>{new Date(post?.postTime).toLocaleString()}</h4>
+          </div>
+          <div className={style.post_options}>
+            <BsThreeDots />
+          </div>
+          <div className={style.post_content} ref={contentRef}>
+            {post?.body}
+          </div>
+          <div className={style.post_interacciones}>
+            <div className={style.post_like_comments}>
+              <Like post={post}></Like>
+              <div
+                className={style.post_icon}
+                onClick={() => setOpenComment(!openComment)}
+              >
+                <BsChatSquareDots />
+                <span>{post?.numComments}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <CommentModal open={openComment} postId={post?._id}></CommentModal>
     </div>
   );
 };

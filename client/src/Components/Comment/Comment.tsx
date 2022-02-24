@@ -12,16 +12,16 @@ const Comment = ({ key, data }: any) => {
   return (
     <div className="comment" key={key}>
       <div className="picture">
-        <img className="photo" src={data.img} alt={data.author} />
+        <img className="photo" src={data.author.avatar} alt={"avatar"} />
       </div>
 
       <div className="info">
         <div className="author">
           <Link className="name" to={`/profile/${data.postId}`}>
-            {data.author}
+            {data.author.name}
           </Link>
           <span className="cohorteDate">
-            {data.cohorte} · {data.postTime}
+            · {new Date(data.postTime).toLocaleString()}
           </span>
         </div>
 

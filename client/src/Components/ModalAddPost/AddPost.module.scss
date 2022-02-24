@@ -11,13 +11,13 @@
     gap: 20px;
     width: 100%;
     @include flex-column;
-    .content__inputs{
+    .content__inputs {
       gap: 20px;
       width: 100%;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      input{
+      input {
         width: 40%;
         border: none;
         outline: none;
@@ -26,12 +26,12 @@
         color: black;
         padding: 15px 0px;
         border-bottom: 1px solid $blackLow;
-        &::placeholder{
+        &::placeholder {
           color: $blackLow;
         }
       }
     }
-    .content__textImage{
+    .content__textImage {
       gap: 15px;
       display: flex;
       textarea {
@@ -46,12 +46,12 @@
         max-height: 150px;
         border-radius: 10px;
         font-family: inherit;
-        &.active{
+        &.active {
           height: 150px;
           overflow: auto;
         }
       }
-      .boxImage{
+      .boxImage {
         width: 50%;
         label {
           gap: 10px;
@@ -60,23 +60,25 @@
           @include flex-aic;
           text-align: center;
           justify-content: center;
-          background-color: $greyDarker;
+          background-color: $greyLight;
         }
-        input{
+        input {
           width: 0;
           height: 0;
           position: absolute;
           visibility: hidden;
         }
-      }  
+      }
     }
   }
-  .add_post_tags, .add_post_buttons {
-    gap: .5rem;
+  .add_post_tags,
+  .add_post_buttons {
+    gap: 0.5rem;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    button, input {
+    button,
+    input {
       outline: none;
       cursor: pointer;
       font-size: 14px;
@@ -85,26 +87,27 @@
       padding: 0.5rem 0.6rem;
       background-color: $light;
       border: 1px solid $blackLow;
-      &.select{
+      &.select {
         color: $white;
         background: $blackLow;
       }
     }
   }
-  .add_post_tags button.deselect:hover{
-    background-color: $greyDarker;
+  .add_post_tags button.deselect:hover {
+    background-color: $greyLight;
   }
-  .add_post_buttons{
+  .add_post_buttons {
     margin-top: 1rem;
     justify-content: flex-end;
-    button, input{
+    button,
+    input {
       font-size: 18px;
       color: $white;
       border-radius: 5px;
       background: black;
       padding: 0.5rem 0.7rem;
-      transition: transform .2s ease-in;
-      &:hover{
+      transition: transform 0.2s ease-in;
+      &:hover {
         transform: scale(1.1);
       }
     }
@@ -112,17 +115,17 @@
 }
 @media screen and (max-width: 524px) {
   .modal_add_post .add_post_content {
-    .content__inputs{
+    .content__inputs {
       flex-direction: column;
-      input{
+      input {
         width: 100%;
         padding: 10px 0px;
       }
     }
-    .content__textImage{
+    .content__textImage {
       gap: 5px;
       flex-direction: column;
-      .boxImage{
+      .boxImage {
         width: 100%;
         height: 50px;
         max-height: max-content;
