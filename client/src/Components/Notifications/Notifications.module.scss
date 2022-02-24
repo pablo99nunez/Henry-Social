@@ -8,10 +8,13 @@
   border-radius: 8px;
   top: 150%;
   left: -1rem;
-  overflow: hidden;
+  overflow-y: scroll;
+  max-height: 50vh;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column-reverse;
   backdrop-filter: blur(10px);
+
   .noNotification {
     padding: 1rem;
     color: $black;
@@ -36,4 +39,17 @@
     top: 0;
     right: 0;
   }
+}
+.container::-webkit-scrollbar {
+  background-color: #c4c4c4aa;
+  width: 0.6rem;
+  border-radius: 0 10px 10px 0;
+}
+.container::-webkit-scrollbar-thumb {
+  background-color: $blackLow;
+  border-radius: 50vh;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background-color: $black;
 }
