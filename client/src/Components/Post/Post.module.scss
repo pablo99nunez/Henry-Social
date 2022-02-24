@@ -4,7 +4,14 @@
 .post:hover {
   background: $blackLow;
 }
+.postContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .post {
+  width: 100%;
+  z-index: 1;
   background-color: $black;
   border-radius: 8px;
   padding: 1.5rem;

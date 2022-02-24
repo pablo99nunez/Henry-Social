@@ -18,6 +18,7 @@ export interface IState {
   profile: IUser;
   posts: IPost[];
   post: IPost;
+  comments: Comment[];
 }
 
 const initialState = {
@@ -58,7 +59,8 @@ export default function rootReducer(state = initialState, action: IAction) {
     case GET_POST: {
       return {
         ...state,
-        post: action.payload,
+        post: action.payload.post,
+        comments: action.payload.comments,
       };
     }
     case LIKE_POST: {

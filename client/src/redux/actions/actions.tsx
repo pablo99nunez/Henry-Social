@@ -75,8 +75,14 @@ export function getPosts(_id: string | undefined = "") {
 }
 export function getPost(id: String) {
   return function (dispatch: Function) {
-    axios.get("/post/" + id).then((res) => {
-      return dispatch({ type: GET_POST, payload: res.data });
+    axios.get("/post/" + id).then((post) => {
+      if (post)
+        axios.get("/comments/" + post.data._id).then((comments) => {
+          return dispatch({
+            type: GET_POST,
+            payload: { post: post.data, comments: comments.data },
+          });
+        });
     });
   };
 }

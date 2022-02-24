@@ -119,7 +119,7 @@
     width: 75%;
     .posts {
       display: flex;
-      flex-direction: column;
+      flex-direction: column-reverse;
       gap: 1rem;
     }
   }
