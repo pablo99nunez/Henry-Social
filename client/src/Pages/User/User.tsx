@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import FollowBar from "../../Components/followBar/FollowBar";
+import FollowBar from "../../Components/FollowBar/FollowBar";
 import Chat from "../../Components/Chat/Chat";
 import Post from "../../Components/Post/Post";
 import style from "./User.module.scss";

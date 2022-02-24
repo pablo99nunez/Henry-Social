@@ -20,17 +20,17 @@ const AddPost: FC<Props> = ({ setOpen }) => {
   const [post, setPost] = useState({
     text: '',
     image: '',
-    nameEmpresa: '',
-    rolEmpresa: '',
-    linkEmpleo: '',
-    salarioEmpleo: '',
+    company: '',
+    position: '',
+    companyLink: '',
+    companyImage: '',
+    salary: '',
     costoClases: '',
     temasClases: '',
     tecnologíaClases: '',
   })
 
   const handleChange = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(e)
     setPost({...post, [e.target.name]: e.target.value});
   };
 
@@ -45,8 +45,12 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     if (user)
       axios
         .post(`/post`, {
-          // No quiero romper la creacion de post, por lo que de momento te envio el texto, ni bien este listo el modelo para recibir demas contenido se implementa mandando post
           body: post.text,
+          company: post.company,
+          position: post.position,
+          companyLink: post.companyLink,
+          companyImage: post.companyImage,
+          salary: post.salary,
           author: user,
           typePost,
         })
@@ -118,31 +122,40 @@ const AddPost: FC<Props> = ({ setOpen }) => {
             <>
               <input 
                 type="text" 
-                name="nameEmpresa" 
-                defaultValue={post.nameEmpresa}
+                name="company" 
+                defaultValue={post.company}
                 placeholder="Nombre de la Empresa"
+                required
               />
               <input 
                 type="text" 
-                name="rolEmpresa" 
-                defaultValue={post.rolEmpresa}
+                name="position" 
+                defaultValue={post.position}
                 placeholder="Rol en la Empresa"
+                required
+              />
+              <input 
+                type='url'
+                name='companyImage'
+                defaultValue={post.companyImage}
+                placeholder='Imagen de la empresa'
               />
             </>
             }
             {typePost === 'empleo' &&
             <>
               <input 
-                name="linkEmpleo" 
-                type="text" 
-                defaultValue={post.linkEmpleo}
+                name="companyLink" 
+                type="url" 
+                defaultValue={post.companyLink}
                 placeholder="Link del Empleo"
+                required
               />
               <input 
                 min='0'
                 type="number" 
-                name="salarioEmpleo" 
-                defaultValue={post.salarioEmpleo}
+                name="salary" 
+                defaultValue={post.salary}
                 placeholder="Salario (Opcional)"
               />
             </>

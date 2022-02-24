@@ -4,7 +4,7 @@
 .post:hover {
   background: $blackLow;
 }
-.post {
+.post , .postBoom , .postJob{
   background-color: $black;
   border-radius: 8px;
   padding: 1.5rem;
@@ -76,4 +76,12 @@
       }
     }
   }
+}
+
+.postBoom {
+  box-shadow: 0.1em 0.1em 0.1em 0.1em rgb(255, 56, 56), -0.1em -0.1em 0.1em 0.1em rgb(255, 56, 56)
+}
+
+.postJob {
+  box-shadow: 0.1em 0.1em 0.1em 0.1em rgb(49, 53, 255), -0.1em -0.1em 0.1em 0.1em rgb(49, 53, 255)
 }

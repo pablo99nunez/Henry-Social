@@ -5,7 +5,7 @@ import Joi from "joi";
 export interface IPost {
   body: string;
   postTime: string;
-  nLikes: [string];
+  nLikes: [IUser];
   numComments: number;
   author: IUser;
   _id: number;
@@ -56,6 +56,15 @@ const postSchema = new Schema({
   },
   company: {
     type: String,
+  },
+  position: {
+    type: String,
+  },
+  companyLink: {
+    type: String,
+  },
+  salary: {
+    type: Number,
   }
 });
 

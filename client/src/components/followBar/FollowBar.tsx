@@ -1,4 +1,4 @@
-import "./followBar.scss"; //Hola bro
+import "./FollowBar.module.scss"; //Hola bro
 
 export default function FollowBar() {
   const seguidos = [

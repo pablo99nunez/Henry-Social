@@ -26,7 +26,7 @@ const Post: FC<Props> = ({ post }) => {
     };
 
     return(
-<div className={post?.typePost === 'boom' ? style.post : post?.typePost === 'empleo' ? style.post : style.post} onClick={handleClick} ref={postRef}>
+<div className={post?.typePost === 'boom' ? style.postBoom : post?.typePost === 'empleo' ? style.postJob : style.post} onClick={handleClick} ref={postRef}>
             <div
                 className={style.post_profile_img}
                 onClick={() => {

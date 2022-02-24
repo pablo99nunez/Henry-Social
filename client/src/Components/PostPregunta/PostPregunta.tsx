@@ -5,7 +5,7 @@ import {
     BsChatSquareDots,
     BsShareFill
 } from 'react-icons/bs';
-import style from "./Post.module.scss";
+import style from "./PostPregunta.module.scss";
 import { Like } from '../Like/Like';
 import { IPost } from '../../../../src/models/Post';
 import { useNavigate } from 'react-router';
