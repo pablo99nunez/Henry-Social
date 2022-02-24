@@ -16,8 +16,9 @@ export interface INotification {
   type: NotificationType;
   content: string;
   link: string;
-  receptor: IUser;
-  emisor: IUser;
+  receptor?: string;
+  emisor: string;
+  avatar: string;
   new: boolean;
 }
 export interface IUser {
