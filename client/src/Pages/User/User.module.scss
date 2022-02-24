@@ -113,14 +113,29 @@
   }
   .body_profile {
     display: grid;
-    margin-top: 3rem;
+    margin-top: 6rem;
     gap: 1rem;
     grid-template-columns: 1.3fr 2.5fr 1fr;
     width: 75%;
+    position: relative;
     .posts {
       display: flex;
       flex-direction: column-reverse;
       gap: 1rem;
+      .filters {
+        display: flex;
+        position: absolute;
+        gap: 1rem;
+        font-size: 1.5rem;
+        top: -3rem;
+        color: $grey;
+        h3 {
+          cursor: pointer;
+        }
+        .active {
+          color: $white;
+        }
+      }
     }
   }
   .mistery_box {

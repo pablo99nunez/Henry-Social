@@ -1,6 +1,7 @@
 import { IUser } from "../../../../src/models/User";
 import { IPost } from "../../../../src/models/Post";
 import {
+  FILTER_BY_LIKE,
   FOLLOW_USER,
   GET_POST,
   GET_POSTS,
@@ -81,6 +82,12 @@ export default function rootReducer(state = initialState, action: IAction) {
       return {
         ...state,
         user: action.payload,
+      };
+    }
+    case FILTER_BY_LIKE: {
+      return {
+        ...state,
+        posts: action.payload,
       };
     }
     default:

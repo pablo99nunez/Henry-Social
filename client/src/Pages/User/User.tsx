@@ -13,7 +13,12 @@ import Button from "../../Components/Button/Button";
 import Settings from "../../Components/Settings/Settings";
 import useUser from "../../Hooks/useUser";
 import Modal from "../../Components/Modal/Modal";
-import { followUser, getPosts, makeAdmin } from "../../redux/actions/actions";
+import {
+  filterByLike,
+  followUser,
+  getPosts,
+  makeAdmin,
+} from "../../redux/actions/actions";
 import { useProfile } from "../../Hooks/useProfile";
 import { IState } from "../../redux/reducer";
 
@@ -21,7 +26,7 @@ export default function User() {
   const [edit, setEdit] = useState(false);
   const { username } = useParams();
   const [loading, setLoading] = useState(true);
-
+  const [filter, setFilter] = useState(1);
   const [user, isOwner] = useProfile(username);
   const [isFollowing, setIsFollowing] = useState(false);
   const posts = useSelector((state: IState) => state.posts);
@@ -163,6 +168,29 @@ export default function User() {
               <FollowBar />
             </div>
             <div className={style.posts}>
+              <div className={style.filters}>
+                <h3
+                  className={filter == 1 ? style.active : ""}
+                  onClick={() => {
+                    dispatch(getPosts(user._id));
+                    setFilter(1);
+                  }}
+                >
+                  Publicaciones
+                </h3>
+                <h3>|</h3>
+                <h3
+                  className={filter == 2 ? style.active : ""}
+                  onClick={() => {
+                    if (user._id) {
+                      dispatch(filterByLike(user._id));
+                      setFilter(2);
+                    }
+                  }}
+                >
+                  Me gusta
+                </h3>
+              </div>
               {posts?.map((e) => (
                 <Post post={e}></Post>
               ))}

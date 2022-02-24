@@ -11,6 +11,7 @@ export const GET_POST = "GET_POST";
 export const LIKE_POST = "LIKE_POST";
 export const MAKE_ADMIN = "MAKE_ADMIN";
 export const SEE_NOTIFICATION = "SEE_NOTIFICATION";
+export const FILTER_BY_LIKE = "FILTER_BY_LIKE";
 
 export interface IAction {
   type: string;
@@ -108,5 +109,19 @@ export function seeNotification(id: number, userId: string) {
     axios.put("/notification", { id, userId }).then((e) => {
       return dispatch({ type: SEE_NOTIFICATION, payload: e.data });
     });
+  };
+}
+
+export function filterByLike(id: string) {
+  return (dispatch: Function) => {
+    axios
+      .post("/posts", {
+        props: {
+          nLikes: { $in: [id] },
+        },
+      })
+      .then((e) => {
+        return dispatch({ type: FILTER_BY_LIKE, payload: e.data });
+      });
   };
 }
