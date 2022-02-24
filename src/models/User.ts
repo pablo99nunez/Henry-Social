@@ -18,7 +18,7 @@ export interface INotification {
   link: string;
   receptor?: string;
   emisor: string;
-  avatar?: string;
+  avatar: string;
   new: boolean;
 }
 export interface IUser {
