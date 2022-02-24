@@ -19,8 +19,8 @@ import valForm from "./valForm"
 import { getUsers } from "../../redux/actions/actions";
 
 enum USER_ACTION {
-  register,
-  signIn,
+  signUp,
+  logIn,
 }
 
 export default function Login(): JSX.Element {
@@ -38,7 +38,7 @@ export default function Login(): JSX.Element {
   })
   const [loading, setLoading] = useState(false);
   const [formComplete, setFromComplete] = useState(false)
-  const [action, setAction] = useState(USER_ACTION.register);
+  const [action, setAction] = useState(USER_ACTION.logIn);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const usernames = useSelector(state => state.usernames);
@@ -71,7 +71,7 @@ export default function Login(): JSX.Element {
       try {
         setLoading(true);
 
-        if (action == USER_ACTION.register) {
+        if (action == USER_ACTION.signUp) {
           await signUpWithEmail(input).then(() => {
             InfoAlert.fire("Usuario creado con exito");
           });
@@ -146,7 +146,7 @@ export default function Login(): JSX.Element {
   }
 
   const handleActionChange = () => {
-    const Act = action ? "register" : "signIn";
+    const Act: string = action ? "signUp" : "logIn";
     setAction(USER_ACTION[Act]);
   };
 
@@ -163,7 +163,7 @@ export default function Login(): JSX.Element {
           </div>
           <button className={style.act_btn} onClick={handleActionChange}>
             {" "}
-            {action === USER_ACTION.register
+            {action === USER_ACTION.signUp
               ? "Iniciar sesión"
               : "Registrarse"}{" "}
           </button>
@@ -192,7 +192,7 @@ export default function Login(): JSX.Element {
               placeholder="Contraseña"
               onChange={handleInputChange}
             />
-            {action === USER_ACTION.register ? (
+            {action === USER_ACTION.signUp ? (
               <>
                 <LoginInput
                   valid={!errors.name}
@@ -225,7 +225,7 @@ export default function Login(): JSX.Element {
             )}
             <button disabled={loading} type="submit">
               {" "}
-              {action === USER_ACTION.register
+              {action === USER_ACTION.signUp
                 ? "Registrate"
                 : "Inicia sesión"}{" "}
             </button>
@@ -236,7 +236,7 @@ export default function Login(): JSX.Element {
               onClick={() => handleLogin(signUpWithGmail)}
               style={{ fontWeight: "normal" }}
             >
-              {action === USER_ACTION.register ? "Registrate" : "Inicia sesion"}{" "}
+              {action === USER_ACTION.signUp ? "Registrate" : "Inicia sesion"}{" "}
               con Google <BsGoogle></BsGoogle>
             </Button>
             <Button
@@ -244,7 +244,7 @@ export default function Login(): JSX.Element {
               style={{ fontWeight: "normal" }}
               onClick={() => handleLogin(signUpWithGitHub)}
             >
-              {action === USER_ACTION.register ? "Registrate" : "Inicia sesion"}{" "}
+              {action === USER_ACTION.signUp ? "Registrate" : "Inicia sesion"}{" "}
               con GitHub <BsGithub></BsGithub>
             </Button>
           </div>

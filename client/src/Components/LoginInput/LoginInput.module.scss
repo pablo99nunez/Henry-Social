@@ -1,14 +1,26 @@
 @import "../../Styles/variables.scss";
 @import "../../Styles/mixins.scss";
 
-div {
+.input_cont {
   width: 80vw;
   position: relative;
+
+  #eye {
+    color: $grey;
+    
+    &:hover {
+      cursor: pointer;
+    }
+  }
 
   label {
     color: red;
     position: absolute;
     left: -22px;
+
+    &:hover {
+      cursor: help;
+    }
   }
   
   input {
@@ -31,7 +43,7 @@ div {
 }
 
 @media (min-width: 750px) {
-  div {
+  .input_cont {
     width: 100%;
   
     input {

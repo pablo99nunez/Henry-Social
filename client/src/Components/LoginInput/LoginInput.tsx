@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CSS from "csstype";
 import { FiAlertCircle, FiEye, FiEyeOff } from "react-icons/fi";
-import "./LoginInput.module.scss";
+import style from "./LoginInput.module.scss";
 
 interface InputProps {
   id: string,
@@ -37,7 +37,7 @@ export default function LoginInput({
   }
 
   return (
-    <div id="input-cont">
+    <div className={style.input_cont}>
       <label
         htmlFor={id} 
         title={title} 
@@ -47,7 +47,7 @@ export default function LoginInput({
         }}
         > <FiAlertCircle/> </label>
         {
-          <span id="eye"
+          <span id={style.eye}
             style={{
             display: ps ? "block" : "none"
           }}>
