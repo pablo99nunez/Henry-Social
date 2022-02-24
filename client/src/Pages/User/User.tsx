@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import FollowBar from "../../Components/FollowBar/FollowBar";
+import FollowBar from "../../Components/followBar/FollowBar";
 import Chat from "../../Components/Chat/Chat";
 import Post from "../../Components/Post/Post";
 import style from "./User.module.scss";
@@ -178,20 +178,3 @@ export default function User() {
   );
 }
 
-/* 
-Datos que tengo que recibir en este componente: ===> Crear unos componentes de ejemplo
-
-- Si el usuario logueado es el propietario de este perfil o no
-
-- Nombre, numero de cohorte, foto, email 
-
-- Num de seguidores/seguidos 
-
-- Link de Linkedin y Github
-
-- Arreglo con los usuarios a los que sigue
-
-- Arreglo con las publicaciones hechas ==> Ver si tratar esto en un componente aparte o no
-
-
-*/

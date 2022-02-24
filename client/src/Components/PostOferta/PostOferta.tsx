@@ -14,7 +14,7 @@ type Props = {
     post: IPost;
 }
 
-const Post: FC<Props> = ({ post }) => {
+const PostBoom: FC<Props> = ({ post }) => {
     const navigate = useNavigate();
     const postRef = useRef(null);
     const contentRef = useRef(null);
@@ -25,7 +25,7 @@ const Post: FC<Props> = ({ post }) => {
     };
 
     return(
-<div className={post?.typePost === 'boom' ? style.post : post?.typePost === 'job' ? style.post : style.post} onClick={handleClick} ref={postRef}>
+<div className={style.post} onClick={handleClick} ref={postRef}>
             <div
                 className={style.post_profile_img}
                 onClick={() => {
@@ -67,13 +67,6 @@ const Post: FC<Props> = ({ post }) => {
                     )
                     }
                 </div>
-                { 
-                post?.typePost === 'boom' ? ( 
-                        <div className={style.post_content} ref={contentRef}>
-                        <p>💥💥💥Contratad@ para {post?.company} como {post?.position}💥💥💥</p>
-                        {post?.body}
-                    </div>
-                ) : post?.typePost === 'job' ? (
                     <div className={style.post_content} ref={contentRef}>
                         <p>Busqueda laboral:</p>
                         <p>{post?.company} esta buscando {post?.position}</p>
@@ -87,12 +80,6 @@ const Post: FC<Props> = ({ post }) => {
                             )}
                         </div>
                     </div>
-                ) : (
-                    <div className={style.post_content} ref={contentRef}>
-                        {post?.body}
-                    </div>
-                )
-                }
                 <div className={style.post_interacciones}>
                     <div className={style.post_like_comments}>
                         <Like post={post}></Like>
@@ -107,4 +94,4 @@ const Post: FC<Props> = ({ post }) => {
     )
 }
 
-export default Post;
+export default PostBoom;

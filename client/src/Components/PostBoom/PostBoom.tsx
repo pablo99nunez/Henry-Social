@@ -14,7 +14,7 @@ type Props = {
     post: IPost;
 }
 
-const Post: FC<Props> = ({ post }) => {
+const PostBoom: FC<Props> = ({ post }) => {
     const navigate = useNavigate();
     const postRef = useRef(null);
     const contentRef = useRef(null);
@@ -107,4 +107,4 @@ const Post: FC<Props> = ({ post }) => {
     )
 }
 
-export default Post;
+export default PostBoom;

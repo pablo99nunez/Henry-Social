@@ -14,7 +14,7 @@ type Props = {
     post: IPost;
 }
 
-const Post: FC<Props> = ({ post }) => {
+const PostBoom: FC<Props> = ({ post }) => {
     const navigate = useNavigate();
     const postRef = useRef(null);
     const contentRef = useRef(null);
@@ -25,7 +25,7 @@ const Post: FC<Props> = ({ post }) => {
     };
 
     return(
-<div className={post?.typePost === 'boom' ? style.post : post?.typePost === 'job' ? style.post : style.post} onClick={handleClick} ref={postRef}>
+<div className={style.post} onClick={handleClick} ref={postRef}>
             <div
                 className={style.post_profile_img}
                 onClick={() => {
@@ -107,4 +107,4 @@ const Post: FC<Props> = ({ post }) => {
     )
 }
 
-export default Post;
+export default PostBoom;

@@ -10,6 +10,11 @@ export interface IPost {
   author: IUser;
   _id: number;
   typePost: string;
+  company: string;
+  position: string;
+  companyLink: string;
+  companyImage: string | File | null;
+  salary: number;
 }
 
 interface Comment {

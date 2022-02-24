@@ -1,0 +1,79 @@
+@import "../../Styles/variables.scss";
+@import "../../Styles/mixins.scss";
+
+.post:hover {
+    background: $blackLow;
+}
+.post {
+    background-color: $black;
+    border-radius: 8px;
+    padding: 1.5rem;
+    gap: 1rem;
+    border: 1px solid $grey;
+    height: fit-content;
+    cursor: pointer;
+    display: flex;
+    color: $white;
+    position: relative;
+    .post_profile_img {
+        img {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 100%;
+            border: 1px solid $yellow;
+            object-fit: cover;
+        }
+    }
+    .post_wrap {
+        .post_content {
+            color: $light;
+            font-weight: 300;
+            padding: 1rem 0;
+        }
+        .post_profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            h4 {
+                color: $grey;
+            }
+        }
+        .post_options {
+            background-color: $bg-color;
+            text-align: center;
+            position: absolute;
+            right: 1rem;
+            cursor: pointer;
+            top: 1rem;
+            display: flex;
+            height: fit-content;
+            padding: 0.2rem;
+            border-radius: 50%;
+            font-size: 2rem;
+            color: $grey;
+        }
+        .post_interacciones {
+            display: flex;
+            justify-content: space-between;
+            svg {
+                font-size: 1.5rem;
+            }
+
+            .post_like_comments {
+                display: flex;
+                gap: 2rem;
+                div {
+                    display: flex;
+                    place-items: center;
+                    gap: 0.6rem;
+                }
+            }
+            .post_icon {
+                color: $yellow;
+                span {
+                    color: $white;
+                }
+            }
+        }
+    }
+}
