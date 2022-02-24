@@ -12,6 +12,7 @@ export const LIKE_POST = "LIKE_POST";
 export const MAKE_ADMIN = "MAKE_ADMIN";
 export const SEE_NOTIFICATION = "SEE_NOTIFICATION";
 export const FILTER_BY_TYPE = "FILTER_BY_TYPE";
+export const FILTER_BY_LIKE = "FILTER_BY_LIKE";
 
 export interface IAction {
   type: string;
@@ -93,8 +94,14 @@ export function filterBySection( typePost:string ) {
 }
 export function getPost(id: String) {
   return function (dispatch: Function) {
-    axios.get("/post/" + id).then((res) => {
-      return dispatch({ type: GET_POST, payload: res.data });
+    axios.get("/post/" + id).then((post) => {
+      if (post)
+        axios.get("/comments/" + post.data._id).then((comments) => {
+          return dispatch({
+            type: GET_POST,
+            payload: { post: post.data, comments: comments.data },
+          });
+        });
     });
   };
 }
@@ -120,5 +127,19 @@ export function seeNotification(id: number, userId: string) {
     axios.put("/notification", { id, userId }).then((e) => {
       return dispatch({ type: SEE_NOTIFICATION, payload: e.data });
     });
+  };
+}
+
+export function filterByLike(id: string) {
+  return (dispatch: Function) => {
+    axios
+      .post("/posts", {
+        props: {
+          nLikes: { $in: [id] },
+        },
+      })
+      .then((e) => {
+        return dispatch({ type: FILTER_BY_LIKE, payload: e.data });
+      });
   };
 }

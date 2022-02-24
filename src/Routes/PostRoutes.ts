@@ -1,15 +1,31 @@
 import { Router } from "express";
-import Post from "../models/Post";
-import { NotificationType } from "../models/User";
+import Post, { Comment } from "../models/Post";
+import User, { NotificationType } from "../models/User";
 import axios from "axios";
+import { auth } from "../services/firebase/firebase";
 
 const router = Router();
 
 router.post("/posts", async (req, res) => {
   try {
     const { _id, liked, props } = req.body;
-    console.log("props",props)
-    console.log("Body", req.body)
+
+    const posts = _id
+      ? await Post.find({
+          author: {
+            _id,
+          },
+        }).populate("author", "name avatar username")
+      : liked
+      ? await Post.find({
+          nLikes: {
+            _id: liked,
+          },
+        }).populate("author", "name avatar username")
+      : await Post.find({ ...props }).populate(
+          "author",
+          "name avatar username"
+        );
 
     const posts = _id
         ? await Post.find({
@@ -121,6 +137,39 @@ router.delete("/post", async (req, res) => {
   } catch (e) {
     res.status(401).json({ error: e });
   }
+});
+
+router.post("/comment", async (req, res) => {
+  const { postId, text, author } = req.body;
+  try {
+    Comment.create({ postId, author, text }, { new: true })
+      .then((e) => {
+        Post.findByIdAndUpdate(postId, { $inc: { numComments: 1 } }).then(
+          () => {
+            res.json(e);
+          }
+        );
+      })
+      .catch((e) => {
+        throw new Error(e);
+      });
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+});
+router.get("/deleteComments", (req, res) => {
+  Comment.deleteMany({}).then((e) => {
+    Post.updateMany({}, { numComments: 0 }).then(() => {
+      res.json("deleted");
+    });
+  });
+});
+router.get("/comments/:id", (req, res) => {
+  Comment.find({ postId: req.params.id })
+    .populate("author", "name username avatar")
+    .then((e) => {
+      res.json(e);
+    });
 });
 
 export default router;

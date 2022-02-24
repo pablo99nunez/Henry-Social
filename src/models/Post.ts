@@ -53,7 +53,7 @@ const postSchema = new Schema({
 const commentSchema = new Schema({
   postId: {
     type: Schema.Types.ObjectId,
-    // ref: "postSchema"
+    ref: "Post",
   },
   postTime: { type: Date, default: Date.now },
   text: String,

@@ -1,6 +1,7 @@
 import { IUser } from "../../../../src/models/User";
 import { IPost } from "../../../../src/models/Post";
 import {
+  FILTER_BY_LIKE,
   FOLLOW_USER,
   GET_POST,
   GET_POSTS,
@@ -19,6 +20,7 @@ export interface IState {
   profile: IUser;
   posts: IPost[];
   post: IPost;
+  comments: Comment[];
 }
 
 const initialState = {
@@ -65,7 +67,8 @@ export default function rootReducer(state = initialState, action: IAction) {
     case GET_POST: {
       return {
         ...state,
-        post: action.payload,
+        post: action.payload.post,
+        comments: action.payload.comments,
       };
     }
     case LIKE_POST: {
@@ -86,6 +89,12 @@ export default function rootReducer(state = initialState, action: IAction) {
       return {
         ...state,
         user: action.payload,
+      };
+    }
+    case FILTER_BY_LIKE: {
+      return {
+        ...state,
+        posts: action.payload,
       };
     }
     default:
