@@ -20,10 +20,10 @@ const AddPost: FC<Props> = ({ setOpen }) => {
   const [post, setPost] = useState({
     text: '',
     image: '',
-    company: '',
-    position: '',
-    companyLink: '',
-    salary: '',
+    nameEmpresa: '',
+    rolEmpresa: '',
+    linkEmpleo: '',
+    salarioEmpleo: '',
     costoClases: '',
     temasClases: '',
     tecnologíaClases: '',
@@ -47,7 +47,6 @@ const AddPost: FC<Props> = ({ setOpen }) => {
         .post(`/post`, {
           // No quiero romper la creacion de post, por lo que de momento te envio el texto, ni bien este listo el modelo para recibir demas contenido se implementa mandando post
           body: post.text,
-          company: post.company,
           author: user,
           typePost,
         })
@@ -120,13 +119,13 @@ const AddPost: FC<Props> = ({ setOpen }) => {
               <input 
                 type="text" 
                 name="nameEmpresa" 
-                defaultValue={post.company}
+                defaultValue={post.nameEmpresa}
                 placeholder="Nombre de la Empresa"
               />
               <input 
                 type="text" 
                 name="rolEmpresa" 
-                defaultValue={post.position}
+                defaultValue={post.rolEmpresa}
                 placeholder="Rol en la Empresa"
               />
             </>
@@ -135,15 +134,15 @@ const AddPost: FC<Props> = ({ setOpen }) => {
             <>
               <input 
                 name="linkEmpleo" 
-                type="url" 
-                defaultValue={post.companyLink}
+                type="text" 
+                defaultValue={post.linkEmpleo}
                 placeholder="Link del Empleo"
               />
               <input 
                 min='0'
                 type="number" 
                 name="salarioEmpleo" 
-                defaultValue={post.salary}
+                defaultValue={post.salarioEmpleo}
                 placeholder="Salario (Opcional)"
               />
             </>

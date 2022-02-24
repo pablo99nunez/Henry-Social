@@ -6,7 +6,7 @@ export default function useNotifications() {
   const [news, setNews] = useState(false);
   useEffect(() => {
     if (user) {
-      if (user.notifications.find((e) => e.new)) {
+      if (user.notifications?.find((e) => e.new)) {
         setNews(true);
       } else setNews(false);
     }

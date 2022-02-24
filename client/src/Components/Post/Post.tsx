@@ -6,9 +6,10 @@ import {
     BsShareFill
 } from 'react-icons/bs';
 import style from "./Post.module.scss";
-import { Like } from '../Like/Like';
-import { IPost } from '../../../../src/models/Post';
-import { useNavigate } from 'react-router';
+import { Like } from "../Like/Like";
+import { IPost } from "../../../../src/models/Post";
+import { useNavigate } from "react-router";
+import Avatar from "../Avatar/Avatar";
 
 type Props = {
     post: IPost;

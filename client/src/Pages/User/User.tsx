@@ -38,9 +38,9 @@ export default function User() {
     if (username) dispatch(makeAdmin(username));
   }
   useEffect(() => {
-    if (userLogeado?.following && user?.username)
-      setIsFollowing(userLogeado.following.includes(user.username));
-  }, [username, userLogeado]);
+    if (userLogeado?.followers && user?.username)
+      setIsFollowing(userLogeado.followers.includes(user.username));
+  }, [username, userLogeado, user]);
   useEffect(() => {
     if (user) {
       dispatch(getPosts(user._id));
