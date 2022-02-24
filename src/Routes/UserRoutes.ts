@@ -184,7 +184,6 @@ router.post("/notification", async (req, res) => {
   try {
     const receptor = await User.findById(notification.receptor);
     const emisor = await User.findById(notification.emisor);
-    console.log(receptor, emisor);
     if (receptor && emisor) {
       if (
         typeof receptor.username === "string" &&
