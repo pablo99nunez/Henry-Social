@@ -17,7 +17,14 @@ router.post("/user", (req, res) => {
     } else res.json(e);
   });
 });
-
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.json(users);
+  } catch (e) {
+    res.status(401).json({ error: e });
+  }
+});
 router.get("/user", async (req, res) => {
   const { username } = req.query;
   const user = await User.findOne({ username }) 
