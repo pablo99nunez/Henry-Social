@@ -25,6 +25,9 @@ const SideTags = () => {
         <h2>Secciones</h2>
         <ul>
           <li>
+              <input onClick={e=>{handleClick(e)}} type="button" name= "" value="Publicaciones" />
+          </li>
+          <li>
               <input onClick={e=>{handleClick(e)}} type="button" name= "empleo" value="Ofertas laborales" />
           </li>
           <li>
