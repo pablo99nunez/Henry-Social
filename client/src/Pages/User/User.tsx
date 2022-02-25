@@ -43,8 +43,10 @@ export default function User() {
     if (username) dispatch(makeAdmin(username));
   }
   useEffect(() => {
-    if (userLogeado?.followers && user?.username)
-      setIsFollowing(userLogeado.followers.includes(user.username));
+    if (userLogeado?.following && user?.username) {
+      console.log(userLogeado.following);
+      setIsFollowing(userLogeado.following.includes(user.username));
+    }
   }, [username, userLogeado, user]);
   useEffect(() => {
     if (user) {
@@ -205,4 +207,3 @@ export default function User() {
     <h1>Loading</h1>
   );
 }
-

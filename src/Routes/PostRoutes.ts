@@ -1,8 +1,25 @@
-import { Router } from "express";
+/* eslint-disable @typescript-eslint/no-var-requires */
+
+require("dotenv").config();
+import { Router, Request, Response } from "express";
 import Post, { Comment } from "../models/Post";
 import User, { NotificationType } from "../models/User";
+import nodemailer from "nodemailer";
 import axios from "axios";
-import { auth } from "../services/firebase/firebase";
+
+import sendEmail from "./Helpers/sendEmail";
+
+const { MAIL, MAIL_PASSWORD } = process.env;
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  host: "smtp.gmail.com",
+  auth: {
+    user: MAIL,
+    pass: MAIL_PASSWORD
+  }
+});
+
 
 const router = Router();
 
@@ -103,6 +120,7 @@ router.post("/post", async (req, res) => {
     res.status(401).json({ error: e });
   }
 });
+
 router.get("/deletePosts", async (req, res) => {
   try {
     await Post.deleteMany({});
@@ -111,6 +129,7 @@ router.get("/deletePosts", async (req, res) => {
     res.json({ error: e });
   }
 });
+
 router.delete("/post", async (req, res) => {
   try {
     const { _id } = req.body;
@@ -140,6 +159,7 @@ router.post("/comment", async (req, res) => {
     res.status(500).json({ error: e });
   }
 });
+
 router.get("/deleteComments", (req, res) => {
   Comment.deleteMany({}).then((e) => {
     Post.updateMany({}, { numComments: 0 }).then(() => {
@@ -147,12 +167,74 @@ router.get("/deleteComments", (req, res) => {
     });
   });
 });
+
 router.get("/comments/:id", (req, res) => {
   Comment.find({ postId: req.params.id })
     .populate("author", "name username avatar")
     .then((e) => {
       res.json(e);
     });
+});
+
+router.post("/report", async (req: Request, res: Response) => {
+  const { _id, username } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+
+    const post = await Post.findByIdAndUpdate(_id, 
+      { $inc: { reportedTimes : 1} }, 
+      { new: true }
+    );
+  
+    const eliminated = post?.reportedTimes && post?.reportedTimes >= 5;
+  
+    if(eliminated) {
+      sendEmail({
+        _id,
+        transporter, 
+        deleted: true,
+        from: MAIL,
+        to: MAIL,
+        username: user?.username,
+      });
+      sendEmail({
+        _id,
+        transporter, 
+        deleted: true,
+        from: MAIL,
+        to: user?.email,
+        username: user?.username,
+      })
+      res.status(200).json(post);
+      return axios.delete("/post", {
+        data: {
+          _id
+        }
+      });
+    };
+
+    sendEmail({
+      _id,
+      transporter, 
+      from: MAIL,
+      to: MAIL,
+      username: user?.username,
+    });
+    sendEmail({
+      _id,
+      transporter, 
+      from: MAIL,
+      to: user?.email,
+      username: user?.username,
+    });
+
+    res.status(200).json("Post reported");
+
+  } catch (error) {
+    res.status(400);
+  }
+
 });
 
 export default router;

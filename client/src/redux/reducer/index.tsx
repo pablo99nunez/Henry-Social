@@ -13,7 +13,7 @@ import {
   SEE_NOTIFICATION,
   SIGN_OUT,
   FILTER_BY_TYPE,
-  SEARCH_USERS
+  SEARCH_USERS,
 } from "../actions/actions";
 
 export interface IState {
@@ -22,13 +22,13 @@ export interface IState {
   posts: IPost[];
   post: IPost;
   comments: Comment[];
-  Users:IUser;
+  Users: IUser[];
 }
 
 const initialState = {
   user: {},
   profile: {},
-  Users:{}
+  Users: {},
 } as IState;
 
 export default function rootReducer(state = initialState, action: IAction) {

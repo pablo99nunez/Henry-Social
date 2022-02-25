@@ -11,11 +11,11 @@ import { InfoAlert } from "../Alert/Alert";
 import { useState } from "react";
 import Notifications from "../Notifications/Notifications";
 import ListSearch from "../ListSearch/ListSearch";
+import { IState } from "../../redux/reducer";
 const NavSearch = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useUser();
-  const [openNotifications, setOpenNotifications] = useState(false);
 
   const handleSignOut = async () => {
     await closeSession()
@@ -32,13 +32,12 @@ const NavSearch = () => {
 
     navigate("/login");
   };
-  const users = useSelector(state => state.Users)
-  console.log(users)
-  const [input,setInput] = useState("");
-  const handleSearch = (e:any) => {
-      setInput(e.target.value)
-      dispatch(searchUsers(e.target.value))
-  }
+  const users = useSelector((state: IState) => state.Users);
+  const [input, setInput] = useState("");
+  const handleSearch = (e: any) => {
+    setInput(e.target.value);
+    dispatch(searchUsers(e.target.value));
+  };
 
   return (
     <nav className={styles.nav}>
@@ -56,8 +55,17 @@ const NavSearch = () => {
           <h1> | Social</h1>
         </div>
         <div className={styles.nav_search}>
-          <input onChange={(e=>{handleSearch(e)})} type="search" name="input" value={input} placeholder="Busca otros Henry's " />
-          {!input ? null : users.length === 0 ? (<ListSearch/>) : (<ListSearch/>) }
+          <input
+            onChange={(e) => {
+              handleSearch(e);
+            }}
+            type="search"
+            name="input"
+            value={input}
+            placeholder="Busca otros Henry's "
+            autoComplete="off"
+          />
+          {!input ? null : users.length === 0 ? <ListSearch /> : <ListSearch />}
         </div>
         <div
           style={{
@@ -67,7 +75,7 @@ const NavSearch = () => {
           }}
           className={styles.notifications}
         >
-          <Notifications open={openNotifications}></Notifications>
+          <Notifications></Notifications>
 
           <div
             className={styles.nav_button_profile}

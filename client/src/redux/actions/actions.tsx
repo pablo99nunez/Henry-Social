@@ -33,6 +33,7 @@ export function getUser(email: string) {
     });
   };
 }
+
 export function signOut() {
   return function (dispatch: Function) {
     return dispatch({ type: SIGN_OUT });
