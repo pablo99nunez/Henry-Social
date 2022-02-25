@@ -14,6 +14,7 @@ import {
   SIGN_OUT,
   FILTER_BY_TYPE,
   SEARCH_USERS,
+  FILTER_BY_ORDER,
 } from "../actions/actions";
 
 export interface IState {
@@ -106,6 +107,41 @@ export default function rootReducer(state = initialState, action: IAction) {
         posts: action.payload,
       };
     }
+    case FILTER_BY_ORDER: {
+      let result = action.payload.posts;
+      switch (action.payload.order) {
+        case "Reciente":
+          {
+            result = result?.sort((a: IPost, b: IPost) => {
+              return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
+            });
+          }
+          break;
+        case "Relevante":
+          {
+            result = result?.sort((a: IPost, b: IPost) => {
+              return a.nLikes.length < b.nLikes.length ? 1 : -1;
+            });
+          }
+          break;
+        case "Seguidos": {
+          result = result
+            ?.filter((e: IPost) => {
+              if (e.author?.username)
+                return state.user.following?.includes(e.author.username);
+              return null;
+            })
+            .sort((a: IPost, b: IPost) => {
+              return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
+            });
+        }
+      }
+      return {
+        ...state,
+        posts: result,
+      };
+    }
+
     default:
       return state;
   }
