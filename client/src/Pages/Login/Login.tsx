@@ -14,8 +14,9 @@ import useUser from "../../Hooks/useUser";
 import Button from "../../Components/Button/Button";
 import { InfoAlert } from "../../Components/Alert/Alert";
 import LoginInput from "../../Components/LoginInput/LoginInput";
-import valForm from "./valForm"
+import valForm from "./valForm";
 import axios from "axios";
+import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
 enum USER_ACTION {
   signUp,
@@ -31,13 +32,16 @@ export default function Login(): JSX.Element {
     avatar: "",
     admin: false,
     createdAt: {},
-    notifications: []
+    notifications: [],
   });
-  const [ errors, setErrors ] = useState({
-    name: false, username: false, password: false, email: false,
-  })
-  const [loading, setLoading] = useState(false);
-  const [formComplete, setFromComplete] = useState(false)
+  const [errors, setErrors] = useState({
+    name: false,
+    username: false,
+    password: false,
+    email: false,
+  });
+  const [loading, setLoading] = useState(true);
+  const [formComplete, setFromComplete] = useState(false);
   const [action, setAction] = useState(USER_ACTION.logIn);
   const navigate = useNavigate();
   const user = useUser();
@@ -45,10 +49,9 @@ export default function Login(): JSX.Element {
 
   useEffect(() => {
     const { name, username, password, email } = input;
-    if (user?.username) return navigate("/");
-
-    name && username  && password && email && setFromComplete(true);
-
+    if (user !== null) return navigate("/");
+    else if (user == undefined) setLoading(false);
+    name && username && password && email && setFromComplete(true);
   }, [user, input]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -108,48 +111,49 @@ export default function Login(): JSX.Element {
     }
   };
 
-  let typerTimer:NodeJS.Timeout;
-  interface InputUsername { target: HTMLInputElement };
-  
-  function validateUsername ({ target }: InputUsername){
-    axios.get("/user", {
-      params: {
-        username: target.value
-      }
-    }).then((user)=>{
-      if(!valForm(target, target.name, user?.data?.username) && user.data){
-        setErrors({
-          ...errors,
-          [target.name]: true
-        })
-        if(btn.current) btn.current.disabled = true;
-      } else {
-        setErrors({
-          ...errors,
-          [target.name]: false
-        })
-        if(formComplete && btn.current) btn.current.disabled = false;
-      }
-    })
-
+  let typerTimer: NodeJS.Timeout;
+  interface InputUsername {
+    target: HTMLInputElement;
   }
 
+  function validateUsername({ target }: InputUsername) {
+    axios
+      .get("/user", {
+        params: {
+          username: target.value,
+        },
+      })
+      .then((user) => {
+        if (!valForm(target, target.name, user?.data?.username) && user.data) {
+          setErrors({
+            ...errors,
+            [target.name]: true,
+          });
+          if (btn.current) btn.current.disabled = true;
+        } else {
+          setErrors({
+            ...errors,
+            [target.name]: false,
+          });
+          if (formComplete && btn.current) btn.current.disabled = false;
+        }
+      });
+  }
 
-
-  function handleInputChange (e: React.ChangeEvent<HTMLInputElement>) {
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const target = e.target;
     const property = target.name;
     const isValid = valForm(target, property);
-  
-    if(!isValid) {
+
+    if (!isValid) {
       setErrors({
         ...errors,
-        [property]: true
-      })
-      if(btn.current) btn.current.disabled = true;
-      return
+        [property]: true,
+      });
+      if (btn.current) btn.current.disabled = true;
+      return;
     }
-    
+
     if (property === null) throw new Error();
     if (property === "avatar" && e.target.files) {
       setInput({ ...input, avatar: e.target.files[0] });
@@ -157,11 +161,11 @@ export default function Login(): JSX.Element {
       setInput({ ...input, [property]: e.target.value });
       setErrors({
         ...errors,
-        [property]: false
-      })
+        [property]: false,
+      });
     }
 
-    if(formComplete && btn.current) btn.current.disabled = false;
+    if (formComplete && btn.current) btn.current.disabled = false;
   }
 
   const handleActionChange = () => {
@@ -171,112 +175,115 @@ export default function Login(): JSX.Element {
 
   return (
     <>
-      <div id={style.cont}>
-        <header>
-          <div id={style.title_cont}>
-            <img
-              src="https://assets.soyhenry.com/assets/LOGO-HENRY-03.png"
-              alt="icon"
-            />
-            <h1> | Social </h1>
-          </div>
-          <button className={style.act_btn} onClick={handleActionChange}>
-            {" "}
-            {action === USER_ACTION.signUp
-              ? "Iniciar sesión"
-              : "Registrarse"}{" "}
-          </button>
-        </header>
-        <div id={style.form_cont}>
-          <form onSubmit={handleSubmit}>
-            <h1>
-              {" "}
-              Hola, ¡Bienvenida/o a <strong>Henry Social!</strong>
-            </h1>
-            <LoginInput
-              valid={!errors.email}
-              id="email"
-              title="example@gmail.com"
-              type="email"
-              name="email"
-              placeholder="Email"
-              onChange={handleInputChange}
-            />
-            <LoginInput 
-              valid={!errors.password}
-              id="password"
-              title="8 characters long: numbers, 1 uppercase is required"
-              type="password"
-              name="password"
-              placeholder="Contraseña"
-              onChange={handleInputChange}
-            />
-            {action === USER_ACTION.signUp ? (
-              <>
-                <LoginInput 
-                  valid={!errors.username}
-                  id="username"
-                  type="text"
-                  title="The username must be unique, 3 characters long, and not special characteres"
-                  name="username"
-                  onChange={handleInputChange}
-                  onKeyUp={(e) => {
-                    clearTimeout(typerTimer);
-                    typerTimer = setTimeout(() => validateUsername(e), 150);
-                  }}
-                  onKeyDown={() => {
-                    clearTimeout(typerTimer);
-                  }}
-                  placeholder="Username"
-                  
-                />
-                <LoginInput
-                  valid={!errors.name}
-                  id="name"
-                  type="text"
-                  title="The names must start with a capital letter"
-                  name="name"
-                  onChange={handleInputChange}
-                  placeholder="Nombre"
-                />
-                <LoginInput 
-                  id="avatar"
-                  type="file"
-                  name="avatar"
-                  onChange={handleInputChange}
-                  placeholder="Avatar"
-                />
-              </>
-            ) : (
-              <></>
-            )}
-            <button disabled={loading} type="submit" ref={btn}>
+      {loading ? (
+        <LoadingPage />
+      ) : (
+        <div id={style.cont}>
+          <header>
+            <div id={style.title_cont}>
+              <img
+                src="https://assets.soyhenry.com/assets/LOGO-HENRY-03.png"
+                alt="icon"
+              />
+              <h1> | Social </h1>
+            </div>
+            <button className={style.act_btn} onClick={handleActionChange}>
               {" "}
               {action === USER_ACTION.signUp
-                ? "Registrate"
-                : "Inicia sesión"}{" "}
+                ? "Iniciar sesión"
+                : "Registrarse"}{" "}
             </button>
-          </form>
-          <div id={style.alt_cont}>
-            <Button
-              className={style.alt_btns}
-              onClick={() => handleLogin(signUpWithGmail)}
-              style={{ fontWeight: "normal" }}
-            >
-              {action === USER_ACTION.signUp ? "Registrate" : "Inicia sesion"}{" "}
-              con Google <BsGoogle></BsGoogle>
-            </Button>
-            <Button
-              className={style.alt_btns}
-              style={{ fontWeight: "normal" }}
-              onClick={() => handleLogin(signUpWithGitHub)}
-            >
-              {action === USER_ACTION.signUp ? "Registrate" : "Inicia sesion"}{" "}
-              con GitHub <BsGithub></BsGithub>
-            </Button>
+          </header>
+          <div id={style.form_cont}>
+            <form onSubmit={handleSubmit}>
+              <h1>
+                {" "}
+                Hola, ¡Bienvenida/o a <strong>Henry Social!</strong>
+              </h1>
+              <LoginInput
+                valid={!errors.email}
+                id="email"
+                title="example@gmail.com"
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={handleInputChange}
+              />
+              <LoginInput
+                valid={!errors.password}
+                id="password"
+                title="8 characters long: numbers, 1 uppercase is required"
+                type="password"
+                name="password"
+                placeholder="Contraseña"
+                onChange={handleInputChange}
+              />
+              {action === USER_ACTION.signUp ? (
+                <>
+                  <LoginInput
+                    valid={!errors.username}
+                    id="username"
+                    type="text"
+                    title="The username must be unique, 3 characters long, and not special characteres"
+                    name="username"
+                    onChange={handleInputChange}
+                    onKeyUp={(e) => {
+                      clearTimeout(typerTimer);
+                      typerTimer = setTimeout(() => validateUsername(e), 150);
+                    }}
+                    onKeyDown={() => {
+                      clearTimeout(typerTimer);
+                    }}
+                    placeholder="Username"
+                  />
+                  <LoginInput
+                    valid={!errors.name}
+                    id="name"
+                    type="text"
+                    title="The names must start with a capital letter"
+                    name="name"
+                    onChange={handleInputChange}
+                    placeholder="Nombre"
+                  />
+                  <LoginInput
+                    id="avatar"
+                    type="file"
+                    name="avatar"
+                    onChange={handleInputChange}
+                    placeholder="Avatar"
+                  />
+                </>
+              ) : (
+                <></>
+              )}
+              <button disabled={loading} type="submit" ref={btn}>
+                {" "}
+                {action === USER_ACTION.signUp
+                  ? "Registrate"
+                  : "Inicia sesión"}{" "}
+              </button>
+            </form>
+            <div id={style.alt_cont}>
+              <Button
+                className={style.alt_btns}
+                onClick={() => handleLogin(signUpWithGmail)}
+                style={{ fontWeight: "normal" }}
+              >
+                {action === USER_ACTION.signUp ? "Registrate" : "Inicia sesion"}{" "}
+                con Google <BsGoogle></BsGoogle>
+              </Button>
+              <Button
+                className={style.alt_btns}
+                style={{ fontWeight: "normal" }}
+                onClick={() => handleLogin(signUpWithGitHub)}
+              >
+                {action === USER_ACTION.signUp ? "Registrate" : "Inicia sesion"}{" "}
+                con GitHub <BsGithub></BsGithub>
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

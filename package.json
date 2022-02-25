@@ -11,7 +11,7 @@
         "dev": "cd client && npm run dev",
         "test": "nyc _mocha --timeout 10000 --exit --report lcovonly -- -R spec",
         "lint": "eslint --fix --config .eslintrc.json \"**/*.js\"",
-        "sync":"git fetch && git merge dev"
+        "sync": "git fetch && git merge dev"
     },
     "keywords": [],
     "author": "",

@@ -40,16 +40,3 @@
     right: 0;
   }
 }
-.container::-webkit-scrollbar {
-  background-color: #c4c4c4aa;
-  width: 0.6rem;
-  border-radius: 0 10px 10px 0;
-}
-.container::-webkit-scrollbar-thumb {
-  background-color: $blackLow;
-  border-radius: 50vh;
-}
-
-.container::-webkit-scrollbar-thumb:hover {
-  background-color: $black;
-}

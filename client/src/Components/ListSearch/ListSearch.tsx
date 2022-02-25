@@ -3,8 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IUser } from "../../../../src/models/User";
 import { useSelector } from "react-redux";
 import Avatar from "../Avatar/Avatar";
+import { IState } from "../../redux/reducer";
+import { useNavigate } from "react-router";
 export default function ListSearch() {
-
   const variants = {
     open: {
       scale: 1,
@@ -21,7 +22,8 @@ export default function ListSearch() {
       opacity: 0,
     },
   };
-  const users = useSelector(state => state.Users)
+  const users = useSelector((state: IState) => state.Users);
+  const navigate = useNavigate();
   return (
     <div>
       <AnimatePresence>
@@ -31,21 +33,20 @@ export default function ListSearch() {
           animate={"open"}
           className={styles.container}
         >
-          {
-            users &&
+          {users &&
             (users.length ? (
               users.map((e: IUser) => {
-
                 return (
                   <div
-                  className={`${styles.notification}`}
+                    className={`${styles.notification}`}
+                    onClick={() => navigate("/profile/" + e.username)}
                   >
-                  <Avatar avatar={e.avatar}></Avatar>
-                  <div>
-                    <h3>{e.name}</h3>
+                    <Avatar avatar={e.avatar}></Avatar>
+                    <div>
+                      <h3>{e.name}</h3>
+                    </div>
                   </div>
-                </div>
-                )
+                );
               })
             ) : (
               <h3 className={styles.noNotification}>Buscando</h3>

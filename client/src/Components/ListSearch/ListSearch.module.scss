@@ -1,32 +1,33 @@
 @import "../../Styles/variables.scss";
 .container {
-    height: fit-content;
-    min-height: 5vh;
-    position: absolute;
-    border-radius: 8px;
-    top: 95%;
-    max-height: 50vh;
+  height: fit-content;
+  min-height: 5vh;
+  position: absolute;
+  border-radius: 8px;
+  top: 80px;
+  max-height: 50vh;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse;
+  backdrop-filter: blur(10px);
+  .noNotification {
+    padding: 1rem;
+    color: $black;
+    font-weight: 500;
+    background-color: #c4c4c4aa;
+  }
+  .notification {
     display: flex;
-    flex-direction: column-reverse;
-    backdrop-filter: blur(10px);
-    .noNotification {
-      padding: 1rem;
-      color: $black;
-      font-weight: 500;
-      background-color: #c4c4c4aa;
+    padding: 1rem;
+    cursor: pointer;
+    width: 100%;
+    background-color: #c4c4c4aa;
+    gap: 1rem;
+    align-items: center;
+    justify-content: start;
+    border-bottom: 1px solid $black;
+    img {
+      border-radius: 50%;
     }
-    .notification {
-        display: flex;
-        padding: 1rem;
-        cursor: pointer;
-        width: 100%;
-        background-color: #c4c4c4aa;
-        gap: 1rem;
-        align-items: center;
-        justify-content: start;
-        border-bottom: 1px solid $black;
-        img {
-          border-radius: 50%;
-        }
-      }
+  }
 }

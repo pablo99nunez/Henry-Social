@@ -96,7 +96,6 @@
         height: max-content;
         padding: 10px;
 
-
         &:disabled {
           background-color: gray;
 
@@ -183,9 +182,8 @@
     }
 
     #form_cont {
-      margin-top: 9rem;
       width: 80%;
-      height: 80%;
+      height: fit-content;
       padding: 20px 0;
       border-radius: 8px;
       -webkit-border-radius: 8px;

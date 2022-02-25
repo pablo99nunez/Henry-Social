@@ -18,14 +18,14 @@ router.post("/user", (req, res) => {
   });
 });
 router.get("/users", async (req, res) => {
-  const {username} = req.query;
+  const { username } = req.query;
   try {
-    if(username) {
+    if (username) {
       const users = await User.find({
-        name: username
+        name: { $regex: username },
       });
-      console.log(users)
-      return res.json(users)
+      console.log(users);
+      return res.json(users);
     }
     const users = await User.find({});
     res.json(users);
@@ -35,7 +35,7 @@ router.get("/users", async (req, res) => {
 });
 router.get("/user", async (req, res) => {
   const { username } = req.query;
-  const user = await User.findOne({ username }) 
+  const user = await User.findOne({ username });
   res.status(200).json(user);
 });
 
