@@ -17,7 +17,7 @@ import {
 } from "../actions/actions";
 
 export interface IState {
-  user: IUser;
+  user: IUser| null;
   profile: IUser;
   posts: IPost[];
   post: IPost;
@@ -26,7 +26,7 @@ export interface IState {
 }
 
 const initialState = {
-  user: {},
+  user: null,
   profile: {},
   Users: {},
 } as IState;
