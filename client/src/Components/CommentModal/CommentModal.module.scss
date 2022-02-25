@@ -1,0 +1,32 @@
+@import "../../Styles/variables.scss";
+.comment {
+  position: relative;
+  bottom: 1rem;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: 90%;
+  padding: 2rem;
+  padding-top: 3rem;
+  border-radius: 8px;
+  background-color: $greyDark;
+  justify-content: center;
+  gap: 1rem;
+  input {
+    width: 80%;
+    border-radius: 8px;
+    background-color: $greyLight;
+    padding: 0.7rem;
+    padding-left: 1rem;
+    border: none;
+    font-size: 1rem;
+  }
+  input:focus {
+    outline: none;
+  }
+  svg {
+    cursor: pointer;
+    color: $yellow;
+    font-size: 1.5rem;
+  }
+}

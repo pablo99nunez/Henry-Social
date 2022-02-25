@@ -33,7 +33,6 @@ export default function Notifications() {
         {news && <div className={styles.news}></div>}
       </div>
       <AnimatePresence>
-        open &&{" "}
         <motion.div
           variants={variants}
           initial={"close"}

@@ -1,12 +1,15 @@
 import "./Comments.scss";
 import Comment from "../Comment/Comment";
+import { useSelector } from "react-redux";
 import { CommentStructure } from "./commentExample";
+import { IState } from "../../redux/reducer";
 
 // Recibe comments por props
 // export default function Comments({comments} : any) {
 export default function Comments() {
   // comentarios de prueba
-  let comments: CommentStructure[] = [
+  const comments = useSelector((state: IState) => state.comments);
+  /* let comments: CommentStructure[] = [
     {
       postId: 1,
       author: "Luis Alonso",
@@ -47,11 +50,11 @@ export default function Comments() {
       countLikes: 23,
       countComments: 10,
     },
-  ];
+  ]; */
 
   return (
     <div className="commentsPost">
-      {comments.map((p, i) => (
+      {comments?.map((p, i) => (
         <Comment key={i} data={p} />
       ))}
     </div>
