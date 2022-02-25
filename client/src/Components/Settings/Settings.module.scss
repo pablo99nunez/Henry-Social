@@ -124,4 +124,14 @@
     font-weight: bold;
     text-decoration: underline;
   }
+  .delete_button {
+    border-radius: 5px;
+    border: rgba(255, 255, 1, 1) 1px solid;
+    background-color: rgb(255, 1, 1);
+    font-weight: bold;
+    font-size: 10px;
+    text-decoration: underline;
+  
+    gap: 1rem;
+  }
 }

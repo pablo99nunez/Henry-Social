@@ -25,6 +25,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     companyLink: '',
     companyImage: '',
     salary: '',
+    question: '',
     costoClases: '',
     temasClases: '',
     tecnologíaClases: '',
@@ -51,6 +52,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
           companyLink: post.companyLink,
           companyImage: post.companyImage,
           salary: post.salary,
+          question: post.question,
           author: user,
           typePost,
         })
@@ -82,11 +84,11 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     {
       abr: 'servicio',
       text: 'Servicio'
-    }
-    // {
-    //   abr: 'pregunta',
-    //   text: 'Pregunta'
-    // },
+    },
+    {
+      abr: 'pregunta',
+      text: 'Pregunta'
+    },
   ]
 
   return (
@@ -118,6 +120,15 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 defaultValue={post.costoClases}
                 placeholder='Costo de las clases'
               />  
+            </> : typePost === 'pregunta' ? 
+            <>
+              <input 
+              type ='text'
+              name = 'question'
+              placeholder="Haz una pregunta"
+              defaultValue={post.question}
+              required
+              />
             </> :
             <>
               <input 
@@ -147,6 +158,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
               <input 
                 name="companyLink" 
                 type="url" 
+                maxLength = {80}
                 defaultValue={post.companyLink}
                 placeholder="Link del Empleo"
                 required
@@ -164,10 +176,11 @@ const AddPost: FC<Props> = ({ setOpen }) => {
         }
         <div className={styles.content__textImage}>
           <textarea
-            name="text"
+            name= { typePost !== 'pregunta' ? "text" : "question"}
             placeholder={typePost === 'boom' 
             ? 'Cuentanos tu emoción en el comienzo de tu nueva aventura' 
-            : typePost === 'empleo' ? 'Explica más sobre este empleo' 
+            : typePost === 'empleo' ? 'Explica más sobre este empleo'
+            : typePost === 'pregunta' ? 'Describe un poco mas tu pregunta'
             : typePost === 'servicio' ? 'Cuentanós sobre tus clases y sobre quien eres' 
             : '¿Que estas pensando?'}
             className={post.text ? styles.active : ''}

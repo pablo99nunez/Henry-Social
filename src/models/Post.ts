@@ -15,8 +15,14 @@ export interface IPost {
   companyLink: string;
   companyImage: string | File | null;
   salary: number;
+  question: IQuestions;
 }
-
+export interface IQuestions {  // Reference to question posts
+  question: string,
+  answer: string,
+  answered: boolean,
+  
+}
 interface Comment {
   postId: ObjectId; // Reference to blogs
   postTime: string;
@@ -65,6 +71,10 @@ const postSchema = new Schema({
   },
   salary: {
     type: Number,
+  },
+  question: {
+    type: [],
+    default: []
   }
 });
 

@@ -54,6 +54,9 @@ export default function Settings({ cancel }: any) {
           >
             Cancelar
           </Button>
+          <Button 
+        className={style.delete_button}
+        >Eliminar perfil</Button>
         </div>
       </div>
     </div>

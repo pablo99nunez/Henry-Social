@@ -4,7 +4,7 @@
 .post:hover {
   background: $blackLow;
 }
-.post , .postBoom , .postJob{
+.post , .postBoom , .postJob, .postQuestion{
   background-color: $black;
   border-radius: 8px;
   padding: 1.5rem;
@@ -38,6 +38,23 @@
         color: $grey;
       }
     }
+    .post_options_container{
+      position: absolute;
+      right: 5rem;
+      top: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0.1rem;
+
+      width: 5vh;
+      height: 6vh;
+      .post_company_image{
+        position: absolute;
+        max-width: 5vh;
+        height: auto;
+      }
+  }
     .post_options {
       background-color: $bg-color;
       text-align: center;
@@ -86,4 +103,9 @@
 .postJob {
   box-shadow: 0 0 5px 5px #1A5FC733;
   border: 1px solid #1A5FC7
+}
+
+.postQuestion {
+  box-shadow: 0 0 5px 5px #fffb0033;
+  border: 1px solid #eaee10
 }

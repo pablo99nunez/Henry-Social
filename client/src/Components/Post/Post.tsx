@@ -28,11 +28,17 @@ const Post: FC<Props> = ({ post }) => {
     };
 
     return(
-        <div className={post?.typePost === 'boom' ? style.postBoom : post?.typePost === 'empleo' ? style.postJob : style.post} onClick={handleClick} ref={postRef}>
+        <div 
+        className={
+            post?.typePost === 'boom' ? style.postBoom 
+            : post?.typePost === 'empleo' ? style.postJob 
+            : post?.typePost === 'pregunta' ? style.postQuestion
+            : style.post
+            } onClick={handleClick} ref={postRef}>
             <div
                 className={style.post_profile_img}
                 onClick={() => {
-                    navigate("/profile/" + post?.author.username);  //Proponer cambio de ubicacion del click
+                    navigate("/profile/" + post?.author.username);
                 }}
             >
                 <img
@@ -58,9 +64,13 @@ const Post: FC<Props> = ({ post }) => {
                 </div>
                 <div>
                     { post?.companyImage ? (
-                    <div className={style.post_options}>
-                        {post?.companyImage}
+                    <div>
+                        <div className={style.post_options_container}>
+                        <input type='image' src={post?.companyImage} className={style.post_company_image}/>
+                        </div>
+                        <div className={style.post_options}>
                         <BsThreeDots />
+                        </div>
                     </div>
                     ) : 
                     (
@@ -72,14 +82,18 @@ const Post: FC<Props> = ({ post }) => {
                 </div>
                 { 
                 post?.typePost === 'boom' ? ( 
-                        <div className={style.post_content} ref={contentRef}>
-                        <p>💥💥💥Contratad@ para {post?.company} como {post?.position}💥💥💥</p>
+                        <div 
+                        className={style.post_content} 
+                        ref={contentRef}>
+                        <p>💥💥💥Contratad@ para <strong>{post?.company}</strong> como <strong>{post?.position}</strong>💥💥💥</p>
                         {post?.body}
                     </div>
                 ) : post?.typePost === 'empleo' ? (
-                    <div className={style.post_content} ref={contentRef}>
-                        <p>Busqueda laboral:</p>
-                        <p>{post?.company} esta buscando {post?.position}</p>
+                    <div 
+                    className={style.post_content} 
+                    ref={contentRef}>
+                        <p><strong>Busqueda laboral</strong></p>
+                        <p>{post?.company} esta buscando {post?.position}!!!</p>
                         {post?.body}
                         <p>{`Link: ${'link'}`}</p>
                             {post?.salary ? (
@@ -88,7 +102,13 @@ const Post: FC<Props> = ({ post }) => {
                                 <p></p>
                             )}
                     </div>
-                ) : (
+                ) : post?.typePost === 'pregunta' && post?.question?.answered  === true? (
+                    <div className={style.post_content} ref={contentRef}>
+                        {post?.question?.question}
+                        {post?.question?.answer}
+                        <p>Respondida por </p>
+                    </div>
+                ):(
                     <div className={style.post_content} ref={contentRef}>
                         {post?.body}
                     </div>
