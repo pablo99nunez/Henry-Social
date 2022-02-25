@@ -18,7 +18,15 @@ router.post("/user", (req, res) => {
 });
 
 router.get("/users", async (req, res) => {
+  const {username} = req.query;
   try {
+    if(username) {
+      const users = await User.find({
+        name: username
+      });
+      console.log(users)
+      return res.json(users)
+    }
     const users = await User.find({});
     res.json(users);
   } catch (e) {
