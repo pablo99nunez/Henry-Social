@@ -18,6 +18,7 @@ const SideTags = () => {
       } else {
         dispatch(filterBySection(e.target.name));
       }
+      
   }
   return (
     <aside className={styles.aside_tags}>
