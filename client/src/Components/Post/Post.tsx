@@ -79,14 +79,12 @@ const Post: FC<Props> = ({ post }) => {
                         <p>Busqueda laboral:</p>
                         <p>{post?.company} esta buscando {post?.position}</p>
                         {post?.body}
-                        <div>
-                            <p>Link: {post?.companyLink}</p>
+                        <p>{`Link: ${'link'}`}</p>
                             {post?.salary ? (
                                 <p>Salario: {post?.salary}</p>
                             ) : (
-                                <div></div>
+                                <p></p>
                             )}
-                        </div>
                     </div>
                 ) : (
                     <div className={style.post_content} ref={contentRef}>

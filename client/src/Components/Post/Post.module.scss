@@ -79,9 +79,11 @@
 }
 
 .postBoom {
-  box-shadow: 0.1em 0.1em 0.1em 0.1em rgb(255, 56, 56), -0.1em -0.1em 0.1em 0.1em rgb(255, 56, 56)
+  box-shadow: 0 0 5px 5px #AF202033;
+  border: 1px solid #AF2020
 }
 
 .postJob {
-  box-shadow: 0.1em 0.1em 0.1em 0.1em rgb(49, 53, 255), -0.1em -0.1em 0.1em 0.1em rgb(49, 53, 255)
+  box-shadow: 0 0 5px 5px #1A5FC733;
+  border: 1px solid #1A5FC7
 }
