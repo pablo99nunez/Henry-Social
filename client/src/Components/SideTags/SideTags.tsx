@@ -16,6 +16,9 @@ const SideTags = () => {
             icon:"info"
         })
       } else {
+        if (e.target.name === "") {
+          return dispatch(getPosts())
+        }
         dispatch(filterBySection(e.target.name));
       }
   }
@@ -24,6 +27,9 @@ const SideTags = () => {
       <div className={styles.aside_sections}>
         <h2>Secciones</h2>
         <ul>
+          <li>
+              <input onClick={e=>{handleClick(e)}} type="button" name= "" value="Publicaciones" />
+          </li>
           <li>
               <input onClick={e=>{handleClick(e)}} type="button" name= "empleo" value="Ofertas laborales" />
           </li>
@@ -54,6 +60,7 @@ const SideTags = () => {
           <a href="#">#NecesitoAyuda</a>
         </div>
       </div>
+      
       <div className={styles.aside_enlaces}>
         <h2>Enlaces</h2>
         <div className={styles.aside_tags_enlaces}>
