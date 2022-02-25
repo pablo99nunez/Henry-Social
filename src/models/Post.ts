@@ -5,7 +5,7 @@ import Joi from "joi";
 export interface IPost {
   body: string;
   postTime: string;
-  nLikes: [IUser];
+  nLikes: [string];
   numComments: number;
   author: IUser;
   _id: number;
