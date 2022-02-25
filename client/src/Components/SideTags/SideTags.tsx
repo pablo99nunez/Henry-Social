@@ -22,6 +22,7 @@ const SideTags = () => {
   const dispatch = useDispatch();
 
   const handleClick = (e:any) => {
+
     setActiveSection({...initialActiveSection, [e.target.id]: true})
     dispatch(filterBySection(e.target.id));
   }
@@ -65,6 +66,7 @@ const SideTags = () => {
           </ul>
         </nav>
       </div>
+      
       <div className={styles.aside_enlaces}>
         <div className={styles.aside_tags_enlaces}>
           <a href="#" target="_blank">
