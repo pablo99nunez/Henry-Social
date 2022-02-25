@@ -15,7 +15,7 @@ const SideTags = () => {
     recurso: false,
     curso: false,
   }
-
+ 
   const [activeSection, setActiveSection] = useState<any>(initialActiveSection);
 
   const posts = useSelector((state: IState) => state.posts);
