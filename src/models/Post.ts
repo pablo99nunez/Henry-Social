@@ -52,9 +52,12 @@ const postSchema = new Schema({
   typePost: {
     type: String,
     require: true,
-    default: 'normal'
+    default: "normal",
   },
   company: {
+    type: String,
+  },
+  companyImage: {
     type: String,
   },
   position: {
@@ -65,7 +68,7 @@ const postSchema = new Schema({
   },
   salary: {
     type: Number,
-  }
+  },
 });
 
 const commentSchema = new Schema({
