@@ -15,6 +15,7 @@ export interface IPost {
   companyLink: string;
   companyImage: string | File | null;
   salary: number;
+  reportedTimes: number;
 }
 
 interface Comment {
@@ -69,6 +70,10 @@ const postSchema = new Schema({
   salary: {
     type: Number,
   },
+  reportedTimes: {
+    type: Number,
+    default: 0
+  }
 });
 
 const commentSchema = new Schema({
