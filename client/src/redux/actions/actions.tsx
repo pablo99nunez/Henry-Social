@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import axios from "axios";
+import { func } from "joi";
 import { IPost } from "../../../../src/models/Post";
 import { IUser } from "../../../../src/models/User";
 export const GET_USER = "GET_USER";
@@ -11,7 +12,9 @@ export const GET_POST = "GET_POST";
 export const LIKE_POST = "LIKE_POST";
 export const MAKE_ADMIN = "MAKE_ADMIN";
 export const SEE_NOTIFICATION = "SEE_NOTIFICATION";
+export const FILTER_BY_TYPE = "FILTER_BY_TYPE";
 export const FILTER_BY_LIKE = "FILTER_BY_LIKE";
+export const SEARCH_USERS = "SEARCH_USERS";
 
 export interface IAction {
   type: string;
@@ -30,6 +33,7 @@ export function getUser(email: string) {
     });
   };
 }
+
 export function signOut() {
   return function (dispatch: Function) {
     return dispatch({ type: SIGN_OUT });
@@ -63,16 +67,47 @@ export function getProfile(username: string) {
   };
 }
 
-export function getPosts(_id: string | undefined = "") {
+export function getPosts(_id: string | undefined = "", typePost: string | undefined = "") {
   return function (dispatch: Function) {
     _id
-      ? axios.post("/posts", { _id }).then((res) => {
+      ? axios.post("/posts", { _id}).then((res) => {
           return dispatch({ type: GET_POSTS, payload: res.data });
         })
-      : axios.post("/posts").then((res) => {
+      : axios.post("/posts",).then((res) => {
           return dispatch({ type: GET_POSTS, payload: res.data });
         });
+
   };
+}
+
+export function filterBySection( typePost:string ) {
+  return async function (dispatch:Function) {
+      try {
+          const res = await axios.post("/posts",{props:{
+            typePost
+          }})
+          return dispatch({
+            type:FILTER_BY_TYPE,
+            payload: res.data
+          })
+      } catch (error) {
+          console.log(error)
+      }
+  }
+}
+
+export function searchUsers(username:string) {
+  return async function (dispatch:Function) {
+      try {
+        const res = await axios.get(`/users?username=${username}`);
+        return dispatch({
+          type:SEARCH_USERS,
+          payload: res.data
+        })
+      } catch (error) {
+          console.log(error)
+      }
+  }
 }
 export function getPost(id: String) {
   return function (dispatch: Function) {

@@ -15,13 +15,13 @@ export interface IPost {
   companyLink: string;
   companyImage: string | File | null;
   salary: number;
+  reportedTimes: number;
   question: IQuestions;
 }
 export interface IQuestions {  // Reference to question posts
   question: string,
   answer: string,
   answered: boolean,
-  
 }
 interface Comment {
   postId: ObjectId; // Reference to blogs
@@ -58,9 +58,12 @@ const postSchema = new Schema({
   typePost: {
     type: String,
     require: true,
-    default: 'normal'
+    default: "normal",
   },
   company: {
+    type: String,
+  },
+  companyImage: {
     type: String,
   },
   position: {
@@ -75,6 +78,10 @@ const postSchema = new Schema({
   question: {
     type: [],
     default: []
+  },
+  reportedTimes: {
+    type: Number,
+    default: 0
   }
 });
 
