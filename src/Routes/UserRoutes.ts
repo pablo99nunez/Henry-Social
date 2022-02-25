@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from "express";
 import axios from "axios";
-import User, { IUser } from "../models/User";
+import User from "../models/User";
 import { INotification, NotificationType } from "../models/User";
+
 const router = Router();
 
 router.post("/user", (req, res) => {
@@ -16,7 +17,6 @@ router.post("/user", (req, res) => {
     } else res.json(e);
   });
 });
-
 router.get("/users", async (req, res) => {
   try {
     const users = await User.find({});
@@ -24,6 +24,11 @@ router.get("/users", async (req, res) => {
   } catch (e) {
     res.status(401).json({ error: e });
   }
+});
+router.get("/user", async (req, res) => {
+  const { username } = req.query;
+  const user = await User.findOne({ username }) 
+  res.status(200).json(user);
 });
 
 router.post("/findUser", (req, res) => {
