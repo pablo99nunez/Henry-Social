@@ -1,29 +1,46 @@
-import React from "react";
+import React,{useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { IState } from "../../redux/reducer";
 import styles from "./SideTags.module.scss";
 import { HiLink } from "react-icons/hi";
+import { filterBySection, getPosts } from "../../redux/actions/actions";
+import { InfoAlert } from "../Alert/Alert";
 const SideTags = () => {
+  const posts = useSelector((state: IState) => state.posts);
+  const dispatch = useDispatch();
+
+  const handleClick = (e:any) => {
+      if(posts.length === 0) {
+        InfoAlert.fire({
+            title:"No se encontraron post para el tag indicado",
+            icon:"info"
+        })
+      } else {
+        dispatch(filterBySection(e.target.name));
+      }
+  }
   return (
     <aside className={styles.aside_tags}>
       <div className={styles.aside_sections}>
         <h2>Secciones</h2>
         <ul>
           <li>
-            <a href="#">Ofertas laborales</a>
+              <input onClick={e=>{handleClick(e)}} type="button" name= "empleo" value="Ofertas laborales" />
           </li>
           <li>
-            <a href="#">Booms</a>
+            <input onClick={e=>{handleClick(e)}} type="button" name = "boom" value="Booms" />
           </li>
           <li>
-            <a href="#">Servicios</a>
+            <input onClick={e=>{handleClick(e)}} type="button" name = "servicio" value="Servicios" />
           </li>
           <li>
-            <a href="#">Preguntas frecuentes</a>
+            <input type="button" value="Preguntas frecuentes" />
           </li>
           <li>
-            <a href="#">Recursos</a>
+            <input type="button" value="Recursos" />
           </li>
           <li>
-            <a href="#">Cursos gratuitos</a>
+            <input type="button" value="Cursos gratuitos" />
           </li>
         </ul>
       </div>

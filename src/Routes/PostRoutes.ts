@@ -9,6 +9,7 @@ const router = Router();
 router.post("/posts", async (req, res) => {
   try {
     const { _id, liked, props } = req.body;
+
     const posts = _id
       ? await Post.find({
           author: {
@@ -26,7 +27,22 @@ router.post("/posts", async (req, res) => {
           "name avatar username"
         );
 
-    res.json(posts);
+    const posts = _id
+        ? await Post.find({
+            author: {
+              _id,
+            },
+          }).populate("author", "name avatar username")
+        : liked
+        ? await Post.find({
+            nLikes: {
+              _id: liked,
+            },
+          }).populate("author", "name avatar username")
+        : await Post.find({
+          ...props
+        }).populate("author", "name avatar username");
+      res.json(posts);
   } catch (e) {
     res.status(401).json({ error: e });
   }
