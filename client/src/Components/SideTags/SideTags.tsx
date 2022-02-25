@@ -1,47 +1,68 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
 import styles from "./SideTags.module.scss";
 import { HiLink } from "react-icons/hi";
-import { filterBySection, getPosts } from "../../redux/actions/actions";
+import {
+  filterByFollow,
+  filterBySection,
+  getPosts,
+} from "../../redux/actions/actions";
 import { InfoAlert } from "../Alert/Alert";
+import { Link } from "react-router-dom";
+import { Like } from "../Like/Like";
 const SideTags = () => {
-  const posts = useSelector((state: IState) => state.posts);
+  const posts = useSelector((state: IState) => state.results);
   const dispatch = useDispatch();
 
-  const handleClick = (e:any) => {
-      if(posts.length === 0) {
-        InfoAlert.fire({
-            title:"No se encontraron post para el tag indicado",
-            icon:"info"
-        })
-      } else {
-        dispatch(filterBySection(e.target.name));
-      }
-  }
+  const handleClick = (e: any) => {
+    if (posts.length === 0) {
+      InfoAlert.fire({
+        title: "No se encontraron post para el tag indicado",
+        icon: "info",
+      });
+    } else {
+      if (e.target.id !== "seguidos") dispatch(filterBySection(e.target.id));
+      else dispatch(filterByFollow());
+    }
+  };
   return (
     <aside className={styles.aside_tags}>
       <div className={styles.aside_sections}>
-        <h2>Secciones</h2>
         <ul>
-          <li>
-              <input onClick={e=>{handleClick(e)}} type="button" name= "empleo" value="Ofertas laborales" />
+          <li
+            onClick={(e) => {
+              handleClick(e);
+            }}
+            id="empleo"
+          >
+            Ofertas laborales
           </li>
-          <li>
-            <input onClick={e=>{handleClick(e)}} type="button" name = "boom" value="Booms" />
+          <li
+            onClick={(e) => {
+              handleClick(e);
+            }}
+            id="seguidos"
+          >
+            Seguidos
           </li>
-          <li>
-            <input onClick={e=>{handleClick(e)}} type="button" name = "servicio" value="Servicios" />
+          <li
+            onClick={(e) => {
+              handleClick(e);
+            }}
+            id="boom"
+          >
+            Booms
           </li>
-          <li>
-            <input type="button" value="Preguntas frecuentes" />
+          <li
+            onClick={(e) => {
+              handleClick(e);
+            }}
+            id="servicio"
+          >
+            Servicios
           </li>
-          <li>
-            <input type="button" value="Recursos" />
-          </li>
-          <li>
-            <input type="button" value="Cursos gratuitos" />
-          </li>
+          <li>Preguntas frecuentes</li>
         </ul>
       </div>
       <div className={styles.aside_tags_popular}>

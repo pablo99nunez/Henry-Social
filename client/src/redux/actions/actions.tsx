@@ -14,7 +14,8 @@ export const MAKE_ADMIN = "MAKE_ADMIN";
 export const SEE_NOTIFICATION = "SEE_NOTIFICATION";
 export const FILTER_BY_TYPE = "FILTER_BY_TYPE";
 export const FILTER_BY_LIKE = "FILTER_BY_LIKE";
-export const FILTER_BY_ORDER = "FILTER_BY_ORDER";
+export const FILTER_BY_FOLLOW = "FILTER_BY_FOLLOW";
+export const ORDER_BY = "ORDER_BY";
 export const SEARCH_USERS = "SEARCH_USERS";
 
 export interface IAction {
@@ -165,7 +166,11 @@ export function filterByLike(id: string) {
 
 export function filterByOrder(order: string) {
   return async (dispatch: Function) => {
-    const posts = await axios.post("/posts", {}).then((e) => e.data);
-    return dispatch({ type: FILTER_BY_ORDER, payload: { order, posts } });
+    return dispatch({ type: ORDER_BY, payload: { order } });
+  };
+}
+export function filterByFollow() {
+  return async (dispatch: Function) => {
+    return dispatch({ type: FILTER_BY_FOLLOW });
   };
 }

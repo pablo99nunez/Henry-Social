@@ -11,7 +11,7 @@ import Modal from "../Modal/Modal";
 import { motion } from "framer-motion";
 const Posts = () => {
   const dispatch = useDispatch();
-  const posts = useSelector((state: IState) => state.posts);
+  const posts = useSelector((state: IState) => state.results);
   const [order, setOrder] = useState("Reciente");
   const [showModal, setShowModal] = useState(false);
   const plusVariants = {
@@ -23,7 +23,7 @@ const Posts = () => {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.05,
       },
     },
   };
@@ -31,6 +31,7 @@ const Posts = () => {
     hidden: { opacity: 0, y: 100 },
     show: { opacity: 1, y: 0 },
   };
+
   useEffect(() => {
     dispatch(filterByOrder(order));
   }, [order]);
@@ -52,13 +53,13 @@ const Posts = () => {
           >
             Relevante
           </h2>
-          <h2>|</h2>
+          {/* <h2>|</h2>
           <h2
             className={order === "Seguidos" ? styles.active : ""}
             onClick={() => setOrder("Seguidos")}
           >
             Seguidos
-          </h2>
+          </h2> */}
         </div>
         <motion.div
           variants={plusVariants}
