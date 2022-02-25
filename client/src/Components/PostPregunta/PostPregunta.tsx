@@ -5,21 +5,18 @@ import {
     BsChatSquareDots,
     BsShareFill
 } from 'react-icons/bs';
-import style from "./Post.module.scss";
-import { Like } from "../Like/Like";
-import { IPost } from "../../../../src/models/Post";
-import { useNavigate } from "react-router";
-import Avatar from "../Avatar/Avatar";
-import CommentModal from "../CommentModal/CommentModal";
+import style from "./PostPregunta.module.scss";
+import { Like } from '../Like/Like';
+import { IPost } from '../../../../src/models/Post';
+import { useNavigate } from 'react-router';
 
 type Props = {
     post: IPost;
 }
 
-const Post: FC<Props> = ({ post }) => {
+const PostBoom: FC<Props> = ({ post }) => {
     const navigate = useNavigate();
     const postRef = useRef(null);
-    const [openComment, setOpenComment] = useState(false);
     const contentRef = useRef(null);
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (e.target === postRef.current || e.target === contentRef.current) {
@@ -28,7 +25,7 @@ const Post: FC<Props> = ({ post }) => {
     };
 
     return(
-        <div className={post?.typePost === 'boom' ? style.postBoom : post?.typePost === 'empleo' ? style.postJob : style.post} onClick={handleClick} ref={postRef}>
+<div className={style.post} onClick={handleClick} ref={postRef}>
             <div
                 className={style.post_profile_img}
                 onClick={() => {
@@ -76,17 +73,19 @@ const Post: FC<Props> = ({ post }) => {
                         <p>💥💥💥Contratad@ para {post?.company} como {post?.position}💥💥💥</p>
                         {post?.body}
                     </div>
-                ) : post?.typePost === 'empleo' ? (
+                ) : post?.typePost === 'job' ? (
                     <div className={style.post_content} ref={contentRef}>
                         <p>Busqueda laboral:</p>
                         <p>{post?.company} esta buscando {post?.position}</p>
                         {post?.body}
-                        <p>{`Link: ${'link'}`}</p>
+                        <div>
+                            <p>Link: {post?.companyLink}</p>
                             {post?.salary ? (
                                 <p>Salario: {post?.salary}</p>
                             ) : (
-                                <p></p>
+                                <div></div>
                             )}
+                        </div>
                     </div>
                 ) : (
                     <div className={style.post_content} ref={contentRef}>
@@ -97,10 +96,6 @@ const Post: FC<Props> = ({ post }) => {
                 <div className={style.post_interacciones}>
                     <div className={style.post_like_comments}>
                         <Like post={post}></Like>
-                        <div
-                            className={style.post_icon}
-                            onClick={() => setOpenComment(!openComment)}
-                        >
                         <div className={style.post_icon}>
                             <BsChatSquareDots />
                             <span>{post?.numComments}</span>
@@ -108,11 +103,8 @@ const Post: FC<Props> = ({ post }) => {
                     </div>
                 </div>
             </div>
-            <CommentModal open={openComment} postId={post?._id}></CommentModal>
-        </div>
         </div>
     )
 }
 
-export default Post;
-
+export default PostBoom;

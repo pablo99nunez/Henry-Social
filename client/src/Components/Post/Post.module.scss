@@ -4,14 +4,7 @@
 .post:hover {
   background: $blackLow;
 }
-.postContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.post {
-  width: 100%;
-  z-index: 1;
+.post , .postBoom , .postJob{
   background-color: $black;
   border-radius: 8px;
   padding: 1.5rem;
@@ -83,4 +76,14 @@
       }
     }
   }
+}
+
+.postBoom {
+  box-shadow: 0 0 5px 5px #AF202033;
+  border: 1px solid #AF2020
+}
+
+.postJob {
+  box-shadow: 0 0 5px 5px #1A5FC733;
+  border: 1px solid #1A5FC7
 }

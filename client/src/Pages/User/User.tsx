@@ -206,20 +206,3 @@ export default function User() {
   );
 }
 
-/* 
-Datos que tengo que recibir en este componente: ===> Crear unos componentes de ejemplo
-
-- Si el usuario logueado es el propietario de este perfil o no
-
-- Nombre, numero de cohorte, foto, email 
-
-- Num de seguidores/seguidos 
-
-- Link de Linkedin y Github
-
-- Arreglo con los usuarios a los que sigue
-
-- Arreglo con las publicaciones hechas ==> Ver si tratar esto en un componente aparte o no
-
-
-*/
