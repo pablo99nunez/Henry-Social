@@ -19,7 +19,7 @@ import {
 } from "../actions/actions";
 
 export interface IState {
-  user: IUser;
+  user: IUser | null;
   profile: IUser;
   posts: IPost[];
   post: IPost;
@@ -28,7 +28,7 @@ export interface IState {
 }
 
 const initialState = {
-  user: {},
+  user: null,
   profile: {},
   Users: {},
 } as IState;
@@ -87,13 +87,13 @@ export default function rootReducer(state = initialState, action: IAction) {
         ...state,
         post: null,
         comments: null,
-      }
+      };
     }
     case CLEAR_PROFILE: {
       return {
         ...state,
         profile: null,
-      }
+      };
     }
     case LIKE_POST: {
       return {
