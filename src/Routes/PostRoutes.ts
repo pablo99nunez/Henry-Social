@@ -10,7 +10,7 @@ router.post("/posts", async (req, res) => {
   try {
     const { _id, liked, props } = req.body;
 
-    const posts = _id
+    /* const posts = _id
       ? await Post.find({
           author: {
             _id,
@@ -25,7 +25,7 @@ router.post("/posts", async (req, res) => {
       : await Post.find({ ...props }).populate(
           "author",
           "name avatar username"
-        );
+        ); */
 
     const posts = _id
         ? await Post.find({
@@ -62,8 +62,13 @@ router.post("/like", async (req, res) => {
     const post = await Post.findById(_id).catch((e) => {
       throw new Error(e);
     });
+    const comment = await Comment.findById( _id ).catch((e)=>{
+       return console.log("error: ", e)
+    });
     console.log(post?.nLikes.includes(author._id));
     const isLikedAlready = post?.nLikes.includes(author._id);
+    const isCommentAlready = comment?.nLikes.includes(author._id); 
+    console.log("Comentario: ", comment, isCommentAlready);
 
     if (!isLikedAlready) {
       console.log("Liking");
@@ -92,6 +97,49 @@ router.post("/like", async (req, res) => {
     } else {
       console.log("Disliking");
       const result = await Post.findByIdAndUpdate(
+        _id,
+        {
+          $pull: {
+            nLikes: { $in: [author] },
+          },
+        },
+        { new: true }
+      )
+        .populate("author", "name username avatar")
+        .catch((e) => {
+          console.log(e);
+          throw new Error(e);
+        });
+      res.json(result);
+    }
+
+    if (!isCommentAlready) {
+      console.log("Liking");
+      const result = await Comment.findByIdAndUpdate(
+        _id,
+        {
+          $addToSet: { nLikes: author },
+        },
+        { new: true }
+      )
+        .populate("author", "name username avatar")
+        .catch((e) => {
+          throw new Error(e);
+        });
+      axios
+        .post("/notification", {
+          type: NotificationType.Like,
+          receptor: result?.author._id,
+          emisor: author._id,
+          link: "/post/" + _id,
+        })
+        .catch((e) => {
+          throw new Error(e);
+        });
+      res.json(result);
+    } else {
+      console.log("Disliking");
+      const result = await Comment.findByIdAndUpdate(
         _id,
         {
           $pull: {
