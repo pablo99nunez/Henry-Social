@@ -10,6 +10,12 @@ export interface IPost {
   author: IUser;
   _id: number;
   typePost: string;
+  company: string;
+  position: string;
+  companyLink: string;
+  companyImage: string | File | null;
+  salary: number;
+  reportedTimes: number;
 }
 
 interface Comment {
@@ -48,7 +54,27 @@ const postSchema = new Schema({
   typePost: {
     type: String,
     require: true,
+    default: "normal",
   },
+  company: {
+    type: String,
+  },
+  companyImage: {
+    type: String,
+  },
+  position: {
+    type: String,
+  },
+  companyLink: {
+    type: String,
+  },
+  salary: {
+    type: Number,
+  },
+  reportedTimes: {
+    type: Number,
+    default: 0
+  }
 });
 
 const commentSchema = new Schema({

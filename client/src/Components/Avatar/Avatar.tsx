@@ -1,6 +1,6 @@
 import React from "react";
 type Props = {
-  avatar: string | undefined;
+  avatar: string | undefined | null | File;
 };
 import styles from "./Avatar.module.scss";
 

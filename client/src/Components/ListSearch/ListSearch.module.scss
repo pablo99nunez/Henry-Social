@@ -1,42 +1,33 @@
 @import "../../Styles/variables.scss";
-
 .container {
-  width: 15vw;
   height: fit-content;
   min-height: 5vh;
   position: absolute;
   border-radius: 8px;
-  top: 150%;
-  left: -1rem;
-  overflow-y: scroll;
+  top: 80px;
   max-height: 50vh;
-  overflow-x: hidden;
+  overflow-y: scroll;
   display: flex;
   flex-direction: column-reverse;
   backdrop-filter: blur(10px);
-
   .noNotification {
     padding: 1rem;
     color: $black;
     font-weight: 500;
     background-color: #c4c4c4aa;
   }
-}
-.icon_wrap {
-  position: relative;
-  .icon {
-    color: $white;
-    font-size: 1.8rem;
+  .notification {
+    display: flex;
+    padding: 1rem;
     cursor: pointer;
-  }
-  .news {
-    width: 13px;
-    box-shadow: 3px 3px 10px $black;
-    height: 13px;
-    border-radius: 50%;
-    background-color: $yellow;
-    position: absolute;
-    top: 0;
-    right: 0;
+    width: 100%;
+    background-color: #c4c4c4aa;
+    gap: 1rem;
+    align-items: center;
+    justify-content: start;
+    border-bottom: 1px solid $black;
+    img {
+      border-radius: 50%;
+    }
   }
 }

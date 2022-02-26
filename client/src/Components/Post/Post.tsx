@@ -1,6 +1,6 @@
-import React, { FC, useRef, useState } from "react";
-import style from "./Post.module.scss";
+import React, { useState, FC, useRef } from "react";
 import { BsThreeDots, BsChatSquareDots } from "react-icons/bs";
+import style from "./Post.module.scss";
 import { Like } from "../Like/Like";
 import { IPost } from "../../../../src/models/Post";
 import { useNavigate } from "react-router";
@@ -14,26 +14,46 @@ type Props = {
 const Post: FC<Props> = ({ post }) => {
   const navigate = useNavigate();
   const postRef = useRef(null);
+  const headerRef = useRef(null);
   const [openComment, setOpenComment] = useState(false);
   const contentRef = useRef(null);
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (e.target === postRef.current || e.target === contentRef.current) {
+    console.log(e.target);
+    if (
+      e.target === postRef.current ||
+      e.target === contentRef.current ||
+      e.target === headerRef.current
+    ) {
       navigate("/post/" + post._id);
     }
   };
 
   return (
     <div className={style.postContainer}>
-      <div className={style.post} onClick={handleClick} ref={postRef}>
+      <div
+        className={`${style.post} ${
+          post?.typePost === "boom"
+            ? style.postBoom
+            : post?.typePost === "empleo"
+            ? style.postJob
+            : style.post
+        }`}
+        onClick={handleClick}
+        ref={postRef}
+      >
         <div
           className={style.post_profile_img}
           onClick={() => {
-            navigate("/profile/" + post?.author.username);
+            navigate("/profile/" + post?.author.username); //Proponer cambio de ubicacion del click
           }}
         >
-          {typeof post?.author?.avatar === "string" && (
-            <Avatar avatar={post?.author?.avatar}></Avatar>
-          )}
+          <Avatar
+            avatar={
+              typeof post?.author?.avatar === "string"
+                ? post.author?.avatar
+                : ""
+            }
+          ></Avatar>
         </div>
         <div className={style.post_wrap}>
           <div className={style.post_profile}>
@@ -45,10 +65,35 @@ const Post: FC<Props> = ({ post }) => {
               {post?.author?.name}
             </h3>
             <h4>{new Date(post?.postTime).toLocaleString()}</h4>
+            {typeof post?.companyImage === "string" && (
+              <img src={post?.companyImage} alt="company" />
+            )}
+            <div className={style.post_options}>
+              <BsThreeDots />
+            </div>
           </div>
-          <div className={style.post_options}>
-            <BsThreeDots />
-          </div>
+          {post?.typePost !== "normal" && (
+            <div className={style.post_header}>
+              {post?.typePost === "boom" ? (
+                <h4 ref={headerRef}>
+                  💥💥💥Contratad@ para {post?.company} como {post?.position}
+                  💥💥💥
+                </h4>
+              ) : (
+                post?.typePost === "empleo" && (
+                  <>
+                    <p>Busqueda laboral:</p>
+                    <p>
+                      {post?.company} esta buscando {post?.position}
+                    </p>
+                    {post?.body}
+                    <p>{`Link: ${"link"}`}</p>
+                    {post?.salary ? <p>Salario: {post?.salary}</p> : <p></p>}
+                  </>
+                )
+              )}
+            </div>
+          )}
           <div className={style.post_content} ref={contentRef}>
             {post?.body}
           </div>
@@ -59,8 +104,10 @@ const Post: FC<Props> = ({ post }) => {
                 className={style.post_icon}
                 onClick={() => setOpenComment(!openComment)}
               >
-                <BsChatSquareDots />
-                <span>{post?.numComments}</span>
+                <div className={style.post_icon}>
+                  <BsChatSquareDots />
+                  <span>{post?.numComments}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -70,4 +117,5 @@ const Post: FC<Props> = ({ post }) => {
     </div>
   );
 };
+
 export default Post;

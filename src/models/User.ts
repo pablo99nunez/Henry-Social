@@ -40,6 +40,8 @@ export interface IUser {
   bio?: string;
   admin: boolean;
   notifications: INotification[];
+  company?: string;
+  position?:string;
 }
 
 const userSchema = new Schema<IUser>({
