@@ -4,6 +4,8 @@ import {
   FILTER_BY_LIKE,
   FOLLOW_USER,
   GET_POST,
+  CLEAR_POST,
+  CLEAR_PROFILE,
   GET_POSTS,
   GET_PROFILE,
   GET_USER,
@@ -79,6 +81,19 @@ export default function rootReducer(state = initialState, action: IAction) {
         post: action.payload.post,
         comments: action.payload.comments,
       };
+    }
+    case CLEAR_POST: {
+      return {
+        ...state,
+        post: null,
+        comments: null,
+      }
+    }
+    case CLEAR_PROFILE: {
+      return {
+        ...state,
+        profile: null,
+      }
     }
     case LIKE_POST: {
       return {

@@ -1,18 +1,15 @@
 import "./PostDetail.scss";
-// import { useEffect } from 'react';
-// import { useParams } from 'react-router-dom';
-// import { getPostDetail } from '../../redux/actions'
-import Comments from "../../Components/Comments/Comments";
-import { getPost } from "../../redux/actions/actions";
 import { useEffect } from "react";
 import { useParams } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
-import FollowBar from "../../Components/FollowBar/FollowBar";
+import { useDispatch, useSelector } from "react-redux";
+import { clear, getPost } from "../../redux/actions/actions";
+
 import Post from "../../Components/Post/Post";
+import Comments from "../../Components/Comments/Comments";
+import FollowBar from "../../Components/FollowBar/FollowBar";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import SideMessages from "../../Components/SideMessages/SideMessages";
-// import { useDispatch , useSelector } from 'react-redux';
 
 export default function PostDetail() {
   const { id } = useParams();
@@ -22,29 +19,23 @@ export default function PostDetail() {
   useEffect(() => {
     if (id) {
       dispatch(getPost(id));
+      return () => dispatch(clear('post'))
     }
   }, [id]);
 
   return (
     <>
-      <NavSearch></NavSearch>
+      <NavSearch/>
       <div id="postDetail">
-        {/* El navbar, follow-bar, post, messages serán reemplazados por sus debidos componentes*/}
-
-        <nav id="navbar"></nav>
-
         <div id="content">
           <div id="follow-bar">
             <FollowBar />
           </div>
-
           <div id="boxPost">
             <div id="post">
               <Post post={details} />
-              {console.log(details)}
-              <Comments
-              // comments={details.comments}
-              />
+              {console.log('Detalles Post: ', details)}
+              <Comments/>
             </div>
           </div>
 
