@@ -187,8 +187,9 @@ router.post("/report", async (req: Request, res: Response) => {
       { new: true }
     );
   
-    const eliminated = post?.reportedTimes && post?.reportedTimes >= 5;
+    const eliminated = post?.reportedTimes;
   
+    console.log(post);
     if(eliminated) {
       sendEmail({
         _id,

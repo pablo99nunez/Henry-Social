@@ -49,9 +49,15 @@ export default function Login(): JSX.Element {
 
   useEffect(() => {
     const { name, username, password, email } = input;
+    let cleanUp = false;
     if (user !== null) return navigate("/");
-    else if (user == undefined) setLoading(false);
+    setTimeout(() => {
+      if (user === null && !cleanUp) setLoading(false);
+    }, 1000);
     name && username && password && email && setFromComplete(true);
+    return () => {
+      cleanUp = true;
+    }
   }, [user, input]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -175,9 +181,8 @@ export default function Login(): JSX.Element {
 
   return (
     <>
-      {loading ? (
-        <LoadingPage />
-      ) : (
+      {loading ? <LoadingPage/>
+      : (
         <div id={style.cont}>
           <header>
             <div id={style.title_cont}>
@@ -229,11 +234,12 @@ export default function Login(): JSX.Element {
                     onChange={handleInputChange}
                     onKeyUp={(e) => {
                       clearTimeout(typerTimer);
-                      typerTimer = setTimeout(() => validateUsername(e), 150);
+                      typerTimer = setTimeout(() => validateUsername(e), 1000);
                     }}
                     onKeyDown={() => {
                       clearTimeout(typerTimer);
                     }}
+                    onBlur={validateUsername}
                     placeholder="Username"
                   />
                   <LoginInput
