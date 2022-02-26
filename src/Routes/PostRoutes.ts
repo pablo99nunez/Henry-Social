@@ -16,10 +16,9 @@ const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   auth: {
     user: MAIL,
-    pass: MAIL_PASSWORD
-  }
+    pass: MAIL_PASSWORD,
+  },
 });
-
 
 const router = Router();
 
@@ -182,18 +181,18 @@ router.post("/report", async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({ username });
 
-    const post = await Post.findByIdAndUpdate(_id, 
-      { $inc: { reportedTimes : 1} }, 
+    const post = await Post.findByIdAndUpdate(
+      _id,
+      { $inc: { reportedTimes: 1 } },
       { new: true }
     );
-  
-    const eliminated = post?.reportedTimes;
-  
-    console.log(post);
-    if(eliminated) {
+
+    const eliminated = post?.reportedTimes && post?.reportedTimes >= 5;
+
+    if (eliminated) {
       sendEmail({
         _id,
-        transporter, 
+        transporter,
         deleted: true,
         from: MAIL,
         to: MAIL,
@@ -201,41 +200,39 @@ router.post("/report", async (req: Request, res: Response) => {
       });
       sendEmail({
         _id,
-        transporter, 
+        transporter,
         deleted: true,
         from: MAIL,
         to: user?.email,
         username: user?.username,
-      })
+      });
       res.status(200).json(post);
       return axios.delete("/post", {
         data: {
-          _id
-        }
+          _id,
+        },
       });
-    };
+    }
 
     sendEmail({
       _id,
-      transporter, 
+      transporter,
       from: MAIL,
       to: MAIL,
       username: user?.username,
     });
     sendEmail({
       _id,
-      transporter, 
+      transporter,
       from: MAIL,
       to: user?.email,
       username: user?.username,
     });
 
     res.status(200).json("Post reported");
-
   } catch (error) {
     res.status(400);
   }
-
 });
 
 export default router;

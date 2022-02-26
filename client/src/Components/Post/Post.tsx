@@ -1,4 +1,5 @@
 import React, { useState, FC, useRef } from "react";
+import { FaBan } from "react-icons/fa";
 import { BsThreeDots, BsChatSquareDots } from "react-icons/bs";
 import style from "./Post.module.scss";
 import { Like } from "../Like/Like";
@@ -6,19 +7,25 @@ import { IPost } from "../../../../src/models/Post";
 import { useNavigate } from "react-router";
 import Avatar from "../Avatar/Avatar";
 import CommentModal from "../CommentModal/CommentModal";
-
+import axios from "axios";
+import { InfoAlert } from "../Alert/Alert";
+import LoadingPage from "../LoadingPage/LoadingPage";
+import useUser from "../../Hooks/useUser";
 type Props = {
   post: IPost;
 };
 
 const Post: FC<Props> = ({ post }) => {
+  const userLogeado = useUser();
   const navigate = useNavigate();
   const postRef = useRef(null);
   const headerRef = useRef(null);
+  const [demand, setDemand] = useState(false)
+  const [options, setOptions] = useState(false)
   const [openComment, setOpenComment] = useState(false);
   const contentRef = useRef(null);
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    console.log(e.target);
+    // console.log(e.target);
     if (
       e.target === postRef.current ||
       e.target === contentRef.current ||
@@ -28,8 +35,28 @@ const Post: FC<Props> = ({ post }) => {
     }
   };
 
+  const handleDemand = () => {
+    const username = userLogeado?.username
+    if(!demand)
+    axios
+      .post(`/report`, {
+        __id: post._id,
+        username
+      })
+      .then((data) => {
+        InfoAlert.fire({
+          title: `El usuario ${post.author.name} fue denunciado.`,
+          icon: "success",
+        });
+        return data;
+      })
+      .catch((error) => console.error("Error:", error));
+    setDemand(true)
+  }
+
   return (
     <div className={style.postContainer}>
+      {post ?
       <div
         className={`${style.post} ${
           post?.typePost === "boom"
@@ -68,9 +95,24 @@ const Post: FC<Props> = ({ post }) => {
             {typeof post?.companyImage === "string" && (
               <img src={post?.companyImage} alt="company" />
             )}
-            <div className={style.post_options}>
-              <BsThreeDots />
-            </div>
+            {!demand &&
+              <div className={style.post_options}>
+                <BsThreeDots
+                  onClick={() => setOptions(!options)}
+                />
+                <div 
+                  className={`${style.post_optionsList} ${options ? style.view : style.hide}`}
+                >
+                  <p 
+                    className={style.item}
+                    onClick={handleDemand}
+                  >
+                    <FaBan/>
+                    Denunciar publicación.
+                  </p>
+                </div>
+              </div>
+            }
           </div>
           {post?.typePost !== "normal" && (
             <div className={style.post_header}>
@@ -113,6 +155,7 @@ const Post: FC<Props> = ({ post }) => {
           </div>
         </div>
       </div>
+      : <LoadingPage/>}
       <CommentModal open={openComment} postId={post?._id}></CommentModal>
     </div>
   );

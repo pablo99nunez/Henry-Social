@@ -1,34 +1,33 @@
 import "./followBar.scss"; //Hola bro
+import { useSelector } from "react-redux";
+import { IState } from "../../redux/reducer";
+import Seguido from "../Seguido/Seguido";
+import { useState } from "react";
 
 export default function FollowBar() {
-  const seguidos = [
-    {
-      name: "Alguien",
-      avatar: "https://avatars.githubusercontent.com/u/9113740?v=4",
-    },
-    {
-      name: "Alejandro",
-      avatar: "https://avatars.githubusercontent.com/u/78025342?v=4",
-    },
-    {
-      name: "Rei",
-      avatar: "https://avatars.githubusercontent.com/u/68031974?v=4",
-    },
-  ];
+  const [more, setMore] = useState(false);
+  const seguidos =
+    useSelector((state: IState) => state.profile?.following) || [];
 
   return (
     <div className="followBar">
       <h2>Siguiendo</h2>
       <div className="users">
-        {seguidos &&
-          seguidos.map((x) => (
-            <div className="user" key={x.name}>
-              <p>{x.name}</p>
-              <img src={x.avatar} alt="user avatar" />
-            </div>
-          ))}
+        {seguidos?.length ? (
+          seguidos.map((u, i) =>
+            !more ? (
+              i < 3 && <Seguido username={u} key={i} />
+            ) : (
+              <Seguido username={u} key={i} />
+            )
+          )
+        ) : (
+          <h3>No sigues a nadie aún.</h3>
+        )}
       </div>
-      <h4>Ver mas...</h4>
+      {seguidos?.length > 3 && !more && (
+        <h4 onClick={() => setMore(true)}>Ver mas...</h4>
+      )}
     </div>
   );
 }
