@@ -15,6 +15,7 @@ const SideTags = () => {
   const posts = useSelector((state: IState) => state.results);
   const dispatch = useDispatch();
 
+
   const handleClick = (e: any) => {
     if (posts.length === 0) {
       InfoAlert.fire({
@@ -26,6 +27,7 @@ const SideTags = () => {
       else dispatch(filterByFollow());
     }
   };
+
   return (
     <aside className={styles.aside_tags}>
       <div className={styles.aside_sections}>
@@ -37,6 +39,7 @@ const SideTags = () => {
             id="empleo"
           >
             Ofertas laborales
+
           </li>
           <li
             onClick={(e) => {
@@ -75,6 +78,7 @@ const SideTags = () => {
           <a href="#">#NecesitoAyuda</a>
         </div>
       </div>
+      
       <div className={styles.aside_enlaces}>
         <h2>Enlaces</h2>
         <div className={styles.aside_tags_enlaces}>
