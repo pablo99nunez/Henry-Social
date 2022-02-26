@@ -1,0 +1,4 @@
+@import "../../Styles/mixins.scss";
+.container {
+  @include container;
+}

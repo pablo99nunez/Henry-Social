@@ -2,14 +2,12 @@
 @import "../../Styles/mixins.scss";
 
 .aside_messages {
-  background-color: $bg-secondary-color;
+  background-color: $black;
   padding: 1rem;
   border-radius: 0.8rem;
-  border: 1px solid $white;
+  border: 1px solid $greyLow;
   color: $white;
   height: fit-content;
-  position: sticky;
-  top: 100px;
   display: flex;
   flex-direction: column;
   place-content: center;

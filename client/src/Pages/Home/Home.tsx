@@ -10,6 +10,8 @@ import style from "./Home.module.scss";
 import useUser from "../../Hooks/useUser";
 import { useDispatch } from "react-redux";
 import { getPosts } from "../../redux/actions/actions";
+import Present from "../../Components/Present/Present";
+import Button from "../../Components/Button/Button";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -32,9 +34,14 @@ const Home = () => {
         <div className={style.home}>
           <NavSearch />
           <div className={style.home_position}>
-            <SideTags />
+            <div className={style.aside}>
+              <SideTags />
+            </div>
             <Posts />
-            <SideMessages />
+            <div className={style.aside}>
+              <SideMessages />
+              <Present></Present>
+            </div>
           </div>
           <Chat />
         </div>
