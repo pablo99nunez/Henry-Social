@@ -1,11 +1,11 @@
 import "./Comment.scss";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Like } from "../Like/Like";
 import { FaRegComment, FaEllipsisH, FaBan, FaRegFrown} from "react-icons/fa";
 
 const Comment = ({ key, data }: any) => {
   const [options, setOptions] = useState(false);
-  const [liked, setLiked] = useState(false)
   
   return (
     <div className="comment" key={key}>
