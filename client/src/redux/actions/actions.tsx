@@ -16,6 +16,8 @@ export const MAKE_ADMIN = "MAKE_ADMIN";
 export const SEE_NOTIFICATION = "SEE_NOTIFICATION";
 export const FILTER_BY_TYPE = "FILTER_BY_TYPE";
 export const FILTER_BY_LIKE = "FILTER_BY_LIKE";
+export const FILTER_BY_FOLLOW = "FILTER_BY_FOLLOW";
+export const ORDER_BY = "ORDER_BY";
 export const SEARCH_USERS = "SEARCH_USERS";
 
 export interface IAction {
@@ -69,47 +71,48 @@ export function getProfile(username: string) {
   };
 }
 
-export function getPosts(_id: string | undefined = "", typePost: string | undefined = "") {
+export function getPosts(_id: string | undefined = "") {
   return function (dispatch: Function) {
     _id
-      ? axios.post("/posts", { _id}).then((res) => {
+      ? axios.post("/posts", { _id }).then((res) => {
           return dispatch({ type: GET_POSTS, payload: res.data });
         })
-      : axios.post("/posts",).then((res) => {
+      : axios.post("/posts").then((res) => {
           return dispatch({ type: GET_POSTS, payload: res.data });
         });
-
   };
 }
 
-export function filterBySection( typePost:string ) {
-  return async function (dispatch:Function) {
-      try {
-          const res = await axios.post("/posts",{props:{
-            typePost
-          }})
-          return dispatch({
-            type:FILTER_BY_TYPE,
-            payload: res.data
-          })
-      } catch (error) {
-          console.log(error)
-      }
-  }
+export function filterBySection(typePost: string) {
+  return async function (dispatch: Function) {
+    try {
+      const res = await axios.post("/posts", {
+        props: {
+          typePost,
+        },
+      });
+      return dispatch({
+        type: FILTER_BY_TYPE,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
 
-export function searchUsers(username:string) {
-  return async function (dispatch:Function) {
-      try {
-        const res = await axios.get(`/users?username=${username}`);
-        return dispatch({
-          type:SEARCH_USERS,
-          payload: res.data
-        })
-      } catch (error) {
-          console.log(error)
-      }
-  }
+export function searchUsers(username: string) {
+  return async function (dispatch: Function) {
+    try {
+      const res = await axios.get(`/users?username=${username}`);
+      return dispatch({
+        type: SEARCH_USERS,
+        payload: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
 export function getPost(id: String) {
   return function (dispatch: Function) {
@@ -165,5 +168,16 @@ export function filterByLike(id: string) {
       .then((e) => {
         return dispatch({ type: FILTER_BY_LIKE, payload: e.data });
       });
+  };
+}
+
+export function filterByOrder(order: string) {
+  return async (dispatch: Function) => {
+    return dispatch({ type: ORDER_BY, payload: { order } });
+  };
+}
+export function filterByFollow() {
+  return async (dispatch: Function) => {
+    return dispatch({ type: FILTER_BY_FOLLOW });
   };
 }
