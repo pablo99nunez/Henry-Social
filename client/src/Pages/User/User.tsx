@@ -14,6 +14,7 @@ import Settings from "../../Components/Settings/Settings";
 import useUser from "../../Hooks/useUser";
 import Modal from "../../Components/Modal/Modal";
 import {
+  clear,
   filterByLike,
   followUser,
   getPosts,
@@ -21,6 +22,7 @@ import {
 } from "../../redux/actions/actions";
 import { useProfile } from "../../Hooks/useProfile";
 import { IState } from "../../redux/reducer";
+import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
 export default function User() {
   const [edit, setEdit] = useState(false);
@@ -43,6 +45,9 @@ export default function User() {
     if (username) dispatch(makeAdmin(username));
   }
   useEffect(() => {
+    return () => dispatch(clear('profile'))
+  }, [])
+  useEffect(() => {
     if (userLogeado?.following && user?.username) {
       console.log(userLogeado.following);
       setIsFollowing(userLogeado.following.includes(user.username));
@@ -59,8 +64,9 @@ export default function User() {
     return setEdit(true);
   };
 
-  return !loading ? (
-    <>
+  return loading 
+  ? <LoadingPage/> 
+  : <>
       <NavSearch></NavSearch>
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
         <Settings cancel={() => setEdit(false)}></Settings>
@@ -203,7 +209,4 @@ export default function User() {
         </div>
       </div>
     </>
-  ) : (
-    <h1>Loading</h1>
-  );
 }

@@ -1,14 +1,12 @@
 import "./Comment.scss";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Like } from "../Like/Like";
-import { FaRegComment, FaEllipsisH, FaBan, FaRegFrown } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { IState } from "../../redux/reducer";
+import { FaRegHeart, FaRegComment, FaEllipsisH, FaBan, FaRegFrown, FaHeart } from "react-icons/fa";
 
 const Comment = ({ key, data }: any) => {
   const [options, setOptions] = useState(false);
-  const post = useSelector((state: IState) => state.post);
+  const [liked, setLiked] = useState(false)
+  
   return (
     <div className="comment" key={key}>
       <div className="picture">
@@ -30,23 +28,15 @@ const Comment = ({ key, data }: any) => {
         </div>
 
         <div className="likesComments">
-          <div className="sizeLikes">
-            {/* <Like post={post} /> */}
-            {/* {data.countLikes &&
-              <p className='count'>{data.countLikes}</p>
-            } */}
+          <div className="sizeLikes" onClick={() => setLiked(!liked)}>
+            {liked ? <FaHeart/> : <FaRegHeart/>}
+            <p className="count">{data.countLikes || 0 + (liked ? 1 : 0)}</p>
           </div>
-          {/* Al presionar en el icono o el numero de comentarios llevaria a tipo un posteo
-              con el comentario y sus comentarios */}
-          {/* <Link to={${data.author}/posts${data.postId}} className="sizeComments"> */}
           <div className="sizeComments" title="Comentarios">
             <FaRegComment />
-            {data.countComments && (
-              <p className="count">{data.countComments}</p>
-            )}
+            <p className="count">{data.countComments || 0}</p>
           </div>
         </div>
-        {/* </Link> */}
       </div>
 
       <div className="options">

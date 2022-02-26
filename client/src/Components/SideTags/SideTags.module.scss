@@ -12,7 +12,7 @@
   position: sticky;
   top: 100px;
   border: 1px solid $white;
-  
+
   h2 {
     text-align: center;
     color: $yellow;
@@ -22,16 +22,16 @@
     text-decoration: underline;
   }
 
-  li{
+  li {
     cursor: pointer;
     padding-bottom: 0.5rem;
 
-    &:hover{
+    &:hover {
       color: $yellow;
     }
   }
 
-  li.active{
+  li.active {
     color: $yellow;
   }
 
@@ -41,7 +41,7 @@
   }
 
   .aside_tags_popular {
-    ul{
+    ul {
       list-style: none;
     }
   }
@@ -50,7 +50,7 @@
     margin-top: 0.7rem;
     a {
       color: $yellow;
-      padding-bottom: 0.5rem; 
+      padding-bottom: 0.5rem;
     }
   }
 }
