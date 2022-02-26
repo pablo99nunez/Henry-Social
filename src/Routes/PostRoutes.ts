@@ -24,7 +24,7 @@ const router = Router();
 
 router.post("/posts", async (req, res) => {
   try {
-    const { _id, liked, props } = req.body;
+    const { _id, liked, props, tag } = req.body;
 
     const posts = _id
       ? await Post.find({
@@ -38,6 +38,10 @@ router.post("/posts", async (req, res) => {
             _id: liked,
           },
         }).populate("author", "name avatar username")
+      : tag
+      ? await Post.find({
+        tags: tag
+      })
       : await Post.find({
           ...props,
         }).populate("author", "name avatar username");

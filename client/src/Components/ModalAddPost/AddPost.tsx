@@ -30,6 +30,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     costoClases: "",
     temasClases: "",
     tecnologíaClases: "",
+    tags: []
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,6 +66,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
           salary: post.salary,
           author: user,
           typePost,
+          tags: post.tags
         })
         .then((data) => {
           InfoAlert.fire({
