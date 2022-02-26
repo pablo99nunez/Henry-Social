@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import axios from "axios";
-import { func } from "joi";
+// import { func } from "joi";
 import { IPost } from "../../../../src/models/Post";
 import { IUser } from "../../../../src/models/User";
 export const GET_USER = "GET_USER";
@@ -9,6 +9,8 @@ export const SIGN_OUT = "SIGN_OUT";
 export const GET_PROFILE = "GET_PROFILE";
 export const GET_POSTS = "GET_POSTS";
 export const GET_POST = "GET_POST";
+export const CLEAR_POST = "CLEAR_POST";
+export const CLEAR_PROFILE = "CLEAR_PROFILE";
 export const LIKE_POST = "LIKE_POST";
 export const MAKE_ADMIN = "MAKE_ADMIN";
 export const SEE_NOTIFICATION = "SEE_NOTIFICATION";
@@ -121,6 +123,11 @@ export function getPost(id: String) {
         });
     });
   };
+}
+export function clear(page: String){
+  return function (dispatch: Function) {
+    return dispatch({ type: page === 'profile' ? CLEAR_PROFILE : CLEAR_POST });
+  }; 
 }
 export function likePost(post: IPost, user: IUser) {
   return (dispatch: Function) => {
