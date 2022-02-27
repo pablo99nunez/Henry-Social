@@ -11,6 +11,7 @@ export enum NotificationType {
   Follow,
   Like,
   Comment,
+  CommentLike
 }
 export interface INotification {
   type: NotificationType;

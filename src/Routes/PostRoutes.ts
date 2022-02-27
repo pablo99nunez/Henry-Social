@@ -39,7 +39,6 @@ router.post("/posts", async (req, res) => {
             _id: liked,
           },
         }).populate("author", "name avatar username")
-<<<<<<< HEAD
       : await Post.find({ ...props }).populate(
           "author",
           "name avatar username"
@@ -59,10 +58,6 @@ router.post("/posts", async (req, res) => {
           }).populate("author", "name avatar username")
         : await Post.find({
           ...props
-=======
-      : await Post.find({
-          ...props,
->>>>>>> origin/dev
         }).populate("author", "name avatar username");
     res.json(posts);
   } catch (e) {
@@ -82,17 +77,18 @@ router.post("/like", async (req, res) => {
   try {
     const { _id, author } = req.body;
     const post = await Post.findById(_id).catch((e) => {
-      throw new Error(e);
+      throw new Error(e.message);
     });
     const comment = await Comment.findById( _id ).catch((e)=>{
-       return console.log("error: ", e)
+      throw new Error(e.message);
     });
-    console.log(post?.nLikes.includes(author._id));
+    console.log("Posteo", post?.nLikes.includes(author._id));
     const isLikedAlready = post?.nLikes.includes(author._id);
     const isCommentAlready = comment?.nLikes.includes(author._id); 
     console.log("Comentario: ", comment, isCommentAlready);
 
-    if (!isLikedAlready) {
+    if(post){
+      if (!isLikedAlready) {
       console.log("Liking");
       const result = await Post.findByIdAndUpdate(
         _id,
@@ -113,7 +109,7 @@ router.post("/like", async (req, res) => {
           link: "/post/" + _id,
         })
         .catch((e) => {
-          throw new Error(e);
+          throw new Error(e.message);
         });
       res.json(result);
     } else {
@@ -129,54 +125,59 @@ router.post("/like", async (req, res) => {
       )
         .populate("author", "name username avatar")
         .catch((e) => {
-          console.log(e);
+          //console.log(e.message);
           throw new Error(e);
         });
       res.json(result);
     }
+   }
 
-    if (!isCommentAlready) {
-      console.log("Liking");
-      const result = await Comment.findByIdAndUpdate(
-        _id,
-        {
-          $addToSet: { nLikes: author },
-        },
-        { new: true }
-      )
-        .populate("author", "name username avatar")
-        .catch((e) => {
-          throw new Error(e);
-        });
-      axios
-        .post("/notification", {
-          type: NotificationType.Like,
-          receptor: result?.author._id,
-          emisor: author._id,
-          link: "/post/" + _id,
-        })
-        .catch((e) => {
-          throw new Error(e);
-        });
-      res.json(result);
-    } else {
-      console.log("Disliking");
-      const result = await Comment.findByIdAndUpdate(
-        _id,
-        {
-          $pull: {
-            nLikes: { $in: [author] },
+   if(comment){
+      if (!isCommentAlready) {
+        console.log("Liking Comment");
+        const result = await Comment.findByIdAndUpdate(
+          _id,
+          {
+            $addToSet: { nLikes: author },
           },
-        },
-        { new: true }
-      )
-        .populate("author", "name username avatar")
-        .catch((e) => {
-          console.log(e);
-          throw new Error(e);
-        });
-      res.json(result);
-    }
+          { new: true }
+        )
+          .populate("author", "name username avatar")
+          .catch((e) => {
+             //console.log(e.message);
+            throw new Error(e);
+          });
+        axios
+          .post("/notification", {
+            type: NotificationType.CommentLike,
+            receptor: result?.author._id,
+            emisor: author._id,
+            link: "/post/" + _id,
+          })
+          .catch((e) => {
+             //console.log(e.message);
+            throw new Error(e);
+          });
+        res.json(result);
+      } else {
+        console.log("Disliking Comment");
+        const result = await Comment.findByIdAndUpdate(
+          _id,
+          {
+            $pull: {
+              nLikes: { $in: [author] },
+            },
+          },
+          { new: true }
+        )
+          .populate("author", "name username avatar")
+          .catch((e) => {
+            //console.log(e.message);
+            throw new Error(e);
+          });
+        res.json(result);
+      }
+   }
   } catch (error) {
     res.status(400).json({ error });
   }
