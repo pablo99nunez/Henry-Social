@@ -132,13 +132,19 @@ export function searchUsers(username: string) {
 export function getPost(id: String) {
   return function (dispatch: Function) {
     axios.get("/post/" + id).then((post) => {
-      if (post)
+      if (post.data){
         axios.get("/comments/" + post.data._id).then((comments) => {
           return dispatch({
             type: GET_POST,
             payload: { post: post.data, comments: comments.data },
           });
+        });}
+      else {
+        return dispatch({
+          type: GET_POST,
+          payload: { post: {_id: false}, comments: [] },
         });
+      }
     });
   };
 }

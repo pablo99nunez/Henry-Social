@@ -1,4 +1,4 @@
-import React, { useState, FC, useRef } from "react";
+import React, { useState, FC, useRef, useEffect } from "react";
 import { FaBan } from "react-icons/fa";
 import { BsThreeDots, BsChatSquareDots } from "react-icons/bs";
 import style from "./Post.module.scss";
@@ -11,6 +11,7 @@ import axios from "axios";
 import { InfoAlert } from "../Alert/Alert";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import useUser from "../../Hooks/useUser";
+
 type Props = {
   post: IPost;
 };
@@ -20,8 +21,9 @@ const Post: FC<Props> = ({ post }) => {
   const navigate = useNavigate();
   const postRef = useRef(null);
   const headerRef = useRef(null);
-  const [demand, setDemand] = useState(false)
-  const [options, setOptions] = useState(false)
+  const [demand, setDemand] = useState(false);
+  const [eliminated, setEliminated] = useState(false);
+  const [options, setOptions] = useState(false);
   const [openComment, setOpenComment] = useState(false);
   const contentRef = useRef(null);
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -54,9 +56,37 @@ const Post: FC<Props> = ({ post }) => {
     setDemand(true)
   }
 
+  const handleDelete = async () => {
+    const redirect = location.href.includes('post')
+    await axios
+      .delete(`/post`, {
+        data: {_id: post._id}
+      })
+      .then((data) => {
+        InfoAlert.fire({
+          title: redirect ? 'Fuiste redirigido a Home.' : 'Tu publicación fue eliminada.',
+          icon: "success",
+        });
+        return data;
+      })
+      .catch((error) => console.error("Error:", error));
+    setEliminated(true)
+    if(redirect){ navigate("/")}
+  }
+
+  useEffect(() => {
+    console.log(post?._id);
+  }, [post])
+  
+
   return (
-    <div className={style.postContainer}>
-      {post ?
+    <div 
+      className={style.postContainer}
+      style={{display: eliminated ? 'none' : 'block'}}
+    >
+      {post?._id === false ? 
+      <h2 style={{textAlign: 'center', color: 'white'}}>Esta publicación ya ha sido eliminada.</h2>
+      : post ?
       <div
         className={`${style.post} ${
           post?.typePost === "boom"
@@ -103,6 +133,17 @@ const Post: FC<Props> = ({ post }) => {
                 <div 
                   className={`${style.post_optionsList} ${options ? style.view : style.hide}`}
                 >
+                  {userLogeado?.username === 
+                  post?.author?.username 
+                  ? (
+                  <p
+                    className={style.item}
+                    onClick={handleDelete}
+                  >
+                    <FaBan/>
+                    Eliminar publicación.
+                  </p>
+                  ) : (
                   <p 
                     className={style.item}
                     onClick={handleDemand}
@@ -110,6 +151,7 @@ const Post: FC<Props> = ({ post }) => {
                     <FaBan/>
                     Denunciar publicación.
                   </p>
+                  )}
                 </div>
               </div>
             }
@@ -155,7 +197,8 @@ const Post: FC<Props> = ({ post }) => {
           </div>
         </div>
       </div>
-      : <LoadingPage/>}
+      : <LoadingPage/>
+      }
       <CommentModal open={openComment} postId={post?._id}></CommentModal>
     </div>
   );
