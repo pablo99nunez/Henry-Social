@@ -42,8 +42,7 @@ const SideTags = () => {
     }
   }, [posts]);
 
-  console.log(activeSection);
-
+  
   return (
     <aside className={styles.aside_tags}>
       <nav className={styles.aside_sections}>
