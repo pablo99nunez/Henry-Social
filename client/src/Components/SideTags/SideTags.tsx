@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
 import styles from "./SideTags.module.scss";
 import { HiLink } from "react-icons/hi";
 import {
-  filterByFollow,
+  filterByTag,
   filterBySection,
-  getPosts,
 } from "../../redux/actions/actions";
 import { InfoAlert } from "../Alert/Alert";
-import { Link } from "react-router-dom";
-import { Like } from "../Like/Like";
+
 const SideTags = () => {
   const initialActiveSection = {
     empleo: false,
@@ -27,8 +25,12 @@ const SideTags = () => {
   const dispatch = useDispatch();
 
   const handleClick = (e: any) => {
-    setActiveSection({ ...initialActiveSection, [e.target.id]: true });
-    dispatch(filterBySection(e.target.id));
+    if(e.target.classList.contains("category")) {
+      setActiveSection({ ...initialActiveSection, [e.target.id]: true });
+      return dispatch(filterBySection(e.target.id));
+    } else {
+      return dispatch(filterByTag(e.target.title));
+    }
   };
 
   useEffect(() => {
@@ -47,42 +49,42 @@ const SideTags = () => {
       <nav className={styles.aside_sections}>
         <ul>
           <li
-            className={activeSection.empleo ? styles.active : ""}
+            className={activeSection.empleo ? `${styles.active} category` : "category"}
             onClick={handleClick}
             id="empleo"
           >
             Ofertas Laborales
           </li>
           <li
-            className={activeSection.boom ? styles.active : ""}
+            className={activeSection.boom ? `${styles.active} category` : "category"}
             onClick={handleClick}
             id="boom"
           >
             Booms
           </li>
           <li
-            className={activeSection.servicio ? styles.active : ""}
+            className={activeSection.servicio ? `${styles.active} category` : "category"}
             onClick={handleClick}
             id="servicio"
           >
             Servicios
           </li>
           <li
-            className={activeSection.pregunta ? styles.active : ""}
+            className={activeSection.pregunta ? `${styles.active} category` : "category"}
             onClick={handleClick}
             id="pregunta"
           >
             Preguntas Frecuentes
           </li>
           <li
-            className={activeSection.recurso ? styles.active : ""}
+            className={activeSection.recurso ? `${styles.active} category` : "category"}
             onClick={handleClick}
             id="recurso"
           >
             Recursos
           </li>
           <li
-            className={activeSection.curso ? styles.active : ""}
+            className={activeSection.curso ? `${styles.active} category` : "category"}
             onClick={handleClick}
             id="curso"
           >
@@ -94,26 +96,46 @@ const SideTags = () => {
         <h2>Tags Populares</h2>
         <nav className={styles.aside_tags_enlaces}>
           <ul>
-            <li>#ReactJS</li>
-            <li>#JavaScript</li>
-            <li>#Frontend</li>
-            <li>#Backend</li>
-            <li>#NecesitoAyuda</li>
+            <li
+            className="tags"
+            onClick={handleClick}
+            title="react"
+            >#ReactJS</li>
+            <li
+            className="tags"
+            onClick={handleClick}
+            title="javascript"
+            >#JavaScript</li>
+            <li
+            className="tags"
+            onClick={handleClick}
+            title="frontend"
+            >#Frontend</li>
+            <li
+            className="tags"
+            onClick={handleClick}
+            title="backend"
+            >#Backend</li>
+            <li
+            className="tags"
+            onClick={handleClick}
+            title="ayuda"
+            >#NecesitoAyuda</li>
           </ul>
         </nav>
       </div>
 
       <div className={styles.aside_enlaces}>
         <div className={styles.aside_tags_enlaces}>
-          <a href="#" target="_blank">
+          <a href="https://talent.soyhenry.com" target="_blank">
             {" "}
             <HiLink /> Henry Talent
           </a>
-          <a href="#" target="_blank">
+          <a href="https://students.soyhenry.com/" target="_blank">
             {" "}
             <HiLink /> Henry Student
           </a>
-          <a href="#" target="_blank">
+          <a href="http://calendario.soyhenry.com/" target="_blank">
             {" "}
             <HiLink /> Henry Calendary
           </a>

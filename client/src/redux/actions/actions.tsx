@@ -19,6 +19,7 @@ export const FILTER_BY_LIKE = "FILTER_BY_LIKE";
 export const FILTER_BY_FOLLOW = "FILTER_BY_FOLLOW";
 export const ORDER_BY = "ORDER_BY";
 export const SEARCH_USERS = "SEARCH_USERS";
+export const FILTER_BY_TAG = "FILTER_BY_TAG";
 
 export interface IAction {
   type: string;
@@ -100,6 +101,20 @@ export function filterBySection(typePost: string) {
     }
   };
 }
+
+export function filterByTag(tag: string): Function {
+  return async (dispatch: Function): Promise<any> => {
+    try {
+      const res = await axios.post("/posts", { tag });
+      return dispatch({
+        type: FILTER_BY_TAG,
+        payload: res.data
+      });
+    } catch (err) {
+      console.log(err)
+    };
+  };
+};
 
 export function searchUsers(username: string) {
   return async function (dispatch: Function) {

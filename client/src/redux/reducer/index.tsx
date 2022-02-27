@@ -18,6 +18,7 @@ import {
   SEARCH_USERS,
   ORDER_BY,
   FILTER_BY_FOLLOW,
+  FILTER_BY_TAG
 } from "../actions/actions";
 
 export interface IState {
@@ -80,6 +81,13 @@ export default function rootReducer(state = initialState, action: IAction) {
         ...state,
         results: action.payload,
       };
+    }
+    case FILTER_BY_TAG: {
+      console.log(action.payload);
+      return {
+        ...state,
+        results: action.payload,
+      }
     }
     case GET_POST: {
       return {
