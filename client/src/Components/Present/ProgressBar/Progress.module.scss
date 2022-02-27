@@ -1,0 +1,23 @@
+@import "../../../Styles/variables.scss";
+.container {
+  background-color: $greyLow;
+  border-radius: 8px;
+  width: 80%;
+  height: 1.2rem;
+  display: flex;
+  .progress {
+    border-radius: inherit;
+    background-color: $yellow;
+    height: inherit;
+    display: flex;
+    font-size: 0.8rem;
+    min-width: fit-content;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem;
+    h3 {
+      color: $black;
+      font-weight: 500;
+    }
+  }
+}

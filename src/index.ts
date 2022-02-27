@@ -8,6 +8,7 @@ import "dotenv/config.js";
 import axios from "axios";
 import userRouter from "./Routes/UserRoutes";
 import postRouter from "./Routes/PostRoutes";
+import stripeRouter from "./Routes/StripeRoutes";
 
 const app: express.Application = express();
 app.use(cors());
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
 
 app.use("/", userRouter);
 app.use("/", postRouter);
+app.use("/", stripeRouter);
 
 app.listen(process.env.PORT, () => {
   console.log("Server listening at " + process.env.PORT);

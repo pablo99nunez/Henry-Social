@@ -118,6 +118,7 @@
     grid-template-columns: 1.3fr 2.5fr 1fr;
     width: 75%;
     position: relative;
+    align-items: flex-start;
     .posts {
       display: flex;
       flex-direction: column-reverse;

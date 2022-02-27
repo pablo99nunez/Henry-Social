@@ -17,6 +17,7 @@ export interface IPost {
   salary: number;
   reportedTimes: number;
   question: IQuestions;
+  tags: string[];
 }
 export interface IQuestions {  // Reference to question posts
   question: string,
@@ -82,6 +83,9 @@ const postSchema = new Schema({
   reportedTimes: {
     type: Number,
     default: 0
+  },
+  tags: {
+    type: Array
   }
 });
 

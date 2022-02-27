@@ -92,6 +92,27 @@
       border-radius: 50%;
       font-size: 2rem;
       color: $grey;
+      .post_optionsList {
+        right: 0;
+        top: 100%;
+        color: $white;
+        display: none;
+        font-size: 14px;
+        position: absolute;
+        width: max-content;
+        background: #444;
+        &.view {
+          display: flex;
+          flex-direction: column;
+          .item {
+            gap: 8px;
+            padding: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            @include flex-aic;
+          }
+        }
+      }  
     }
     .post_interacciones {
       display: flex;

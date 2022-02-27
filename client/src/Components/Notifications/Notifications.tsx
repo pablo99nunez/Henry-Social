@@ -4,11 +4,12 @@ import Notification from "../Notification/Notification";
 import useNotifications from "../../Hooks/useNotifications";
 import { INotification } from "../../../../src/models/User";
 import { BsBellFill } from "react-icons/bs";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function Notifications() {
   const [open, setOpen] = useState(false);
   const [notifications, news] = useNotifications();
+  const container = useRef<HTMLDivElement>(null);
   const variants = {
     open: {
       scale: 1,
@@ -25,6 +26,9 @@ export default function Notifications() {
       opacity: 0,
     },
   };
+  useEffect(() => {
+    if (container.current) container.current.scrollTop = -50000;
+  }, [container]);
 
   return (
     <div>
@@ -38,6 +42,7 @@ export default function Notifications() {
           initial={"close"}
           animate={open ? "open" : "close"}
           className={styles.container}
+          ref={container}
         >
           {typeof notifications !== "boolean" &&
             notifications &&
