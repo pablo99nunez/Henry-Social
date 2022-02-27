@@ -241,6 +241,18 @@ router.post("/notification", async (req, res) => {
               };
             }
             break;
+          case NotificationType.CommentLike:
+            {
+              notification = {
+                content: `${emisor.name} le ha dado like a tu comentario`,
+                link: notification.link,
+                type: notification.type,
+                emisor: emisor.username,
+                avatar: emisor.avatar,
+                new: true,
+              };
+            }
+            break;
         }
       await User.findByIdAndUpdate(
         receptor._id,

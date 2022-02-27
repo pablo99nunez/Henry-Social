@@ -10,7 +10,7 @@ export interface IPost {
   nLikes: [string];
   numComments: number;
   author: IUser;
-  _id: number;
+  _id: number | boolean;
   typePost: string;
   company: string;
   position: string;
@@ -31,6 +31,7 @@ interface Comment {
   postTime: string;
   text: string;
   author: IUser;
+  nLikes: [string];
 }
 
 interface Like {
@@ -102,6 +103,11 @@ const commentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  nLikes: {
+   type: [Schema.Types.ObjectId],
+   ref: "User",
+   default: [],
+ },
 });
 
 export function postValidate(post: any) {

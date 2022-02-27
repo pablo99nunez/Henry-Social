@@ -23,33 +23,33 @@ const transporter = nodemailer.createTransport({
 const router = Router();
 
 router.post("/posts", async (req, res) => {
-  try {
-    const { _id, liked, props, tag } = req.body;
-
-    const posts = _id
-      ? await Post.find({
-          author: {
-            _id,
-          },
-        }).populate("author", "name avatar username")
-      : liked
-      ? await Post.find({
-          nLikes: {
-            _id: liked,
-          },
-        }).populate("author", "name avatar username")
-      : tag
-      ? await Post.find({
-        tags: tag
-      })
-      : await Post.find({
-          ...props,
-        }).populate("author", "name avatar username");
-    res.json(posts);
-  } catch (e) {
-    res.status(401).json({ error: e });
-  }
-});
+   try {
+     const { _id, liked, props, tag } = req.body;
+ 
+     const posts = _id
+       ? await Post.find({
+           author: {
+             _id,
+           },
+         }).populate("author", "name avatar username")
+       : liked
+       ? await Post.find({
+           nLikes: {
+             _id: liked,
+           },
+         }).populate("author", "name avatar username")
+       : tag
+       ? await Post.find({
+         tags: tag
+       })
+       : await Post.find({
+           ...props,
+         }).populate("author", "name avatar username");
+     res.json(posts);
+   } catch (e) {
+     res.status(401).json({ error: e });
+   }
+ });
 
 router.get("/post/:id", async (req, res) => {
   try {
@@ -63,12 +63,18 @@ router.post("/like", async (req, res) => {
   try {
     const { _id, author } = req.body;
     const post = await Post.findById(_id).catch((e) => {
-      throw new Error(e);
+      throw new Error(e.message);
     });
-    console.log(post?.nLikes.includes(author._id));
+    const comment = await Comment.findById( _id ).catch((e)=>{
+      throw new Error(e.message);
+    });
+    console.log("Posteo", post?.nLikes.includes(author._id));
     const isLikedAlready = post?.nLikes.includes(author._id);
+    const isCommentAlready = comment?.nLikes.includes(author._id); 
+    console.log("Comentario: ", comment, isCommentAlready);
 
-    if (!isLikedAlready) {
+    if(post){
+      if (!isLikedAlready) {
       console.log("Liking");
       const result = await Post.findByIdAndUpdate(
         _id,
@@ -89,7 +95,7 @@ router.post("/like", async (req, res) => {
           link: "/post/" + _id,
         })
         .catch((e) => {
-          throw new Error(e);
+          throw new Error(e.message);
         });
       res.json(result);
     } else {
@@ -105,11 +111,59 @@ router.post("/like", async (req, res) => {
       )
         .populate("author", "name username avatar")
         .catch((e) => {
-          console.log(e);
+          //console.log(e.message);
           throw new Error(e);
         });
       res.json(result);
     }
+   }
+
+   if(comment){
+      if (!isCommentAlready) {
+        console.log("Liking Comment");
+        const result = await Comment.findByIdAndUpdate(
+          _id,
+          {
+            $addToSet: { nLikes: author },
+          },
+          { new: true }
+        )
+          .populate("author", "name username avatar")
+          .catch((e) => {
+             //console.log(e.message);
+            throw new Error(e);
+          });
+        axios
+          .post("/notification", {
+            type: NotificationType.CommentLike,
+            receptor: result?.author._id,
+            emisor: author._id,
+            link: "/post/" + _id,
+          })
+          .catch((e) => {
+             //console.log(e.message);
+            throw new Error(e);
+          });
+        res.json(result);
+      } else {
+        console.log("Disliking Comment");
+        const result = await Comment.findByIdAndUpdate(
+          _id,
+          {
+            $pull: {
+              nLikes: { $in: [author] },
+            },
+          },
+          { new: true }
+        )
+          .populate("author", "name username avatar")
+          .catch((e) => {
+            //console.log(e.message);
+            throw new Error(e);
+          });
+        res.json(result);
+      }
+   }
   } catch (error) {
     res.status(400).json({ error });
   }
