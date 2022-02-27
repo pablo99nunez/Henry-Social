@@ -7,9 +7,7 @@ import { InfoAlert } from "../Alert/Alert";
 import { FaUpload, FaCheck } from "react-icons/fa";
 import styles from "./AddPost.module.scss";
 import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
-import { IPost } from "../../../../src/models/Post";
 import { motion } from "framer-motion";
-import PostPregunta from "../PostPregunta/PostPregunta";
 
 type Props = {
     // eslint-disable-next-line @typescript-eslint/ban-types

@@ -18,6 +18,7 @@ export interface IPost {
     reportedTimes: number;
     tags: string[];
     respuesta: string;
+    pregunta: string;
     respuestaAuthor: IUser;
 }
 

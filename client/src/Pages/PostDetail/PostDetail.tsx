@@ -12,38 +12,38 @@ import NavSearch from "../../Components/NavSearch/NavSearch";
 import SideMessages from "../../Components/SideMessages/SideMessages";
 
 export default function PostDetail() {
-  const { id } = useParams();
-  const dispatch = useDispatch();
-  const details = useSelector((state: IState) => state.post);
+    const { id } = useParams();
+    const dispatch = useDispatch();
+    const details = useSelector((state: IState) => state.post);
 
-  useEffect(() => {
-    if (id) {
-      dispatch(getPost(id));
-      return () => dispatch(clear('post'))
-    }
-  }, [id]);
+    useEffect(() => {
+        if (id) {
+            dispatch(getPost(id));
+            return () => dispatch(clear("post"));
+        }
+    }, [id]);
 
-  return (
-    <>
-      <NavSearch/>
-      <div id="postDetail">
-        <div id="content">
-          <div id="follow-bar">
-            <FollowBar />
-          </div>
-          <div id="boxPost">
-            <div id="post">
-              <Post post={details} />
-              {console.log('Detalles Post: ', details)}
-              <Comments/>
+    return (
+        <>
+            <NavSearch />
+            <div id="postDetail">
+                <div id="content">
+                    <div id="follow-bar">
+                        <FollowBar />
+                    </div>
+                    <div id="boxPost">
+                        <div id="post">
+                            {details && <Post post={details} />}
+                            {console.log("Detalles Post: ", details)}
+                            <Comments />
+                        </div>
+                    </div>
+
+                    <div id="messages">
+                        <SideMessages />
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <div id="messages">
-            <SideMessages />
-          </div>
-        </div>
-      </div>
-    </>
-  );
+        </>
+    );
 }
