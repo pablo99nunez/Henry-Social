@@ -64,11 +64,13 @@ const Post: FC<Props> = ({ post }) => {
                         post={post}
                         setEliminated={setEliminated}
                     ></Options>
-                    <Interactions
-                        post={post}
-                        setOpenComment={setOpenComment}
-                        openComment={openComment}
-                    ></Interactions>
+                    {(post.respuesta || post.typePost !== "pregunta") && (
+                        <Interactions
+                            post={post}
+                            setOpenComment={setOpenComment}
+                            openComment={openComment}
+                        ></Interactions>
+                    )}
                 </div>
             </div>
             <CommentModal open={openComment} postId={post?._id}></CommentModal>
