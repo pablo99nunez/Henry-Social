@@ -70,52 +70,106 @@ router.post("/like", async (req, res) => {
     try {
         const { _id, author } = req.body;
         const post = await Post.findById(_id).catch((e) => {
-            throw new Error(e);
+            throw new Error(e.message);
         });
-        console.log(post?.nLikes.includes(author._id));
+        const comment = await Comment.findById(_id).catch((e) => {
+            throw new Error(e.message);
+        });
+        console.log("Posteo", post?.nLikes.includes(author._id));
         const isLikedAlready = post?.nLikes.includes(author._id);
+        const isCommentAlready = comment?.nLikes.includes(author._id);
+        console.log("Comentario: ", comment, isCommentAlready);
 
-        if (!isLikedAlready) {
-            console.log("Liking");
-            const result = await Post.findByIdAndUpdate(
-                _id,
-                {
-                    $addToSet: { nLikes: author },
-                },
-                { new: true }
-            )
-                .populate("author", "name username avatar")
-                .catch((e) => {
-                    throw new Error(e);
-                });
-            axios
-                .post("/notification", {
-                    type: NotificationType.Like,
-                    receptor: result?.author._id,
-                    emisor: author._id,
-                    link: "/post/" + _id,
-                })
-                .catch((e) => {
-                    throw new Error(e);
-                });
-            res.json(result);
-        } else {
-            console.log("Disliking");
-            const result = await Post.findByIdAndUpdate(
-                _id,
-                {
-                    $pull: {
-                        nLikes: { $in: [author] },
+        if (post) {
+            if (!isLikedAlready) {
+                console.log("Liking");
+                const result = await Post.findByIdAndUpdate(
+                    _id,
+                    {
+                        $addToSet: { nLikes: author },
                     },
-                },
-                { new: true }
-            )
-                .populate("author", "name username avatar")
-                .catch((e) => {
-                    console.log(e);
-                    throw new Error(e);
-                });
-            res.json(result);
+                    { new: true }
+                )
+                    .populate("author", "name username avatar")
+                    .catch((e) => {
+                        throw new Error(e);
+                    });
+                axios
+                    .post("/notification", {
+                        type: NotificationType.Like,
+                        receptor: result?.author._id,
+                        emisor: author._id,
+                        link: "/post/" + _id,
+                    })
+                    .catch((e) => {
+                        throw new Error(e.message);
+                    });
+                res.json(result);
+            } else {
+                console.log("Disliking");
+                const result = await Post.findByIdAndUpdate(
+                    _id,
+                    {
+                        $pull: {
+                            nLikes: { $in: [author] },
+                        },
+                    },
+                    { new: true }
+                )
+                    .populate("author", "name username avatar")
+                    .catch((e) => {
+                        //console.log(e.message);
+                        throw new Error(e);
+                    });
+                res.json(result);
+            }
+        }
+
+        if (comment) {
+            if (!isCommentAlready) {
+                console.log("Liking Comment");
+                const result = await Comment.findByIdAndUpdate(
+                    _id,
+                    {
+                        $addToSet: { nLikes: author },
+                    },
+                    { new: true }
+                )
+                    .populate("author", "name username avatar")
+                    .catch((e) => {
+                        //console.log(e.message);
+                        throw new Error(e);
+                    });
+                axios
+                    .post("/notification", {
+                        type: NotificationType.CommentLike,
+                        receptor: result?.author._id,
+                        emisor: author._id,
+                        link: "/post/" + _id,
+                    })
+                    .catch((e) => {
+                        //console.log(e.message);
+                        throw new Error(e);
+                    });
+                res.json(result);
+            } else {
+                console.log("Disliking Comment");
+                const result = await Comment.findByIdAndUpdate(
+                    _id,
+                    {
+                        $pull: {
+                            nLikes: { $in: [author] },
+                        },
+                    },
+                    { new: true }
+                )
+                    .populate("author", "name username avatar")
+                    .catch((e) => {
+                        //console.log(e.message);
+                        throw new Error(e);
+                    });
+                res.json(result);
+            }
         }
     } catch (error) {
         res.status(400).json({ error });

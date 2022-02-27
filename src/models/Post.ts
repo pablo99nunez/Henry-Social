@@ -8,18 +8,16 @@ export interface IPost {
     nLikes: [string];
     numComments: number;
     author: IUser;
-    _id: number;
+    _id: number | boolean;
     typePost: string;
     company: string;
     position: string;
     companyLink: string;
     companyImage: string | File | null;
-    image: string | File | null;
     salary: number;
     reportedTimes: number;
-    pregunta: string;
-    respuesta: string;
     tags: string[];
+    respuesta: string;
     respuestaAuthor: IUser;
 }
 
@@ -28,6 +26,7 @@ interface Comment {
     postTime: string;
     text: string;
     author: IUser;
+    nLikes: [string];
 }
 
 interface Like {
@@ -105,6 +104,11 @@ const commentSchema = new Schema({
     author: {
         type: Schema.Types.ObjectId,
         ref: "User",
+    },
+    nLikes: {
+        type: [Schema.Types.ObjectId],
+        ref: "User",
+        default: [],
     },
 });
 
