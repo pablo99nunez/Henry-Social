@@ -47,16 +47,3 @@ export default function PostDetail() {
     </>
   );
 }
-
-/* 
-
-Datos que tengo que recibir en este componente:
-
--Los detalles del Post:
-
-  Nombre, fecha de publicacion, contenido del post, 
-  numero de likes y comentarios, 
-  arreglo de objetos con cada uno de los comentarios:
-  { name, content, date, cohorte(opc), countLikes} 
-
-*/

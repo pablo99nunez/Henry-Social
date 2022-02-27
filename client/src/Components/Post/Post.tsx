@@ -1,4 +1,4 @@
-import React, { useState, FC, useRef } from "react";
+import React, { useState, FC, useRef, useEffect } from "react";
 import { FaBan } from "react-icons/fa";
 import { BsThreeDots, BsChatSquareDots } from "react-icons/bs";
 import style from "./Post.module.scss";
@@ -74,12 +74,17 @@ const Post: FC<Props> = ({ post }) => {
     if(redirect){ navigate("/")}
   }
 
+  useEffect(() => {
+    console.log(post?._id);
+  }, [post])
+  
+
   return (
     <div 
       className={style.postContainer}
       style={{display: eliminated ? 'none' : 'block'}}
     >
-      {!post?._id ? 
+      {post?._id === false ? 
       <h2 style={{textAlign: 'center', color: 'white'}}>Esta publicación ya ha sido eliminada.</h2>
       : post ?
       <div
