@@ -20,6 +20,10 @@ export interface IPost {
     respuesta: string;
     pregunta: string;
     respuestaAuthor: IUser;
+    image: string;
+    costoClases: string;
+    temasClases: string;
+    tecnologíaClases: string;
 }
 
 interface Comment {
