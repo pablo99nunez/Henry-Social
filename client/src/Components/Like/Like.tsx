@@ -1,10 +1,8 @@
-import React, { useEffect, useRef, useState, FC } from "react";
+import { useEffect, useRef, useState, FC } from "react";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { motion } from "framer-motion";
 import style from "./Like.module.scss";
 import { IPost } from "../../../../src/models/Post";
-import { useDispatch } from "react-redux";
-import { likePost } from "../../redux/actions/actions";
 import useUser from "../../Hooks/useUser";
 import axios from "axios";
 

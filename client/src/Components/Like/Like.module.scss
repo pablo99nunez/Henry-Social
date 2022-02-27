@@ -1,11 +1,18 @@
 @import "../../Styles/variables.scss";
 
 .like {
+  display: flex;
+  gap: 10px;
+
   cursor: pointer;
   .heart {
     transition: color 0.3s ease;
     color: $yellow;
-  }
+    -webkit-transition: color 0.3s ease;
+    -moz-transition: color 0.3s ease;
+    -ms-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+}
   .heart:hover {
     filter: brightness(0.7);
   }
