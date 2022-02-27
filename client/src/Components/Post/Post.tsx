@@ -54,6 +54,22 @@ const Post: FC<Props> = ({ post }) => {
     setDemand(true)
   }
 
+  const handleDeletePost = () => {
+    const postId = post._id
+    axios
+    .delete('/post', { 
+      postId
+    })
+    .then((data) => {
+      InfoAlert.fire({
+        title: 'El comentario ha sido eliminado',
+        icon: 'success'
+      })
+      return data
+    })
+    .catch((error) => console.error("Error", error))
+  }
+
   return (
     <div className={style.postContainer}>
       {post ?
@@ -113,6 +129,14 @@ const Post: FC<Props> = ({ post }) => {
                         <FaBan/>
                         Denunciar publicación.
                       </p>
+                      { post?.author?.admin === true ?
+                      <p 
+                      className={style.item}
+                      onClick={handleDeletePost}
+                      >
+                        Eliminar publicación.
+                      </p> : <p></p>
+                      }
                     </div>
                   </div>
                 }

@@ -33,27 +33,3 @@ class App extends Component {
     }
   }
   
-  const styles = {
-    menu: {
-      marginTop: 20,
-      width: 300,
-      border: '2px solid #ddd',
-      overflow: 'hidden',
-    },
-    button: {
-      display: 'flex',
-      width: 200,
-      height: 45,
-      justifyContent: 'center',
-      alignItems: 'center',
-      border: 'none',
-      borderRadius: 4,
-      backgroundColor: '#ffc107',
-      cursor: 'pointer',
-    },
-    selection: {
-      margin: 0,
-      padding: 10,
-      borderBottom: '1px solid #ededed',
-    },
-  }
