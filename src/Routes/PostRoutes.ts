@@ -126,7 +126,7 @@ router.post("/like", async (req, res) => {
           {
             $addToSet: { nLikes: author },
           },
-          { new: true }
+          { new: true }_id: post._id
         )
           .populate("author", "name username avatar")
           .catch((e) => {

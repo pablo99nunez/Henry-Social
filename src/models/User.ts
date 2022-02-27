@@ -43,6 +43,7 @@ export interface IUser {
   notifications: INotification[];
   company?: string;
   position?:string;
+  master?:boolean;
 }
 
 const userSchema = new Schema<IUser>({
@@ -93,6 +94,10 @@ const userSchema = new Schema<IUser>({
     type: Date,
     default: new Date().toDateString(),
   },
+  master: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 export function userValidate(user: any) {

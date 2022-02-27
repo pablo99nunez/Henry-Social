@@ -62,23 +62,6 @@
         justify-self: right;
       }
     }
-    .post_options_container{
-      position: absolute;
-      right: 5rem;
-      top: 0.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 0.1rem;
-
-      width: 5vh;
-      height: 6vh;
-      .post_company_image{
-        position: absolute;
-        max-width: 5vh;
-        height: auto;
-      }
-  }
     .post_options {
       background-color: $bg-color;
       text-align: center;

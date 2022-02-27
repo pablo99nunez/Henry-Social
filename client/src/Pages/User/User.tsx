@@ -87,7 +87,7 @@ export default function User() {
             </div>
             <div className={style.details}>
               <div className={style.buttons}>
-                {userLogeado?.admin ? (
+                {userLogeado?.master ? (
                   <Button onClick={handleAdmin}>
                     {user?.admin ? "Eliminar rol de Admin" : "Hacer Admin"}
                   </Button>
