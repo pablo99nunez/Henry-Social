@@ -6,8 +6,10 @@ import { useState } from "react";
 
 export default function FollowBar() {
   const [more, setMore] = useState(false);
-  const seguidos =
-    useSelector((state: IState) => state.profile?.following) || [];
+  const { profile, post } =
+    useSelector((state: IState) => state) || [];
+
+  const seguidos = profile?.following || post?.author?.following || []
 
   return (
     <div className="followBar">
@@ -22,7 +24,7 @@ export default function FollowBar() {
             )
           )
         ) : (
-          <h3>No sigues a nadie aún.</h3>
+          <h3>No tiene seguidos aún.</h3>
         )}
       </div>
       {seguidos?.length > 3 && !more && (
