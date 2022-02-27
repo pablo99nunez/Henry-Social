@@ -25,7 +25,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     company: "",
     position: "",
     companyLink: "",
-    companyImage: "",
+    companyImage: null,
     salary: 0,
     costoClases: "",
     temasClases: "",
