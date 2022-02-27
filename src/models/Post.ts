@@ -3,6 +3,10 @@ import { IUser } from "./User";
 import Joi from "joi";
 
 export interface IPost {
+  image: string;
+  costoClases: string;
+  temasClases: string;
+  tecnologíaClases: string;
   body: string;
   postTime: string;
   nLikes: [string];
