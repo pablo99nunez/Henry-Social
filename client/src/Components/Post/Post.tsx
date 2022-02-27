@@ -74,11 +74,6 @@ const Post: FC<Props> = ({ post }) => {
     if(redirect){ navigate("/")}
   }
 
-  useEffect(() => {
-    console.log(post?._id);
-  }, [post])
-  
-
   return (
     <div 
       className={style.postContainer}

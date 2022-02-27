@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from "express";
 import axios from "axios";
-import User from "../models/User";
+import User, { IUser } from "../models/User";
 import { INotification, NotificationType } from "../models/User";
 
 const router = Router();
@@ -17,6 +17,20 @@ router.post("/user", (req, res) => {
     } else res.json(e);
   });
 });
+
+router.put("/user", async (req, res) => {
+  try {
+    const { _id: userId, changes } = req.body;
+    const usernames = await User.find({})
+      .then(r => r.map(u => u.username));
+    if(usernames.includes(changes.username)) return res.sendStatus(304);
+    const user = await User.findByIdAndUpdate(userId, changes, {new: true});
+    res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+  }
+})
+
 router.get("/users", async (req, res) => {
   const { username } = req.query;
   try {
@@ -33,6 +47,7 @@ router.get("/users", async (req, res) => {
     res.status(401).json({ error: e });
   }
 });
+
 router.get("/user", async (req, res) => {
   const { username } = req.query;
   const user = await User.findOne({ username });

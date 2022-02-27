@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import style from "./Settings.module.scss";
 import Input from "../Input/Input";
 import useUser from "../../Hooks/useUser";
+import Avatar from "../Avatar/Avatar";
 
 export default function Settings({ cancel }: any) {
   const user = useUser();
 
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
     <div className={style.settings_wrap}>
-      <img
-        src={typeof user?.avatar === "string" ? user.avatar : ""}
-        alt="user avatar"
-      />
+      <Avatar avatar={user?.avatar}/>
       <div>
         <div className={style.inputBox}>
           <h3>Nombre de usuario</h3>
@@ -26,7 +28,9 @@ export default function Settings({ cancel }: any) {
         </div>
         <div className={style.inputBox}>
           <h3>Biografia</h3>
-          <Input placeholder="Escribe sobre ti..."></Input>
+          <Input 
+            placeholder="Escribe sobre ti..."
+            defaulValue={user?.bio}></Input>
         </div>
         <div className={style.buttons}>
           <Button active={user?.role === "Estudiante"}>Estudiante</Button>
@@ -34,17 +38,21 @@ export default function Settings({ cancel }: any) {
           <Button active={user?.role === "TA"}>TA</Button>
         </div>
 
-        <Input type="text" placeholder="Github" name="github"></Input>
+        <Input 
+          type="text" 
+          name="github"
+          placeholder="Ingresa tu Usuario de Github" 
+          >{user?.github}</Input>
         <Input
           type="text"
-          placeholder="Ingresa tu Linkedin"
+          placeholder="Ingresa tu Usuario de Linkedin"
           name="linkedin"
-        ></Input>
+        >{user?.linkedin}</Input>
         <Input
           type="text"
-          placeholder="Ingresa tu portafolio"
+          placeholder="Ingresa la Url de tu portafolio"
           name="portfolio"
-        ></Input>
+        >{user?.linkedin}</Input>
         <div className={style.buttons}>
           <Button className={style.submit_button}>Guardar cambios</Button>
           <Button
