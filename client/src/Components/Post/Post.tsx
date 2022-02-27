@@ -12,6 +12,8 @@ import { InfoAlert } from "../Alert/Alert";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import useUser from "../../Hooks/useUser";
 
+import { getMomento } from '../../helpers/momento';
+
 type Props = {
   post: IPost;
 };
@@ -121,7 +123,7 @@ const Post: FC<Props> = ({ post }) => {
             >
               {post?.author?.name}
             </h3>
-            <h4>{new Date(post?.postTime).toLocaleString()}</h4>
+            <h4>{getMomento(post?.postTime)}</h4>
             {typeof post?.companyImage === "string" && (
               <img src={post?.companyImage} alt="company" />
             )}
