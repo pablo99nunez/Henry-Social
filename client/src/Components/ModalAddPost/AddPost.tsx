@@ -19,7 +19,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
   const dispatch = useDispatch();
 
   const [typePost, setTypePost] = useState("normal");
-  const [post, setPost] = useState<IPost>({
+  const [post, setPost] = useState<any>({
     text: "",
     image: "",
     company: "",
@@ -36,8 +36,10 @@ const AddPost: FC<Props> = ({ setOpen }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "companyImage" && e.target.files)
       setPost({ ...post, [e.target.name]: e.target.files[0] });
-    else setPost({ ...post, [e.target.name]: e.target.value });
-  };
+    else setPost({ ...post, [e.target.name]: e.target.value, 
+      tags: e.target.name === 'text' ? e.target.value.match(/(#)\w+/g) : post.text });
+    
+  }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const name = e.target.name;
@@ -49,7 +51,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+     
     const downloadURL =
       post.companyImage instanceof File
         ? await uploadFile(post.companyImage)
