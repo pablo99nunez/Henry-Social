@@ -1,4 +1,4 @@
-import { auth, storage } from "./firebase";
+import { auth } from "./firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
@@ -9,7 +9,7 @@ import {
 } from "firebase/auth";
 import { IUser } from "../../models/User";
 import axios from "axios";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { uploadFile } from "./Helpers/uploadFile";
 
 async function defaultUsername(name: string | null): Promise<string> {
   name = name ?? "username";
@@ -36,16 +36,7 @@ export async function signUpWithEmail(userInfo: IUser) {
   if (password == undefined)
     throw new Error("Necesitas ingresar una contraseña");
   try {
-    let downloadURL;
-    if (avatar instanceof File) {
-      const storageRef = ref(storage, "avatars/" + avatar.name);
-      downloadURL = await uploadBytes(storageRef, avatar).then((snapshot) => {
-        console.log("Snapshot", snapshot);
-        return getDownloadURL(snapshot.ref).then((downloadURL) => {
-          return downloadURL;
-        });
-      });
-    }
+    const downloadURL = avatar instanceof File ? uploadFile(avatar) : avatar;
     await axios
       .post("/user", {
         name,

@@ -16,6 +16,7 @@ export interface IPost {
   companyImage: string | File | null;
   salary: number;
   reportedTimes: number;
+  tags: string[];
 }
 
 interface Comment {
@@ -74,6 +75,9 @@ const postSchema = new Schema({
   reportedTimes: {
     type: Number,
     default: 0
+  },
+  tags: {
+    type: Array
   }
 });
 

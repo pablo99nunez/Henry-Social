@@ -8,31 +8,45 @@ import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
 import style from "./Home.module.scss";
 import useUser from "../../Hooks/useUser";
+import { useDispatch } from "react-redux";
+import { getPosts } from "../../redux/actions/actions";
+import Present from "../../Components/Present/Present";
+import Button from "../../Components/Button/Button";
 
 const Home = () => {
-  const [ loading, setLoading ] = useState(true);
-  
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+
   const user = useUser();
   useEffect(() => {
     if (user?.username) {
       setLoading(false);
     }
   });
+  useEffect(() => {
+    dispatch(getPosts());
+  }, []);
   return (
-      <>
-        {
-          loading ? <LoadingPage/>
-          : <div className={style.home}>
-              <NavSearch />
-              <div className={style.home_position}>
-                <SideTags />
-                <Posts />
-                <SideMessages />
-              </div>
-              <Chat />
+    <>
+      {loading ? (
+        <LoadingPage />
+      ) : (
+        <div className={style.home}>
+          <NavSearch />
+          <div className={style.home_position}>
+            <div className={style.aside}>
+              <SideTags />
             </div>
-        }
-      </>
+            <Posts />
+            <div className={style.aside}>
+              <SideMessages />
+              <Present></Present>
+            </div>
+          </div>
+          <Chat />
+        </div>
+      )}
+    </>
   );
 };
 

@@ -17,4 +17,12 @@
     grid-template-columns: 0.8fr 2fr 0.8fr;
     gap: 2rem 2rem;
   }
+  .aside {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    top: 100px;
+    align-self: flex-start;
+  }
 }

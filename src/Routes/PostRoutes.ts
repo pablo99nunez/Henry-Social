@@ -16,54 +16,40 @@ const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   auth: {
     user: MAIL,
-    pass: MAIL_PASSWORD
-  }
+    pass: MAIL_PASSWORD,
+  },
 });
-
 
 const router = Router();
 
 router.post("/posts", async (req, res) => {
-  try {
-    const { _id, liked, props } = req.body;
-
-    /* const posts = _id
-      ? await Post.find({
-          author: {
-            _id,
-          },
-        }).populate("author", "name avatar username")
-      : liked
-      ? await Post.find({
-          nLikes: {
-            _id: liked,
-          },
-        }).populate("author", "name avatar username")
-      : await Post.find({ ...props }).populate(
-          "author",
-          "name avatar username"
-        ); */
-
-    const posts = _id
-        ? await Post.find({
-            author: {
-              _id,
-            },
-          }).populate("author", "name avatar username")
-        : liked
-        ? await Post.find({
-            nLikes: {
-              _id: liked,
-            },
-          }).populate("author", "name avatar username")
-        : await Post.find({
-          ...props
-        }).populate("author", "name avatar username");
-    res.json(posts);
-  } catch (e) {
-    res.status(401).json({ error: e });
-  }
-});
+   try {
+     const { _id, liked, props, tag } = req.body;
+ 
+     const posts = _id
+       ? await Post.find({
+           author: {
+             _id,
+           },
+         }).populate("author", "name avatar username")
+       : liked
+       ? await Post.find({
+           nLikes: {
+             _id: liked,
+           },
+         }).populate("author", "name avatar username")
+       : tag
+       ? await Post.find({
+         tags: tag
+       })
+       : await Post.find({
+           ...props,
+         }).populate("author", "name avatar username");
+     res.json(posts);
+   } catch (e) {
+     res.status(401).json({ error: e });
+   }
+ });
 
 router.get("/post/:id", async (req, res) => {
   try {
@@ -253,17 +239,20 @@ router.post("/report", async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({ username });
 
-    const post = await Post.findByIdAndUpdate(_id, 
-      { $inc: { reportedTimes : 1} }, 
+    const post = await Post.findByIdAndUpdate(
+      _id,
+      { $inc: { reportedTimes: 1 } },
       { new: true }
     );
-  
+
     const eliminated = post?.reportedTimes && post?.reportedTimes >= 5;
-  
-    if(eliminated) {
+
+    if(!post) return res.sendStatus(204);
+
+    if (eliminated) {
       sendEmail({
         _id,
-        transporter, 
+        transporter,
         deleted: true,
         from: MAIL,
         to: MAIL,
@@ -271,41 +260,39 @@ router.post("/report", async (req: Request, res: Response) => {
       });
       sendEmail({
         _id,
-        transporter, 
+        transporter,
         deleted: true,
         from: MAIL,
         to: user?.email,
         username: user?.username,
-      })
+      });
       res.status(200).json(post);
       return axios.delete("/post", {
         data: {
-          _id
-        }
+          _id,
+        },
       });
-    };
+    }
 
     sendEmail({
       _id,
-      transporter, 
+      transporter,
       from: MAIL,
       to: MAIL,
       username: user?.username,
     });
     sendEmail({
       _id,
-      transporter, 
+      transporter,
       from: MAIL,
       to: user?.email,
       username: user?.username,
     });
 
     res.status(200).json("Post reported");
-
   } catch (error) {
     res.status(400);
   }
-
 });
 
 export default router;

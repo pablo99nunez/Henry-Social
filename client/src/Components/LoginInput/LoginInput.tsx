@@ -8,11 +8,12 @@ interface InputProps {
   title?: string,
   type: string,
   name: string,
-  valid?: boolean
-  placeholder?: string
+  valid?: boolean,
+  placeholder?: string,
   onChange?(e: React.ChangeEvent<HTMLInputElement>): void,
-  onKeyUp?(e: React.KeyboardEvent<HTMLInputElement>): void;
-  onKeyDown?(e: React.KeyboardEvent<HTMLInputElement>): void;
+  onBlur?(e: React.FocusEvent<HTMLInputElement>): void,
+  onKeyUp?(e: React.KeyboardEvent<HTMLInputElement>): void,
+  onKeyDown?(e: React.KeyboardEvent<HTMLInputElement>): void,
 }
 
 const eyeStyles: CSS.Properties = {
@@ -29,7 +30,8 @@ export default function LoginInput({
   placeholder,
   onChange,
   onKeyUp,
-  onKeyDown
+  onKeyDown,
+  onBlur
 }: InputProps): JSX.Element{
 
   const [visibility, setVisibility] = useState(false);
@@ -72,6 +74,7 @@ export default function LoginInput({
         onChange={onChange && onChange}
         onKeyUp={onKeyUp && onKeyUp}
         onKeyDown={onKeyDown && onKeyDown}
+        onBlur={onBlur &&  onBlur}
       />
     </div>
   )

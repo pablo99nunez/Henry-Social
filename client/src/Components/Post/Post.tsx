@@ -40,7 +40,7 @@ const Post: FC<Props> = ({ post }) => {
     if(!demand)
     axios
       .post(`/report`, {
-        __id: post._id,
+        _id: post._id,
         username
       })
       .then((data) => {
