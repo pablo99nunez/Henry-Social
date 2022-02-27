@@ -134,6 +134,7 @@ export function getPost(id: String) {
     axios.get("/post/" + id).then((post) => {
       if (post.data){
         axios.get("/comments/" + post.data._id).then((comments) => {
+           //console.log(comments.data);
           return dispatch({
             type: GET_POST,
             payload: { post: post.data, comments: comments.data },

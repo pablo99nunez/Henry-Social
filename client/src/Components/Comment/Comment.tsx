@@ -1,16 +1,17 @@
 import "./Comment.scss";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaRegHeart, FaRegComment, FaEllipsisH, FaBan, FaRegFrown, FaHeart } from "react-icons/fa";
+import { Like } from "../Like/Like";
+import { FaRegComment, FaEllipsisH, FaBan, FaRegFrown} from "react-icons/fa";
+import Avatar from "../Avatar/Avatar";
 
 const Comment = ({ key, data }: any) => {
   const [options, setOptions] = useState(false);
-  const [liked, setLiked] = useState(false)
   
   return (
     <div className="comment" key={key}>
       <div className="picture">
-        <img className="photo" src={data.author.avatar} alt={"avatar"} />
+        <Avatar avatar={data.author.avatar}/>
       </div>
 
       <div className="info">
@@ -28,9 +29,8 @@ const Comment = ({ key, data }: any) => {
         </div>
 
         <div className="likesComments">
-          <div className="sizeLikes" onClick={() => setLiked(!liked)}>
-            {liked ? <FaHeart/> : <FaRegHeart/>}
-            <p className="count">{data.countLikes || 0 + (liked ? 1 : 0)}</p>
+          <div className="sizeLikes">
+            <Like post={data} />
           </div>
           <div className="sizeComments" title="Comentarios">
             <FaRegComment />
