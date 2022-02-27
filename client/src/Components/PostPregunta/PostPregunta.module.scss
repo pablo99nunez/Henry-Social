@@ -1,0 +1,50 @@
+@import "../../Styles/variables.scss";
+@import "../Post/Post.module.scss";
+
+.post {
+    border-color: #9dae31;
+    box-shadow: 0 0 5px 5px #9dae3144;
+    .post_wrap {
+        width: 100%;
+        .post_content {
+            margin-left: 4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .responseAuthor {
+            color: $greyLow;
+            strong {
+                color: $white;
+                text-decoration: underline;
+            }
+        }
+        .responseForm {
+            display: flex;
+            width: 100%;
+            gap: 1rem;
+            align-items: center;
+            textarea {
+                border: none;
+                border-radius: 8px;
+                width: 80%;
+                font-family: "$font";
+                background-color: $greyLight;
+                font-size: 1.3rem;
+                padding: 0.3rem;
+                padding-left: 1rem;
+                resize: none;
+                word-wrap: break-word;
+            }
+            textarea:focus-visible,
+            &:active {
+                outline: none;
+                border: none;
+            }
+            svg {
+                color: $yellow;
+                font-size: 2rem;
+            }
+        }
+    }
+}
