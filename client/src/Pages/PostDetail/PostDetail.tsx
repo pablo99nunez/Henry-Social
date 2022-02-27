@@ -10,6 +10,7 @@ import Comments from "../../Components/Comments/Comments";
 import FollowBar from "../../Components/FollowBar/FollowBar";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import SideMessages from "../../Components/SideMessages/SideMessages";
+import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
 export default function PostDetail() {
     const { id } = useParams();
@@ -33,7 +34,11 @@ export default function PostDetail() {
                     </div>
                     <div id="boxPost">
                         <div id="post">
-                            {details && <Post post={details} />}
+                            {details ? (
+                                <Post post={details} />
+                            ) : (
+                                <LoadingPage />
+                            )}
                             {console.log("Detalles Post: ", details)}
                             <Comments />
                         </div>

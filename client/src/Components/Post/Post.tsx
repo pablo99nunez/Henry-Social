@@ -19,21 +19,7 @@ type Props = {
 const Post: FC<Props> = ({ post }) => {
     const [eliminated, setEliminated] = useState(false);
 
-    const navigate = useNavigate();
-    const postRef = useRef(null);
-    const headerRef = useRef(null);
     const [openComment, setOpenComment] = useState(false);
-    const contentRef = useRef(null);
-    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        // console.log(e.target);
-        if (
-            e.target === postRef.current ||
-            e.target === contentRef.current ||
-            e.target === headerRef.current
-        ) {
-            navigate("/post/" + post._id);
-        }
-    };
 
     useEffect(() => {
         console.log(post?._id);
@@ -49,8 +35,8 @@ const Post: FC<Props> = ({ post }) => {
                     post?.typePost === "empleo" && style.postJob
                 } ${post?.typePost === "boom" && style.postBoom}
                 ${post?.typePost === "pregunta" && style.postPregunta}`}
-                onClick={handleClick}
-                ref={postRef}
+                /*  onClick={handleClick}
+                ref={postRef} */
             >
                 {post?.typePost !== "pregunta" && (
                     <ProfilePicture post={post}></ProfilePicture>
