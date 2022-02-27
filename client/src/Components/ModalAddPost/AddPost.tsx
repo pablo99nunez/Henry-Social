@@ -20,7 +20,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
   const [typePost, setTypePost] = useState("normal");
   const [post, setPost] = useState<IPost>({
-    body: "",
+    text: "",
     image: "",
     company: "",
     position: "",

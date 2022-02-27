@@ -4,6 +4,8 @@ import Joi from "joi";
 
 export interface IPost {
   body: string;
+  text: string;
+  image: string;
   postTime: string;
   nLikes: [string];
   numComments: number;
