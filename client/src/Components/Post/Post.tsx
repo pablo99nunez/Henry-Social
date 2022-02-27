@@ -93,8 +93,6 @@ const Post: FC<Props> = ({ post }) => {
             ? style.postBoom
             : post?.typePost === "empleo"
             ? style.postJob
-            : post?.typePost === 'pregunta'
-            ? style.postQuestion
             : style.post
         }`}
         onClick={handleClick}
@@ -155,35 +153,31 @@ const Post: FC<Props> = ({ post }) => {
                   </p>
                   )}
                 </div>
-              </div> }
-              {post?.typePost !== "normal" && (
-                <div className={style.post_header}>
-                  {post?.typePost === "boom" ? (
-                    <h4 ref={headerRef}>
-                      💥💥💥Contratad@ para {post?.company} como {post?.position}
-                      💥💥💥
-                    </h4>
-                  ) : 
-                    post?.typePost === "empleo" ? (
-                      <div>
-                        <p>Busqueda laboral:</p>
-                        <p>
-                          {post?.company} esta buscando {post?.position}
-                        </p>
-                        {post?.body}
-                        <p>{`Link: ${"link"}`}</p>
-                        {post?.salary ? <p>Salario: {post?.salary}</p> : <p></p>}
-                    </div>
-                    ) : post?.typePost === 'pregunta' && post?.question?.answered  === true && (
-                    <div className={style.post_content} ref={contentRef}>
-                        {post?.question?.question}
-                        {post?.question?.answer}
-                        <p>Respondida por </p>
-                    </div>
-                  )
-                  }
-                </div>
+              </div>
+            }
+          </div>
+          {post?.typePost !== "normal" && (
+            <div className={style.post_header}>
+              {post?.typePost === "boom" ? (
+                <h4 ref={headerRef}>
+                  💥💥💥Contratad@ para {post?.company} como {post?.position}
+                  💥💥💥
+                </h4>
+              ) : (
+                post?.typePost === "empleo" && (
+                  <>
+                    <p>Busqueda laboral:</p>
+                    <p>
+                      {post?.company} esta buscando {post?.position}
+                    </p>
+                    {post?.body}
+                    <p>{`Link: ${"link"}`}</p>
+                    {post?.salary ? <p>Salario: {post?.salary}</p> : <p></p>}
+                  </>
+                )
               )}
+            </div>
+          )}
           <div className={style.post_content} ref={contentRef}>
             {post?.body}
           </div>
@@ -203,11 +197,11 @@ const Post: FC<Props> = ({ post }) => {
           </div>
         </div>
       </div>
-      </div>
-      : <LoadingPage/>}
+      : <LoadingPage/>
+      }
       <CommentModal open={openComment} postId={post?._id}></CommentModal>
     </div>
   );
 };
 
-export default Post;
+export default Post

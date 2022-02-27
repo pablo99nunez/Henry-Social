@@ -9,7 +9,6 @@ export interface IPost {
   tecnologíaClases: string;
   body: string;
   text: string;
-  image: string;
   postTime: string;
   nLikes: [string];
   numComments: number;
