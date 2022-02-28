@@ -14,12 +14,50 @@ type Props = {
   setOpen: Function;
 };
 
+export function validate(input) {
+   const errors = {
+      company: "",
+      companyLink: "",
+      salary: "",
+      tecnologíaClases: "",
+      costoClases: "",
+   };
+   if (!input.company) {
+      errors.company = "Nombre de compañia es requerido";
+   } else if (!/^[a-z ,.'-]+$/i.test(input.company)) {
+      errors.company = "Nombre de compañia invalido";
+   }
+
+   if(!/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(input.companyLink) && input.companyLink.length > 0){
+      errors.companyLink = "URL invalida";
+   }
+
+   if(input.salary < 0){
+      errors.salary = "Salario tiene que ser minimo 0"
+   } else if(!/^[0-9]+$/.test(input.salary)){
+      errors.salary = "Solo se permiten numeros";
+   }
+
+   if (!input.tecnologíaClases) {
+      errors.tecnologíaClases = "Nombre de tecnologia es requerido";
+   } else if (!/^[a-z ,.'-]+$/i.test(input.tecnologíaClases)) {
+      errors.tecnologíaClases = "Nombre de tecnologia invalido";
+   }
+
+   if (!input.costoClases) {
+      errors.costoClases = "Solo se permiten numeros";
+   } 
+
+   return errors;
+};
+
 const AddPost: FC<Props> = ({ setOpen }) => {
   const user = useUser();
   const dispatch = useDispatch();
 
   const [typePost, setTypePost] = useState("normal");
-  const [post, setPost] = useState<IPost>({
+  const [errors, setErrors] = useState({});
+  const [post, setPost] = useState({
     text: "",
     image: "",
     company: "",
@@ -27,7 +65,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     companyLink: "",
     companyImage: null,
     salary: 0,
-    costoClases: "",
+    costoClases: "0",
     temasClases: "",
     tecnologíaClases: "",
     tags: []
@@ -37,6 +75,13 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     if (e.target.name === "companyImage" && e.target.files)
       setPost({ ...post, [e.target.name]: e.target.files[0] });
     else setPost({ ...post, [e.target.name]: e.target.value });
+
+    setErrors(
+      validate({
+         ...post,
+         [e.target.name]: e.target.value,
+      })
+   );
   };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -114,27 +159,36 @@ const AddPost: FC<Props> = ({ setOpen }) => {
           <div className={styles.content__inputs}>
             {typePost === "servicio" ? (
               <>
+              <div className={styles.input_with_error}>
                 <input
                   type="text"
                   name="tecnologíaClases"
                   placeholder="Tecnología"
                   defaultValue={post.tecnologíaClases}
+                  required
                 />
+                {errors?.tecnologíaClases && (<p>{errors.tecnologíaClases}</p>)}
+              </div>
                 <input
                   type="text"
                   name="temasClases"
                   placeholder="Temas"
                   defaultValue={post.temasClases}
                 />
+                <div className={styles.input_with_error}>
                 <input
                   name="costoClases"
                   type="number"
                   defaultValue={post.costoClases}
                   placeholder="Costo de las clases"
+                  required
                 />
+                {errors?.costoClases && (<p>{errors.costoClases}</p>)}
+                </div>
               </>
             ) : (
               <>
+              <div className={styles.input_with_error}>
                 <input
                   type="text"
                   name="company"
@@ -142,6 +196,8 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   placeholder="Nombre de la Empresa"
                   required
                 />
+                {errors?.company && (<p>{errors.company}</p>)}
+              </div>
                 <input
                   type="text"
                   name="position"
@@ -161,6 +217,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
             )}
             {typePost === "empleo" && (
               <>
+              <div className={styles.input_with_error}>
                 <input
                   name="companyLink"
                   type="url"
@@ -168,6 +225,9 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   placeholder="Link del Empleo"
                   required
                 />
+                {errors?.companyLink && (<p>{errors.companyLink}</p>)}
+              </div>
+              <div className={styles.input_with_error}>
                 <input
                   min="0"
                   type="number"
@@ -175,6 +235,8 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   defaultValue={post.salary}
                   placeholder="Salario (Opcional)"
                 />
+                {errors?.salary && (<p>{errors.salary}</p>)}
+              </div>
               </>
             )}
           </div>
