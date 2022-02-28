@@ -101,7 +101,6 @@ export default function rootReducer(state = initialState, action: IAction) {
             };
         }
         case FILTER_BY_TAG: {
-            console.log(action.payload);
             return {
                 ...state,
                 results: action.payload,

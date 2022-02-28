@@ -11,6 +11,9 @@ type Props = {
     backgroundColor?: string;
     color?: string;
     name?: string;
+    type?: any,
+    value?: string, 
+    id?: string
 };
 
 export default function Button({
@@ -21,6 +24,9 @@ export default function Button({
     backgroundColor = "#ff1",
     color,
     name,
+    type,
+    value, 
+    id
 }: Props) {
     color = color
         ? color
@@ -41,6 +47,9 @@ export default function Button({
     };
     return (
         <motion.button
+            id={id}
+            type={type ? type : "submit"}
+            value={value ? value : ""}
             variants={variants}
             initial="initial"
             animate={active ? "active" : "initial"}

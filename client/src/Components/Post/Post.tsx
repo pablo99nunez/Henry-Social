@@ -1,4 +1,4 @@
-import { useState, FC, useEffect } from "react";
+import { useState, FC } from "react";
 import style from "./Post.module.scss";
 import { IPost } from "../../../../src/models/Post";
 import CommentModal from "../CommentModal/CommentModal";
@@ -13,21 +13,24 @@ type Props = {
 };
 
 const Post: FC<Props> = ({ post }) => {
-    const [eliminated, setEliminated] = useState(false);
+  const [eliminated, setEliminated] = useState(false);
 
-    const [openComment, setOpenComment] = useState(false);
+  const [openComment, setOpenComment] = useState(false);
 
-    return (
+
+  return (
+    <div
+      className={style.postContainer}
+      style={{ display: eliminated ? "none" : "block" }}>
+      { post?._id === false ? 
+        <h2 style={{textAlign: 'center', color: 'white'}}>Esta publicación ya ha sido eliminada.</h2>
+        : post ?
         <div
-          className={style.postContainer}
-          style={{ display: eliminated ? "none" : "block" }}
-          >
-          <div
-              className={`${style.post} ${
-                  post?.typePost === "empleo" && style.postJob
-              } ${post?.typePost === "boom" && style.postBoom}
-              ${post?.typePost === "pregunta" && style.postPregunta}`}
-          >
+          className={`${style.post} ${
+              post?.typePost === "empleo" && style.postJob
+          } ${post?.typePost === "boom" && style.postBoom}
+          ${post?.typePost === "pregunta" && style.postPregunta}`}>
+
           {post?.typePost !== "pregunta" && (
               <ProfilePicture post={post}></ProfilePicture>
           )}
@@ -49,9 +52,11 @@ const Post: FC<Props> = ({ post }) => {
               )}
           </div>
         </div>
-            <CommentModal open={openComment} postId={post?._id}></CommentModal>
-        </div>
-    );
+      : <LoadingPage/>
+      }
+      <CommentModal open={openComment} postId={post?._id}/>
+    </div>
+  );
 };
 
 export default Post;

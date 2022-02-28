@@ -32,8 +32,8 @@ export default function PostPregunta({ post }: Props) {
                 });
                 navigate("/");
             }
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            console.log(error);
             InfoAlert.fire({
                 title: "Hubo un problema con tu respuesta",
                 icon: "error"

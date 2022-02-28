@@ -46,6 +46,8 @@ router.post("/posts", async (req, res) => {
             ? await Post.find({
                   tags: tag,
               })
+              .populate("author", "name avatar username")
+              .populate("respuestaAuthor", "name username")
             : await Post.find({
                   ...props,
               })
@@ -75,14 +77,11 @@ router.post("/like", async (req, res) => {
         const comment = await Comment.findById(_id).catch((e) => {
             throw new Error(e.message);
         });
-        console.log("Posteo", post?.nLikes.includes(author._id));
         const isLikedAlready = post?.nLikes.includes(author._id);
         const isCommentAlready = comment?.nLikes.includes(author._id);
-        console.log("Comentario: ", comment, isCommentAlready);
 
         if (post) {
             if (!isLikedAlready) {
-                console.log("Liking");
                 const result = await Post.findByIdAndUpdate(
                     _id,
                     {
@@ -106,7 +105,6 @@ router.post("/like", async (req, res) => {
                     });
                 res.json(result);
             } else {
-                console.log("Disliking");
                 const result = await Post.findByIdAndUpdate(
                     _id,
                     {
@@ -118,7 +116,6 @@ router.post("/like", async (req, res) => {
                 )
                     .populate("author", "name username avatar")
                     .catch((e) => {
-                        //console.log(e.message);
                         throw new Error(e);
                     });
                 res.json(result);
@@ -127,7 +124,6 @@ router.post("/like", async (req, res) => {
 
         if (comment) {
             if (!isCommentAlready) {
-                console.log("Liking Comment");
                 const result = await Comment.findByIdAndUpdate(
                     _id,
                     {
@@ -137,7 +133,6 @@ router.post("/like", async (req, res) => {
                 )
                     .populate("author", "name username avatar")
                     .catch((e) => {
-                        //console.log(e.message);
                         throw new Error(e);
                     });
                 axios
@@ -148,12 +143,10 @@ router.post("/like", async (req, res) => {
                         link: "/post/" + _id,
                     })
                     .catch((e) => {
-                        //console.log(e.message);
                         throw new Error(e);
                     });
                 res.json(result);
             } else {
-                console.log("Disliking Comment");
                 const result = await Comment.findByIdAndUpdate(
                     _id,
                     {
@@ -165,7 +158,6 @@ router.post("/like", async (req, res) => {
                 )
                     .populate("author", "name username avatar")
                     .catch((e) => {
-                        //console.log(e.message);
                         throw new Error(e);
                     });
                 res.json(result);
