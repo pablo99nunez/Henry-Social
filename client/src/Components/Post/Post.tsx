@@ -8,6 +8,7 @@ import ProfileName from "./ProfileName/ProfileName";
 import ProfilePicture from "./ProfilePicture/ProfilePicture";
 import Content from "./Content/Content";
 import LoadingPage from "../LoadingPage/LoadingPage";
+import Image from "./Image/Image";
 
 type Props = {
   post: IPost;
@@ -21,9 +22,9 @@ const Post: FC<Props> = ({ post }) => {
   return (
     <div
       className={style.postContainer}
-      style={{ display: eliminated ? "none" : "block" }}
+      style={{ display: eliminated ? "none" : "flex" }}
     >
-      {!post?._id ? (
+      {post?._id === false ? (
         <h2 style={{ textAlign: "center", color: "white" }}>
           Esta publicación ya ha sido eliminada.
         </h2>
@@ -42,6 +43,7 @@ const Post: FC<Props> = ({ post }) => {
               <ProfileName post={post}></ProfileName>
             )}
             <Content post={post}></Content>
+            <Image post={post}></Image>
             <Options post={post} setEliminated={setEliminated}></Options>
             {(post.respuesta || post.typePost !== "pregunta") && (
               <Interactions

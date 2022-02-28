@@ -28,7 +28,7 @@ router.post("/create-checkout-session", async (req, res) => {
 
 router.get("/total-revenue", async (req, res) => {
   const balanceTransactions = await stripe.balanceTransactions.list({
-    limit: 3,
+    limit: 10000,
   });
 
   const amountTotal = balanceTransactions.data.reduce((a: any, b: any) => ({
