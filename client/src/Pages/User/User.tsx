@@ -25,7 +25,11 @@ import { IState } from "../../redux/reducer";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ErrorAlert, InfoAlert } from "../../Components/Alert/Alert";
+import {
+  ConfirmAlert,
+  ErrorAlert,
+  InfoAlert,
+} from "../../Components/Alert/Alert";
 
 export default function User() {
   const [edit, setEdit] = useState(false);
@@ -48,17 +52,30 @@ export default function User() {
   function handleAdmin() {
     if (username) dispatch(makeAdmin(username));
   }
-  async function handleDeleteUser(userId, adminId) {
+  async function handleDeleteUser(userId: string, adminId: string) {
     try {
-      await axios.delete("/delete-user", { userId, adminId });
-      await InfoAlert.fire("Success");
-      navigate("/");
+      ConfirmAlert.fire("¿Estas seguro que deseas eliminar el usuario?").then(
+        async (res) => {
+          if (res.isConfirmed) {
+            await axios.delete("/delete-user", {
+              data: {
+                userId,
+                adminId,
+              },
+            });
+            navigate("/");
+            InfoAlert.fire("Has eliminado a " + user.name);
+          }
+        }
+      );
     } catch (e) {
-      await ErrorAlert.fire("Error");
+      ErrorAlert.fire("Error" + e);
     }
   }
   useEffect(() => {
-    return () => dispatch(clear("profile"));
+    return () => {
+      dispatch(clear("profile"));
+    };
   }, []);
   useEffect(() => {
     if (userLogeado?.following && user?.username) {
@@ -111,7 +128,11 @@ export default function User() {
                       {user?.admin ? "Eliminar rol de Admin" : "Hacer Admin"}
                     </Button>
                     <Button
-                      onClick={handleDeleteUser(user._id, userLogeado._id)}
+                      onClick={() => {
+                        if (user._id) {
+                          handleDeleteUser(user._id, userLogeado._id);
+                        }
+                      }}
                     >
                       Delete user
                     </Button>

@@ -92,6 +92,7 @@ const Posts = () => {
           </motion.div>
         ))}
       </motion.div>
+      {!posts?.length && <h2 className={styles.noPosts}>Nada que ver aqui.</h2>}
     </div>
   );
 };
