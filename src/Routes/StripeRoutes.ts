@@ -1,12 +1,14 @@
 import { Router } from "express";
-import Stripe from "stripe";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 const router = Router();
 
-const url = "http://localhost:3000";
+const url =
+  process.env.MODE === "PRODUCTION"
+    ? "https://henry-social.web.app"
+    : "http://localhost:3000";
 
 router.post("/create-checkout-session", async (req, res) => {
   const session = await stripe.checkout.sessions.create({
@@ -26,7 +28,7 @@ router.post("/create-checkout-session", async (req, res) => {
 
 router.get("/total-revenue", async (req, res) => {
   const balanceTransactions = await stripe.balanceTransactions.list({
-    limit: 3,
+    limit: 10000,
   });
 
   const amountTotal = balanceTransactions.data.reduce((a: any, b: any) => ({

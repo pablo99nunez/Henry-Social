@@ -13,41 +13,39 @@ import SideMessages from "../../Components/SideMessages/SideMessages";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
 export default function PostDetail() {
-    const { id } = useParams();
-    const dispatch = useDispatch();
-    const details = useSelector((state: IState) => state.post);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const details = useSelector((state: IState) => state.post);
 
-    useEffect(() => {
-        if (id) {
-            dispatch(getPost(id));
-            return () => dispatch(clear("post"));
-        }
-    }, [id]);
+  useEffect(() => {
+    if (id) {
+      dispatch(getPost(id));
+      return () => {
+        dispatch(clear("post"));
+      };
+    }
+  }, [id]);
 
-    return (
-        <>
-            <NavSearch />
-            <div id="postDetail">
-                <div id="content">
-                    <div id="follow-bar">
-                        <FollowBar />
-                    </div>
-                    <div id="boxPost">
-                        <div id="post">
-                            {details ? (
-                                <Post post={details} />
-                            ) : (
-                                <LoadingPage />
-                            )}
-                            <Comments />
-                        </div>
-                    </div>
-
-                    <div id="messages">
-                        <SideMessages />
-                    </div>
-                </div>
+  return (
+    <>
+      <NavSearch />
+      <div id="postDetail">
+        <div id="content">
+          <div id="follow-bar">
+            <FollowBar />
+          </div>
+          <div id="boxPost">
+            <div id="post">
+              {details ? <Post post={details} /> : <LoadingPage />}
+              <Comments />
             </div>
-        </>
-    );
+          </div>
+
+          <div id="messages">
+            <SideMessages />
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
