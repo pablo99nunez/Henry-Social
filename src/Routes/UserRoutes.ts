@@ -14,23 +14,24 @@ router.post("/user", (req, res) => {
           res.status(201).json(result);
         })
         .catch((e) => res.status(400).json({ error: e }));
-    } else res.json(e);
+    } else res.status(404).json({ error: "" });
   });
 });
 
 router.put("/user", async (req, res) => {
   try {
     const { _id: userId, changes } = req.body;
-    const usernames = await User.find({ _id: {$ne: userId}})
-      .then(r => r.map(u => u.username));
+    const usernames = await User.find({ _id: { $ne: userId } }).then((r) =>
+      r.map((u) => u.username)
+    );
     console.log(changes);
-    if(usernames.includes(changes.username)) return res.sendStatus(304);
-    const user = await User.findByIdAndUpdate(userId, changes, {new: true});
+    if (usernames.includes(changes.username)) return res.sendStatus(304);
+    const user = await User.findByIdAndUpdate(userId, changes, { new: true });
     res.status(200).json(user);
   } catch (err) {
     console.log(err);
   }
-})
+});
 
 router.get("/users", async (req, res) => {
   const { username } = req.query;
