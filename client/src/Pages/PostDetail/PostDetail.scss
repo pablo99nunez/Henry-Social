@@ -1,36 +1,34 @@
 @import "../../Styles/mixins.scss";
 @import "../../Styles/variables.scss";
 
-#postDetail{
+#postDetail {
   display: flex;
   position: relative;
   background: $bg-color;
   justify-content: center;
-  #navbar{
+  #navbar {
     top: 0;
     z-index: 10;
     width: 100%;
     height: 80px;
     position: fixed;
-    background: $blackLow;
   }
-  #content{
+  #content {
     gap: 30px;
     display: flex;
     margin: 120px 0px;
-    #boxPost{
+    #boxPost {
       width: 500px;
-      #post{
+      #post {
         width: 100%;
         height: 300px;
-        background: $blackLow;
         border-radius: 10px;
       }
     }
-    #follow-bar, #messages{
+    #follow-bar,
+    #messages {
       width: 250px;
-      height: 500px;
-      background: $blackLow;
+      height: max-content;
     }
   }
 }

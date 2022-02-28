@@ -1,75 +1,62 @@
-import React, { useState, FC, useRef } from "react";
+import { useState, FC } from "react";
 import style from "./Post.module.scss";
-import {
-    BsThreeDots,
-    BsHeartFill,
-    BsChatSquareDots,
-    BsShareFill,
-} from "react-icons/bs";
-import { Like } from "../Like/Like";
 import { IPost } from "../../../../src/models/Post";
-import { useNavigate } from "react-router";
+import CommentModal from "../CommentModal/CommentModal";
+import Interactions from "./Interactions/Interactions";
+import Options from "./Options/Options";
+import ProfileName from "./ProfileName/ProfileName";
+import ProfilePicture from "./ProfilePicture/ProfilePicture";
+import Content from "./Content/Content";
 
 type Props = {
     post: IPost;
 };
 
 const Post: FC<Props> = ({ post }) => {
-    const navigate = useNavigate();
-    const postRef = useRef(null);
-    const contentRef = useRef(null);
-    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        if (e.target === postRef.current || e.target === contentRef.current) {
-            navigate("/post/" + post._id);
-        }
-    };
+  const [eliminated, setEliminated] = useState(false);
 
-    return (
-        <div className={style.post} onClick={handleClick} ref={postRef}>
-            <div
-                className={style.post_profile_img}
-                onClick={() => {
-                    navigate("/profile/" + post?.author.username);
-                }}
-            >
-                <img
-                    src={
-                        typeof post?.author?.avatar === "string"
-                            ? post.author?.avatar
-                            : "default"
-                    }
-                    alt="avatar"
-                    referrerPolicy="no-referrer"
-                />
-            </div>
-            <div className={style.post_wrap}>
-                <div className={style.post_profile}>
-                    <h3
-                        onClick={() => {
-                            navigate("/profile/" + post.author.username);
-                        }}
-                    >
-                        {post?.author?.name}
-                    </h3>
-                    <h4>{new Date(post?.postTime).toLocaleString()}</h4>
-                </div>
-                <div className={style.post_options}>
-                    <BsThreeDots />
-                </div>
-                <div className={style.post_content} ref={contentRef}>
-                    {post?.body}
-                </div>
-                <div className={style.post_interacciones}>
-                    <div className={style.post_like_comments}>
-                        <Like post={post}></Like>
-                        <div className={style.post_icon}>
-                            <BsChatSquareDots />
-                            <span>{post?.numComments}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  const [openComment, setOpenComment] = useState(false);
+
+
+  return (
+    <div
+      className={style.postContainer}
+      style={{ display: eliminated ? "none" : "block" }}>
+      { post?._id === false ? 
+        <h2 style={{textAlign: 'center', color: 'white'}}>Esta publicación ya ha sido eliminada.</h2>
+        : post ?
+        <div
+          className={`${style.post} ${
+              post?.typePost === "empleo" && style.postJob
+          } ${post?.typePost === "boom" && style.postBoom}
+          ${post?.typePost === "pregunta" && style.postPregunta}`}>
+
+          {post?.typePost !== "pregunta" && (
+              <ProfilePicture post={post}></ProfilePicture>
+          )}
+          <div className={style.post_wrap}>
+              {post?.typePost !== "pregunta" && (
+                  <ProfileName post={post}></ProfileName>
+              )}
+              <Content post={post}></Content>
+              <Options
+                  post={post}
+                  setEliminated={setEliminated}
+              ></Options>
+              {(post.respuesta || post.typePost !== "pregunta") && (
+                  <Interactions
+                      post={post}
+                      setOpenComment={setOpenComment}
+                      openComment={openComment}
+                  ></Interactions>
+              )}
+          </div>
         </div>
-    );
+      : <LoadingPage/>
+      }
+      <CommentModal open={openComment} postId={post?._id}/>
+    </div>
+  );
 };
+
 export default Post;

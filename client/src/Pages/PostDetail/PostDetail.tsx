@@ -1,18 +1,16 @@
 import "./PostDetail.scss";
-// import { useEffect } from 'react';
-// import { useParams } from 'react-router-dom';
-// import { getPostDetail } from '../../redux/actions'
-import Comments from "../../Components/Comments/Comments";
-import { getPost } from "../../redux/actions/actions";
 import { useEffect } from "react";
 import { useParams } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
-import FollowBar from "../../Components/followBar/FollowBar";
+import { useDispatch, useSelector } from "react-redux";
+import { clear, getPost } from "../../redux/actions/actions";
+
 import Post from "../../Components/Post/Post";
+import Comments from "../../Components/Comments/Comments";
+import FollowBar from "../../Components/FollowBar/FollowBar";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import SideMessages from "../../Components/SideMessages/SideMessages";
-// import { useDispatch , useSelector } from 'react-redux';
+import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
 export default function PostDetail() {
     const { id } = useParams();
@@ -22,28 +20,26 @@ export default function PostDetail() {
     useEffect(() => {
         if (id) {
             dispatch(getPost(id));
+            return () => dispatch(clear("post"));
         }
     }, [id]);
 
     return (
         <>
-            <NavSearch></NavSearch>
+            <NavSearch />
             <div id="postDetail">
-                {/* El navbar, follow-bar, post, messages serán reemplazados por sus debidos componentes*/}
-
-                <nav id="navbar"></nav>
-
                 <div id="content">
                     <div id="follow-bar">
                         <FollowBar />
                     </div>
-
                     <div id="boxPost">
                         <div id="post">
-                            <Post post={details} />
-                            <Comments
-                            // comments={details.comments}
-                            />
+                            {details ? (
+                                <Post post={details} />
+                            ) : (
+                                <LoadingPage />
+                            )}
+                            <Comments />
                         </div>
                     </div>
 
@@ -55,16 +51,3 @@ export default function PostDetail() {
         </>
     );
 }
-
-/* 
-
-Datos que tengo que recibir en este componente:
-
--Los detalles del Post:
-
-  Nombre, fecha de publicacion, contenido del post, 
-  numero de likes y comentarios, 
-  arreglo de objetos con cada uno de los comentarios:
-  { name, content, date, cohorte(opc), countLikes} 
-
-*/

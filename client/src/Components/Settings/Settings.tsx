@@ -1,67 +1,147 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+
 import Button from "../Button/Button";
 import style from "./Settings.module.scss";
 import Input from "../Input/Input";
 import useUser from "../../Hooks/useUser";
+import Avatar from "../Avatar/Avatar";
+import axios from "axios";
+import { InfoAlert } from "../Alert/Alert";
 
 export default function Settings({ cancel }: any) {
-    const user = useUser();
+  const user = useUser();
+  const navigate = useNavigate();
 
-    return (
-        <div className={style.settings_wrap}>
-            <img
-                src={typeof user?.avatar === "string" ? user.avatar : ""}
-                alt="user avatar"
-            />
-            <div>
-                <div className={style.inputBox}>
-                    <h3>Nombre de usuario</h3>
-                    <Input
-                        type="text"
-                        name=""
-                        placeholder="Nombre de usuario"
-                        id=""
-                        defaultValue={user?.username}
-                    ></Input>
-                </div>
-                <div className={style.inputBox}>
-                    <h3>Biografia</h3>
-                    <Input placeholder="Escribe sobre ti..."></Input>
-                </div>
-                <div className={style.buttons}>
-                    <Button active={user?.role === "Estudiante"}>
-                        Estudiante
-                    </Button>
-                    <Button active={user?.role === "Instructor"}>
-                        Instructor
-                    </Button>
-                    <Button active={user?.role === "TA"}>TA</Button>
-                </div>
+  const [changes, setChanges] = useState({
+    username: user?.username,
+    bio: user?.bio,
+    linkedin: user?.linkedin,
+    github: user?.github,
+    portfolio: user?.portfolio,
+    role: user?.role,
+  });
 
-                <Input type="text" placeholder="Github" name="github"></Input>
-                <Input
-                    type="text"
-                    placeholder="Ingresa tu Linkedin"
-                    name="linkedin"
-                ></Input>
-                <Input
-                    type="text"
-                    placeholder="Ingresa tu portafolio"
-                    name="portfolio"
-                ></Input>
-                <div className={style.buttons}>
-                    <Button className={style.submit_button}>
-                        Guardar cambios
-                    </Button>
-                    <Button
-                        className={style.cancel_button}
-                        onClick={() => cancel()}
-                        active
-                    >
-                        Cancelar
-                    </Button>
-                </div>
-            </div>
+  const handleChanges = (e: any):void => {
+    const btn = document.querySelector("#saveChanges");
+    if(e.target.name === "username" && e.target.value.length === 0) {
+      btn.disabled = true;
+      throw new Error("The username field can't be empty");
+    }
+
+    btn.disabled = false;
+
+    setChanges({
+      ...changes,
+      [e.target.name]: e.target.value.length === 0 ? null : e.target.value
+    });
+  }
+
+  const saveChanges = async (e: any): void => {
+    e.preventDefault();
+    axios.put("/user", {
+      _id: user?._id, changes
+    }).then(r => {
+      cancel(e);
+      InfoAlert.fire({
+        title: "Se actualizó tu perfil!",
+        icon: "success"
+      });
+      navigate(`/profile/${changes.username}`);
+      window.location.reload();
+    }).catch(err => {
+      console.log(err);
+      InfoAlert.fire({
+        title: "No se pudo actulizar tu perfil",
+        icon: "error"
+      });
+      cancel(e);
+    });
+  }
+
+  const onChangeRole = (e: any): void => {
+    setChanges({
+      ...changes,
+      role: e.target.value
+    })
+  }
+
+  return (
+    <form className={style.settings_wrap}>
+      <Avatar avatar={user?.avatar}/>
+      <div>
+        <div className={style.inputBox}>
+          <h3>Nombre de usuario</h3>
+          <Input
+            onChange={handleChanges}
+            type="text"
+            name="username"
+            placeholder="Nombre de usuario"
+            defaultValue={changes?.username}
+          ></Input>
         </div>
-    );
+        <div className={style.inputBox}>
+          <h3>Biografia</h3>
+          <Input 
+            onChange={handleChanges}
+            name="bio"
+            placeholder="Escribe sobre ti..."
+            defaultValue={changes?.bio}></Input>
+        </div>
+        <div className={style.buttons}>
+          <Button
+            type="button"
+            active={changes?.role === "Estudiante"}
+            onClick={onChangeRole}
+            value="Estudiante">Estudiante</Button>
+          <Button 
+            type="button"
+            active={changes?.role === "Instructor"}
+            onClick={onChangeRole}
+            value="Instructor">Instructor</Button>
+          <Button 
+            type="button"
+            active={changes?.role === "TA"}
+            onClick={onChangeRole}
+            value="TA">TA</Button>
+        </div>
+
+        <Input 
+          type="text" 
+          name="github"
+          onChange={handleChanges}
+          placeholder="Ingresa tu Usuario de Github" 
+          defaultValue={changes?.github}
+          ></Input>
+        <Input
+          type="text"
+          onChange={handleChanges}
+          placeholder="Ingresa tu Usuario de Linkedin"
+          name="linkedin"
+          defaultValue={changes?.linkedin}
+        ></Input>
+        <Input
+          type="text"
+          onChange={handleChanges}
+          placeholder="Ingresa la Url de tu portafolio"
+          name="portfolio"
+          defaultValue={changes?.portfolio}
+        ></Input>
+        <div className={style.buttons}>
+          <Button
+            type="submit"
+            id="saveChanges"
+            className={style.submit_button}
+            onClick={saveChanges}>Guardar cambios</Button>
+          <Button
+            className={style.cancel_button}
+            onClick={(e: any) => cancel(e)}
+            active
+          >
+            Cancelar
+          </Button>
+        </div>
+      </div>
+    </form>
+  );
 }

@@ -1,35 +1,57 @@
 @import "../../Styles/variables.scss";
 @import "../../Styles/mixins.scss";
 .aside_tags {
-    background-color: $bg-secondary-color;
-    display: flex;
-    flex-direction: column;
-    padding: 3rem 2rem;
-    border-radius: 0.5rem;
-    height: fit-content;
-    position: sticky;
-    top: 100px;
-    border: 1px solid $white;
-    h2 {
-        color: $yellow;
+  color: $white;
+  background-color: $black;
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 2rem;
+  padding-bottom: 2.5rem;
+  border-radius: 0.5rem;
+  height: fit-content;
+  border: 1px solid $greyLow;
+
+  h2 {
+    text-align: center;
+    color: $yellow;
+    font-size: 1rem;
+    margin-top: 0.7rem;
+    margin-bottom: 0.5rem;
+    text-decoration: underline;
+  }
+
+  li {
+    cursor: pointer;
+    padding-bottom: 0.5rem;
+
+    &:hover {
+      color: $yellow;
     }
-    .aside_sections {
-        color: $white;
-        a {
-            color: $white;
-        }
+  }
+
+  li.active {
+    color: $yellow;
+  }
+
+  .aside_sections {
+    position: relative;
+    left: 1rem;
+  }
+
+  .aside_tags_popular {
+    ul {
+      list-style: none;
     }
-    .aside_tags_popular {
-        a {
-            color: $white;
-        }
+  }
+
+  .aside_enlaces {
+    margin-top: 0.7rem;
+    a {
+      color: $yellow;
+      padding-bottom: 0.5rem;
     }
-    .aside_enlaces {
-        a {
-            color: $white;
-        }
-    }
+  }
 }
 .aside_tags_enlaces {
-    @include flex-column;
+  @include flex-column;
 }

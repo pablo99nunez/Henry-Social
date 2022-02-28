@@ -1,13 +1,29 @@
-import { model, ObjectId, Schema, PopulatedDoc } from "mongoose";
+import { model, ObjectId, Schema } from "mongoose";
 import { IUser } from "./User";
+import Joi from "joi";
 
 export interface IPost {
     body: string;
     postTime: string;
-    nLikes: [IUser];
+    nLikes: [string];
     numComments: number;
     author: IUser;
-    _id: number;
+    _id: number | boolean;
+    typePost: string;
+    company: string;
+    position: string;
+    companyLink: string;
+    companyImage: string | File | null;
+    salary: number;
+    reportedTimes: number;
+    tags: string[];
+    respuesta: string;
+    pregunta: string;
+    respuestaAuthor: IUser;
+    image: string;
+    costoClases: string;
+    temasClases: string;
+    tecnologíaClases: string;
 }
 
 interface Comment {
@@ -15,6 +31,7 @@ interface Comment {
     postTime: string;
     text: string;
     author: IUser;
+    nLikes: [string];
 }
 
 interface Like {
@@ -42,12 +59,50 @@ const postSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
     },
+    typePost: {
+        type: String,
+        require: true,
+        default: "normal",
+    },
+    company: {
+        type: String,
+    },
+    companyImage: {
+        type: String,
+    },
+    position: {
+        type: String,
+    },
+    companyLink: {
+        type: String,
+    },
+    salary: {
+        type: Number,
+    },
+    reportedTimes: {
+        type: Number,
+        default: 0,
+    },
+    tags: {
+        type: Array,
+    },
+    pregunta: {
+        type: String,
+    },
+    respuesta: {
+        type: String,
+        default: "",
+    },
+    respuestaAuthor: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    },
 });
 
 const commentSchema = new Schema({
     postId: {
         type: Schema.Types.ObjectId,
-        // ref: "postSchema"
+        ref: "Post",
     },
     postTime: { type: Date, default: Date.now },
     text: String,
@@ -55,7 +110,20 @@ const commentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
     },
+    nLikes: {
+        type: [Schema.Types.ObjectId],
+        ref: "User",
+        default: [],
+    },
 });
+
+export function postValidate(post: any) {
+    const schema = Joi.object({
+        body: Joi.string().min(3).max(255).required(),
+    });
+
+    return schema.validate(post);
+}
 
 export default model<IPost>("Post", postSchema);
 export const Comment = model<Comment>("Comment", commentSchema);

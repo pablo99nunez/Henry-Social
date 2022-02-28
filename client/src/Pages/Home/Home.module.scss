@@ -2,19 +2,27 @@
 @import "../../Styles/mixins.scss";
 
 .home {
-    @include flex-column;
-    gap: 6rem;
-    justify-content: center;
-    align-items: center;
+  @include flex-column;
+  gap: 6rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  .home_position {
+    // display: flex;
+    // gap: 2rem;
+    // justify-content: space-around;
+    max-width: 1200px;
+    display: grid;
     width: 100%;
-    .home_position {
-        // display: flex;
-        // gap: 2rem;
-        // justify-content: space-around;
-        max-width: 1200px;
-        display: grid;
-        width: 100%;
-        grid-template-columns: 0.8fr 2fr 0.8fr;
-        gap: 2rem 2rem;
-    }
+    grid-template-columns: 0.8fr 2fr 0.8fr;
+    gap: 2rem 2rem;
+  }
+  .aside {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    top: 100px;
+    align-self: flex-start;
+  }
 }

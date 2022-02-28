@@ -1,0 +1,10 @@
+@import "../../Styles/variables.scss";
+.avatar {
+  max-width: 50px;
+  object-fit: cover;
+  max-height: 50px;
+  border: 1.5px solid $yellow;
+  border-radius: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

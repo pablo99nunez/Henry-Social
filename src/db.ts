@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 
 require("dotenv").config();
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 function main() {
   mongoose
@@ -14,8 +15,8 @@ function main() {
     .then(() => {
       console.log("MongoDB connected succesfully");
     })
-    .catch((e: any) => {
-      console.log(e);
+    .catch((error: any) => {
+      console.log(error);
     });
 }
 
