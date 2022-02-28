@@ -310,11 +310,12 @@ router.get("/deleteNotis", async (req, res) => {
 router.delete("/delete-user", async (req, res) => {
   const { userId, adminId } = req.body;
 
-  const adminUser = await User.find({ _id: adminId });
-  // @ts-ignore
-  if (!adminUser.admin) return res.status(403).send("Only for admins roles.");
+  const adminUser = await User.findById(adminId);
 
-  const user = await User.findByIdAndDelete({ _id: userId });
+  console.log(adminUser, adminId);
+  if (!adminUser?.admin) return res.status(403).send("Only for admins roles.");
+
+  const user = await User.findByIdAndDelete(userId);
   if (!user) return res.status(404).send("This user wasn't found.");
 
   res.send(user);
