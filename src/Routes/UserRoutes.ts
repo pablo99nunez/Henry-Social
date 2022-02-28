@@ -21,8 +21,9 @@ router.post("/user", (req, res) => {
 router.put("/user", async (req, res) => {
   try {
     const { _id: userId, changes } = req.body;
-    const usernames = await User.find({})
+    const usernames = await User.find({ _id: {$ne: userId}})
       .then(r => r.map(u => u.username));
+    console.log(changes);
     if(usernames.includes(changes.username)) return res.sendStatus(304);
     const user = await User.findByIdAndUpdate(userId, changes, {new: true});
     res.status(200).json(user);

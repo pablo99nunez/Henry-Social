@@ -10,6 +10,9 @@ export default function Button({
   style,
   backgroundColor = "#ff1",
   color,
+  type,
+  value, 
+  id
 }: any) {
   color =
     color ?? tinycolor(backgroundColor).getBrightness() <= 128
@@ -27,8 +30,12 @@ export default function Button({
       scale: 1.07,
     },
   };
+  
   return (
     <motion.button
+      id={id}
+      type={type ? type : "submit"}
+      value={value ? value : ""}
       variants={variants}
       initial="initial"
       animate={active ? "active" : "initial"}
