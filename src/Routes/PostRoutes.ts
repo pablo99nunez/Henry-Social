@@ -41,7 +41,7 @@ router.post("/posts", async (req, res) => {
        : tag
        ? await Post.find({
          tags: tag
-       })
+       }).populate("author", "name avatar username")
        : await Post.find({
            ...props,
          }).populate("author", "name avatar username");
