@@ -97,6 +97,7 @@ const postSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  image: String,
 });
 
 const commentSchema = new Schema({

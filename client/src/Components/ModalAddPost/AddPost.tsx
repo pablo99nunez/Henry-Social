@@ -36,7 +36,10 @@ const AddPost: FC<Props> = ({ setOpen }) => {
   const handleChange = (e: React.FormEvent<HTMLFormElement>) => {
     const target = e.target as HTMLInputElement;
 
-    if (target.name === "companyImage" && target.files)
+    if (
+      (target.name === "companyImage" || target.name === "image") &&
+      target.files
+    )
       setPost({ ...post, [target.name]: target.files[0] });
     else
       setPost({
@@ -58,10 +61,13 @@ const AddPost: FC<Props> = ({ setOpen }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const downloadURL =
+    const downloadURLCompany =
       post.companyImage instanceof File
         ? await uploadFile(post.companyImage)
         : post.companyImage;
+
+    const downloadURLImage =
+      post.image instanceof File ? await uploadFile(post.image) : post.image;
 
     if (user)
       axios
@@ -70,12 +76,13 @@ const AddPost: FC<Props> = ({ setOpen }) => {
           company: post.company,
           position: post.position,
           companyLink: post.companyLink,
-          companyImage: downloadURL,
+          companyImage: downloadURLCompany,
           pregunta: post.pregunta,
           salary: post.salary,
           author: user,
           typePost,
           tags: post.tags,
+          image: downloadURLImage,
         })
         .then((data) => {
           InfoAlert.fire({
@@ -230,7 +237,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 {post.image ? (
                   <>
                     <FaCheck />
-                    <p>{post.image.slice(12)}</p>
+                    <p>{post.image.name}</p>
                   </>
                 ) : (
                   <FaUpload />

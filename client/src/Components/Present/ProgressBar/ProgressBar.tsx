@@ -12,7 +12,7 @@ export default function ProgressBar({ progress, total }: Props) {
         className={style.progress}
         style={{ width: `${(progress / total) * 100}%` }}
       >
-        <h3>{((progress / total) * 100).toFixed(2)}%</h3>
+        <h3>{((progress / total) * 100).toFixed(1)}%</h3>
       </div>
     </div>
   );
