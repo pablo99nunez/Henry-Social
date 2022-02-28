@@ -39,7 +39,6 @@ export default function PostDetail() {
                             ) : (
                                 <LoadingPage />
                             )}
-                            {console.log("Detalles Post: ", details)}
                             <Comments />
                         </div>
                     </div>

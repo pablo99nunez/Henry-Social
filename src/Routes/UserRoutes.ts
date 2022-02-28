@@ -39,7 +39,6 @@ router.get("/users", async (req, res) => {
       const users = await User.find({
         name: { $regex: username },
       });
-      console.log(users);
       return res.json(users);
     }
     const users = await User.find({});
@@ -72,7 +71,6 @@ router.post("/admin", async (req, res) => {
     const user = await User.findOne({ username });
     if (user) {
       user.admin = !user.admin;
-      console.log(user.admin);
       await user.save();
       res.json(user);
     }
@@ -213,7 +211,6 @@ router.post("/notification", async (req, res) => {
   try {
     const receptor = await User.findById(notification.receptor);
     const emisor = await User.findById(notification.emisor);
-    console.log(receptor, emisor);
     if (receptor && emisor) {
       if (
         typeof receptor.username === "string" &&
