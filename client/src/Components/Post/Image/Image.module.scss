@@ -1,0 +1,35 @@
+.imgContainer {
+  border-radius: 8px;
+  overflow: hidden;
+
+  display: grid;
+  place-content: center;
+  width: 90%;
+  img {
+    width: 100%;
+    max-width: 50vw;
+  }
+}
+
+.active {
+  position: fixed;
+  backdrop-filter: blur(3px);
+  padding: 1rem;
+  background: #00000022;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 20000;
+  svg {
+    position: absolute;
+    right: 1rem;
+    top: 5rem;
+    font-size: 3rem;
+  }
+  img {
+    object-fit: fill;
+    max-height: 80vh;
+    max-width: 80vw;
+  }
+}

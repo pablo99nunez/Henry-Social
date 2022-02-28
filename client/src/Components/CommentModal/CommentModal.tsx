@@ -17,10 +17,12 @@ export default function CommentModal({ open, postId }: any) {
     close: {
       y: -110,
       originY: "top-center",
+      zIndex: -2,
     },
     open: {
       y: 0,
       originY: "top-center",
+      zIndex: 0,
     },
   };
   async function sendComment() {
