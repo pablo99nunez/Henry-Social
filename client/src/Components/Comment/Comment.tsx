@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Like } from "../Like/Like";
 import { FaRegComment, FaEllipsisH, FaBan, FaRegFrown} from "react-icons/fa";
 import Avatar from "../Avatar/Avatar";
+import { getMomento } from "../../helpers/momento";
 
 const Comment = ({ key, data }: any) => {
   const [options, setOptions] = useState(false);
@@ -20,7 +21,7 @@ const Comment = ({ key, data }: any) => {
             {data.author.name}
           </Link>
           <span className="cohorteDate">
-            · {new Date(data.postTime).toLocaleString()}
+            · {getMomento(data?.postTime)}
           </span>
         </div>
 
