@@ -2,6 +2,8 @@ import { useNavigate } from "react-router";
 import { IPost } from "../../../../../src/models/Post";
 import style from "../Post.module.scss";
 
+import { getMomento } from '../../../helpers/momento';
+
 type Props = {
     post: IPost;
 };
@@ -17,7 +19,7 @@ export default function ProfileName({ post }: Props) {
             >
                 {post?.author?.name}
             </h3>
-            <h4>{new Date(post?.postTime).toLocaleString()}</h4>
+            <h4>{getMomento(post?.postTime)}</h4>
             {typeof post?.companyImage === "string" && (
                 <img src={post?.companyImage} alt="company" />
             )}

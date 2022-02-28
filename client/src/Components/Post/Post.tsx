@@ -2,8 +2,6 @@ import { useState, FC } from "react";
 import style from "./Post.module.scss";
 import { IPost } from "../../../../src/models/Post";
 import CommentModal from "../CommentModal/CommentModal";
-import LoadingPage from "../LoadingPage/LoadingPage";
-import PostPregunta from "./Types/PostPregunta";
 import Interactions from "./Interactions/Interactions";
 import Options from "./Options/Options";
 import ProfileName from "./ProfileName/ProfileName";
@@ -19,6 +17,7 @@ const Post: FC<Props> = ({ post }) => {
 
   const [openComment, setOpenComment] = useState(false);
 
+
   return (
     <div
       className={style.postContainer}
@@ -31,6 +30,7 @@ const Post: FC<Props> = ({ post }) => {
               post?.typePost === "empleo" && style.postJob
           } ${post?.typePost === "boom" && style.postBoom}
           ${post?.typePost === "pregunta" && style.postPregunta}`}>
+
           {post?.typePost !== "pregunta" && (
               <ProfilePicture post={post}></ProfilePicture>
           )}
