@@ -15,3 +15,10 @@ export const InfoAlert = Swal.mixin({
     toast.addEventListener("mouseleave", Swal.resumeTimer);
   },
 });
+
+export const ErrorAlert = Swal.mixin({
+  icon: "warning",
+  iconColor: "#FF2F2B",
+  background: "#ff1",
+  confirmButtonColor: "#000",
+});

@@ -10,8 +10,8 @@ import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile
 import { motion } from "framer-motion";
 
 type Props = {
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    setOpen: Function;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  setOpen: Function;
 };
 
 export function validate(input) {
@@ -52,8 +52,8 @@ export function validate(input) {
 };
 
 const AddPost: FC<Props> = ({ setOpen }) => {
-    const user = useUser();
-    const dispatch = useDispatch();
+  const user = useUser();
+  const dispatch = useDispatch();
 
   const [typePost, setTypePost] = useState("normal");
   const [errors, setErrors] = useState({});
@@ -88,81 +88,86 @@ const AddPost: FC<Props> = ({ setOpen }) => {
    );
   };
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        const name = e.target.name;
-        if (name === typePost) {
-            return setTypePost("normal");
-        }
-        setTypePost(name);
-    };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const name = e.currentTarget.name;
+    if (name === typePost) {
+      return setTypePost("normal");
+    }
+    setTypePost(name);
+  };
 
-        const downloadURL =
-            post.companyImage instanceof File
-                ? await uploadFile(post.companyImage)
-                : post.companyImage;
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-        if (user)
-            axios
-                .post(`/post`, {
-                    body: post.text,
-                    company: post.company,
-                    position: post.position,
-                    companyLink: post.companyLink,
-                    companyImage: downloadURL,
-                    pregunta: post.pregunta,
-                    salary: post.salary,
-                    author: user,
-                    typePost,
-                    tags: post.tags,
-                })
-                .then((data) => {
-                    InfoAlert.fire({
-                        title: "Publicado con éxito",
-                        icon: "success",
-                    });
-                    setOpen(false);
-                    dispatch(getPosts());
-                    return data;
-                })
-                .catch((error) => console.error("Error:", error));
-    };
+    const downloadURLCompany =
+      post.companyImage instanceof File
+        ? await uploadFile(post.companyImage)
+        : post.companyImage;
 
-    const types = [
-        {
-            abr: "multimedia",
-            text: "Foto / Video",
-        },
-        {
-            abr: "boom",
-            text: "Boom",
-        },
-        {
-            abr: "empleo",
-            text: "Ofertas de empleo",
-        },
-        // {
-        //     abr: "servicio",
-        //     text: "Servicio",
-        // },
-        {
-            abr: "pregunta",
-            text: "Pregunta",
-        },
-    ];
+    const downloadURLImage =
+      post.image instanceof File ? await uploadFile(post.image) : post.image;
+
+    if (user)
+      axios
+        .post(`/post`, {
+          body: post.text,
+          company: post.company,
+          position: post.position,
+          companyLink: post.companyLink,
+          companyImage: downloadURLCompany,
+          pregunta: post.pregunta,
+          salary: post.salary,
+          author: user,
+          typePost,
+          tags: post.tags,
+          image: downloadURLImage,
+        })
+        .then((data) => {
+          InfoAlert.fire({
+            title: "Publicado con éxito",
+            icon: "success",
+          });
+          setOpen(false);
+          dispatch(getPosts());
+          return data;
+        })
+        .catch((error) => console.error("Error:", error));
+  };
+
+  const types = [
+    {
+      abr: "multimedia",
+      text: "Foto / Video",
+    },
+    {
+      abr: "boom",
+      text: "Boom",
+    },
+    {
+      abr: "empleo",
+      text: "Ofertas de empleo",
+    },
+    // {
+    //     abr: "servicio",
+    //     text: "Servicio",
+    // },
+    {
+      abr: "pregunta",
+      text: "Pregunta",
+    },
+  ];
 
   return (
-   <motion.form
-   onSubmit={(e) => handleSubmit(e)}
-   onChange={(e) => handleChange(e)}
-   className={styles.modal_add_post}
-   animate={{
-     scaleX: 1,
-     scaleY: 1,
-   }}
- >
+    <motion.form
+      onSubmit={(e) => handleSubmit(e)}
+      onChange={(e) => handleChange(e)}
+      className={styles.modal_add_post}
+      animate={{
+        scaleX: 1,
+        scaleY: 1,
+      }}
+    >
       <div className={styles.add_post_content}>
         {typePost === "pregunta" ? (
           <div className={styles.content__inputs}>
@@ -173,11 +178,12 @@ const AddPost: FC<Props> = ({ setOpen }) => {
             />
           </div>
         ) : (
-        typePost !== "normal" && typePost !== "multimedia" && (
-          <div className={styles.content__inputs}>
-            {typePost === "servicio" ? (
-              <>
-              <div className={styles.input_with_error}>
+          typePost !== "normal" &&
+          typePost !== "multimedia" && (
+            <div className={styles.content__inputs}>
+              {typePost === "servicio" ? (
+                <>
+                  <div className={styles.input_with_error}>
                 <input
                   type="text"
                   name="tecnologíaClases"
@@ -187,26 +193,22 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 />
                 {errors?.tecnologíaClases && (<p>{errors.tecnologíaClases}</p>)}
               </div>
-                <input
-                  type="text"
-                  name="temasClases"
-                  placeholder="Temas"
-                  defaultValue={post.temasClases}
-                />
-                <div className={styles.input_with_error}>
-                <input
-                  name="costoClases"
-                  type="number"
-                  defaultValue={post.costoClases}
-                  placeholder="Costo de las clases"
-                  required
-                />
-                {errors?.costoClases && (<p>{errors.costoClases}</p>)}
-                </div>
-              </>
-            ) : (
-              <>
-              <div className={styles.input_with_error}>
+                  <input
+                    type="text"
+                    name="temasClases"
+                    placeholder="Temas"
+                    defaultValue={post.temasClases}
+                  />
+                  <input
+                    name="costoClases"
+                    type="number"
+                    defaultValue={post.costoClases}
+                    placeholder="Costo de las clases"
+                  />
+                </>
+              ) : (
+                <>
+                  <div className={styles.input_with_error}>
                 <input
                   type="text"
                   name="company"
@@ -216,26 +218,26 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 />
                 {errors?.company && (<p>{errors.company}</p>)}
               </div>
-                <input
-                  type="text"
-                  name="position"
-                  defaultValue={post.position}
-                  placeholder="Rol en la Empresa"
-                  required
-                />
+                  <input
+                    type="text"
+                    name="position"
+                    defaultValue={post.position}
+                    placeholder="Rol en la Empresa"
+                    required
+                  />
 
-                <input
-                  type="file"
-                  accept=".png"
-                  name="companyImage"
-                  defaultValue={post.companyImage}
-                  placeholder="Imagen de la empresa"
-                />
-              </>
-            )}
-            {typePost === "empleo" && (
-              <>
-              <div className={styles.input_with_error}>
+                  <input
+                    type="file"
+                    accept=".png"
+                    name="companyImage"
+                    defaultValue={post.companyImage}
+                    placeholder="Imagen de la empresa"
+                  />
+                </>
+              )}
+              {typePost === "empleo" && (
+                <>
+                  <div className={styles.input_with_error}>
                 <input
                   name="companyLink"
                   type="url"
@@ -245,7 +247,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 />
                 {errors?.companyLink && (<p>{errors.companyLink}</p>)}
               </div>
-              <div className={styles.input_with_error}>
+                  <div className={styles.input_with_error}>
                 <input
                   min="0"
                   type="number"
@@ -255,9 +257,10 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 />
                 {errors?.salary && (<p>{errors.salary}</p>)}
               </div>
-              </>
-            )}
-          </div>)
+                </>
+              )}
+            </div>
+          )
         )}
         <div className={styles.content__textImage}>
           <textarea
@@ -269,6 +272,8 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 ? "Explica más sobre este empleo"
                 : typePost === "servicio"
                 ? "Cuentanós sobre tus clases y sobre quien eres"
+                : typePost === "pregunta"
+                ? "Describe tu duda."
                 : "¿Que estas pensando?"
             }
             className={post.text ? styles.active : ""}
@@ -284,41 +289,38 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 {post.image ? (
                   <>
                     <FaCheck />
-                    <p>{post.image.slice(12)}</p>
+                    <p>{post.image.name}</p>
                   </>
-
-                                ) : (
-                                    <FaUpload />
-                                )}
-                            </label>
-                            <input type="file" name="image" id="image" />
-                        </div>
-                    )}
-                </div>
+                ) : (
+                  <FaUpload />
+                )}
+              </label>
+              <input type="file" name="image" id="image" />
             </div>
-            <div className={styles.add_post_tags}>
-                {types.map((t, i) => (
-                    <button
-                        key={i}
-                        name={t.abr}
-                        type="button"
-                        onClick={(e) => handleClick(e)}
-                        className={
-                            typePost === t.abr ? styles.select : styles.deselect
-                        }
-                    >
-                        {t.text}
-                    </button>
-                ))}
-            </div>
-            <div className={styles.add_post_buttons}>
-                <input type="submit" value="Publicar" />
-                <button type="button" onClick={() => setOpen(false)}>
-                    Cancelar
-                </button>
-            </div>
-        </motion.form>
-    );
+          )}
+        </div>
+      </div>
+      <div className={styles.add_post_tags}>
+        {types.map((t, i) => (
+          <button
+            key={i}
+            name={t.abr}
+            type="button"
+            onClick={(e) => handleClick(e)}
+            className={typePost === t.abr ? styles.select : styles.deselect}
+          >
+            {t.text}
+          </button>
+        ))}
+      </div>
+      <div className={styles.add_post_buttons}>
+        <input type="submit" value="Publicar" />
+        <button type="button" onClick={() => setOpen(false)}>
+          Cancelar
+        </button>
+      </div>
+    </motion.form>
+  );
 };
 
 export default AddPost;
