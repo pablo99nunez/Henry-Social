@@ -12,6 +12,7 @@ import { useState } from "react";
 import Notifications from "../Notifications/Notifications";
 import ListSearch from "../ListSearch/ListSearch";
 import { IState } from "../../redux/reducer";
+import Avatar from "../Avatar/Avatar";
 const NavSearch = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -83,13 +84,12 @@ const NavSearch = () => {
               navigate("/profile/" + user?.username);
             }}
           >
-            <img
-              src={
+            <Avatar
+              avatar={
                 typeof user?.avatar == "string"
                   ? user?.avatar
                   : "https://s5.postimg.cc/537jajaxj/default.png"
               }
-              alt=""
             />
             <div className={styles.nav_profile_info}>
               <h3>
