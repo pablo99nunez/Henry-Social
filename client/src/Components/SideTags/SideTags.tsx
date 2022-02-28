@@ -11,17 +11,7 @@ import {
 } from "../../redux/actions/actions";
 
 const SideTags = () => {
-  const initialActiveSection = {
-    posts: false,
-    empleo: false,
-    boom: false,
-    servicio: false,
-    pregunta: false,
-    recurso: false,
-    curso: false,
-  };
-
-  const [activeSection, setActiveSection] = useState<any>(initialActiveSection);
+  const [activeSection, setActiveSection] = useState<any>("all");
 
   const posts = useSelector((state: IState) => state.posts);
   const dispatch = useDispatch();
@@ -29,12 +19,13 @@ const SideTags = () => {
 
   const handleClick = (e: any) => {
     if (e.target.classList.contains("category")) {
-      setActiveSection({ ...initialActiveSection, [e.target.id]: true });
+      setActiveSection(e.target.id);
       if (e.target.id === "all") {
         return dispatch(getPosts());
       }
       return dispatch(filterBySection(e.target.id));
     } else {
+      setActiveSection("");
       return dispatch(filterByTag(e.target.title));
     }
   };
@@ -75,7 +66,7 @@ const SideTags = () => {
         <ul>
           <li
             className={
-              activeSection.posts ? `${styles.active} category` : "category"
+              activeSection === "all" ? `${styles.active} category` : "category"
             }
             onClick={handleClick}
             id="all"
@@ -84,7 +75,9 @@ const SideTags = () => {
           </li>
           <li
             className={
-              activeSection.empleo ? `${styles.active} category` : "category"
+              activeSection === "empleo"
+                ? `${styles.active} category`
+                : "category"
             }
             onClick={handleClick}
             id="empleo"
@@ -93,7 +86,9 @@ const SideTags = () => {
           </li>
           <li
             className={
-              activeSection.boom ? `${styles.active} category` : "category"
+              activeSection === "boom"
+                ? `${styles.active} category`
+                : "category"
             }
             onClick={handleClick}
             id="boom"
@@ -102,7 +97,9 @@ const SideTags = () => {
           </li>
           <li
             className={
-              activeSection.servicio ? `${styles.active} category` : "category"
+              activeSection === "servicio"
+                ? `${styles.active} category`
+                : "category"
             }
             onClick={handleClick}
             id="servicio"
@@ -111,14 +108,16 @@ const SideTags = () => {
           </li>
           <li
             className={
-              activeSection.pregunta ? `${styles.active} category` : "category"
+              activeSection === "pregunta"
+                ? `${styles.active} category`
+                : "category"
             }
             onClick={handleClick}
             id="pregunta"
           >
             Preguntas Frecuentes
           </li>
-          <li
+          {/*  <li
             className={
               activeSection.recurso ? `${styles.active} category` : "category"
             }
@@ -135,7 +134,7 @@ const SideTags = () => {
             id="curso"
           >
             Cursos Gratuitos
-          </li>
+          </li> */}
         </ul>
       </nav>
       <div className={styles.aside_tags_popular}>
