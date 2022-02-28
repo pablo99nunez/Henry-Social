@@ -27,10 +27,6 @@ export interface IAction {
   payload: any;
 }
 
-axios.defaults.baseURL = import.meta.env.PROD
-  ? "https://henry-social-back.herokuapp.com"
-  : "http://localhost:3001";
-
 export function getUser(email: string) {
   return function (dispatch: Function) {
     axios.post("/findUser", { email }).then((res) => {
@@ -108,13 +104,13 @@ export function filterByTag(tag: string): Function {
       const res = await axios.post("/posts", { tag });
       return dispatch({
         type: FILTER_BY_TAG,
-        payload: res.data
+        payload: res.data,
       });
     } catch (error) {
-      console.log(error)
-    };
+      console.log(error);
+    }
   };
-};
+}
 
 export function searchUsers(username: string) {
   return async function (dispatch: Function) {
@@ -132,26 +128,26 @@ export function searchUsers(username: string) {
 export function getPost(id: String) {
   return function (dispatch: Function) {
     axios.get("/post/" + id).then((post) => {
-      if (post.data){
+      if (post.data) {
         axios.get("/comments/" + post.data._id).then((comments) => {
           return dispatch({
             type: GET_POST,
             payload: { post: post.data, comments: comments.data },
           });
-        });}
-      else {
+        });
+      } else {
         return dispatch({
           type: GET_POST,
-          payload: { post: {_id: false}, comments: [] },
+          payload: { post: { _id: false }, comments: [] },
         });
       }
     });
   };
 }
-export function clear(page: String){
+export function clear(page: String) {
   return function (dispatch: Function) {
-    return dispatch({ type: page === 'profile' ? CLEAR_PROFILE : CLEAR_POST });
-  }; 
+    return dispatch({ type: page === "profile" ? CLEAR_PROFILE : CLEAR_POST });
+  };
 }
 export function likePost(post: IPost, user: IUser) {
   return (dispatch: Function) => {
