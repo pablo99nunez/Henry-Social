@@ -39,6 +39,13 @@ export function getUser(email: string) {
   };
 }
 
+export function editUser(userUpdated: any) {
+  return {
+    type: GET_USER,
+    payload: userUpdated
+  };
+}
+
 export function signOut() {
   return function (dispatch: Function) {
     return dispatch({ type: SIGN_OUT });

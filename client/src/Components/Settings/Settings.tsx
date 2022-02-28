@@ -1,17 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 import Button from "../Button/Button";
 import style from "./Settings.module.scss";
 import Input from "../Input/Input";
-import useUser from "../../Hooks/useUser";
-import Avatar from "../Avatar/Avatar";
 import axios from "axios";
+import { editUser } from "../../redux/actions/actions";
+import useUser from "../../Hooks/useUser";
+
+import Avatar from "../Avatar/Avatar";
 import { InfoAlert } from "../Alert/Alert";
+import { useDispatch } from "react-redux";
+
 
 export default function Settings({ cancel }: any) {
   const user = useUser();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const [changes, setChanges] = useState({
     username: user?.username,
@@ -37,25 +42,25 @@ export default function Settings({ cancel }: any) {
     });
   }
 
-  const saveChanges = async (e: any): void => {
+  const saveChanges = (e: any): void => {
     e.preventDefault();
     axios.put("/user", {
       _id: user?._id, changes
-    }).then(r => {
+    }).then(({data: user}) => {
       cancel(e);
+      dispatch(editUser(user));
       InfoAlert.fire({
         title: "Se actualizó tu perfil!",
         icon: "success"
       });
       navigate(`/profile/${changes.username}`);
-      window.location.reload();
     }).catch(err => {
+      cancel(e);
       console.log(err);
       InfoAlert.fire({
         title: "No se pudo actulizar tu perfil",
         icon: "error"
       });
-      cancel(e);
     });
   }
 
