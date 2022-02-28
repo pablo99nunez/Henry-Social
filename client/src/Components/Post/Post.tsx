@@ -24,7 +24,7 @@ const Post: FC<Props> = ({ post }) => {
       className={style.postContainer}
       style={{ display: eliminated ? "none" : "flex" }}
     >
-      {post?._id === false ? (
+      {!post?._id ? (
         <h2 style={{ textAlign: "center", color: "white" }}>
           Esta publicación ya ha sido eliminada.
         </h2>
