@@ -45,8 +45,10 @@ export default function User() {
     if (username) dispatch(makeAdmin(username));
   }
   useEffect(() => {
-    return () => dispatch(clear('profile'))
-  }, [])
+    return () => {
+      dispatch(clear("profile"));
+    };
+  }, []);
   useEffect(() => {
     if (userLogeado?.following && user?.username) {
       setIsFollowing(userLogeado.following.includes(user.username));
@@ -63,15 +65,18 @@ export default function User() {
     return setEdit(true);
   };
 
-  return loading 
-  ? <LoadingPage/> 
-  : <>
+  return loading ? (
+    <LoadingPage />
+  ) : (
+    <>
       <NavSearch></NavSearch>
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
-        <Settings cancel={(e: any) => {
-          e.preventDefault();
-          return setEdit(false)
-        }}/>
+        <Settings
+          cancel={(e: any) => {
+            e.preventDefault();
+            return setEdit(false);
+          }}
+        />
       </Modal>
 
       <div className={style.User}>
@@ -132,7 +137,10 @@ export default function User() {
 
                 <div>
                   {user?.linkedin ? (
-                    <a href={`https://www.linkedin.com/in/${user.linkedin}`} target="_blank">
+                    <a
+                      href={`https://www.linkedin.com/in/${user.linkedin}`}
+                      target="_blank"
+                    >
                       <div>
                         <img
                           src={linkedin}
@@ -151,7 +159,10 @@ export default function User() {
                     </div>
                   )}
                   {user?.github ? (
-                    <a href={`https://www.github.com/${user.github}`} target="_blank">
+                    <a
+                      href={`https://www.github.com/${user.github}`}
+                      target="_blank"
+                    >
                       <div>
                         <img
                           src={github}
@@ -211,4 +222,5 @@ export default function User() {
         </div>
       </div>
     </>
+  );
 }

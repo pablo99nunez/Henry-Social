@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { IUser } from "../../../../src/models/User";
 import Avatar from "../Avatar/Avatar";
 import Placeholder from "./Placeholder";
 import styles from "./Seguido.module.scss";
 
 const Seguido = ({ username, index }: any) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<IUser>();
 
   useEffect(() => {
     axios
