@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import useUser from "../../Hooks/useUser";
 import { getPosts } from "../../redux/actions/actions";
-import { InfoAlert } from "../Alert/Alert";
 
 export default function CommentModal({ open, postId }: any) {
   const [comment, setComment] = useState("");
@@ -18,10 +17,12 @@ export default function CommentModal({ open, postId }: any) {
     close: {
       y: -110,
       originY: "top-center",
+      zIndex: -2,
     },
     open: {
       y: 0,
       originY: "top-center",
+      zIndex: 0,
     },
   };
   async function sendComment() {

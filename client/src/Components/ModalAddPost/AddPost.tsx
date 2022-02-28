@@ -7,7 +7,7 @@ import { InfoAlert } from "../Alert/Alert";
 import { FaUpload, FaCheck } from "react-icons/fa";
 import styles from "./AddPost.module.scss";
 import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
-import { IPost } from "../../../../src/models/Post";
+import { motion } from "framer-motion";
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -30,19 +30,28 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     costoClases: "",
     temasClases: "",
     tecnologíaClases: "",
-    tags: []
+    tags: [],
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === "companyImage" && e.target.files)
-      setPost({ ...post, [e.target.name]: e.target.files[0] });
-    else setPost({ ...post, [e.target.name]: e.target.value, 
-      tags: e.target.name === 'text' ? e.target.value.match(/(#)\w+/g) : post.text });
-    
-  }
+  const handleChange = (e: React.FormEvent<HTMLFormElement>) => {
+    const target = e.target as HTMLInputElement;
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const name = e.target.name;
+    if (
+      (target.name === "companyImage" || target.name === "image") &&
+      target.files
+    )
+      setPost({ ...post, [target.name]: target.files[0] });
+    else
+      setPost({
+        ...post,
+        [target.name]: target.value,
+        tags:
+          target.name === "text" ? target.value.match(/(#)\w+/g) : post.text,
+      });
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const name = e.currentTarget.name;
     if (name === typePost) {
       return setTypePost("normal");
     }
@@ -51,11 +60,14 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-     
-    const downloadURL =
+
+    const downloadURLCompany =
       post.companyImage instanceof File
         ? await uploadFile(post.companyImage)
         : post.companyImage;
+
+    const downloadURLImage =
+      post.image instanceof File ? await uploadFile(post.image) : post.image;
 
     if (user)
       axios
@@ -64,12 +76,14 @@ const AddPost: FC<Props> = ({ setOpen }) => {
           company: post.company,
           position: post.position,
           companyLink: post.companyLink,
-          companyImage: downloadURL,
+          companyImage: downloadURLCompany,
+          pregunta: post.pregunta,
           salary: post.salary,
           question: post.question,
           author: user,
           typePost,
-          tags: post.tags
+          tags: post.tags,
+          image: downloadURLImage,
         })
         .then((data) => {
           InfoAlert.fire({
@@ -96,6 +110,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       abr: "empleo",
       text: "Ofertas de empleo",
     },
+<<<<<<< HEAD
     {
       abr: 'servicio',
       text: 'Servicio'
@@ -105,16 +120,32 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       text: 'Pregunta'
     },
   ]
+=======
+    // {
+    //     abr: "servicio",
+    //     text: "Servicio",
+    // },
+    {
+      abr: "pregunta",
+      text: "Pregunta",
+    },
+  ];
+>>>>>>> origin/dev
 
   return (
-    <form
+    <motion.form
       onSubmit={(e) => handleSubmit(e)}
       onChange={(e) => handleChange(e)}
       className={styles.modal_add_post}
+      animate={{
+        scaleX: 1,
+        scaleY: 1,
+      }}
     >
       <div className={styles.add_post_content}>
-        {typePost !== "normal" && typePost !== "multimedia" && (
+        {typePost === "pregunta" ? (
           <div className={styles.content__inputs}>
+<<<<<<< HEAD
             {typePost === 'servicio' ?
             <>
               <input 
@@ -188,10 +219,89 @@ const AddPost: FC<Props> = ({ setOpen }) => {
               />
             </>
             }
+=======
+            <input
+              type="text"
+              name="pregunta"
+              placeholder="¿Cual es tu pregunta?"
+            />
+>>>>>>> origin/dev
           </div>
+        ) : (
+          typePost !== "normal" &&
+          typePost !== "multimedia" && (
+            <div className={styles.content__inputs}>
+              {typePost === "servicio" ? (
+                <>
+                  <input
+                    type="text"
+                    name="tecnologíaClases"
+                    placeholder="Tecnología"
+                    defaultValue={post.tecnologíaClases}
+                  />
+                  <input
+                    type="text"
+                    name="temasClases"
+                    placeholder="Temas"
+                    defaultValue={post.temasClases}
+                  />
+                  <input
+                    name="costoClases"
+                    type="number"
+                    defaultValue={post.costoClases}
+                    placeholder="Costo de las clases"
+                  />
+                </>
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    name="company"
+                    defaultValue={post.company}
+                    placeholder="Nombre de la Empresa"
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="position"
+                    defaultValue={post.position}
+                    placeholder="Rol en la Empresa"
+                    required
+                  />
+
+                  <input
+                    type="file"
+                    accept=".png"
+                    name="companyImage"
+                    defaultValue={post.companyImage}
+                    placeholder="Imagen de la empresa"
+                  />
+                </>
+              )}
+              {typePost === "empleo" && (
+                <>
+                  <input
+                    name="companyLink"
+                    type="url"
+                    defaultValue={post.companyLink}
+                    placeholder="Link del Empleo"
+                    required
+                  />
+                  <input
+                    min="0"
+                    type="number"
+                    name="salary"
+                    defaultValue={post.salary}
+                    placeholder="Salario (Opcional)"
+                  />
+                </>
+              )}
+            </div>
+          )
         )}
         <div className={styles.content__textImage}>
           <textarea
+<<<<<<< HEAD
             name= { typePost !== 'pregunta' ? "text" : "question"}
             placeholder={typePost === 'boom' 
             ? 'Cuentanos tu emoción en el comienzo de tu nueva aventura' 
@@ -200,6 +310,21 @@ const AddPost: FC<Props> = ({ setOpen }) => {
             : typePost === 'servicio' ? 'Cuentanós sobre tus clases y sobre quien eres' 
             : '¿Que estas pensando?'}
             className={post.text ? styles.active : ''}
+=======
+            name="text"
+            placeholder={
+              typePost === "boom"
+                ? "Cuentanos tu emoción en el comienzo de tu nueva aventura"
+                : typePost === "empleo"
+                ? "Explica más sobre este empleo"
+                : typePost === "servicio"
+                ? "Cuentanós sobre tus clases y sobre quien eres"
+                : typePost === "pregunta"
+                ? "Describe tu duda."
+                : "¿Que estas pensando?"
+            }
+            className={post.text ? styles.active : ""}
+>>>>>>> origin/dev
           ></textarea>
           {typePost === "multimedia" && (
             <div className={styles.boxImage}>
@@ -212,7 +337,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 {post.image ? (
                   <>
                     <FaCheck />
-                    <p>{post.image.slice(12)}</p>
+                    <p>{post.image.name}</p>
                   </>
                 ) : (
                   <FaUpload />
@@ -242,7 +367,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
           Cancelar
         </button>
       </div>
-    </form>
+    </motion.form>
   );
 };
 

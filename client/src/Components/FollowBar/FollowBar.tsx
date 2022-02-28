@@ -18,9 +18,9 @@ export default function FollowBar() {
         {seguidos?.length ? (
           seguidos.map((u, i) =>
             !more ? (
-              i < 3 && <Seguido username={u} key={i} />
+              i < 3 && <Seguido username={u} key={i} index={i} />
             ) : (
-              <Seguido username={u} key={i} />
+              <Seguido username={u} key={i} index={i} />
             )
           )
         ) : (

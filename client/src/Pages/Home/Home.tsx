@@ -11,7 +11,6 @@ import useUser from "../../Hooks/useUser";
 import { useDispatch } from "react-redux";
 import { getPosts } from "../../redux/actions/actions";
 import Present from "../../Components/Present/Present";
-import Button from "../../Components/Button/Button";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);

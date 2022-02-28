@@ -18,7 +18,7 @@ import {
   SEARCH_USERS,
   ORDER_BY,
   FILTER_BY_FOLLOW,
-  FILTER_BY_TAG
+  FILTER_BY_TAG,
 } from "../actions/actions";
 
 export interface IState {
@@ -62,12 +62,20 @@ export default function rootReducer(state = initialState, action: IAction) {
       };
     }
     case GET_POSTS: {
+      let results = action.payload.sort((a: IPost, b: IPost) => {
+        return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
+      });
+      if (state.user?.role === "Estudiante") {
+        results = results.filter((e: IPost) => {
+          if (e.typePost === "pregunta") {
+            return e.respuesta;
+          } else return true;
+        });
+      }
       return {
         ...state,
         posts: action.payload,
-        results: action.payload.sort((a: IPost, b: IPost) => {
-          return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
-        }),
+        results,
       };
     }
     case SEARCH_USERS: {
@@ -77,17 +85,26 @@ export default function rootReducer(state = initialState, action: IAction) {
       };
     }
     case FILTER_BY_TYPE: {
+      let results = action.payload.sort((a: IPost, b: IPost) => {
+        return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
+      });
+      if (state.user?.role === "Estudiante") {
+        results = results.filter((e: IPost) => {
+          if (e.typePost === "pregunta") {
+            return e.respuesta;
+          } else return true;
+        });
+      }
+      return {
+        ...state,
+        results,
+      };
+    }
+    case FILTER_BY_TAG: {
       return {
         ...state,
         results: action.payload,
       };
-    }
-    case FILTER_BY_TAG: {
-      console.log(action.payload);
-      return {
-        ...state,
-        results: action.payload,
-      }
     }
     case GET_POST: {
       return {
@@ -166,7 +183,7 @@ export default function rootReducer(state = initialState, action: IAction) {
         results: state.results
           .filter((e: IPost) => {
             if (e.author?.username)
-              return state.user.following?.includes(e.author.username);
+              return state.user?.following?.includes(e.author.username);
             return null;
           })
           .sort((a: IPost, b: IPost) => {

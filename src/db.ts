@@ -15,8 +15,8 @@ function main() {
     .then(() => {
       console.log("MongoDB connected succesfully");
     })
-    .catch((e: any) => {
-      console.log(e);
+    .catch((error: any) => {
+      console.log(error);
     });
 }
 

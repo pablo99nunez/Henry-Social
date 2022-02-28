@@ -3,17 +3,13 @@ import { IUser } from "./User";
 import Joi from "joi";
 
 export interface IPost {
-  image: string;
-  costoClases: string;
-  temasClases: string;
-  tecnologíaClases: string;
   body: string;
   text: string;
   postTime: string;
   nLikes: [string];
   numComments: number;
   author: IUser;
-  _id: number | boolean;
+  _id: number;
   typePost: string;
   company: string;
   position: string;
@@ -23,6 +19,13 @@ export interface IPost {
   reportedTimes: number;
   question: IQuestions;
   tags: string[];
+  respuesta: string;
+  pregunta: string;
+  respuestaAuthor: IUser;
+  image: string;
+  costoClases: string;
+  temasClases: string;
+  tecnologíaClases: string;
 }
 export interface IQuestions {  // Reference to question posts
   question: string,
@@ -88,11 +91,23 @@ const postSchema = new Schema({
   },
   reportedTimes: {
     type: Number,
-    default: 0
+    default: 0,
   },
   tags: {
-    type: Array
-  }
+    type: Array,
+  },
+  pregunta: {
+    type: String,
+  },
+  respuesta: {
+    type: String,
+    default: "",
+  },
+  respuestaAuthor: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  image: String,
 });
 
 const commentSchema = new Schema({
@@ -107,10 +122,10 @@ const commentSchema = new Schema({
     ref: "User",
   },
   nLikes: {
-   type: [Schema.Types.ObjectId],
-   ref: "User",
-   default: [],
- },
+    type: [Schema.Types.ObjectId],
+    ref: "User",
+    default: [],
+  },
 });
 
 export function postValidate(post: any) {

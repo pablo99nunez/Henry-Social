@@ -4,7 +4,6 @@ import { storage } from "../firebase";
 export async function uploadFile(avatar: File) {
   const storageRef = ref(storage, "avatars/" + avatar.name);
   const downloadURL = await uploadBytes(storageRef, avatar).then((snapshot) => {
-    console.log("Snapshot", snapshot);
     return getDownloadURL(snapshot.ref).then((downloadURL) => {
       return downloadURL;
     });

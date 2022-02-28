@@ -19,7 +19,6 @@ async function defaultUsername(name: string | null): Promise<string> {
       username: refactor,
     })
     .then((e) => e.data);
-  console.log(foundUserWithTheSameUsername);
   if (foundUserWithTheSameUsername)
     return defaultUsername(name + Math.floor(Math.random() * 10));
   else return refactor;
@@ -45,7 +44,6 @@ export async function signUpWithEmail(userInfo: IUser) {
         avatar: downloadURL,
       })
       .then((doc) => {
-        console.log(doc.data);
         if (password)
           return createUserWithEmailAndPassword(auth, email, password);
       })

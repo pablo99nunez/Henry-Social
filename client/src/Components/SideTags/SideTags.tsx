@@ -47,7 +47,6 @@ const SideTags = () => {
     }
   }, [posts]);
 
-  
   return (
     <aside className={styles.aside_tags}>
       <nav className={styles.aside_sections}>
@@ -110,27 +109,27 @@ const SideTags = () => {
             <li
             className="tags"
             onClick={handleClick}
-            title="react"
+            title="#react"
             >#ReactJS</li>
             <li
             className="tags"
             onClick={handleClick}
-            title="javascript"
+            title="#javascript"
             >#JavaScript</li>
             <li
             className="tags"
             onClick={handleClick}
-            title="frontend"
+            title="#frontend"
             >#Frontend</li>
             <li
             className="tags"
             onClick={handleClick}
-            title="backend"
+            title="#backend"
             >#Backend</li>
             <li
             className="tags"
             onClick={handleClick}
-            title="ayuda"
+            title="#necesitoAyuda"
             >#NecesitoAyuda</li>
           </ul>
         </nav>

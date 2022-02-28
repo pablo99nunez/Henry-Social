@@ -10,6 +10,7 @@ import Comments from "../../Components/Comments/Comments";
 import FollowBar from "../../Components/FollowBar/FollowBar";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import SideMessages from "../../Components/SideMessages/SideMessages";
+import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
 export default function PostDetail() {
   const { id } = useParams();
@@ -19,13 +20,15 @@ export default function PostDetail() {
   useEffect(() => {
     if (id) {
       dispatch(getPost(id));
-      return () => dispatch(clear('post'))
+      return () => {
+        dispatch(clear("post"));
+      };
     }
   }, [id]);
 
   return (
     <>
-      <NavSearch/>
+      <NavSearch />
       <div id="postDetail">
         <div id="content">
           <div id="follow-bar">
@@ -33,9 +36,8 @@ export default function PostDetail() {
           </div>
           <div id="boxPost">
             <div id="post">
-              <Post post={details} />
-              {console.log('Detalles Post: ', details)}
-              <Comments/>
+              {details ? <Post post={details} /> : <LoadingPage />}
+              <Comments />
             </div>
           </div>
 
