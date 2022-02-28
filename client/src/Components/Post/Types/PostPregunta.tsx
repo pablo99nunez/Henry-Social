@@ -28,9 +28,18 @@ export default function PostPregunta({ post }: Props) {
                     response,
                     respuestaAuthor: user,
                 });
+                InfoAlert.fire({
+                    title: "Tu respuesta ha sido enviada",
+                    icon: "success"
+                });
+                navigate("/");
             }
         } catch (e) {
             console.log(e);
+            InfoAlert.fire({
+                title: "Hubo un problema con tu respuesta",
+                icon: "error"
+            });
         }
     };
 
