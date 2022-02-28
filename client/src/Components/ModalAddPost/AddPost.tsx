@@ -99,38 +99,26 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
   const types = [
     {
-      abr: "multimedia",
-      text: "Foto / Video",
+        abr: "multimedia",
+        text: "Foto / Video",
     },
     {
-      abr: "boom",
-      text: "Boom",
+        abr: "boom",
+        text: "Boom",
     },
     {
-      abr: "empleo",
-      text: "Ofertas de empleo",
+        abr: "empleo",
+        text: "Ofertas de empleo",
     },
-<<<<<<< HEAD
-    {
-      abr: 'servicio',
-      text: 'Servicio'
-    },
-    {
-      abr: 'pregunta',
-      text: 'Pregunta'
-    },
-  ]
-=======
     // {
     //     abr: "servicio",
     //     text: "Servicio",
     // },
     {
-      abr: "pregunta",
-      text: "Pregunta",
+        abr: "pregunta",
+        text: "Pregunta",
     },
   ];
->>>>>>> origin/dev
 
   return (
     <motion.form
@@ -145,87 +133,11 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       <div className={styles.add_post_content}>
         {typePost === "pregunta" ? (
           <div className={styles.content__inputs}>
-<<<<<<< HEAD
-            {typePost === 'servicio' ?
-            <>
-              <input 
-                type="text" 
-                name='tecnologíaClases'
-                placeholder='Tecnología'
-                defaultValue={post.tecnologíaClases}
-              />  
-              <input 
-                type="text" 
-                name='temasClases'
-                placeholder='Temas'
-                defaultValue={post.temasClases}
-              />  
-              <input 
-                name='costoClases'
-                type="number" 
-                defaultValue={post.costoClases}
-                placeholder='Costo de las clases'
-              />  
-            </> : typePost === 'pregunta' ? 
-            <>
-              <input 
-              type ='text'
-              name = 'question'
-              placeholder="Haz una pregunta"
-              defaultValue= {post.question}
-              required
-              />
-            </> :
-            <>
-              <input 
-                type="text" 
-                name="company" 
-                defaultValue={post.company}
-                placeholder="Nombre de la Empresa"
-                required
-              />
-              <input 
-                type="text" 
-                name="position" 
-                defaultValue={post.position}
-                placeholder="Rol en la Empresa"
-                required
-              />
-              <input 
-                  type="file"
-                  accept=".png"
-                  name="companyImage"
-                  defaultValue ={post.companyImage}
-                  placeholder="Imagen de la empresa"
-              />
-            </>
-            }
-            {typePost === 'empleo' &&
-            <>
-              <input 
-                name="companyLink" 
-                type="url" 
-                maxLength = {80}
-                defaultValue={post.companyLink}
-                placeholder="Link del Empleo"
-                required
-              />
-              <input 
-                min='0'
-                type="number" 
-                name="salary" 
-                defaultValue={post.salary}
-                placeholder="Salario (Opcional)"
-              />
-            </>
-            }
-=======
             <input
               type="text"
               name="pregunta"
               placeholder="¿Cual es tu pregunta?"
             />
->>>>>>> origin/dev
           </div>
         ) : (
           typePost !== "normal" &&
@@ -301,16 +213,6 @@ const AddPost: FC<Props> = ({ setOpen }) => {
         )}
         <div className={styles.content__textImage}>
           <textarea
-<<<<<<< HEAD
-            name= { typePost !== 'pregunta' ? "text" : "question"}
-            placeholder={typePost === 'boom' 
-            ? 'Cuentanos tu emoción en el comienzo de tu nueva aventura' 
-            : typePost === 'empleo' ? 'Explica más sobre este empleo'
-            : typePost === 'pregunta' ? 'Describe un poco mas tu pregunta'
-            : typePost === 'servicio' ? 'Cuentanós sobre tus clases y sobre quien eres' 
-            : '¿Que estas pensando?'}
-            className={post.text ? styles.active : ''}
-=======
             name="text"
             placeholder={
               typePost === "boom"
@@ -324,7 +226,6 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 : "¿Que estas pensando?"
             }
             className={post.text ? styles.active : ""}
->>>>>>> origin/dev
           ></textarea>
           {typePost === "multimedia" && (
             <div className={styles.boxImage}>

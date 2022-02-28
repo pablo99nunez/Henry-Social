@@ -13,11 +13,7 @@
 .post,
 .postBoom,
 .postJob,
-<<<<<<< HEAD
-.postQuestion {
-=======
 .postPregunta {
->>>>>>> origin/dev
   width: 100%;
   background-color: $black;
   border-radius: 8px;
@@ -137,12 +133,6 @@
   border: 1px solid #1a5fc7;
 }
 
-<<<<<<< HEAD
-.postQuestion {
-  box-shadow: 0 0 5px 5px #fffb0033;
-  border: 1px solid #eaee10
-}
-=======
 .postPregunta {
   border-color: #9dae31;
   box-shadow: 0 0 5px 5px #9dae3144;
@@ -193,4 +183,3 @@
     }
   }
 }
->>>>>>> origin/dev
