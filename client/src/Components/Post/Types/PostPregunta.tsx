@@ -1,13 +1,11 @@
 import axios from "axios";
-import { useRef, useState } from "react";
-import { BsChatSquareDots, BsThreeDots } from "react-icons/bs";
+import { useState } from "react";
 import { IoSend } from "react-icons/io5";
 import { useNavigate } from "react-router";
 import { IPost } from "../../../../../src/models/Post";
 import useUser from "../../../Hooks/useUser";
 import { InfoAlert } from "../../Alert/Alert";
-import CommentModal from "../../CommentModal/CommentModal";
-import { Like } from "../../Like/Like";
+import { getMomento } from "../../../helpers/momento";
 
 import style from "../Post.module.scss";
 
@@ -47,7 +45,7 @@ export default function PostPregunta({ post }: Props) {
         <>
             <div className={style.post_profile}>
                 <h2>{post?.pregunta}</h2>
-                <h4>{new Date(post.postTime).toLocaleString()}</h4>
+                <h4>{getMomento(post?.postTime)}</h4>
             </div>
             <div className={style.post_content} /*  ref={contentRef} */>
                 {post?.body}

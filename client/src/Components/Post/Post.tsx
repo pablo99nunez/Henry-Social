@@ -1,18 +1,12 @@
-import React, { useState, FC, useRef, useEffect } from "react";
+import { useState, FC, useEffect } from "react";
 import style from "./Post.module.scss";
 import { IPost } from "../../../../src/models/Post";
-import { useNavigate } from "react-router";
-import Avatar from "../Avatar/Avatar";
 import CommentModal from "../CommentModal/CommentModal";
-import LoadingPage from "../LoadingPage/LoadingPage";
-import PostPregunta from "./Types/PostPregunta";
 import Interactions from "./Interactions/Interactions";
 import Options from "./Options/Options";
 import ProfileName from "./ProfileName/ProfileName";
 import ProfilePicture from "./ProfilePicture/ProfilePicture";
 import Content from "./Content/Content";
-
-import { getMomento } from '../../helpers/momento';
 
 type Props = {
     post: IPost;
@@ -22,10 +16,6 @@ const Post: FC<Props> = ({ post }) => {
     const [eliminated, setEliminated] = useState(false);
 
     const [openComment, setOpenComment] = useState(false);
-
-    useEffect(() => {
-        console.log(post?._id);
-    }, [post]);
 
     return (
         <div
@@ -37,13 +27,10 @@ const Post: FC<Props> = ({ post }) => {
                   post?.typePost === "empleo" && style.postJob
               } ${post?.typePost === "boom" && style.postBoom}
               ${post?.typePost === "pregunta" && style.postPregunta}`}
-              /*  onClick={handleClick}
-              ref={postRef} */
           >
           {post?.typePost !== "pregunta" && (
               <ProfilePicture post={post}></ProfilePicture>
           )}
-          <h4>{getMomento(post?.postTime)}</h4>
           <div className={style.post_wrap}>
               {post?.typePost !== "pregunta" && (
                   <ProfileName post={post}></ProfileName>
