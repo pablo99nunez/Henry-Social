@@ -8,6 +8,7 @@ import { FaUpload, FaCheck } from "react-icons/fa";
 import styles from "./AddPost.module.scss";
 import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
 import { motion } from "framer-motion";
+import Validator from './Validator'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -19,6 +20,9 @@ const AddPost: FC<Props> = ({ setOpen }) => {
   const dispatch = useDispatch();
 
   const [typePost, setTypePost] = useState("normal");
+  const [errors, setErrors] = useState({
+    company: ''
+  });
   const [post, setPost] = useState<any>({
     text: "",
     image: "",
@@ -35,7 +39,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
   const handleChange = (e: React.FormEvent<HTMLFormElement>) => {
     const target = e.target as HTMLInputElement;
-
+    setErrors(Validator({...post, [target.name]:target.value}))
     if (
       (target.name === "companyImage" || target.name === "image") &&
       target.files
@@ -173,6 +177,9 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                     placeholder="Nombre de la Empresa"
                     required
                   />
+                  {
+                    errors.company && <p>Hola</p> 
+                  }
                   <input
                     type="text"
                     name="position"
