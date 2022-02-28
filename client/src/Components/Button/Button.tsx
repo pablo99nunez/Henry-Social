@@ -13,13 +13,15 @@ type Props = {
     name?: string;
     type?: any,
     value?: string, 
-    id?: string
+    id?: string,
+    disabled?: boolean
 };
 
 export default function Button({
     children,
     onClick,
     active,
+    disabled,
     style,
     backgroundColor = "#ff1",
     color,
@@ -47,6 +49,7 @@ export default function Button({
     };
     return (
         <motion.button
+            disabled={disabled}
             id={id}
             type={type ? type : "submit"}
             value={value ? value : ""}
@@ -54,7 +57,7 @@ export default function Button({
             initial="initial"
             animate={active ? "active" : "initial"}
             onClick={onClick}
-            whileHover="active"
+            whileHover={disabled ? "" : "active"}
             whileTap={{
                 scale: 1.07,
             }}

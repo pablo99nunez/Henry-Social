@@ -132,7 +132,7 @@ export default function User() {
 
                 <div>
                   {user?.linkedin ? (
-                    <a href={`https://www.linkedin.com/in/${user.linkedin}`} target="_blank">
+                    <a href={user?.linkedin} target="_blank">
                       <div>
                         <img
                           src={linkedin}
