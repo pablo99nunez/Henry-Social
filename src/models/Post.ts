@@ -8,7 +8,7 @@ export interface IPost {
   nLikes: [string];
   numComments: number;
   author: IUser;
-  _id: number | boolean;
+  _id: number;
   typePost: string;
   company: string;
   position: string;

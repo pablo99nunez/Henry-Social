@@ -33,25 +33,25 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     tags: [],
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.FormEvent<HTMLFormElement>) => {
+    const target = e.target as HTMLInputElement;
+
     if (
-      (e.target.name === "companyImage" || e.target.name === "image") &&
-      e.target.files
+      (target.name === "companyImage" || target.name === "image") &&
+      target.files
     )
-      setPost({ ...post, [e.target.name]: e.target.files[0] });
+      setPost({ ...post, [target.name]: target.files[0] });
     else
       setPost({
         ...post,
-        [e.target.name]: e.target.value,
+        [target.name]: target.value,
         tags:
-          e.target.name === "text"
-            ? e.target.value.match(/(#)\w+/g)
-            : post.text,
+          target.name === "text" ? target.value.match(/(#)\w+/g) : post.text,
       });
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const name = e.target.name;
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const name = e.currentTarget.name;
     if (name === typePost) {
       return setTypePost("normal");
     }
