@@ -49,7 +49,6 @@ export default function User() {
   }, [])
   useEffect(() => {
     if (userLogeado?.following && user?.username) {
-      console.log(userLogeado.following);
       setIsFollowing(userLogeado.following.includes(user.username));
     }
   }, [username, userLogeado, user]);
@@ -60,7 +59,7 @@ export default function User() {
     }
   }, [user]);
 
-  const editProfile = () => {
+  const editProfile = (e: any) => {
     return setEdit(true);
   };
 
@@ -69,7 +68,10 @@ export default function User() {
   : <>
       <NavSearch></NavSearch>
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
-        <Settings cancel={() => setEdit(false)}></Settings>
+        <Settings cancel={(e: any) => {
+          e.preventDefault();
+          return setEdit(false)
+        }}/>
       </Modal>
 
       <div className={style.User}>
@@ -130,7 +132,7 @@ export default function User() {
 
                 <div>
                   {user?.linkedin ? (
-                    <a href={`https://www.linkedin.com/in/${user.linkedin}`}>
+                    <a href={`https://www.linkedin.com/in/${user.linkedin}`} target="_blank">
                       <div>
                         <img
                           src={linkedin}
@@ -149,7 +151,7 @@ export default function User() {
                     </div>
                   )}
                   {user?.github ? (
-                    <a href={`https://www.github.com/${user.github}`}>
+                    <a href={`https://www.github.com/${user.github}`} target="_blank">
                       <div>
                         <img
                           src={github}
@@ -199,8 +201,8 @@ export default function User() {
                   Me gusta
                 </h3>
               </div>
-              {posts?.map((e) => (
-                <Post post={e}></Post>
+              {posts?.map((e, i) => (
+                <Post post={e} key={i}></Post>
               ))}
             </div>
             <div className={style.mistery_box}>{"Misterious NavBar"}</div>

@@ -7,11 +7,11 @@ import { InfoAlert } from "../Alert/Alert";
 import { FaUpload, FaCheck } from "react-icons/fa";
 import styles from "./AddPost.module.scss";
 import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
-import { IPost } from "../../../../src/models/Post";
+import { motion } from "framer-motion";
 
 type Props = {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  setOpen: Function;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    setOpen: Function;
 };
 
 export function validate(input) {
@@ -52,12 +52,12 @@ export function validate(input) {
 };
 
 const AddPost: FC<Props> = ({ setOpen }) => {
-  const user = useUser();
-  const dispatch = useDispatch();
+    const user = useUser();
+    const dispatch = useDispatch();
 
   const [typePost, setTypePost] = useState("normal");
   const [errors, setErrors] = useState({});
-  const [post, setPost] = useState({
+  const [post, setPost] = useState<any>({
     text: "",
     image: "",
     company: "",
@@ -80,82 +80,100 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       validate({
          ...post,
          [e.target.name]: e.target.value,
+         tags:
+                    e.target.name === "text"
+                        ? e.target.value.match(/(#)\w+/g)
+                        : post.text,
       })
    );
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const name = e.target.name;
-    if (name === typePost) {
-      return setTypePost("normal");
-    }
-    setTypePost(name);
-  };
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        const name = e.target.name;
+        if (name === typePost) {
+            return setTypePost("normal");
+        }
+        setTypePost(name);
+    };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
-    const downloadURL =
-      post.companyImage instanceof File
-        ? await uploadFile(post.companyImage)
-        : post.companyImage;
+        const downloadURL =
+            post.companyImage instanceof File
+                ? await uploadFile(post.companyImage)
+                : post.companyImage;
 
-    if (user)
-      axios
-        .post(`/post`, {
-          body: post.text,
-          company: post.company,
-          position: post.position,
-          companyLink: post.companyLink,
-          companyImage: downloadURL,
-          salary: post.salary,
-          author: user,
-          typePost,
-          tags: post.tags
-        })
-        .then((data) => {
-          InfoAlert.fire({
-            title: "Publicado con éxito",
-            icon: "success",
-          });
-          setOpen(false);
-          dispatch(getPosts());
-          return data;
-        })
-        .catch((error) => console.error("Error:", error));
-  };
+        if (user)
+            axios
+                .post(`/post`, {
+                    body: post.text,
+                    company: post.company,
+                    position: post.position,
+                    companyLink: post.companyLink,
+                    companyImage: downloadURL,
+                    pregunta: post.pregunta,
+                    salary: post.salary,
+                    author: user,
+                    typePost,
+                    tags: post.tags,
+                })
+                .then((data) => {
+                    InfoAlert.fire({
+                        title: "Publicado con éxito",
+                        icon: "success",
+                    });
+                    setOpen(false);
+                    dispatch(getPosts());
+                    return data;
+                })
+                .catch((error) => console.error("Error:", error));
+    };
 
-  const types = [
-    {
-      abr: "multimedia",
-      text: "Foto / Video",
-    },
-    {
-      abr: "boom",
-      text: "Boom",
-    },
-    {
-      abr: "empleo",
-      text: "Ofertas de empleo",
-    },
-    {
-      abr: "servicio",
-      text: "Servicio",
-    },
-    // {
-    //   abr: 'pregunta',
-    //   text: 'Pregunta'
-    // },
-  ];
+    const types = [
+        {
+            abr: "multimedia",
+            text: "Foto / Video",
+        },
+        {
+            abr: "boom",
+            text: "Boom",
+        },
+        {
+            abr: "empleo",
+            text: "Ofertas de empleo",
+        },
+        // {
+        //     abr: "servicio",
+        //     text: "Servicio",
+        // },
+        {
+            abr: "pregunta",
+            text: "Pregunta",
+        },
+    ];
 
   return (
-    <form
-      onSubmit={(e) => handleSubmit(e)}
-      onChange={(e) => handleChange(e)}
-      className={styles.modal_add_post}
-    >
+   <motion.form
+   onSubmit={(e) => handleSubmit(e)}
+   onChange={(e) => handleChange(e)}
+   className={styles.modal_add_post}
+   animate={{
+     scaleX: 1,
+     scaleY: 1,
+   }}
+ >
       <div className={styles.add_post_content}>
-        {typePost !== "normal" && typePost !== "multimedia" && (
+        {typePost === "pregunta" ? (
+          <div className={styles.content__inputs}>
+            <input
+              type="text"
+              name="pregunta"
+              placeholder="¿Cual es tu pregunta?"
+            />
+          </div>
+        ) : (
+        typePost !== "normal" && typePost !== "multimedia" && (
           <div className={styles.content__inputs}>
             {typePost === "servicio" ? (
               <>
@@ -239,7 +257,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
               </div>
               </>
             )}
-          </div>
+          </div>)
         )}
         <div className={styles.content__textImage}>
           <textarea
@@ -268,36 +286,39 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                     <FaCheck />
                     <p>{post.image.slice(12)}</p>
                   </>
-                ) : (
-                  <FaUpload />
-                )}
-              </label>
-              <input type="file" name="image" id="image" />
+
+                                ) : (
+                                    <FaUpload />
+                                )}
+                            </label>
+                            <input type="file" name="image" id="image" />
+                        </div>
+                    )}
+                </div>
             </div>
-          )}
-        </div>
-      </div>
-      <div className={styles.add_post_tags}>
-        {types.map((t, i) => (
-          <button
-            key={i}
-            name={t.abr}
-            type="button"
-            onClick={(e) => handleClick(e)}
-            className={typePost === t.abr ? styles.select : styles.deselect}
-          >
-            {t.text}
-          </button>
-        ))}
-      </div>
-      <div className={styles.add_post_buttons}>
-        <input type="submit" value="Publicar" />
-        <button type="button" onClick={() => setOpen(false)}>
-          Cancelar
-        </button>
-      </div>
-    </form>
-  );
+            <div className={styles.add_post_tags}>
+                {types.map((t, i) => (
+                    <button
+                        key={i}
+                        name={t.abr}
+                        type="button"
+                        onClick={(e) => handleClick(e)}
+                        className={
+                            typePost === t.abr ? styles.select : styles.deselect
+                        }
+                    >
+                        {t.text}
+                    </button>
+                ))}
+            </div>
+            <div className={styles.add_post_buttons}>
+                <input type="submit" value="Publicar" />
+                <button type="button" onClick={() => setOpen(false)}>
+                    Cancelar
+                </button>
+            </div>
+        </motion.form>
+    );
 };
 
 export default AddPost;

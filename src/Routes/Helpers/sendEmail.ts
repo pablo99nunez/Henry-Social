@@ -11,9 +11,9 @@ interface emailNeeds {
 
 const sendEmail = ({transporter, deleted, from, to, username, _id}: emailNeeds) => {
 
-  const resolution = (err: Error | null, info: any) => {
-    if(err) {
-      console.log(err);
+  const resolution = (error: Error | null, info: any) => {
+    if(error) {
+      console.log(error);
       return;
     }
     console.log(`sent: ${info.response}`);

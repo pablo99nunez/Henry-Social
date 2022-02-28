@@ -6,11 +6,13 @@ import { HiLink } from "react-icons/hi";
 import {
   filterByTag,
   filterBySection,
+  getPosts,
 } from "../../redux/actions/actions";
 import { InfoAlert } from "../Alert/Alert";
 
 const SideTags = () => {
   const initialActiveSection = {
+    posts: false,
     empleo: false,
     boom: false,
     servicio: false,
@@ -27,6 +29,9 @@ const SideTags = () => {
   const handleClick = (e: any) => {
     if(e.target.classList.contains("category")) {
       setActiveSection({ ...initialActiveSection, [e.target.id]: true });
+      if(e.target.id === "all") {
+        return dispatch(getPosts())
+      }
       return dispatch(filterBySection(e.target.id));
     } else {
       return dispatch(filterByTag(e.target.title));
@@ -42,12 +47,17 @@ const SideTags = () => {
     }
   }, [posts]);
 
-  console.log(activeSection);
-
   return (
     <aside className={styles.aside_tags}>
       <nav className={styles.aside_sections}>
         <ul>
+          <li
+            className={activeSection.posts ? `${styles.active} category` : "category"}
+            onClick={handleClick}
+            id="all"
+          >
+            Posts
+          </li>
           <li
             className={activeSection.empleo ? `${styles.active} category` : "category"}
             onClick={handleClick}
@@ -99,27 +109,27 @@ const SideTags = () => {
             <li
             className="tags"
             onClick={handleClick}
-            title="react"
+            title="#react"
             >#ReactJS</li>
             <li
             className="tags"
             onClick={handleClick}
-            title="javascript"
+            title="#javascript"
             >#JavaScript</li>
             <li
             className="tags"
             onClick={handleClick}
-            title="frontend"
+            title="#frontend"
             >#Frontend</li>
             <li
             className="tags"
             onClick={handleClick}
-            title="backend"
+            title="#backend"
             >#Backend</li>
             <li
             className="tags"
             onClick={handleClick}
-            title="ayuda"
+            title="#necesitoAyuda"
             >#NecesitoAyuda</li>
           </ul>
         </nav>

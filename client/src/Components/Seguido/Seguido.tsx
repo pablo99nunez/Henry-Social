@@ -5,7 +5,7 @@ import Avatar from "../Avatar/Avatar";
 import Placeholder from "./Placeholder";
 import styles from "./Seguido.module.scss";
 
-const Seguido = ({ username, key }: any) => {
+const Seguido = ({ username, index }: any) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const Seguido = ({ username, key }: any) => {
   }, [username]);
 
   return user ? (
-    <Link to={`/profile/${user?.username}`} className={styles.user} key={key}>
+    <Link to={`/profile/${user?.username}`} className={styles.user} key={index}>
       <p>{user?.name}</p>
       <Avatar avatar={user?.avatar}></Avatar>
     </Link>

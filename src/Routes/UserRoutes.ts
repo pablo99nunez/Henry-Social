@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from "express";
 import axios from "axios";
-import User from "../models/User";
+import User, { IUser } from "../models/User";
 import { INotification, NotificationType } from "../models/User";
 
 const router = Router();
@@ -17,6 +17,21 @@ router.post("/user", (req, res) => {
     } else res.json(e);
   });
 });
+
+router.put("/user", async (req, res) => {
+  try {
+    const { _id: userId, changes } = req.body;
+    const usernames = await User.find({ _id: {$ne: userId}})
+      .then(r => r.map(u => u.username));
+    console.log(changes);
+    if(usernames.includes(changes.username)) return res.sendStatus(304);
+    const user = await User.findByIdAndUpdate(userId, changes, {new: true});
+    res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+  }
+})
+
 router.get("/users", async (req, res) => {
   const { username } = req.query;
   try {
@@ -24,7 +39,6 @@ router.get("/users", async (req, res) => {
       const users = await User.find({
         name: { $regex: username },
       });
-      console.log(users);
       return res.json(users);
     }
     const users = await User.find({});
@@ -33,6 +47,7 @@ router.get("/users", async (req, res) => {
     res.status(401).json({ error: e });
   }
 });
+
 router.get("/user", async (req, res) => {
   const { username } = req.query;
   const user = await User.findOne({ username });
@@ -56,7 +71,6 @@ router.post("/admin", async (req, res) => {
     const user = await User.findOne({ username });
     if (user) {
       user.admin = !user.admin;
-      console.log(user.admin);
       await user.save();
       res.json(user);
     }
@@ -197,7 +211,6 @@ router.post("/notification", async (req, res) => {
   try {
     const receptor = await User.findById(notification.receptor);
     const emisor = await User.findById(notification.emisor);
-    console.log(receptor, emisor);
     if (receptor && emisor) {
       if (
         typeof receptor.username === "string" &&

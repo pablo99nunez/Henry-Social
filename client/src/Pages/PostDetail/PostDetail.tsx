@@ -10,53 +10,44 @@ import Comments from "../../Components/Comments/Comments";
 import FollowBar from "../../Components/FollowBar/FollowBar";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import SideMessages from "../../Components/SideMessages/SideMessages";
+import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
 export default function PostDetail() {
-  const { id } = useParams();
-  const dispatch = useDispatch();
-  const details = useSelector((state: IState) => state.post);
+    const { id } = useParams();
+    const dispatch = useDispatch();
+    const details = useSelector((state: IState) => state.post);
 
-  useEffect(() => {
-    if (id) {
-      dispatch(getPost(id));
-      return () => dispatch(clear('post'))
-    }
-  }, [id]);
+    useEffect(() => {
+        if (id) {
+            dispatch(getPost(id));
+            return () => dispatch(clear("post"));
+        }
+    }, [id]);
 
-  return (
-    <>
-      <NavSearch/>
-      <div id="postDetail">
-        <div id="content">
-          <div id="follow-bar">
-            <FollowBar />
-          </div>
-          <div id="boxPost">
-            <div id="post">
-              <Post post={details} />
-              {console.log('Detalles Post: ', details)}
-              <Comments/>
+    return (
+        <>
+            <NavSearch />
+            <div id="postDetail">
+                <div id="content">
+                    <div id="follow-bar">
+                        <FollowBar />
+                    </div>
+                    <div id="boxPost">
+                        <div id="post">
+                            {details ? (
+                                <Post post={details} />
+                            ) : (
+                                <LoadingPage />
+                            )}
+                            <Comments />
+                        </div>
+                    </div>
+
+                    <div id="messages">
+                        <SideMessages />
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <div id="messages">
-            <SideMessages />
-          </div>
-        </div>
-      </div>
-    </>
-  );
+        </>
+    );
 }
-
-/* 
-
-Datos que tengo que recibir en este componente:
-
--Los detalles del Post:
-
-  Nombre, fecha de publicacion, contenido del post, 
-  numero de likes y comentarios, 
-  arreglo de objetos con cada uno de los comentarios:
-  { name, content, date, cohorte(opc), countLikes} 
-
-*/
