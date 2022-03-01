@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
@@ -8,35 +9,56 @@ import {
   filterBySection,
   getPosts,
 } from "../../redux/actions/actions";
-import { InfoAlert } from "../Alert/Alert";
 
 const SideTags = () => {
-  const initialActiveSection = {
-    posts: false,
-    empleo: false,
-    boom: false,
-    servicio: false,
-    pregunta: false,
-    recurso: false,
-    curso: false,
-  };
-
-  const [activeSection, setActiveSection] = useState<any>(initialActiveSection);
+  const [activeSection, setActiveSection] = useState<any>("all");
 
   const posts = useSelector((state: IState) => state.posts);
   const dispatch = useDispatch();
+  const [tags, setTags] = useState([]);
 
   const handleClick = (e: any) => {
     if (e.target.classList.contains("category")) {
-      setActiveSection({ ...initialActiveSection, [e.target.id]: true });
+      setActiveSection(e.target.id);
       if (e.target.id === "all") {
         return dispatch(getPosts());
       }
       return dispatch(filterBySection(e.target.id));
     } else {
+      setActiveSection("");
       return dispatch(filterByTag(e.target.title));
     }
   };
+
+  useEffect(() => {
+    const tags = posts
+      ?.filter((e) => e.tags?.length > 0)
+      .map((e) => e.tags)
+      .flat(2)
+      .filter((e) => e);
+
+    const objPopulares: any = {};
+
+    tags.forEach((e: string) => {
+      objPopulares[e] = objPopulares[e] ? objPopulares[e] + 1 : 1;
+    });
+
+    let tagsPopulares: any = [];
+
+    Object.keys(objPopulares)?.forEach((key) => {
+      tagsPopulares.push([key, objPopulares[key]]);
+    });
+
+    tagsPopulares = tagsPopulares
+      .sort((a: any, b: any) => {
+        if (a[1] < b[1]) return 1;
+        else return -1;
+      })
+      .slice(0, 5);
+
+    console.log(tagsPopulares);
+    setTags(tagsPopulares);
+  }, [posts]);
 
   return (
     <aside className={styles.aside_tags}>
@@ -44,7 +66,7 @@ const SideTags = () => {
         <ul>
           <li
             className={
-              activeSection.posts ? `${styles.active} category` : "category"
+              activeSection === "all" ? `${styles.active} category` : "category"
             }
             onClick={handleClick}
             id="all"
@@ -53,7 +75,9 @@ const SideTags = () => {
           </li>
           <li
             className={
-              activeSection.empleo ? `${styles.active} category` : "category"
+              activeSection === "empleo"
+                ? `${styles.active} category`
+                : "category"
             }
             onClick={handleClick}
             id="empleo"
@@ -62,7 +86,9 @@ const SideTags = () => {
           </li>
           <li
             className={
-              activeSection.boom ? `${styles.active} category` : "category"
+              activeSection === "boom"
+                ? `${styles.active} category`
+                : "category"
             }
             onClick={handleClick}
             id="boom"
@@ -71,7 +97,9 @@ const SideTags = () => {
           </li>
           <li
             className={
-              activeSection.servicio ? `${styles.active} category` : "category"
+              activeSection === "servicio"
+                ? `${styles.active} category`
+                : "category"
             }
             onClick={handleClick}
             id="servicio"
@@ -80,14 +108,16 @@ const SideTags = () => {
           </li>
           <li
             className={
-              activeSection.pregunta ? `${styles.active} category` : "category"
+              activeSection === "pregunta"
+                ? `${styles.active} category`
+                : "category"
             }
             onClick={handleClick}
             id="pregunta"
           >
             Preguntas Frecuentes
           </li>
-          <li
+          {/*  <li
             className={
               activeSection.recurso ? `${styles.active} category` : "category"
             }
@@ -104,28 +134,21 @@ const SideTags = () => {
             id="curso"
           >
             Cursos Gratuitos
-          </li>
+          </li> */}
         </ul>
       </nav>
       <div className={styles.aside_tags_popular}>
         <h2>Tags Populares</h2>
         <nav className={styles.aside_tags_enlaces}>
           <ul>
-            <li className="tags" onClick={handleClick} title="#react">
-              #ReactJS
-            </li>
-            <li className="tags" onClick={handleClick} title="#javascript">
-              #JavaScript
-            </li>
-            <li className="tags" onClick={handleClick} title="#frontend">
-              #Frontend
-            </li>
-            <li className="tags" onClick={handleClick} title="#backend">
-              #Backend
-            </li>
-            <li className="tags" onClick={handleClick} title="#necesitoAyuda">
-              #NecesitoAyuda
-            </li>
+            {tags.length &&
+              tags.map((e) => {
+                return (
+                  <li className="tags" onClick={handleClick} title={e[0]}>
+                    {e[0]}
+                  </li>
+                );
+              })}
           </ul>
         </nav>
       </div>

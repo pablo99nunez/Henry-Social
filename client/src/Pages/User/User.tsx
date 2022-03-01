@@ -114,11 +114,12 @@ export default function User() {
             <div className={style.photo}>
               <img
                 src={
-                  typeof user?.avatar === "string"
+                  typeof user?.avatar == "string" && user?.avatar
                     ? user?.avatar
                     : "https://s5.postimg.cc/537jajaxj/default.png"
                 }
                 alt=""
+                referrerPolicy="no-referrer"
               />
             </div>
             <div className={style.details}>
@@ -178,13 +179,13 @@ export default function User() {
                 <div>
                   {user?.linkedin ? (
                     <a href={user?.linkedin} target="_blank">
-                    <div>
-                      <img
-                        src={linkedin}
-                        alt="linkedin-profile"
-                        className={style.linkedin_logo}
-                      />
-                    </div>
+                      <div>
+                        <img
+                          src={linkedin}
+                          alt="linkedin-profile"
+                          className={style.linkedin_logo}
+                        />
+                      </div>
                     </a>
                   ) : (
                     <div>
