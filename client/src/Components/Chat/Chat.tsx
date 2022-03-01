@@ -6,7 +6,10 @@ import { BiChevronsUp } from "react-icons/bi";
 import Avatar from "../Avatar/Avatar";
 import { motion } from "framer-motion";
 
-const socket = io("http://localhost:3001");
+const url = import.meta.env.PROD
+  ? "https://henry-social-back.herokuapp.com"
+  : "http://localhost:3001";
+const socket = io(url);
 
 const Chat = () => {
   const user = useUser();
