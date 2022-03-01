@@ -23,6 +23,8 @@ enum USER_ACTION {
   logIn,
 }
 
+let userExists: boolean;
+
 export default function Login(): JSX.Element {
   const [input, setInput] = useState<IUser>({
     name: "",
@@ -42,6 +44,7 @@ export default function Login(): JSX.Element {
   });
   const [loading, setLoading] = useState(true);
   const [formComplete, setFromComplete] = useState(false);
+  const [userAlreadyExist, setUserAlreadyExist] = useState(false);
   const [action, setAction] = useState(USER_ACTION.logIn);
   const navigate = useNavigate();
   const user = useUser();
@@ -56,11 +59,19 @@ export default function Login(): JSX.Element {
     }, 1000);
     if(action === 1) {
       email && password && setFromComplete(true);
-    } else name && username && password && email && setFromComplete(true);
+    } else {
+      console.log(!userAlreadyExist);
+      if(name && username && !userAlreadyExist && password && email) {
+        if(btn.current) btn.current.disabled = false;
+        return setFromComplete(true);
+      } 
+      if(btn.current) btn.current.disabled = true;
+      setFromComplete(false);
+    }
     return () => {
       cleanUp = true;
     };
-  }, [user, input]);
+  }, [user, input, userAlreadyExist, formComplete]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -126,6 +137,7 @@ export default function Login(): JSX.Element {
       | React.FocusEvent<HTMLInputElement>
   ) {
     const target = e.target as HTMLInputElement;
+    if(!target.value.length) return;
     axios
       .get("/user", {
         params: {
@@ -133,19 +145,16 @@ export default function Login(): JSX.Element {
         },
       })
       .then((user) => {
-        if (!valForm(target, target.name, user?.data?.username) && user.data) {
+        userExists = !valForm(target, target.name, user?.data?.username);
+        setUserAlreadyExist(userExists);
+        if (userExists && user.data) {
           setErrors({
             ...errors,
             [target.name]: true,
           });
           if (btn.current) btn.current.disabled = true;
-        } else {
-          setErrors({
-            ...errors,
-            [target.name]: false,
-          });
-          if (formComplete && btn.current) btn.current.disabled = false;
-        }
+        } 
+        if (formComplete && btn.current) btn.current.disabled = false;
       });
   }
 
@@ -221,7 +230,7 @@ export default function Login(): JSX.Element {
               <LoginInput
                 valid={!errors.password}
                 id="password"
-                title="8 characters long: numbers, 1 uppercase is required"
+                title="Mínimo 8 caracteres, obligarotio un número y una mayúscula."
                 type="password"
                 name="password"
                 placeholder="Contraseña"
@@ -233,7 +242,7 @@ export default function Login(): JSX.Element {
                     valid={!errors.username}
                     id="username"
                     type="text"
-                    title="The username must be unique, 3 characters long, and not special characteres"
+                    title="Este campo no puede estar vacio, no debe tener caracteres especiales, mínimo tres de largo y debe ser único."
                     name="username"
                     onChange={handleInputChange}
                     onKeyUp={(e) => {
@@ -250,7 +259,7 @@ export default function Login(): JSX.Element {
                     valid={!errors.name}
                     id="name"
                     type="text"
-                    title="The names must start with a capital letter"
+                    title="Los nombres deben empezar con mayúscula."
                     name="name"
                     onChange={handleInputChange}
                     placeholder="Nombre"

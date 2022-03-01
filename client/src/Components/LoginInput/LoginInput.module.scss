@@ -14,13 +14,34 @@
   }
 
   label {
-    color: red;
+    color: $red;
     position: absolute;
     left: -22px;
 
     &:hover {
       cursor: help;
+
+      & + #err_msg {
+        opacity: 1;
+        z-index: 2;
+      }
     }
+  }
+
+  #err_msg {
+    position: absolute;
+    color: white;
+    top: -65px;
+    left: -34px;
+    z-index: -1;
+    min-width: fit-content;
+    background-color: transparent;
+    opacity: 0;
+    transition: 200ms ease opacity;
+    -webkit-transition: 200ms ease opacity;
+    -moz-transition: 200ms ease opacity;
+    -ms-transition: 200ms ease opacity;
+    -o-transition: 200ms ease opacity;
   }
   
   input {
@@ -36,8 +57,15 @@
     }
   }
 
+  .error {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: #FF2F2B;
+    font-size: 12px;
+  }
+
   .invalid {
-    border-bottom: dotted;
     border-color: red;
   }
 }

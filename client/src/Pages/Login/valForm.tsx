@@ -7,7 +7,7 @@ export default function (input: HTMLInputElement, name: string, username?: never
       regExp = new RegExp(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/);
       return validate(regExp.test(input.value));
     case "password":
-      regExp = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/)
+      regExp = new RegExp(/^(?=.*?[A-Z])(?=.*?[0-9]).{8,}$/)
       return validate(regExp.test(input.value));
     case "name": 
       regExp = new RegExp(/^([A-Z][a-z]{2,}) ?([A-Z][a-z]{2,})? ?([A-Z][a-z]{2,})? ([A-Z][a-z]{2,})$/)
