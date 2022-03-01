@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
+import { BiEdit } from "react-icons/bi";
+import { IconContext } from "react-icons";
 
 import Button from "../Button/Button";
 import style from "./Settings.module.scss";
@@ -8,9 +10,10 @@ import axios from "axios";
 import { editUser } from "../../redux/actions/actions";
 import useUser from "../../Hooks/useUser";
 
-import Avatar from "../Avatar/Avatar";
 import { InfoAlert } from "../Alert/Alert";
 import { useDispatch } from "react-redux";
+import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
+import Avatar from "../Avatar/Avatar";
 
 
 export default function Settings({ cancel }: any) {
@@ -32,7 +35,7 @@ export default function Settings({ cancel }: any) {
     linkedin: false,
     github: false,
     portfolio: false,
-  })
+  });
 
   let typerTimer: NodeJS.Timeout;
 
@@ -43,7 +46,6 @@ export default function Settings({ cancel }: any) {
         username: target.value,
       },
     }).then(r => {
-      console.log(r.data);
       if(r.data === null) return handleChanges({target});
       if(r.data?._id === user?._id) {
         setErrors({...errors, username: false });
@@ -74,7 +76,6 @@ export default function Settings({ cancel }: any) {
         }
         break;
       case "github": 
-        console.log(!(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(target.value)));
         if(!(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(target.value))) {
           setErrors({...errors, [target.name]: true });
           btn.disabled = true;
@@ -94,7 +95,7 @@ export default function Settings({ cancel }: any) {
             btn.disabled = true;
             return;
           }
-        break
+        break;
       default: 
         break
     }
@@ -112,10 +113,13 @@ export default function Settings({ cancel }: any) {
     });
   }
 
-  const saveChanges = (e: any): void => {
+  const saveChanges = async (e: any): void => {
     e.preventDefault();
+    const imgInput: any = document.getElementById("newAvatar");
+    const imgUrl = await uploadFile(imgInput?.files[0]);
+
     axios.put("/user", {
-      _id: user?._id, changes
+      _id: user?._id, changes: { ...changes, avatar: imgUrl}
     }).then(({data: user}) => {
       cancel(e);
       dispatch(editUser(user));
@@ -124,9 +128,9 @@ export default function Settings({ cancel }: any) {
         icon: "success"
       });
       navigate(`/profile/${changes.username}`);
-    }).catch(err => {
+    }).catch(error => {
       cancel(e);
-      console.log(err);
+      console.log(error);
       InfoAlert.fire({
         title: "No se pudo actulizar tu perfil",
         icon: "error"
@@ -140,17 +144,25 @@ export default function Settings({ cancel }: any) {
         ...changes,
         role: e.target.value
       });
-    } else throw new Error("Only admins can change roles");
-    
+    } else throw new Error("Only admins can change roles"); 
   }
-
-  useEffect(() => {
-    console.log(errors.github);
-  }, [errors])
 
   return (
     <form className={style.settings_wrap}>
-      <Avatar avatar={user?.avatar}/>
+      <div id={style.avt_cont}>
+        <img src={changes?.avatar || user?.avatar || "https://s5.postimg.cc/537jajaxj/default.png"} alt="avatar"/>
+        <label htmlFor="newAvatar" id={style.editIcon}>  
+          <IconContext.Provider
+            value={{ color: 'yellow', size: '35px' }}>
+            <BiEdit/>
+          </IconContext.Provider>
+        </label>
+        <input 
+          id="newAvatar" 
+          name="avatar"
+          onChange={handleChanges}
+          type="file" />
+      </div>
       <div>
         <div className={style.inputBox}>
           <h3>Nombre de usuario</h3>

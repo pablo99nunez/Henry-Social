@@ -14,7 +14,8 @@ type Props = {
     type?: any,
     value?: string, 
     id?: string,
-    disabled?: boolean
+    disabled?: boolean,
+    title?: string
 };
 
 export default function Button({
@@ -23,6 +24,7 @@ export default function Button({
     active,
     disabled,
     style,
+    title,
     backgroundColor = "#ff1",
     color,
     name,
@@ -51,6 +53,7 @@ export default function Button({
         <motion.button
             disabled={disabled}
             id={id}
+            title={title}
             type={type ? type : "submit"}
             value={value ? value : ""}
             variants={variants}

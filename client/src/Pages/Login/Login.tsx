@@ -109,7 +109,6 @@ export default function Login(): JSX.Element {
             title: "Usuario logueado con exito",
             icon: "success",
           });
-          // alert("Usuario logueado con exito");
           navigate("/");
         }
       } catch (e) {

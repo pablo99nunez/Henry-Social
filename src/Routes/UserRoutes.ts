@@ -26,8 +26,8 @@ router.put("/user", async (req, res) => {
     if(usernames.includes(changes.username)) return res.sendStatus(304);
     const user = await User.findByIdAndUpdate(userId, changes, {new: true});
     res.status(200).json(user);
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   }
 })
 

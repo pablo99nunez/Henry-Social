@@ -7,6 +7,7 @@ import Options from "./Options/Options";
 import ProfileName from "./ProfileName/ProfileName";
 import ProfilePicture from "./ProfilePicture/ProfilePicture";
 import Content from "./Content/Content";
+import LoadingPage from "../LoadingPage/LoadingPage";
 
 type Props = {
     post: IPost;
