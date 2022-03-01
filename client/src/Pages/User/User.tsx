@@ -83,6 +83,7 @@ export default function User() {
     }
   }, [username, userLogeado, user]);
   useEffect(() => {
+    console.log(user);
     if (user) {
       dispatch(getPosts(user._id));
       setLoading(false);
@@ -176,17 +177,14 @@ export default function User() {
 
                 <div>
                   {user?.linkedin ? (
-                    <a
-                      href={`https://www.linkedin.com/in/${user.linkedin}`}
-                      target="_blank"
-                    >
-                      <div>
-                        <img
-                          src={linkedin}
-                          alt="linkedin-profile"
-                          className={style.linkedin_logo}
-                        />
-                      </div>
+                    <a href={user?.linkedin} target="_blank">
+                    <div>
+                      <img
+                        src={linkedin}
+                        alt="linkedin-profile"
+                        className={style.linkedin_logo}
+                      />
+                    </div>
                     </a>
                   ) : (
                     <div>

@@ -14,8 +14,13 @@
   padding: 0.3rem 0.3rem;
   display: flex;
   gap: 0.5rem;
+
   img {
     width: 1rem;
     object-fit: cover;
   }
+}
+.disabled {
+  background-color: grey !important;
+  cursor: default;
 }
