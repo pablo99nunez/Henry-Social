@@ -16,6 +16,8 @@ export default function (input: HTMLInputElement, name: string, username?: never
       regExp = new RegExp(/^[a-zA-Z0-9_-]{3,15}$/);
       return !username ? validate(regExp.test(input.value)) :
       validate(username !== input.value);
+    case "avatar":
+      return true;
     default:
       return false
   }
