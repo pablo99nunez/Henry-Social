@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
-import { filterByOrder, getPosts } from "../../redux/actions/actions";
+import { filterByOrder } from "../../redux/actions/actions";
 import { BsPlusCircleFill } from "react-icons/bs";
 
 import styles from "./Posts.module.scss";
@@ -92,6 +92,7 @@ const Posts = () => {
           </motion.div>
         ))}
       </motion.div>
+      {!posts?.length && <h2 className={styles.noPosts}>Nada que ver aqui.</h2>}
     </div>
   );
 };

@@ -97,7 +97,7 @@ const NavSearch = () => {
               </h3>
 
               <p>
-                Student - <strong>{user?.cohorte || "FT-20B"}</strong>
+                {user?.role} - <strong>{user?.cohorte || "FT-20B"}</strong>
               </p>
             </div>
           </div>
