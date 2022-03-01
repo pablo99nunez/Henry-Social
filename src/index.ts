@@ -9,7 +9,8 @@ import axios from "axios";
 import userRouter from "./Routes/UserRoutes";
 import postRouter from "./Routes/PostRoutes";
 import stripeRouter from "./Routes/StripeRoutes";
-
+import http from "http";
+import { Server } from "socket.io";
 const app: express.Application = express();
 app.use(cors());
 
@@ -36,7 +37,28 @@ app.use("/", userRouter);
 app.use("/", postRouter);
 app.use("/", stripeRouter);
 
-app.listen(process.env.PORT, () => {
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("User Connected",socket.id)
+
+  socket.on("send_message", (data) => {
+    io.emit("receive_message",data)
+  })
+
+  socket.on("disconnect",()=> {
+      console.log("User Disconnected", socket.id)
+  })
+});
+
+server.listen(process.env.PORT, () => {
   console.log("Server listening at " + process.env.PORT);
   axios.defaults.baseURL =
     process.env.MODE === "PRODUCTION"
