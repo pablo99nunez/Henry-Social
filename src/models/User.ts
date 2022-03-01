@@ -96,6 +96,7 @@ const userSchema = new Schema<IUser>({
     type: Date,
     default: new Date().toDateString(),
   },
+
 });
 
 export function userValidate(user: any) {
