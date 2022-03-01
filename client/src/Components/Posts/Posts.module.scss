@@ -1,6 +1,13 @@
 @import "../../Styles/variables.scss";
 .posts_wrap {
   position: relative;
+  .noPosts {
+    margin: 0 auto;
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 3rem;
+  }
   .header {
     color: $grey;
     display: flex;

@@ -32,7 +32,7 @@ export default function Present() {
         Participa!
         <RiHandCoinLine />
       </Button>
-      <ProgressBar progress={progress} total={1500}></ProgressBar>
+      <ProgressBar progress={progress} total={100}></ProgressBar>
     </aside>
   );
 }

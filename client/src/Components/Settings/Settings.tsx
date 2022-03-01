@@ -13,7 +13,6 @@ import useUser from "../../Hooks/useUser";
 import { InfoAlert } from "../Alert/Alert";
 import { useDispatch } from "react-redux";
 import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
-import Avatar from "../Avatar/Avatar";
 
 
 export default function Settings({ cancel }: any) {
@@ -36,6 +35,8 @@ export default function Settings({ cancel }: any) {
     github: false,
     portfolio: false,
   });
+
+  const [newAvatar, setNewAvatar] = useState(null);
 
   let typerTimer: NodeJS.Timeout;
 
@@ -96,6 +97,12 @@ export default function Settings({ cancel }: any) {
             return;
           }
         break;
+      case "avatar": 
+          if(target.files) {
+            setNewAvatar(URL.createObjectURL(target.files[0]));
+            return;
+          }
+        break
       default: 
         break
     }
@@ -150,7 +157,7 @@ export default function Settings({ cancel }: any) {
   return (
     <form className={style.settings_wrap}>
       <div id={style.avt_cont}>
-        <img src={changes?.avatar || user?.avatar || "https://s5.postimg.cc/537jajaxj/default.png"} alt="avatar"/>
+        <img src={newAvatar ||  user?.avatar || "https://s5.postimg.cc/537jajaxj/default.png"} alt="avatar"/>
         <label htmlFor="newAvatar" id={style.editIcon}>  
           <IconContext.Provider
             value={{ color: 'yellow', size: '35px' }}>
@@ -184,11 +191,12 @@ export default function Settings({ cancel }: any) {
         </div>
         <div className={style.inputBox}>
           <h3>Biografia</h3>
-          <Input 
+          <Input
             onChange={handleChanges}
             name="bio"
             placeholder="Escribe sobre ti..."
-            defaultValue={changes?.bio}></Input>
+            defaultValue={changes?.bio}
+          ></Input>
         </div>
         <div className={style.buttons}>
           <Button
@@ -211,14 +219,14 @@ export default function Settings({ cancel }: any) {
             value="TA">TA</Button>
         </div>
 
-        <Input 
-          type="text" 
+        <Input
+          type="text"
           name="github"
           error={errors.github}
           onChange={handleChanges}
-          placeholder="Ingresa tu Usuario de Github" 
+          placeholder="Ingresa tu Usuario de Github"
           defaultValue={changes?.github}
-          ></Input>
+        ></Input>
         <Input
           type="url"
           error={errors.linkedin}
@@ -250,11 +258,7 @@ export default function Settings({ cancel }: any) {
               return complete;
             })()}
             onClick={saveChanges}>Guardar cambios</Button>
-          <Button
-            className={style.cancel_button}
-            onClick={(e: any) => cancel(e)}
-            active
-          >
+          <Button onClick={cancel} backgroundColor="#FF1">
             Cancelar
           </Button>
         </div>

@@ -59,7 +59,7 @@ export default function Login(): JSX.Element {
     } else name && username && password && email && setFromComplete(true);
     return () => {
       cleanUp = true;
-    }
+    };
   }, [user, input]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -119,11 +119,13 @@ export default function Login(): JSX.Element {
   };
 
   let typerTimer: NodeJS.Timeout;
-  interface InputUsername {
-    target: HTMLInputElement;
-  }
 
-  function validateUsername({ target }: InputUsername) {
+  function validateUsername(
+    e:
+      | React.KeyboardEvent<HTMLInputElement>
+      | React.FocusEvent<HTMLInputElement>
+  ) {
+    const target = e.target as HTMLInputElement;
     axios
       .get("/user", {
         params: {
@@ -176,14 +178,15 @@ export default function Login(): JSX.Element {
   }
 
   const handleActionChange = () => {
-    const Act: string = action ? "signUp" : "logIn";
-    setAction(USER_ACTION[Act]);
+    const Act = action ? USER_ACTION.signUp : USER_ACTION.logIn;
+    setAction(Act);
   };
 
   return (
     <>
-      {loading ? <LoadingPage/>
-      : (
+      {loading ? (
+        <LoadingPage />
+      ) : (
         <div id={style.cont}>
           <header>
             <div id={style.title_cont}>
@@ -272,7 +275,6 @@ export default function Login(): JSX.Element {
             </form>
             <div id={style.alt_cont}>
               <Button
-                className={style.alt_btns}
                 onClick={() => handleLogin(signUpWithGmail)}
                 style={{ fontWeight: "normal" }}
               >
@@ -280,7 +282,6 @@ export default function Login(): JSX.Element {
                 con Google <BsGoogle></BsGoogle>
               </Button>
               <Button
-                className={style.alt_btns}
                 style={{ fontWeight: "normal" }}
                 onClick={() => handleLogin(signUpWithGitHub)}
               >

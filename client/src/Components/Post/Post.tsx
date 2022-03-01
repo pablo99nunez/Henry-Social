@@ -8,9 +8,10 @@ import ProfileName from "./ProfileName/ProfileName";
 import ProfilePicture from "./ProfilePicture/ProfilePicture";
 import Content from "./Content/Content";
 import LoadingPage from "../LoadingPage/LoadingPage";
+import Image from "./Image/Image";
 
 type Props = {
-    post: IPost;
+  post: IPost;
 };
 
 const Post: FC<Props> = ({ post }) => {
@@ -18,44 +19,45 @@ const Post: FC<Props> = ({ post }) => {
 
   const [openComment, setOpenComment] = useState(false);
 
-
   return (
     <div
       className={style.postContainer}
-      style={{ display: eliminated ? "none" : "block" }}>
-      { post?._id === false ? 
-        <h2 style={{textAlign: 'center', color: 'white'}}>Esta publicación ya ha sido eliminada.</h2>
-        : post ?
+      style={{ display: eliminated ? "none" : "flex" }}
+    >
+      {post?._id === false ? (
+        <h2 style={{ textAlign: "center", color: "white" }}>
+          Esta publicación ya ha sido eliminada.
+        </h2>
+      ) : post ? (
         <div
           className={`${style.post} ${
-              post?.typePost === "empleo" && style.postJob
+            post?.typePost === "empleo" && style.postJob
           } ${post?.typePost === "boom" && style.postBoom}
-          ${post?.typePost === "pregunta" && style.postPregunta}`}>
-
+          ${post?.typePost === "pregunta" && style.postPregunta}`}
+        >
           {post?.typePost !== "pregunta" && (
-              <ProfilePicture post={post}></ProfilePicture>
+            <ProfilePicture post={post}></ProfilePicture>
           )}
           <div className={style.post_wrap}>
-              {post?.typePost !== "pregunta" && (
-                  <ProfileName post={post}></ProfileName>
-              )}
-              <Content post={post}></Content>
-              <Options
-                  post={post}
-                  setEliminated={setEliminated}
-              ></Options>
-              {(post.respuesta || post.typePost !== "pregunta") && (
-                  <Interactions
-                      post={post}
-                      setOpenComment={setOpenComment}
-                      openComment={openComment}
-                  ></Interactions>
-              )}
+            {post?.typePost !== "pregunta" && (
+              <ProfileName post={post}></ProfileName>
+            )}
+            <Content post={post}></Content>
+            <Image post={post}></Image>
+            <Options post={post} setEliminated={setEliminated}></Options>
+            {(post.respuesta || post.typePost !== "pregunta") && (
+              <Interactions
+                post={post}
+                setOpenComment={setOpenComment}
+                openComment={openComment}
+              ></Interactions>
+            )}
           </div>
         </div>
-      : <LoadingPage/>
-      }
-      <CommentModal open={openComment} postId={post?._id}/>
+      ) : (
+        <LoadingPage />
+      )}
+      <CommentModal open={openComment} postId={post?._id} />
     </div>
   );
 };

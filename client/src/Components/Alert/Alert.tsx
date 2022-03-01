@@ -15,3 +15,20 @@ export const InfoAlert = Swal.mixin({
     toast.addEventListener("mouseleave", Swal.resumeTimer);
   },
 });
+
+export const ErrorAlert = Swal.mixin({
+  icon: "warning",
+  iconColor: "#FF2F2B",
+  background: "#ff1",
+  confirmButtonColor: "#000",
+});
+
+export const ConfirmAlert = Swal.mixin({
+  showCancelButton: true,
+  icon: "warning",
+  background: "#ff1",
+  confirmButtonColor: "#000",
+  iconColor: "#FF2F2B",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Si, borrar usuario!",
+});
