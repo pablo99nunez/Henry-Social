@@ -28,8 +28,8 @@ router.put("/user", async (req, res) => {
     if (usernames.includes(changes.username)) return res.sendStatus(304);
     const user = await User.findByIdAndUpdate(userId, changes, { new: true });
     res.status(200).json(user);
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   }
 });
 
@@ -194,6 +194,7 @@ router.post("/unfollow", async (req, res) => {
     res.status(400).json({ error: error });
   }
 });
+
 router.put("/notification", async (req, res) => {
   const { id, userId } = req.body;
   const user = await User.findById(userId);
@@ -207,6 +208,7 @@ router.put("/notification", async (req, res) => {
     res.status(400).send("User not found");
   }
 });
+
 router.post("/notification", async (req, res) => {
   let notification: INotification = req.body;
   try {
@@ -294,6 +296,7 @@ router.get("/PELIGRO", async (req, res) => {
 
   res.json("DB Clean");
 });
+
 router.get("/deleteNotis", async (req, res) => {
   await User.updateMany(
     {},
@@ -302,6 +305,20 @@ router.get("/deleteNotis", async (req, res) => {
     }
   );
   res.send("Notificaciones eliminadas");
+});
+
+router.delete("/delete-user", async (req, res) => {
+  const { userId, adminId } = req.body;
+
+  const adminUser = await User.findById(adminId);
+
+  console.log(adminUser, adminId);
+  if (!adminUser?.admin) return res.status(403).send("Only for admins roles.");
+
+  const user = await User.findByIdAndDelete(userId);
+  if (!user) return res.status(404).send("This user wasn't found.");
+
+  res.send(user);
 });
 
 export default router;
