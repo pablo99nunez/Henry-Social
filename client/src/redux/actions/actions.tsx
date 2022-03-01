@@ -27,10 +27,6 @@ export interface IAction {
   payload: any;
 }
 
-axios.defaults.baseURL = import.meta.env.PROD
-  ? "https://henry-social-back.herokuapp.com"
-  : "http://localhost:3001";
-
 export function getUser(email: string) {
   return function (dispatch: Function) {
     axios.post("/findUser", { email }).then((res) => {
