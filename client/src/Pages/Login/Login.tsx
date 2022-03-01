@@ -54,7 +54,9 @@ export default function Login(): JSX.Element {
     setTimeout(() => {
       if (user === null && !cleanUp) setLoading(false);
     }, 1000);
-    name && username && password && email && setFromComplete(true);
+    if(action === 1) {
+      email && password && setFromComplete(true);
+    } else name && username && password && email && setFromComplete(true);
     return () => {
       cleanUp = true;
     }
