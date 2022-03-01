@@ -4,6 +4,7 @@ import Joi from "joi";
 
 export interface IPost {
   body: string;
+  text: string;
   postTime: string;
   nLikes: [string];
   numComments: number;
@@ -16,6 +17,7 @@ export interface IPost {
   companyImage: string | File | null;
   salary: number;
   reportedTimes: number;
+  question: IQuestions;
   tags: string[];
   respuesta: string;
   pregunta: string;
@@ -25,7 +27,11 @@ export interface IPost {
   temasClases: string;
   tecnologíaClases: string;
 }
-
+export interface IQuestions {  // Reference to question posts
+  question: string,
+  answer: string,
+  answered: boolean,
+}
 interface Comment {
   postId: ObjectId; // Reference to blogs
   postTime: string;
@@ -78,6 +84,10 @@ const postSchema = new Schema({
   },
   salary: {
     type: Number,
+  },
+  question: {
+    type: [],
+    default: []
   },
   reportedTimes: {
     type: Number,

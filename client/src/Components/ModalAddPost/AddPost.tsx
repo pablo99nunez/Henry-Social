@@ -8,48 +8,14 @@ import { FaUpload, FaCheck } from "react-icons/fa";
 import styles from "./AddPost.module.scss";
 import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
 import { motion } from "framer-motion";
+import {validateChange} from './validate'
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/ban-types
   setOpen: Function;
 };
 
-export function validate(input) {
-   const errors = {
-      company: "",
-      companyLink: "",
-      salary: "",
-      tecnologíaClases: "",
-      costoClases: "",
-   };
-   if (!input.company) {
-      errors.company = "Nombre de compañia es requerido";
-   } else if (!/^[a-z ,.'-]+$/i.test(input.company)) {
-      errors.company = "Nombre de compañia invalido";
-   }
 
-   if(!/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(input.companyLink) && input.companyLink.length > 0){
-      errors.companyLink = "URL invalida";
-   }
-
-   if(input.salary < 0){
-      errors.salary = "Salario tiene que ser minimo 0"
-   } else if(!/^[0-9]+$/.test(input.salary)){
-      errors.salary = "Solo se permiten numeros";
-   }
-
-   if (!input.tecnologíaClases) {
-      errors.tecnologíaClases = "Nombre de tecnologia es requerido";
-   } else if (!/^[a-z ,.'-]+$/i.test(input.tecnologíaClases)) {
-      errors.tecnologíaClases = "Nombre de tecnologia invalido";
-   }
-
-   if (!input.costoClases) {
-      errors.costoClases = "Solo se permiten numeros";
-   } 
-
-   return errors;
-};
 
 const AddPost: FC<Props> = ({ setOpen }) => {
   const user = useUser();
@@ -77,7 +43,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     else setPost({ ...post, [e.target.name]: e.target.value });
 
     setErrors(
-      validate({
+      validateChange({
          ...post,
          [e.target.name]: e.target.value,
          tags:
@@ -107,6 +73,8 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
     const downloadURLImage =
       post.image instanceof File ? await uploadFile(post.image) : post.image;
+    
+
 
     if (user)
       axios
@@ -171,11 +139,15 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       <div className={styles.add_post_content}>
         {typePost === "pregunta" ? (
           <div className={styles.content__inputs}>
+            <div className={styles.input_with_error}>
             <input
               type="text"
               name="pregunta"
               placeholder="¿Cual es tu pregunta?"
             />
+            
+            {errors?.question && (<p>{errors.question}</p>)}
+            </div>
           </div>
         ) : (
           typePost !== "normal" &&
@@ -189,7 +161,6 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   name="tecnologíaClases"
                   placeholder="Tecnología"
                   defaultValue={post.tecnologíaClases}
-                  required
                 />
                 {errors?.tecnologíaClases && (<p>{errors.tecnologíaClases}</p>)}
               </div>
@@ -214,18 +185,19 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   name="company"
                   defaultValue={post.company}
                   placeholder="Nombre de la Empresa"
-                  required
                 />
                 {errors?.company && (<p>{errors.company}</p>)}
               </div>
+              <div className={styles.input_with_error}>
                   <input
                     type="text"
                     name="position"
                     defaultValue={post.position}
                     placeholder="Rol en la Empresa"
-                    required
                   />
-
+                {errors?.position && (<p>{errors.position}</p>)}
+                </div>
+                <div className={styles.input_with_error}>
                   <input
                     type="file"
                     accept=".png"
@@ -233,6 +205,8 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                     defaultValue={post.companyImage}
                     placeholder="Imagen de la empresa"
                   />
+                  {errors?.imageCompany && (<p>{errors.imageCompany}</p>)}
+                  </div>
                 </>
               )}
               {typePost === "empleo" && (
@@ -243,7 +217,6 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   type="url"
                   defaultValue={post.companyLink}
                   placeholder="Link del Empleo"
-                  required
                 />
                 {errors?.companyLink && (<p>{errors.companyLink}</p>)}
               </div>
@@ -276,7 +249,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 ? "Describe tu duda."
                 : "¿Que estas pensando?"
             }
-            className={post.text ? styles.active : ""}
+            className={post.text ? styles.active : errors?.text ? styles.error : ""}
           ></textarea>
           {typePost === "multimedia" && (
             <div className={styles.boxImage}>
@@ -314,7 +287,10 @@ const AddPost: FC<Props> = ({ setOpen }) => {
         ))}
       </div>
       <div className={styles.add_post_buttons}>
-        <input type="submit" value="Publicar" />
+        { errors?
+          <input type="submit" value="Publicar" disabled={true}/> :
+          <input type="submit" value="Publicar" />
+        }
         <button type="button" onClick={() => setOpen(false)}>
           Cancelar
         </button>
