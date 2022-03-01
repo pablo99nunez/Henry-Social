@@ -27,10 +27,10 @@ const SideTags = () => {
   const dispatch = useDispatch();
 
   const handleClick = (e: any) => {
-    if(e.target.classList.contains("category")) {
+    if (e.target.classList.contains("category")) {
       setActiveSection({ ...initialActiveSection, [e.target.id]: true });
-      if(e.target.id === "all") {
-        return dispatch(getPosts())
+      if (e.target.id === "all") {
+        return dispatch(getPosts());
       }
       return dispatch(filterBySection(e.target.id));
     } else {
@@ -38,63 +38,68 @@ const SideTags = () => {
     }
   };
 
-  useEffect(() => {
-    if (posts?.length === 0) {
-      InfoAlert.fire({
-        title: "No se encontraron post para el tag indicado",
-        icon: "info",
-      });
-    }
-  }, [posts]);
-
   return (
     <aside className={styles.aside_tags}>
       <nav className={styles.aside_sections}>
         <ul>
           <li
-            className={activeSection.posts ? `${styles.active} category` : "category"}
+            className={
+              activeSection.posts ? `${styles.active} category` : "category"
+            }
             onClick={handleClick}
             id="all"
           >
             Posts
           </li>
           <li
-            className={activeSection.empleo ? `${styles.active} category` : "category"}
+            className={
+              activeSection.empleo ? `${styles.active} category` : "category"
+            }
             onClick={handleClick}
             id="empleo"
           >
             Ofertas Laborales
           </li>
           <li
-            className={activeSection.boom ? `${styles.active} category` : "category"}
+            className={
+              activeSection.boom ? `${styles.active} category` : "category"
+            }
             onClick={handleClick}
             id="boom"
           >
             Booms
           </li>
           <li
-            className={activeSection.servicio ? `${styles.active} category` : "category"}
+            className={
+              activeSection.servicio ? `${styles.active} category` : "category"
+            }
             onClick={handleClick}
             id="servicio"
           >
             Servicios
           </li>
           <li
-            className={activeSection.pregunta ? `${styles.active} category` : "category"}
+            className={
+              activeSection.pregunta ? `${styles.active} category` : "category"
+            }
             onClick={handleClick}
             id="pregunta"
           >
             Preguntas Frecuentes
           </li>
           <li
-            className={activeSection.recurso ? `${styles.active} category` : "category"}
+            className={
+              activeSection.recurso ? `${styles.active} category` : "category"
+            }
             onClick={handleClick}
             id="recurso"
           >
             Recursos
           </li>
           <li
-            className={activeSection.curso ? `${styles.active} category` : "category"}
+            className={
+              activeSection.curso ? `${styles.active} category` : "category"
+            }
             onClick={handleClick}
             id="curso"
           >
@@ -106,31 +111,21 @@ const SideTags = () => {
         <h2>Tags Populares</h2>
         <nav className={styles.aside_tags_enlaces}>
           <ul>
-            <li
-            className="tags"
-            onClick={handleClick}
-            title="#react"
-            >#ReactJS</li>
-            <li
-            className="tags"
-            onClick={handleClick}
-            title="#javascript"
-            >#JavaScript</li>
-            <li
-            className="tags"
-            onClick={handleClick}
-            title="#frontend"
-            >#Frontend</li>
-            <li
-            className="tags"
-            onClick={handleClick}
-            title="#backend"
-            >#Backend</li>
-            <li
-            className="tags"
-            onClick={handleClick}
-            title="#necesitoAyuda"
-            >#NecesitoAyuda</li>
+            <li className="tags" onClick={handleClick} title="#react">
+              #ReactJS
+            </li>
+            <li className="tags" onClick={handleClick} title="#javascript">
+              #JavaScript
+            </li>
+            <li className="tags" onClick={handleClick} title="#frontend">
+              #Frontend
+            </li>
+            <li className="tags" onClick={handleClick} title="#backend">
+              #Backend
+            </li>
+            <li className="tags" onClick={handleClick} title="#necesitoAyuda">
+              #NecesitoAyuda
+            </li>
           </ul>
         </nav>
       </div>

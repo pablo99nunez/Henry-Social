@@ -7,12 +7,14 @@ enum Roles {
   Instructor = "Instructor",
   TA = "TA",
 }
+
 export enum NotificationType {
   Follow,
   Like,
   Comment,
-  CommentLike
+  CommentLike,
 }
+
 export interface INotification {
   type: NotificationType;
   content: string;
@@ -22,6 +24,7 @@ export interface INotification {
   avatar: string;
   new: boolean;
 }
+
 export interface IUser {
   _id?: string;
   name: string;
@@ -42,8 +45,7 @@ export interface IUser {
   admin: boolean;
   notifications: INotification[];
   company?: string;
-  position?:string;
-  master?:boolean;
+  position?: string;
 }
 
 const userSchema = new Schema<IUser>({
@@ -94,10 +96,7 @@ const userSchema = new Schema<IUser>({
     type: Date,
     default: new Date().toDateString(),
   },
-  master: {
-    type: Boolean,
-    default: false,
-  }
+
 });
 
 export function userValidate(user: any) {

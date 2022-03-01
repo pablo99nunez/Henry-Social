@@ -23,6 +23,13 @@ import {
 import { useProfile } from "../../Hooks/useProfile";
 import { IState } from "../../redux/reducer";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {
+  ConfirmAlert,
+  ErrorAlert,
+  InfoAlert,
+} from "../../Components/Alert/Alert";
 
 export default function User() {
   const [edit, setEdit] = useState(false);
@@ -34,6 +41,7 @@ export default function User() {
   const posts = useSelector((state: IState) => state.posts);
   const userLogeado = useUser();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function handleFollow() {
     if (userLogeado?.username && user?.username && userLogeado.following) {
@@ -43,6 +51,26 @@ export default function User() {
   }
   function handleAdmin() {
     if (username) dispatch(makeAdmin(username));
+  }
+  async function handleDeleteUser(userId: string, adminId: string) {
+    try {
+      ConfirmAlert.fire("¿Estas seguro que deseas eliminar el usuario?").then(
+        async (res) => {
+          if (res.isConfirmed) {
+            await axios.delete("/delete-user", {
+              data: {
+                userId,
+                adminId,
+              },
+            });
+            navigate("/");
+            InfoAlert.fire("Has eliminado a " + user.name);
+          }
+        }
+      );
+    } catch (e) {
+      ErrorAlert.fire("Error" + e);
+    }
   }
   useEffect(() => {
     return () => {
@@ -85,7 +113,7 @@ export default function User() {
             <div className={style.photo}>
               <img
                 src={
-                  typeof user?.avatar == "string"
+                  typeof user?.avatar === "string"
                     ? user?.avatar
                     : "https://s5.postimg.cc/537jajaxj/default.png"
                 }
@@ -94,10 +122,21 @@ export default function User() {
             </div>
             <div className={style.details}>
               <div className={style.buttons}>
-                {userLogeado?.master ? (
-                  <Button onClick={handleAdmin}>
-                    {user?.admin ? "Eliminar rol de Admin" : "Hacer Admin"}
-                  </Button>
+                {userLogeado?.admin ? (
+                  <>
+                    <Button onClick={handleAdmin}>
+                      {user?.admin ? "Eliminar rol de Admin" : "Hacer Admin"}
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        if (user._id) {
+                          handleDeleteUser(user._id, userLogeado._id);
+                        }
+                      }}
+                    >
+                      Delete user
+                    </Button>
+                  </>
                 ) : null}
                 {isOwner ? (
                   <Button onClick={editProfile}>Editar Perfil</Button>
@@ -191,7 +230,7 @@ export default function User() {
             <div className={style.posts}>
               <div className={style.filters}>
                 <h3
-                  className={filter == 1 ? style.active : ""}
+                  className={filter === 1 ? style.active : ""}
                   onClick={() => {
                     dispatch(getPosts(user._id));
                     setFilter(1);
@@ -201,7 +240,7 @@ export default function User() {
                 </h3>
                 <h3>|</h3>
                 <h3
-                  className={filter == 2 ? style.active : ""}
+                  className={filter === 2 ? style.active : ""}
                   onClick={() => {
                     if (user._id) {
                       dispatch(filterByLike(user._id));
@@ -216,7 +255,7 @@ export default function User() {
                 <Post post={e} key={i}></Post>
               ))}
             </div>
-            <div className={style.mistery_box}>{"Misterious NavBar"}</div>
+            <div className={style.mistery_box}>{"Mysterious NavBar"}</div>
           </div>
           <Chat />
         </div>
