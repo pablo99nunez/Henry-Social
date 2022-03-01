@@ -73,7 +73,8 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
     const downloadURLImage =
       post.image instanceof File ? await uploadFile(post.image) : post.image;
-   
+    
+
 
     if (user)
       axios
@@ -234,9 +235,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
             </div>
           )
         )}
-        <div className={styles.input_with_error}>
         <div className={styles.content__textImage}>
-          
           <textarea
             name="text"
             placeholder={
@@ -250,10 +249,8 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 ? "Describe tu duda."
                 : "¿Que estas pensando?"
             }
-            className={post.text ? styles.active : ""}
+            className={post.text ? styles.active : errors?.text ? styles.error : ""}
           ></textarea>
-          {errors?.body && (<p>{errors.body}</p>)}
-          </div>
           {typePost === "multimedia" && (
             <div className={styles.boxImage}>
               <label

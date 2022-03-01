@@ -8,7 +8,7 @@ export function validateChange(input:any) {
        costoClases: "",
        imageCompany: "",
        question: "",
-       body: ""
+       text: ""
     };
     if (!input.company) {
        errors.company = "Nombre de compañia es requerido";
@@ -50,8 +50,8 @@ export function validateChange(input:any) {
       errors.question = "Debes ingresar una pregunta"
     }
 
-    if(input.body.length <= 0){
-        errors.body = 'Debes ingresar contenido'
+    if(input.text.length < 1){
+        errors.text = 'Debes ingresar contenido'
     }
  
     return errors;
