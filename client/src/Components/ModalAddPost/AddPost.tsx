@@ -14,11 +14,49 @@ type Props = {
   setOpen: Function;
 };
 
+export function validate(input) {
+   const errors = {
+      company: "",
+      companyLink: "",
+      salary: "",
+      tecnologíaClases: "",
+      costoClases: "",
+   };
+   if (!input.company) {
+      errors.company = "Nombre de compañia es requerido";
+   } else if (!/^[a-z ,.'-]+$/i.test(input.company)) {
+      errors.company = "Nombre de compañia invalido";
+   }
+
+   if(!/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(input.companyLink) && input.companyLink.length > 0){
+      errors.companyLink = "URL invalida";
+   }
+
+   if(input.salary < 0){
+      errors.salary = "Salario tiene que ser minimo 0"
+   } else if(!/^[0-9]+$/.test(input.salary)){
+      errors.salary = "Solo se permiten numeros";
+   }
+
+   if (!input.tecnologíaClases) {
+      errors.tecnologíaClases = "Nombre de tecnologia es requerido";
+   } else if (!/^[a-z ,.'-]+$/i.test(input.tecnologíaClases)) {
+      errors.tecnologíaClases = "Nombre de tecnologia invalido";
+   }
+
+   if (!input.costoClases) {
+      errors.costoClases = "Solo se permiten numeros";
+   } 
+
+   return errors;
+};
+
 const AddPost: FC<Props> = ({ setOpen }) => {
   const user = useUser();
   const dispatch = useDispatch();
 
   const [typePost, setTypePost] = useState("normal");
+  const [errors, setErrors] = useState({});
   const [post, setPost] = useState<any>({
     text: "",
     image: "",
@@ -27,28 +65,29 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     companyLink: "",
     companyImage: null,
     salary: 0,
-    costoClases: "",
+    costoClases: "0",
     temasClases: "",
     tecnologíaClases: "",
-    tags: [],
+    tags: []
   });
 
-  const handleChange = (e: React.FormEvent<HTMLFormElement>) => {
-    const target = e.target as HTMLInputElement;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "companyImage" && e.target.files)
+      setPost({ ...post, [e.target.name]: e.target.files[0] });
+    else setPost({ ...post, [e.target.name]: e.target.value });
 
-    if (
-      (target.name === "companyImage" || target.name === "image") &&
-      target.files
-    )
-      setPost({ ...post, [target.name]: target.files[0] });
-    else
-      setPost({
-        ...post,
-        [target.name]: target.value,
-        tags:
-          target.name === "text" ? target.value.match(/(#)\w+/g) : post.text,
-      });
+    setErrors(
+      validate({
+         ...post,
+         [e.target.name]: e.target.value,
+         tags:
+                    e.target.name === "text"
+                        ? e.target.value.match(/(#)\w+/g)
+                        : post.text,
+      })
+   );
   };
+
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const name = e.currentTarget.name;
@@ -144,12 +183,16 @@ const AddPost: FC<Props> = ({ setOpen }) => {
             <div className={styles.content__inputs}>
               {typePost === "servicio" ? (
                 <>
-                  <input
-                    type="text"
-                    name="tecnologíaClases"
-                    placeholder="Tecnología"
-                    defaultValue={post.tecnologíaClases}
-                  />
+                  <div className={styles.input_with_error}>
+                <input
+                  type="text"
+                  name="tecnologíaClases"
+                  placeholder="Tecnología"
+                  defaultValue={post.tecnologíaClases}
+                  required
+                />
+                {errors?.tecnologíaClases && (<p>{errors.tecnologíaClases}</p>)}
+              </div>
                   <input
                     type="text"
                     name="temasClases"
@@ -165,13 +208,16 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                 </>
               ) : (
                 <>
-                  <input
-                    type="text"
-                    name="company"
-                    defaultValue={post.company}
-                    placeholder="Nombre de la Empresa"
-                    required
-                  />
+                  <div className={styles.input_with_error}>
+                <input
+                  type="text"
+                  name="company"
+                  defaultValue={post.company}
+                  placeholder="Nombre de la Empresa"
+                  required
+                />
+                {errors?.company && (<p>{errors.company}</p>)}
+              </div>
                   <input
                     type="text"
                     name="position"
@@ -191,20 +237,26 @@ const AddPost: FC<Props> = ({ setOpen }) => {
               )}
               {typePost === "empleo" && (
                 <>
-                  <input
-                    name="companyLink"
-                    type="url"
-                    defaultValue={post.companyLink}
-                    placeholder="Link del Empleo"
-                    required
-                  />
-                  <input
-                    min="0"
-                    type="number"
-                    name="salary"
-                    defaultValue={post.salary}
-                    placeholder="Salario (Opcional)"
-                  />
+                  <div className={styles.input_with_error}>
+                <input
+                  name="companyLink"
+                  type="url"
+                  defaultValue={post.companyLink}
+                  placeholder="Link del Empleo"
+                  required
+                />
+                {errors?.companyLink && (<p>{errors.companyLink}</p>)}
+              </div>
+                  <div className={styles.input_with_error}>
+                <input
+                  min="0"
+                  type="number"
+                  name="salary"
+                  defaultValue={post.salary}
+                  placeholder="Salario (Opcional)"
+                />
+                {errors?.salary && (<p>{errors.salary}</p>)}
+              </div>
                 </>
               )}
             </div>

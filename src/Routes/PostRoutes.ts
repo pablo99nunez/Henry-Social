@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
+// tslint:disable-next-line:no-var-requires
 require("dotenv").config();
-import { Router, Request, Response } from "express";
-import Post, { Comment } from "../models/Post";
-import User, { NotificationType } from "../models/User";
+import {Router, Request, Response} from "express";
+import Post, {Comment} from "../models/Post";
+import User, {NotificationType} from "../models/User";
 import nodemailer from "nodemailer";
 import axios from "axios";
 
 import sendEmail from "./Helpers/sendEmail";
 
-const { MAIL, MAIL_PASSWORD } = process.env;
+const {MAIL, MAIL_PASSWORD} = process.env;
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -24,39 +25,39 @@ const router = Router();
 
 router.post("/posts", async (req, res) => {
     try {
-        const { _id, liked, props, tag } = req.body;
+        const {_id, liked, props, tag} = req.body;
 
         const posts = _id
             ? await Post.find({
-                  author: {
-                      _id,
-                  },
-              })
-                  .populate("author", "name avatar username")
-                  .populate("respuestaAuthor", "name username")
+                author: {
+                    _id,
+                },
+            })
+                .populate("author", "name avatar username")
+                .populate("respuestaAuthor", "name username")
             : liked
-            ? await Post.find({
-                  nLikes: {
-                      _id: liked,
-                  },
-              })
-                  .populate("author", "name avatar username")
-                  .populate("respuestaAuthor", "name username")
-            : tag
-            ? await Post.find({
-                  tags: tag,
-              })
-              .populate("author", "name avatar username")
-              .populate("respuestaAuthor", "name username")
-            : await Post.find({
-                  ...props,
-              })
-                  .populate("author", "name avatar username")
-                  .populate("respuestaAuthor", "name username");
+                ? await Post.find({
+                    nLikes: {
+                        _id: liked,
+                    },
+                })
+                    .populate("author", "name avatar username")
+                    .populate("respuestaAuthor", "name username")
+                : tag
+                    ? await Post.find({
+                        tags: tag,
+                    })
+                        .populate("author", "name avatar username")
+                        .populate("respuestaAuthor", "name username")
+                    : await Post.find({
+                        ...props,
+                    })
+                        .populate("author", "name avatar username")
+                        .populate("respuestaAuthor", "name username");
 
         res.json(posts);
     } catch (e) {
-        res.status(401).json({ error: e });
+        res.status(401).json({error: e});
     }
 });
 
@@ -65,12 +66,13 @@ router.get("/post/:id", async (req, res) => {
         const post = await Post.findById(req.params.id).populate("author");
         res.json(post);
     } catch (e) {
-        res.status(401).json({ error: e });
+        res.status(401).json({error: e});
     }
 });
+
 router.post("/like", async (req, res) => {
     try {
-        const { _id, author } = req.body;
+        const {_id, author} = req.body;
         const post = await Post.findById(_id).catch((e) => {
             throw new Error(e.message);
         });
@@ -85,9 +87,9 @@ router.post("/like", async (req, res) => {
                 const result = await Post.findByIdAndUpdate(
                     _id,
                     {
-                        $addToSet: { nLikes: author },
+                        $addToSet: {nLikes: author},
                     },
-                    { new: true }
+                    {new: true}
                 )
                     .populate("author", "name username avatar")
                     .catch((e) => {
@@ -109,10 +111,10 @@ router.post("/like", async (req, res) => {
                     _id,
                     {
                         $pull: {
-                            nLikes: { $in: [author] },
+                            nLikes: {$in: [author]},
                         },
                     },
-                    { new: true }
+                    {new: true}
                 )
                     .populate("author", "name username avatar")
                     .catch((e) => {
@@ -127,9 +129,9 @@ router.post("/like", async (req, res) => {
                 const result = await Comment.findByIdAndUpdate(
                     _id,
                     {
-                        $addToSet: { nLikes: author },
+                        $addToSet: {nLikes: author},
                     },
-                    { new: true }
+                    {new: true}
                 )
                     .populate("author", "name username avatar")
                     .catch((e) => {
@@ -151,10 +153,10 @@ router.post("/like", async (req, res) => {
                     _id,
                     {
                         $pull: {
-                            nLikes: { $in: [author] },
+                            nLikes: {$in: [author]},
                         },
                     },
-                    { new: true }
+                    {new: true}
                 )
                     .populate("author", "name username avatar")
                     .catch((e) => {
@@ -164,7 +166,7 @@ router.post("/like", async (req, res) => {
             }
         }
     } catch (error) {
-        res.status(400).json({ error });
+        res.status(400).json({error});
     }
 });
 
@@ -173,7 +175,7 @@ router.post("/post", async (req, res) => {
         const post = await Post.create(req.body);
         res.json(post);
     } catch (e) {
-        res.status(401).json({ error: e });
+        res.status(401).json({error: e});
     }
 });
 
@@ -182,28 +184,28 @@ router.get("/deletePosts", async (req, res) => {
         await Post.deleteMany({});
         res.send("Posts Deleted");
     } catch (e) {
-        res.json({ error: e });
+        res.json({error: e});
     }
 });
 
 router.delete("/post", async (req, res) => {
     try {
-        const { _id } = req.body;
-        const result = await Post.findOneAndDelete({ _id });
+        const {_id} = req.body;
+        const result = await Post.findOneAndDelete({_id});
         if (result === null) throw new Error("No se encontro el post");
         res.send(result);
     } catch (e) {
-        res.status(401).json({ error: e });
+        res.status(401).json({error: e});
     }
 });
 
 router.post("/comment", async (req, res) => {
-    const { postId, text, author } = req.body;
+    const {postId, text, author} = req.body;
     try {
-        Comment.create({ postId, author, text }, { new: true })
+        Comment.create({postId, author, text}, {new: true})
             .then((e) => {
                 Post.findByIdAndUpdate(postId, {
-                    $inc: { numComments: 1 },
+                    $inc: {numComments: 1},
                 }).then(() => {
                     res.json(e);
                 });
@@ -212,20 +214,20 @@ router.post("/comment", async (req, res) => {
                 throw new Error(e);
             });
     } catch (e) {
-        res.status(500).json({ error: e });
+        res.status(500).json({error: e});
     }
 });
 
 router.get("/deleteComments", (req, res) => {
     Comment.deleteMany({}).then((e) => {
-        Post.updateMany({}, { numComments: 0 }).then(() => {
+        Post.updateMany({}, {numComments: 0}).then(() => {
             res.json("deleted");
         });
     });
 });
 
 router.get("/comments/:id", (req, res) => {
-    Comment.find({ postId: req.params.id })
+    Comment.find({postId: req.params.id})
         .populate("author", "name username avatar")
         .then((e) => {
             res.json(e);
@@ -233,15 +235,15 @@ router.get("/comments/:id", (req, res) => {
 });
 
 router.post("/report", async (req: Request, res: Response) => {
-    const { _id, username } = req.body;
+    const {_id, username} = req.body;
 
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({username});
 
         const post = await Post.findByIdAndUpdate(
             _id,
-            { $inc: { reportedTimes: 1 } },
-            { new: true }
+            {$inc: {reportedTimes: 1}},
+            {new: true}
         );
 
         const eliminated = post?.reportedTimes && post?.reportedTimes >= 5;
@@ -295,14 +297,14 @@ router.post("/report", async (req: Request, res: Response) => {
 });
 
 router.put("/answer", (req, res) => {
-    const { idPost, response, respuestaAuthor } = req.body;
+    const {idPost, response, respuestaAuthor} = req.body;
     Post.findByIdAndUpdate(
         idPost,
         {
             respuesta: response,
             respuestaAuthor,
         },
-        { new: true }
+        {new: true}
     )
         .then((e) => {
             res.json(e);
