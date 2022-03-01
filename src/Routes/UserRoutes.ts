@@ -14,7 +14,7 @@ router.post("/user", (req, res) => {
           res.status(201).json(result);
         })
         .catch((e) => res.status(400).json({ error: e }));
-    } else res.json(e);
+    } else res.status(404).json({ error: "" });
   });
 });
 
