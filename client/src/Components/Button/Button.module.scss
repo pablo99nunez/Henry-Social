@@ -19,10 +19,8 @@
     width: 1rem;
     object-fit: cover;
   }
-
-  &:disabled {
-    &:hover {
-      cursor: default;
-    }
-  }
+}
+.disabled {
+  background-color: grey !important;
+  cursor: default;
 }

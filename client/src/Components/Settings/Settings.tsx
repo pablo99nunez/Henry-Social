@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { BiEdit } from "react-icons/bi";
 import { IconContext } from "react-icons";
@@ -14,11 +14,12 @@ import { InfoAlert } from "../Alert/Alert";
 import { useDispatch } from "react-redux";
 import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
 
-
 export default function Settings({ cancel }: any) {
   const user = useUser();
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const btn = useRef<HTMLButtonElement>(null);
+  const imgInput = useRef<HTMLInputElement>(null);
 
   const [changes, setChanges] = useState({
     username: user?.username,
@@ -28,7 +29,7 @@ export default function Settings({ cancel }: any) {
     portfolio: user?.portfolio,
     role: user?.role,
   });
-
+  const [complete, setComplete] = useState(false);
   const [errors, setErrors] = useState({
     username: false,
     linkedin: false,
@@ -36,139 +37,166 @@ export default function Settings({ cancel }: any) {
     portfolio: false,
   });
 
-  const [newAvatar, setNewAvatar] = useState(null);
+  useEffect(() => {
+    let complete = true;
+    Object.keys(errors).forEach((e) => {
+      if (errors[e]) {
+        complete = false;
+      }
+    });
+    setComplete(complete);
+  }, [errors]);
+
+  const [newAvatar, setNewAvatar] = useState<string | null>(null);
 
   let typerTimer: NodeJS.Timeout;
 
-  const validateUsername = ({ target }: any) => {
-    const btn = document.querySelector("#saveChanges");
-    axios.get("/user", {
-      params: {
-        username: target.value,
-      },
-    }).then(r => {
-      if(r.data === null) return handleChanges({target});
-      if(r.data?._id === user?._id) {
-        setErrors({...errors, username: false });
-        btn.disabled = false;
-        return;
-      }
-      setErrors({
-        ...errors,
-        username: true
+  const validateUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const target = e.target;
+    axios
+      .get("/user", {
+        params: {
+          username: target.value,
+        },
+      })
+      .then((r) => {
+        if (r.data === null) return handleChanges(e);
+        if (r.data?._id === user?._id) {
+          setErrors({ ...errors, username: false });
+          return;
+        }
+        setErrors({
+          ...errors,
+          username: true,
+        });
+        if (btn.current) btn.current.disabled = true;
       });
-      btn.disabled = true;
-    });
-  }
+  };
 
-
-  const handleChanges = ({ target } : any):void => {
-    const btn = document.querySelector("#saveChanges");
+  const handleChanges = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const target = e.target;
     switch (target.name) {
-      case "username": 
-        if(target.value.length === 0) {
-          btn.disabled = true;
-          setErrors({...errors, [target.name]: true });
+      case "username":
+        if (target.value.length === 0) {
+          setErrors({ ...errors, [target.name]: true });
           throw new Error("The username field can't be empty");
         }
-        if(!(/^[a-zA-Z0-9_-]{3,15}$/.test(target.value))) {
-          setErrors({...errors, [target.name]: true });
-          btn.disabled = true;
+        if (!/^[a-zA-Z0-9_-]{3,15}$/.test(target.value)) {
+          setErrors({ ...errors, [target.name]: true });
         }
         break;
-      case "github": 
-        if(!(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(target.value))) {
-          setErrors({...errors, [target.name]: true });
-          btn.disabled = true;
+      case "github":
+        if (!/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(target.value)) {
+          setErrors({ ...errors, [target.name]: true });
           return;
         }
         break;
       case "linkedin":
-        if(!(/^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile)/.test(target.value))) {
-          setErrors({...errors, [target.name]: true });
-          btn.disabled = true;
+        if (
+          !/^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile)/.test(
+            target.value
+          )
+        ) {
+          setErrors({ ...errors, [target.name]: true });
           return;
         }
         break;
       case "portfolio":
-          if(!(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(target.value))) {
-            setErrors({...errors, [target.name]: true });
-            btn.disabled = true;
-            return;
-          }
+        if (
+          !/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/.test(
+            target.value
+          )
+        ) {
+          setErrors({ ...errors, [target.name]: true });
+          return;
+        }
         break;
-      case "avatar": 
-          if(target.files) {
-            setNewAvatar(URL.createObjectURL(target.files[0]));
-            return;
-          }
-        break
-      default: 
-        break
+      case "avatar":
+        if (target.files) {
+          setNewAvatar(URL.createObjectURL(target.files[0]));
+          return;
+        }
+        break;
+      default:
+        break;
     }
 
-    btn.disabled = false;
-
     setErrors({
-      ...errors, 
-      [target.name]: false
+      ...errors,
+      [target.name]: false,
     });
 
     setChanges({
       ...changes,
-      [target.name]: target.value.length === 0 ? null : target.value
+      [target.name]: target.value.length === 0 ? null : target.value,
     });
-  }
+  };
 
-  const saveChanges = async (e: any): void => {
+  const saveChanges = async (e: any) => {
     e.preventDefault();
-    const imgInput: any = document.getElementById("newAvatar");
-    const imgUrl = await uploadFile(imgInput?.files[0]);
+    let imgUrl: string;
+    if (imgInput.current?.files) {
+      imgUrl = await uploadFile(imgInput.current.files[0]);
+      if (user?._id)
+        dispatch(editUser(user._id, { ...changes, avatar: imgUrl }));
 
-    axios.put("/user", {
-      _id: user?._id, changes: { ...changes, avatar: imgUrl}
-    }).then(({data: user}) => {
-      cancel(e);
-      dispatch(editUser(user));
-      InfoAlert.fire({
-        title: "Se actualizó tu perfil!",
-        icon: "success"
-      });
-      navigate(`/profile/${changes.username}`);
-    }).catch(error => {
-      cancel(e);
-      console.log(error);
-      InfoAlert.fire({
-        title: "No se pudo actulizar tu perfil",
-        icon: "error"
-      });
-    });
-  }
+      /* axios
+      .put("/user", {
+        _id: user?._id,
+        changes: { ...changes, avatar: imgUrl },
+      })
+      .then(({ data: user }) => {
+        cancel(e);
+        dispatch(editUser(user));
+        InfoAlert.fire({
+          title: "Se actualizó tu perfil!",
+          icon: "success",
+        });
+        navigate(`/profile/${changes.username}`);
+      })
+      .catch((error) => {
+        cancel(e);
+        console.log(error);
+        InfoAlert.fire({
+          title: "No se pudo actulizar tu perfil",
+          icon: "error",
+        });
+      }); */
+    }
+  };
 
   const onChangeRole = (e: any): void => {
-    if(user?.admin) {
+    if (user?.admin) {
       setChanges({
         ...changes,
-        role: e.target.value
+        role: e.target.value,
       });
-    } else throw new Error("Only admins can change roles"); 
-  }
+    } else throw new Error("Only admins can change roles");
+  };
 
   return (
     <form className={style.settings_wrap}>
       <div id={style.avt_cont}>
-        <img src={newAvatar ||  user?.avatar || "https://s5.postimg.cc/537jajaxj/default.png"} alt="avatar"/>
-        <label htmlFor="newAvatar" id={style.editIcon}>  
-          <IconContext.Provider
-            value={{ color: 'yellow', size: '35px' }}>
-            <BiEdit/>
+        <img
+          src={
+            newAvatar ||
+            (typeof user?.avatar === "string" && user?.avatar) ||
+            "https://s5.postimg.cc/537jajaxj/default.png"
+          }
+          alt="avatar"
+        />
+        <label htmlFor="newAvatar" id={style.editIcon}>
+          <IconContext.Provider value={{ color: "yellow", size: "35px" }}>
+            <BiEdit />
           </IconContext.Provider>
         </label>
-        <input 
-          id="newAvatar" 
+        <input
+          ref={imgInput}
           name="avatar"
+          id="newAvatar"
           onChange={handleChanges}
-          type="file" />
+          type="file"
+        />
       </div>
       <div>
         <div className={style.inputBox}>
@@ -204,19 +232,28 @@ export default function Settings({ cancel }: any) {
             active={changes?.role === "Estudiante"}
             onClick={onChangeRole}
             disabled={user?.admin ? false : true}
-            value="Estudiante">Estudiante</Button>
-          <Button 
+            value="Estudiante"
+          >
+            Estudiante
+          </Button>
+          <Button
             type="button"
             active={changes?.role === "Instructor"}
             onClick={onChangeRole}
             disabled={user?.admin ? false : true}
-            value="Instructor">Instructor</Button>
-          <Button 
+            value="Instructor"
+          >
+            Instructor
+          </Button>
+          <Button
             type="button"
             active={changes?.role === "TA"}
             onClick={onChangeRole}
             disabled={user?.admin ? false : true}
-            value="TA">TA</Button>
+            value="TA"
+          >
+            TA
+          </Button>
         </div>
 
         <Input
@@ -246,24 +283,16 @@ export default function Settings({ cancel }: any) {
         <div className={style.buttons}>
           <Button
             type="submit"
-            id="saveChanges"
-            className={style.submit_button}
-            disabled={(():boolean => {
-              let complete = false;
-              for(const err in errors) {
-                if(errors[err]){
-                  complete = true;
-                }
-              }
-              return complete;
-            })()}
-            onClick={saveChanges}>Guardar cambios</Button>
+            backgroundColor="#000"
+            disabled={!complete}
+            onClick={saveChanges}
+          >
+            Guardar cambios
+          </Button>
           <Button onClick={cancel} backgroundColor="#FF1">
             Cancelar
           </Button>
-          <Button 
-        className={style.delete_button}
-        >Eliminar perfil</Button>
+          <Button>Eliminar perfil</Button>
         </div>
       </div>
     </form>
