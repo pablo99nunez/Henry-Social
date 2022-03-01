@@ -234,7 +234,9 @@ const AddPost: FC<Props> = ({ setOpen }) => {
             </div>
           )
         )}
+        <div className={styles.input_with_error}>
         <div className={styles.content__textImage}>
+          
           <textarea
             name="text"
             placeholder={
@@ -250,6 +252,8 @@ const AddPost: FC<Props> = ({ setOpen }) => {
             }
             className={post.text ? styles.active : ""}
           ></textarea>
+          {errors?.body && (<p>{errors.body}</p>)}
+          </div>
           {typePost === "multimedia" && (
             <div className={styles.boxImage}>
               <label
