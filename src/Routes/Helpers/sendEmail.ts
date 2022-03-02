@@ -1,8 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const nodemailer = require("nodemailer");
 
 interface emailNeeds {
-  transporter: nodemailer.Transporter;
+  transporter: any; // nodemailer.Transporter;
   deleted?: boolean;
   from: string | undefined;
   to: string | undefined;
