@@ -36,7 +36,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     tecnologíaClases: "",
     tags: []
   });
-
+  console.log(errors)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "companyImage" && e.target.files)
       setPost({ ...post, [e.target.name]: e.target.files[0] });
@@ -287,9 +287,9 @@ const AddPost: FC<Props> = ({ setOpen }) => {
         ))}
       </div>
       <div className={styles.add_post_buttons}>
-        { errors?
+        { errors?.text ?
           <input type="submit" value="Publicar" disabled={true}/> :
-          <input type="submit" value="Publicar" />
+          <input type="submit" value="Publicar" disabled={false} />
         }
         <button type="button" onClick={() => setOpen(false)}>
           Cancelar

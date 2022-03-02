@@ -50,9 +50,7 @@ export function validateChange(input:any) {
       errors.question = "Debes ingresar una pregunta"
     }
 
-    if(input.text.length < 1){
-        errors.text = 'Debes ingresar contenido'
-    }
+
  
     return errors;
  };
