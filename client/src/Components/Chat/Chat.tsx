@@ -5,17 +5,14 @@ import style from "./Chat.module.scss";
 import { BiChevronsUp } from "react-icons/bi";
 import Avatar from "../Avatar/Avatar";
 import { motion } from "framer-motion";
-
-const url = import.meta.env.PROD
-  ? "https://henry-social-back.herokuapp.com"
-  : "http://localhost:3001";
-const socket = io(url);
+import { socket } from "../../App";
 
 const Chat = () => {
   const user = useUser();
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const scrollToMe = useRef<HTMLDivElement>(null);
+
   const [listMessage, setListMessage] = useState<any[]>([]);
   const handleClick = (e: any) => {
     setOpen((prevState) => !prevState);
@@ -37,23 +34,28 @@ const Chat = () => {
       setMessage("");
     }
   };
-
+  useEffect(() => {
+    const list = localStorage.getItem("ChatGlobal");
+    if (typeof list === "string") setListMessage(JSON.parse(list));
+  }, []);
   useEffect(() => {
     socket.on("receive_message", (data) => {
       setListMessage([...listMessage, data]);
     });
+    localStorage.setItem("ChatGlobal", JSON.stringify(listMessage));
     scrollToMe.current?.scrollIntoView({ block: "end", behavior: "smooth" });
   }, [socket, listMessage]);
 
   return (
     <>
       <motion.div
+        initial={{ y: 375 }}
         animate={
-          !open
+          open
             ? {
-                y: 375,
+                y: 0,
               }
-            : { y: 0 }
+            : { y: 375 }
         }
         className={style.chat_window}
       >
