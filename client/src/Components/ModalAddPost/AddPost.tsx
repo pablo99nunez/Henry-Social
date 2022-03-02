@@ -22,7 +22,17 @@ const AddPost: FC<Props> = ({ setOpen }) => {
   const dispatch = useDispatch();
 
   const [typePost, setTypePost] = useState("normal");
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({
+    company: "",
+    companyLink: "",
+    salary: "",
+    position: "",
+    tecnologíaClases: "",
+    costoClases: "",
+    imageCompany: "",
+    pregunta: "",
+    text: ""
+  });
   const [post, setPost] = useState<any>({
     text: "",
     image: "",
@@ -34,9 +44,10 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     costoClases: "0",
     temasClases: "",
     tecnologíaClases: "",
+    pregunta:"",
     tags: []
   });
-  console.log(errors)
+  console.log(post)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "companyImage" && e.target.files)
       setPost({ ...post, [e.target.name]: e.target.files[0] });
@@ -44,9 +55,9 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
     setErrors(
       validateChange({
-         ...post,
-         [e.target.name]: e.target.value,
-         tags:
+        ...post,
+        [e.target.name]: e.target.value,
+        tags:
                     e.target.name === "text"
                         ? e.target.value.match(/(#)\w+/g)
                         : post.text,
@@ -61,6 +72,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       return setTypePost("normal");
     }
     setTypePost(name);
+    setErrors("");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -74,7 +86,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     const downloadURLImage =
       post.image instanceof File ? await uploadFile(post.image) : post.image;
     
-
+      
 
     if (user)
       axios
@@ -137,6 +149,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       }}
     >
       <div className={styles.add_post_content}>
+      
         {typePost === "pregunta" ? (
           <div className={styles.content__inputs}>
             <div className={styles.input_with_error}>
@@ -145,8 +158,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
               name="pregunta"
               placeholder="¿Cual es tu pregunta?"
             />
-            
-            {errors?.question && (<p>{errors.question}</p>)}
+            {errors?.pregunta && (<p>{errors.pregunta}</p>)}
             </div>
           </div>
         ) : (
@@ -286,9 +298,9 @@ const AddPost: FC<Props> = ({ setOpen }) => {
           </button>
         ))}
       </div>
-      <div className={styles.add_post_buttons}>
-        { errors?.text ?
-          <input type="submit" value="Publicar" disabled={true}/> :
+      <div className={ errors || post?.text === '' ? styles.error_button : styles.add_post_buttons}>
+        { errors?.text || post?.text === '' ?
+          <input type="submit" value="Publicar" disabled={true} /> :
           <input type="submit" value="Publicar" disabled={false} />
         }
         <button type="button" onClick={() => setOpen(false)}>

@@ -112,7 +112,7 @@ export default function Settings({ cancel }: any) {
         }
         break;
       case "avatar":
-        if (target.files) {
+        if (target.files) {  
           setNewAvatar(URL.createObjectURL(target.files[0]));
           return;
         }

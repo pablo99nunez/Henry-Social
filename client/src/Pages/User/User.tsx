@@ -83,7 +83,6 @@ export default function User() {
     }
   }, [username, userLogeado, user]);
   useEffect(() => {
-    console.log(user);
     if (user) {
       dispatch(getPosts(user._id));
       setLoading(false);
@@ -196,7 +195,7 @@ export default function User() {
                       />
                     </div>
                   )}
-                  {user?.github ? (
+                  {user?.github  ? (
                     <a
                       href={`https://www.github.com/${user.github}`}
                       target="_blank"
