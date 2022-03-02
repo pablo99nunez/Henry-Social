@@ -8,9 +8,9 @@ import useLogin from "./Hooks/useLogin";
 import Payment from "./Components/Present/Payment";
 import { io } from "socket.io-client";
 
-const url = import.meta.env.PROD
+const url = "https://henry-social-back.herokuapp.com"; /* import.meta.env.PROD
   ? "https://henry-social-back.herokuapp.com"
-  : "http://localhost:3001";
+  : "http://localhost:3001"; */
 export const socket = io(url, { autoConnect: false });
 
 function App() {
