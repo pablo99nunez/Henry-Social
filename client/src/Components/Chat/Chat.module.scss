@@ -97,6 +97,7 @@
     align-items: flex-end;
     .message_content {
       justify-content: flex-end;
+      text-align: right;
     }
     .message_meta {
       justify-content: flex-end;
@@ -111,6 +112,7 @@
     .message_content {
       justify-content: flex-start;
       background-color: $black;
+      text-align: left;
       color: $white;
     }
     .message_meta {

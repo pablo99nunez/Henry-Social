@@ -37,14 +37,17 @@ const Chat = () => {
   useEffect(() => {
     const list = localStorage.getItem("ChatGlobal");
     if (typeof list === "string") setListMessage(JSON.parse(list));
-  }, []);
-  useEffect(() => {
     socket.on("receive_message", (data) => {
       setListMessage([...listMessage, data]);
     });
+    return () => {
+      socket.close();
+    };
+  }, []);
+  useEffect(() => {
     localStorage.setItem("ChatGlobal", JSON.stringify(listMessage));
-    scrollToMe.current?.scrollIntoView({ block: "end", behavior: "smooth" });
-  }, [socket, listMessage]);
+    scrollToMe.current?.scrollIntoView({ block: "end" });
+  }, [listMessage]);
 
   return (
     <>
