@@ -80,6 +80,19 @@
                visibility: hidden;
             }
          }
+
+         .textarea_with_error {
+            width: 100%;
+
+            textarea {
+               width: 100%;
+            }
+
+            p {
+               margin-top: 0.2rem;
+               color: #df1313;
+            }
+         }
       }
    }
    .add_post_tags,
@@ -121,6 +134,11 @@
          &:hover {
             transform: scale(1.1);
          }
+      }
+
+      .disabledSubmit {
+         border: 1px solid #df1313;
+         pointer-events: none;
       }
    }
 }
