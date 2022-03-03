@@ -48,6 +48,10 @@ export default function Login(): JSX.Element {
   const btn = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
+    document.title = `${action ? 'Iniciar Sesion' : ' Registrate'} | Henry Social`
+  }, [action])
+
+  useEffect(() => {
     const { name, username, password, email } = input;
     let cleanUp = false;
     if (user !== null) return navigate("/");
