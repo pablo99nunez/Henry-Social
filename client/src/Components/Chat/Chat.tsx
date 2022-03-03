@@ -15,6 +15,7 @@ const Chat = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState();
+  const [newMessage, setNewMessage] = useState(0);
   const scrollToMe = useRef<HTMLDivElement>(null);
   const [listMessage, setListMessage] = useState<any[]>([]);
 
@@ -49,12 +50,19 @@ const Chat = () => {
       setArrivalMessage(data);
     });
   }, []);
+
   useEffect(() => {
-    arrivalMessage && setListMessage([...listMessage, arrivalMessage]);
+    if (arrivalMessage) {
+      setListMessage([...listMessage, arrivalMessage]);
+      !open && setNewMessage(newMessage + 1);
+    }
   }, [arrivalMessage]);
 
   useEffect(() => {
-    if (open) input.current?.focus();
+    if (open) {
+      input.current?.focus();
+      setNewMessage(0);
+    }
   }, [open]);
   useEffect(() => {
     localStorage.setItem("ChatGlobal", JSON.stringify(listMessage));
@@ -74,11 +82,15 @@ const Chat = () => {
         }
         className={style.chat_window}
       >
-        <div onClick={(e) => handleClick(e)} className={style.chat_header}>
+        <div
+          onClick={(e) => handleClick(e)}
+          className={`${style.chat_header} ${newMessage && style.newMessage}`}
+        >
           <p>Live Chat</p>
           <motion.div animate={!open ? { rotateZ: 0 } : { rotateZ: 180 }}>
             <BiChevronsUp></BiChevronsUp>
           </motion.div>
+          <p>{newMessage != 0 && newMessage}</p>
         </div>
         <div className={style.chat_body}>
           {listMessage.map((msg) => (
