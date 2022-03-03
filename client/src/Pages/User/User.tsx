@@ -87,6 +87,7 @@ export default function User() {
     if (user) {
       dispatch(getPosts(user._id));
       setLoading(false);
+      document.title = `${user?.name} | Henry Social`
     }
   }, [user]);
 
