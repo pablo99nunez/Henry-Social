@@ -3,6 +3,8 @@ import { Router } from "express";
 import axios from "axios";
 import User, { IUser } from "../models/User";
 import { INotification, NotificationType } from "../models/User";
+import { Comment } from "../models/Post";
+import Post from "../models/Post";
 
 const router = Router();
 
@@ -119,11 +121,11 @@ router.post("/follow", async (req, res) => {
   const { seguidor, seguido } = req.body;
   try {
     if (await isFollowing(seguidor, seguido)) {
-      //Si el seguidor ya sigue al seguido
+      // Si el seguidor ya sigue al seguido
       await axios.post("/unfollow", {
         seguido,
         seguidor,
-      }); //Deja de seguir al usuario
+      }); // Deja de seguir al usuario
       const userSeguidor = await axios
         .post("/findUser", {
           username: seguidor,
@@ -166,7 +168,7 @@ router.post("/follow", async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(403).json({ error: error });
+    res.status(403).json({ error });
   }
 });
 
@@ -191,7 +193,7 @@ router.post("/unfollow", async (req, res) => {
     );
     res.json({ resultA, resultB });
   } catch (error) {
-    res.status(400).json({ error: error });
+    res.status(400).json({ error });
   }
 });
 
@@ -311,12 +313,30 @@ router.delete("/delete-user", async (req, res) => {
   const { userId, adminId } = req.body;
 
   const adminUser = await User.findById(adminId);
+  if (!adminUser?.admin) return res.status(403).send("Only for admins users.");
 
-  console.log(adminUser, adminId);
-  if (!adminUser?.admin) return res.status(403).send("Only for admins roles.");
-
-  const user = await User.findByIdAndDelete(userId);
+  const user: any = await User.findByIdAndDelete(userId);
   if (!user) return res.status(404).send("This user wasn't found.");
+
+  // Elimina todos los seguidores y seguidos
+  await User.updateMany(
+    {},
+    { $pull: { followers: user.username, following: user.username } }
+  );
+  // Busca todos los post con X author
+  const postUser = await Post.find({ author: userId });
+  // Guarda en un array todos los id de esos post con X author
+  const postIdByUser = postUser.map((post) => post._id);
+  // Elimina los Post de X author
+  await Post.deleteMany({ author: userId });
+  // Elimina los comentarios de X author
+  await Comment.deleteMany({ author: userId });
+  // Elimina los likes de X autor
+  // Por cada id busca y elimina en el modelo Comment,
+  // comentarios hechos en post con el postId del author ya eliminado.
+  for (const id of postIdByUser) {
+    await Comment.deleteMany({ postId: id });
+  }
 
   res.send(user);
 });

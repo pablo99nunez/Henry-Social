@@ -62,4 +62,4 @@ const Post: FC<Props> = ({ post }) => {
   );
 };
 
-export default Post
+export default Post;

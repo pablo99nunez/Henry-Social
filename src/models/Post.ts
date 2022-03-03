@@ -27,10 +27,11 @@ export interface IPost {
   temasClases: string;
   tecnologíaClases: string;
 }
-export interface IQuestions {  // Reference to question posts
-  question: string,
-  answer: string,
-  answered: boolean,
+export interface IQuestions {
+  // Reference to question posts
+  question: string;
+  answer: string;
+  answered: boolean;
 }
 interface Comment {
   postId: ObjectId; // Reference to blogs
@@ -87,7 +88,7 @@ const postSchema = new Schema({
   },
   question: {
     type: [],
-    default: []
+    default: [],
   },
   reportedTimes: {
     type: Number,

@@ -7,7 +7,6 @@
   display: flex;
   gap: 1rem;
 
-
   #avt_cont {
     display: grid;
     place-items: center;
@@ -38,7 +37,7 @@
       -ms-transition: 250ms ease-out;
       -o-transition: 250ms ease-out;
 
-      &:hover{
+      &:hover {
         cursor: pointer;
         border-radius: 10px;
         -webkit-border-radius: 10px;
@@ -52,8 +51,6 @@
       display: none;
     }
   }
-
-
 
   .inputBox {
     display: flex;
@@ -173,7 +170,7 @@
     font-weight: bold;
     font-size: 10px;
     text-decoration: underline;
-  
+
     gap: 1rem;
   }
 }

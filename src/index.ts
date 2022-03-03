@@ -47,15 +47,15 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("User Connected",socket.id)
+  console.log("User Connected", socket.id);
 
   socket.on("send_message", (data) => {
-    io.emit("receive_message",data)
-  })
+    io.emit("receive_message", data);
+  });
 
-  socket.on("disconnect",()=> {
-      console.log("User Disconnected", socket.id)
-  })
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+  });
 });
 
 server.listen(process.env.PORT, () => {

@@ -114,7 +114,7 @@ export default function User() {
             <div className={style.photo}>
               <img
                 src={
-                  typeof user?.avatar == "string" && user?.avatar
+                  typeof user?.avatar === "string" && user?.avatar
                     ? user?.avatar
                     : "https://s5.postimg.cc/537jajaxj/default.png"
                 }
