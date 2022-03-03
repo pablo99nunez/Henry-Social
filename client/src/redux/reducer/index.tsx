@@ -20,6 +20,7 @@ import {
   FILTER_BY_FOLLOW,
   FILTER_BY_TAG,
   SET_SOCKET,
+  GET_ONLINE_USERS,
 } from "../actions/actions";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { io, Socket } from "socket.io-client";
@@ -33,6 +34,7 @@ export interface IState {
   comments: Comment[];
   Users: IUser[];
   socket: Socket;
+  usersOnline: any[];
 }
 
 const initialState = {
@@ -200,6 +202,13 @@ export default function rootReducer(state = initialState, action: IAction) {
       return {
         ...state,
         socket: io("http://localhost:3001", { autoConnect: false }),
+      };
+    }
+
+    case GET_ONLINE_USERS: {
+      return {
+        ...state,
+        usersOnline: action.payload,
       };
     }
     default:

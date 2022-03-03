@@ -24,7 +24,7 @@ export default function useLogin() {
   useEffect(() => {
     if (user) {
       socket?.connect();
-      socket.emit("add_user", user?._id);
+      socket.emit("add_user", user._id);
     } else socket?.disconnect();
   }, [socket, user]);
 }

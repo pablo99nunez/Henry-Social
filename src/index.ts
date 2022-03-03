@@ -11,7 +11,7 @@ import postRouter from "./Routes/PostRoutes";
 import stripeRouter from "./Routes/StripeRoutes";
 import http from "http";
 import { Server } from "socket.io";
-import { IUser } from "./models/User";
+import User, { IUser } from "./models/User";
 const app: express.Application = express();
 app.use(cors());
 
@@ -49,17 +49,37 @@ const io = new Server(server, {
 
 type User = {
   userId: string;
-  /*   name: string;
+  name: string;
   avatar: string;
-  username: string; */
+  username: string;
   socketId: string;
 };
 
 let users: User[] = [];
 
-const addUser = (userId: string, socketId: string) => {
+const addUser = async (userId: string, socketId: string) => {
   if (!users.some((user: User) => user.userId === userId)) {
-    users.push({ userId, socketId });
+    try {
+      const userDb = await User.findById(userId);
+      if (userDb && typeof userDb.avatar === "string" && userDb.username) {
+        console.log({
+          userId,
+          name: userDb.name,
+          avatar: userDb.avatar,
+          username: userDb.username,
+          socketId,
+        });
+        users.push({
+          userId,
+          name: userDb.name,
+          avatar: userDb.avatar,
+          username: userDb.username,
+          socketId,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 };
 
@@ -70,8 +90,10 @@ const removeUser = (socketId: string) => {
 io.on("connection", (socket) => {
   console.log("User Connected", socket.id);
 
-  socket.on("add_user", (userId: string) => {
-    addUser(userId, socket.id);
+  socket.on("add_user", async (userId: string) => {
+    await addUser(userId, socket.id);
+    console.log("Users connected:", users);
+
     io.emit("get_users", users);
   });
 
@@ -82,6 +104,7 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
     removeUser(socket.id);
+    io.emit("get_users", users);
   });
 });
 

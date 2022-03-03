@@ -83,7 +83,6 @@ export default function User() {
     }
   }, [username, userLogeado, user]);
   useEffect(() => {
-    console.log(user);
     if (user) {
       dispatch(getPosts(user._id));
       setLoading(false);

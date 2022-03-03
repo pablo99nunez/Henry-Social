@@ -21,6 +21,7 @@ export const ORDER_BY = "ORDER_BY";
 export const SEARCH_USERS = "SEARCH_USERS";
 export const FILTER_BY_TAG = "FILTER_BY_TAG";
 export const SET_SOCKET = "SET_SOCKET";
+export const GET_ONLINE_USERS = "GET_ONLINE_USERS";
 
 export interface IAction {
   type: string;
@@ -39,7 +40,8 @@ export function getUser(email: string) {
 export function editUser(_id: string, changes: any) {
   return async function (dispatch: Function) {
     const user = await axios.put("/user", { _id, changes }).then((e) => e.data);
-    return dispatch({ type: GET_USER, payload: user });
+    dispatch({ type: GET_USER, payload: user });
+    return Promise.resolve();
   };
 }
 
@@ -208,4 +210,8 @@ export function filterByFollow() {
 }
 export function setSocket() {
   return (dispatch: Function) => dispatch({ type: SET_SOCKET });
+}
+export function getOnlineUsers(users: any[]) {
+  return (dispatch: Function) =>
+    dispatch({ type: GET_ONLINE_USERS, payload: users });
 }

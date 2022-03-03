@@ -56,7 +56,6 @@ const SideTags = () => {
       })
       .slice(0, 5);
 
-    console.log(tagsPopulares);
     setTags(tagsPopulares);
   }, [posts]);
 

@@ -11,6 +11,7 @@ import { IState } from "../../redux/reducer";
 const Chat = () => {
   const socket = useSelector((state: IState) => state.socket);
   const user = useUser();
+  const input = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState();
@@ -52,6 +53,9 @@ const Chat = () => {
     arrivalMessage && setListMessage([...listMessage, arrivalMessage]);
   }, [arrivalMessage]);
 
+  useEffect(() => {
+    if (open) input.current?.focus();
+  }, [open]);
   useEffect(() => {
     localStorage.setItem("ChatGlobal", JSON.stringify(listMessage));
     scrollToMe.current?.scrollIntoView({ behavior: "smooth" });
@@ -110,6 +114,7 @@ const Chat = () => {
             onChange={(e) => {
               setMessage(e.target.value);
             }}
+            ref={input}
             onKeyPress={(e) => {
               e.key === "Enter" && SendMessage();
             }}

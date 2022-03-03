@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../../../../src/services/firebase/firebase";
+import useUser from "../../Hooks/useUser";
+import { getOnlineUsers } from "../../redux/actions/actions";
 import { IState } from "../../redux/reducer";
+import Avatar from "../Avatar/Avatar";
 import style from "./SideMessages.module.scss";
 const SideMessages = () => {
   const socket = useSelector((state: IState) => state.socket);
-  const [users, setUsers] = useState([]);
+  const users = useSelector((state: IState) => state.usersOnline);
+  const dispatch = useDispatch();
+  const user = useUser();
   useEffect(() => {
-    socket.on("get_users", (users) => {
-      setUsers(users);
+    socket.on("get_users", (usersSocket) => {
+      dispatch(getOnlineUsers(usersSocket));
     });
   }, [socket]);
 
@@ -15,10 +21,17 @@ const SideMessages = () => {
     <aside className={style.aside_messages}>
       <h2>Mensajes</h2>
       <div className={style.aside_resume_messages}>
-        <div className={style.aside_message_img}></div>
-        {users?.map((e: any, i: number) => {
-          return <p key={i}>{e.userId}</p>;
-        })}
+        {users?.map(
+          (e: any, i: number) =>
+            e.userId !== user?._id && (
+              <div key={i} className={style.user}>
+                <Avatar avatar={e.avatar}></Avatar>
+                <div>
+                  <h3> {e.name} </h3>
+                </div>
+              </div>
+            )
+        )}
       </div>
     </aside>
   );
