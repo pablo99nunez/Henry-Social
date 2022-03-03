@@ -112,7 +112,7 @@ export default function Settings({ cancel }: any) {
         }
         break;
       case "avatar":
-        if (target.files) {
+        if (target.files) {  
           setNewAvatar(URL.createObjectURL(target.files[0]));
           return;
         }
@@ -135,11 +135,11 @@ export default function Settings({ cancel }: any) {
   const saveChanges = async (e: any) => {
     e.preventDefault();
     let imgUrl: string;
-    if (imgInput.current?.files) {
+    if (imgInput.current?.files?.length !== 0) {
       imgUrl = await uploadFile(imgInput.current.files[0]);
-      if (user?._id)
-        dispatch(editUser(user._id, { ...changes, avatar: imgUrl }));
 
+      if (user?._id)
+      dispatch(editUser(user._id, { ...changes, avatar: imgUrl }));
       /* axios
       .put("/user", {
         _id: user?._id,
@@ -163,6 +163,9 @@ export default function Settings({ cancel }: any) {
         });
       }); */
     }
+    if (user?._id)
+    dispatch(editUser(user._id, changes ));
+    
   };
 
   const onChangeRole = (e: any): void => {
