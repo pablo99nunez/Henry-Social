@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, FC } from "react";
 import {IPost} from '../../../../src/models/Post'
-import { BsShare, BsShareFill } from "react-icons/bs";
+import { IoArrowRedoOutline, IoArrowRedoSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
 import useUser from "../../Hooks/useUser";
 import axios from "axios";
@@ -53,7 +53,7 @@ export const SharePost:FC<Props> = ({ post }) => {
                 handleShare();
             }}
         >
-            {share ? <BsShareFill /> : <BsShare></BsShare>}
+            {share ? <IoArrowRedoSharp /> : <IoArrowRedoOutline></IoArrowRedoOutline>}
         </motion.div>
         <p>{post?.nShares}</p>
         {
