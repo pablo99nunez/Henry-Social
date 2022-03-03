@@ -6,7 +6,9 @@ import useUser from "../../Hooks/useUser";
 import axios from "axios";
 
 type Props = {
-    post: IPost
+    post: IPost;
+    share: boolean;
+    setShare: Function;
 }
 
 export const SharePost:FC<Props> = ({ post }) => {
@@ -41,21 +43,10 @@ export const SharePost:FC<Props> = ({ post }) => {
         <div 
         //className={style.like}
         >
-        <motion.div
-                variants={variants}
-            //animate={share = "shared"}
-                transition={{
-                duration: 0.3,
-            }}
-          //className={/*style.heart*/}
-                ref={icon}
-                onClick={() => {
-                handleShare();
-            }}
-        >
-            {share ? <IoArrowRedoSharp /> : <IoArrowRedoOutline></IoArrowRedoOutline>}
-        </motion.div>
-        <p>{post?.nShares}</p>
+            <div>
+                <h1>{post?.author}</h1>
+            </div>
+        <p></p>
         {
 
         }

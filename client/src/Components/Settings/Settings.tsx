@@ -4,6 +4,8 @@ import { BiEdit } from "react-icons/bi";
 import { IconContext } from "react-icons";
 
 import Button from "../Button/Button";
+import Modal from "../Modal/Modal";
+import ChangeKey from "../ChangeKey/ChangeKey";
 import style from "./Settings.module.scss";
 import Input from "../Input/Input";
 import axios from "axios";
@@ -36,6 +38,10 @@ export default function Settings({ cancel }: any) {
     github: false,
     portfolio: false,
   });
+  const [key, setKey] = useState(false);
+  const cambiarClave = () => {
+    setKey(true);
+  }
 
   useEffect(() => {
     let complete = true;
@@ -137,9 +143,9 @@ export default function Settings({ cancel }: any) {
     let imgUrl: string;
     if (imgInput.current?.files?.length !== 0) {
       imgUrl = await uploadFile(imgInput.current.files[0]);
-
       if (user?._id)
       dispatch(editUser(user._id, { ...changes, avatar: imgUrl }));
+      
       /* axios
       .put("/user", {
         _id: user?._id,
@@ -165,8 +171,8 @@ export default function Settings({ cancel }: any) {
     }
     if (user?._id)
     dispatch(editUser(user._id, changes ));
-    
-  };
+  }
+  ;
 
   const onChangeRole = (e: any): void => {
     if (user?.admin) {
@@ -177,7 +183,12 @@ export default function Settings({ cancel }: any) {
     } else throw new Error("Only admins can change roles");
   };
 
+
   return (
+    <>
+      <Modal isOpen={key} setIsOpen={setKey} title="Cambiar contraseña">
+        <ChangeKey />
+      </Modal>
     <form className={style.settings_wrap}>
       <div id={style.avt_cont}>
         <img
@@ -288,6 +299,7 @@ export default function Settings({ cancel }: any) {
             type="submit"
             backgroundColor="#000"
             disabled={!complete}
+            onSubmit={cancel}
             onClick={saveChanges}
           >
             Guardar cambios
@@ -297,7 +309,11 @@ export default function Settings({ cancel }: any) {
           </Button>
           <Button>Eliminar perfil</Button>
         </div>
+        <a
+        onClick={cambiarClave}
+        >Cambiar clave</a>
       </div>
     </form>
+    </>
   );
 }
