@@ -11,6 +11,7 @@ import postRouter from "./Routes/PostRoutes";
 import stripeRouter from "./Routes/StripeRoutes";
 import http from "http";
 import { Server } from "socket.io";
+import { IUser } from "./models/User";
 const app: express.Application = express();
 app.use(cors());
 
@@ -46,16 +47,42 @@ const io = new Server(server, {
   },
 });
 
+type User = {
+  userId: string;
+  /*   name: string;
+  avatar: string;
+  username: string; */
+  socketId: string;
+};
+
+let users: User[] = [];
+
+const addUser = (userId: string, socketId: string) => {
+  if (!users.some((user: User) => user.userId === userId)) {
+    users.push({ userId, socketId });
+  }
+};
+
+const removeUser = (socketId: string) => {
+  users = users.filter((e) => e.socketId !== socketId);
+};
+
 io.on("connection", (socket) => {
-  console.log("User Connected",socket.id)
+  console.log("User Connected", socket.id);
+
+  socket.on("add_user", (userId: string) => {
+    addUser(userId, socket.id);
+    io.emit("get_users", users);
+  });
 
   socket.on("send_message", (data) => {
-    io.emit("receive_message",data)
-  })
+    socket.broadcast.emit("receive_message", data);
+  });
 
-  socket.on("disconnect",()=> {
-      console.log("User Disconnected", socket.id)
-  })
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+    removeUser(socket.id);
+  });
 });
 
 server.listen(process.env.PORT, () => {
