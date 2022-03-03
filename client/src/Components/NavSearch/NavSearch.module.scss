@@ -4,12 +4,11 @@
   display: flex;
   justify-content: center;
   width: 100vw;
-  z-index: 3000000;
+  z-index: 300;
   position: sticky;
-  top: 0;
   .nav_wrap {
+    align-items: center;
     justify-content: space-between;
-    place-items: center;
     display: flex;
     max-width: 1200px;
     width: 100%;
@@ -25,34 +24,25 @@
     }
     .nav_search {
       input {
+        border: none;
         width: 30rem;
-        padding: 1rem 2rem;
-        border: 1px solid $white;
-        border-radius: 8px;
-        background-color: transparent;
+        outline: none;
+        color: $blackLow;
         font-size: 0.8rem;
-        color: $white;
+        padding: 1rem 1rem;
+        border-radius: 8px;
+        background-color: $white;
       }
     }
     .notifications {
       position: relative;
     }
-
     .nav_button_profile {
-      display: flex;
-      user-select: none;
       gap: 1.5rem;
+      display: flex;
       cursor: pointer;
+      user-select: none;
       align-items: center;
-      img {
-        width: 50px;
-        object-fit: cover;
-        height: 50px;
-        border: 1.5px solid $yellow;
-        border-radius: 100%;
-        background-repeat: no-repeat;
-        background-size: cover;
-      }
       .nav_profile_info {
         color: $white;
       }

@@ -3,7 +3,7 @@ import React, { useState, FC } from "react";
 import { useDispatch } from "react-redux";
 import useUser from "../../Hooks/useUser";
 import { getPosts } from "../../redux/actions/actions";
-import { InfoAlert, ErrorAlert } from "../Alert/Alert";
+import { InfoAlert } from "../Alert/Alert";
 import { FaUpload, FaCheck } from "react-icons/fa";
 import styles from "./AddPost.module.scss";
 import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
@@ -16,11 +16,12 @@ type Props = {
 
 export function validate(input: any, typePost: string) {
    const errors = {
+      text: "",
       company: "",
       companyLink: "",
       salary: "",
       position: "",
-      /*       tecnologíaClases: "",
+      /*tecnologíaClases: "",
       costoClases: "", */
       imageCompany: "",
       pregunta: "",
@@ -101,7 +102,6 @@ export function validate(input: any, typePost: string) {
    } else if (!/^[a-z ,.'-]+$/i.test(input.tecnologíaClases)) {
       errors.tecnologíaClases = "Nombre de tecnologia invalido";
    }
-
    if (!input.costoClases) {
       errors.costoClases = "Solo se permiten numeros";
    }  */
@@ -114,7 +114,17 @@ const AddPost: FC<Props> = ({ setOpen }) => {
    const dispatch = useDispatch();
 
    const [typePost, setTypePost] = useState("normal");
-   const [errors, setErrors] = useState({});
+   const [errors, setErrors] = useState({
+      company: "",
+      companyLink: "",
+      salary: "",
+      position: "",
+      /*tecnologíaClases: "",
+      costoClases: "", */
+      imageCompany: "",
+      pregunta: "",
+      getError: false,
+   });
    const [post, setPost] = useState<any>({
       text: "",
       image: "",
@@ -238,11 +248,14 @@ const AddPost: FC<Props> = ({ setOpen }) => {
          <div className={styles.add_post_content}>
             {typePost === "pregunta" ? (
                <div className={styles.content__inputs}>
-                  <input
-                     type="text"
-                     name="pregunta"
-                     placeholder="¿Cual es tu pregunta?"
-                  />
+                  <div className={styles.input_with_error}>
+                     <input
+                        type="text"
+                        name="pregunta"
+                        placeholder="¿Cual es tu pregunta?"
+                     />
+                     {errors?.pregunta && <p>{errors.pregunta}</p>}
+                  </div>
                </div>
             ) : (
                typePost !== "normal" &&
@@ -258,9 +271,9 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                                  defaultValue={post.tecnologíaClases}
                                  required
                               />
-                              {errors?.tecnologíaClases && (
+                              {/* {errors?.tecnologíaClases && (
                                  <p>{errors.tecnologíaClases}</p>
-                              )}
+                              )} */}
                            </div>
                            <input
                               type="text"
@@ -397,7 +410,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
             <input
                type="submit"
                value="Publicar"
-               className={errors.getError && styles.disabledSubmit}
+               className={errors.getError ? styles.disabledSubmit : ""}
             />
             <button type="button" onClick={() => setOpen(false)}>
                Cancelar

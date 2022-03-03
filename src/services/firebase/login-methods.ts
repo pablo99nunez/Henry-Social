@@ -35,7 +35,10 @@ export async function signUpWithEmail(userInfo: IUser) {
   if (password == undefined)
     throw new Error("Necesitas ingresar una contraseña");
   try {
-    const downloadURL = avatar instanceof File ? uploadFile(avatar) : avatar;
+    const downloadURL =
+      avatar instanceof File
+        ? uploadFile(avatar)
+        : "https://s5.postimg.cc/537jajaxj/default.png";
     await axios
       .post("/user", {
         name,

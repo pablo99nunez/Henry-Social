@@ -2,6 +2,7 @@ import React from "react";
 import { BsChatSquareDots } from "react-icons/bs";
 import { IPost } from "../../../../../src/models/Post";
 import { Like } from "../../Like/Like";
+import { SharePost } from "../../SharePosts/SharePost"
 import style from "../Post.module.scss";
 
 type Props = {
@@ -28,6 +29,7 @@ export default function Interactions({
                         <span>{post?.numComments}</span>
                     </div>
                 </div>
+                <SharePost post={post}></SharePost>
             </div>
         </div>
     );
