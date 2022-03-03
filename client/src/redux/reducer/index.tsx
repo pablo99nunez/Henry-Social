@@ -19,7 +19,10 @@ import {
   ORDER_BY,
   FILTER_BY_FOLLOW,
   FILTER_BY_TAG,
+  SET_SOCKET,
 } from "../actions/actions";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { io, Socket } from "socket.io-client";
 
 export interface IState {
   user: IUser | null;
@@ -29,6 +32,7 @@ export interface IState {
   post: IPost;
   comments: Comment[];
   Users: IUser[];
+  socket: Socket;
 }
 
 const initialState = {
@@ -192,6 +196,12 @@ export default function rootReducer(state = initialState, action: IAction) {
       };
     }
 
+    case SET_SOCKET: {
+      return {
+        ...state,
+        socket: io("http://localhost:3001", { autoConnect: false }),
+      };
+    }
     default:
       return state;
   }

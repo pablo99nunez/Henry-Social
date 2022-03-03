@@ -6,16 +6,17 @@ import Login from "./Pages/Login/Login";
 import PostDetail from "./Pages/PostDetail/PostDetail";
 import useLogin from "./Hooks/useLogin";
 import Payment from "./Components/Present/Payment";
-import { io } from "socket.io-client";
 
-const url = "https://henry-social-back.herokuapp.com"; /* import.meta.env.PROD
+import { useEffect } from "react";
+import { setSocket } from "./redux/actions/actions";
+import { useDispatch } from "react-redux";
+
+const url = import.meta.env.PROD
   ? "https://henry-social-back.herokuapp.com"
-  : "http://localhost:3001"; */
-export const socket = io(url, { autoConnect: false });
+  : "http://localhost:3001";
 
 function App() {
   useLogin();
-
   return (
     <div className="App">
       <Routes>

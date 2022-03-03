@@ -5,17 +5,20 @@ import style from "./Chat.module.scss";
 import { BiChevronsUp } from "react-icons/bi";
 import Avatar from "../Avatar/Avatar";
 import { motion } from "framer-motion";
-import { socket } from "../../App";
+import { useSelector } from "react-redux";
+import { IState } from "../../redux/reducer";
 
 const Chat = () => {
+  const socket = useSelector((state: IState) => state.socket);
   const user = useUser();
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [arrivalMessage, setArrivalMessage] = useState();
   const scrollToMe = useRef<HTMLDivElement>(null);
-
   const [listMessage, setListMessage] = useState<any[]>([]);
+
   const handleClick = (e: any) => {
-    setOpen((prevState) => !prevState);
+    setOpen(!open);
   };
 
   const SendMessage = () => {
@@ -30,23 +33,28 @@ const Chat = () => {
           ":" +
           new Date(Date.now()).getMinutes(),
       };
+
       socket.emit("send_message", messageData);
+      setListMessage([...listMessage, messageData]);
       setMessage("");
     }
   };
   useEffect(() => {
+    //Traer los mensajes previos
     const list = localStorage.getItem("ChatGlobal");
     if (typeof list === "string") setListMessage(JSON.parse(list));
+
     socket.on("receive_message", (data) => {
-      setListMessage([...listMessage, data]);
+      setArrivalMessage(data);
     });
-    return () => {
-      socket.close();
-    };
   }, []);
   useEffect(() => {
+    arrivalMessage && setListMessage([...listMessage, arrivalMessage]);
+  }, [arrivalMessage]);
+
+  useEffect(() => {
     localStorage.setItem("ChatGlobal", JSON.stringify(listMessage));
-    scrollToMe.current?.scrollIntoView({ block: "end" });
+    scrollToMe.current?.scrollIntoView({ behavior: "smooth" });
   }, [listMessage]);
 
   return (
@@ -72,6 +80,7 @@ const Chat = () => {
           {listMessage.map((msg) => (
             <div
               className={style.message}
+              ref={scrollToMe}
               id={
                 user?.username === msg.author
                   ? `${style.you}`
@@ -92,7 +101,6 @@ const Chat = () => {
               </div>
             </div>
           ))}
-          <div ref={scrollToMe}></div>
         </div>
         <div className={style.chat_footer}>
           <input

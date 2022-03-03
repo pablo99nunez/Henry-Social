@@ -39,7 +39,7 @@ const SideTags = () => {
 
     const objPopulares: any = {};
 
-    tags.forEach((e: string) => {
+    tags?.forEach((e: string) => {
       objPopulares[e] = objPopulares[e] ? objPopulares[e] + 1 : 1;
     });
 

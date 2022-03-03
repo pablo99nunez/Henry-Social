@@ -20,6 +20,7 @@ export const FILTER_BY_FOLLOW = "FILTER_BY_FOLLOW";
 export const ORDER_BY = "ORDER_BY";
 export const SEARCH_USERS = "SEARCH_USERS";
 export const FILTER_BY_TAG = "FILTER_BY_TAG";
+export const SET_SOCKET = "SET_SOCKET";
 
 export interface IAction {
   type: string;
@@ -204,4 +205,7 @@ export function filterByFollow() {
   return async (dispatch: Function) => {
     return dispatch({ type: FILTER_BY_FOLLOW });
   };
+}
+export function setSocket() {
+  return (dispatch: Function) => dispatch({ type: SET_SOCKET });
 }
