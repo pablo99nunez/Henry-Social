@@ -300,7 +300,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       </div>
       <div className={ errors || post?.text === '' ? styles.error_button : styles.add_post_buttons}>
         { errors?.text || post?.text === '' ?
-          <input type="submit" value="Publicar" disabled={true} /> :
+          <input type="submit" value="Publicar" disabled={false} /> : // Lo cambie hasta ver como arreglar esto
           <input type="submit" value="Publicar" disabled={false} />
         }
         <button type="button" onClick={() => setOpen(false)}>
