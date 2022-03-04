@@ -18,7 +18,7 @@ export default function Content({ post }: Props) {
               💥💥💥
             </h4>
             <br></br>
-            <div>
+            <div style={{fontSize:"15px"}}>
             {post.body}
             </div>
           </>

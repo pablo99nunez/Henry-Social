@@ -113,10 +113,13 @@ export default function User() {
           <div className={style.head_profile_central}>
             <div className={style.photo}>
               <img
-                src={
+                src={ isOwner ? (
                   typeof userLogeado?.avatar == "string" && userLogeado?.avatar
                     ? userLogeado?.avatar
-                    : "https://s5.postimg.cc/537jajaxj/default.png"
+                    : "https://s5.postimg.cc/537jajaxj/default.png" ) :
+                    ( typeof user?.avatar == "string" && user?.avatar
+                    ? user?.avatar
+                    : "https://s5.postimg.cc/537jajaxj/default.png")
                 }
                 alt=""
                 referrerPolicy="no-referrer"
@@ -160,7 +163,7 @@ export default function User() {
                   {user?.role + (user?.cohorte ? " | " + user?.cohorte : "")}
                 </h2>
                 <div className={style.bio}>
-                  <h3>{userLogeado?.bio}</h3>
+                  <h3>{user?.bio}</h3>
                 </div>
               </div>
 
@@ -177,49 +180,56 @@ export default function User() {
                 </div>
 
                 <div>
-                  {userLogeado?.linkedin ? (
+                  {isOwner && userLogeado?.linkedin ? (
                     <a href={userLogeado?.linkedin} target="_blank">
                       <div>
-                        <img
-                          src={linkedin}
-                          alt="linkedin-profile"
+                        <img src={linkedin} alt="linkedin-profile"
                           className={style.linkedin_logo}
                         />
                       </div>
                     </a>
-                  ) : (
-                    <div> </div>
-                  )}
-                  {userLogeado?.github  ? (
-                    <a
-                      href={`https://www.github.com/${userLogeado?.github}`}
-                      target="_blank"
-                    >
+                  ) : user?.linkedin ? (
+                    <a href={user?.linkedin} target="_blank">
+                    <div>
+                      <img src={linkedin} alt="linkedin-profile"
+                      />
+                    </div>
+                 </a>
+                  ):<div> </div>}
+                  {isOwner && userLogeado?.github ? (
+                    <a href={`https://www.github.com/${userLogeado?.github}`}
+                      target="_blank">
                       <div>
-                        <img
-                          src={github}
-                          alt="github-logo"
-                          className={style.github_logo}
+                        <img src={github} alt="github-logo"
                         />
                       </div>
                     </a>
-                  ) : (
-                    <div> </div>
-                  )}
-                  {
-                    user?.portfolio ? (
+                  ) : user?.github ? (
+                    <a href={`https://www.github.com/${user?.github}`}
+                      target="_blank">
+                      <div>
+                        <img src={github} alt="github-logo"
+                        />
+                      </div>
+                    </a>
+                  ):<div> </div>}
+                  {isOwner && userLogeado?.portfolio ? (
                       <a href={userLogeado?.portfolio} target="_blank">
                       <div>
-                        <img
-                          src={github}                    // Buscar icono portfolio
-                          alt="portfolio-logo"
-                          className={style.github_logo}   //Aca falta editar esto  
+                        <img src={github} alt="portfolio-logo"
+                          className={style.github_logo}     
                         />
                       </div>
                       </a>
-                    ) : (
-                      <div> </div>
-                    )
+                    ) : user?.portfolio ? (
+                      <a href={user?.portfolio} target="_blank">
+                      <div>
+                        <img src={github} alt="portfolio-logo"
+                          className={style.github_logo}     
+                        />
+                      </div>
+                      </a>
+                    ) : <div> </div> 
                   }
                 </div>
               </div>

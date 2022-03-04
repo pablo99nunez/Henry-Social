@@ -8,106 +8,13 @@ import { FaUpload, FaCheck } from "react-icons/fa";
 import styles from "./AddPost.module.scss";
 import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
 import { motion } from "framer-motion";
-
+import validate from './validate'
 type Props = {
    // eslint-disable-next-line @typescript-eslint/ban-types
    setOpen: Function;
 };
 
-export function validate(input: any, typePost: string) {
-   const errors = {
-      text: "",
-      company: "",
-      companyLink: "",
-      salary: "",
-      position: "",
-      /*tecnologíaClases: "",
-      costoClases: "", */
-      imageCompany: "",
-      pregunta: "",
-      getError: false,
-   };
 
-   if (typePost === "empleo") {
-      if (!input.company) {
-         errors.company = "Nombre de compañia es requerido";
-      } else if (!/^[a-z ,.'-]+$/i.test(input.company)) {
-         errors.company = "Nombre de compañia invalido";
-      }
-
-      if (!input.companyLink) {
-         errors.companyLink = "Ingrese la URL del sitio de la empresa";
-      } else if (
-         !/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(
-            input.companyLink
-         )
-      ) {
-         errors.companyLink = "URL invalida";
-      }
-
-      if (input.salary < 0) {
-         errors.salary = "Salario tiene que ser minimo 0";
-      } else if (!/^[0-9]+$/.test(input.salary)) {
-         errors.salary = "Solo se permiten numeros";
-      }
-
-      if (!input.position) {
-         errors.position = "Debes ingresar un puesto";
-      }
-
-      if (
-         errors.position ||
-         errors.salary ||
-         errors.company ||
-         errors.companyLink
-      ) {
-         errors.getError = true;
-      } else {
-         errors.getError = false;
-      }
-   }
-
-   if (typePost === "boom") {
-      if (!input.company) {
-         errors.company = "Nombre de compañia es requerido";
-      } else if (!/^[a-z ,.'-]+$/i.test(input.company)) {
-         errors.company = "Nombre de compañia invalido";
-      }
-
-      if (!input.position) {
-         errors.position = "Debes ingresar un puesto";
-      }
-
-      if (errors.position || errors.company) {
-         errors.getError = true;
-      } else {
-         errors.getError = false;
-      }
-   }
-
-   if (typePost === "pregunta") {
-      if (!input.pregunta) {
-         errors.pregunta = "Debes definir tu pregunta";
-      }
-
-      if (errors.pregunta) {
-         errors.getError = true;
-      } else {
-         errors.getError = false;
-      }
-   }
-
-   /* if (!input.tecnologíaClases) {
-      errors.tecnologíaClases = "Nombre de tecnologia es requerido";
-   } else if (!/^[a-z ,.'-]+$/i.test(input.tecnologíaClases)) {
-      errors.tecnologíaClases = "Nombre de tecnologia invalido";
-   }
-   if (!input.costoClases) {
-      errors.costoClases = "Solo se permiten numeros";
-   }  */
-
-   return errors;
-}
 
 const AddPost: FC<Props> = ({ setOpen }) => {
    const user = useUser();
@@ -168,7 +75,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
          position: "",
          companyLink: "",
          companyImage: null,
-         salary: 0,
+         salary: "",
          costoClases: "0",
          temasClases: "",
          tecnologíaClases: "",
@@ -178,6 +85,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
          return setTypePost("normal");
       }
       setTypePost(name);
+      setErrors("")
    };
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -262,11 +170,13 @@ const AddPost: FC<Props> = ({ setOpen }) => {
             {typePost === "pregunta" ? (
                <div className={styles.content__inputs}>
                   <div className={styles.input_with_error}>
+                  <span className={styles.input_effects}>
                      <input
                         type="text"
                         name="pregunta"
-                        placeholder="¿Cual es tu pregunta?"
-                     />
+                        placeholder="."
+                     /> <span>¿Cual es tu pregunta?</span>
+                     </span>
                      {errors?.pregunta && <p>{errors.pregunta}</p>}
                   </div>
                </div>
@@ -304,23 +214,27 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                      ) : (
                         <>
                            <div className={styles.input_with_error}>
+                              <span className={styles.input_effects}>
                               <input
                                  type="text"
                                  name="company"
                                  defaultValue={post.company}
-                                 placeholder="Nombre de la Empresa"
+                                 placeholder="."
                                  required
-                              />
+                              /><span>Nombre de la empresa</span>
+                              </span>
                               {errors?.company && <p>{errors.company}</p>}
                            </div>
                            <div className={styles.input_with_error}>
+                           <span className={styles.input_effects}>
                               <input
                                  type="text"
                                  name="position"
                                  defaultValue={post.position}
-                                 placeholder="Rol en la Empresa"
+                                 placeholder="."
                                  required
-                              />
+                              /><span>Rol en la Empresa</span>
+                              </span>
                               {errors?.position && <p>{errors.position}</p>}
                            </div>
                            <input
@@ -335,25 +249,29 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                      {typePost === "empleo" && (
                         <>
                            <div className={styles.input_with_error}>
+                           <span className={styles.input_effects}>
                               <input
                                  name="companyLink"
                                  type="url"
                                  defaultValue={post.companyLink}
-                                 placeholder="Link del Empleo"
+                                 placeholder="."
                                  required
-                              />
+                              /> <span>Link del Empleo</span>
+                              </span>
                               {errors?.companyLink && (
                                  <p>{errors.companyLink}</p>
                               )}
                            </div>
                            <div className={styles.input_with_error}>
+                           <span className={styles.input_effects}>
                               <input
                                  min="0"
                                  type="number"
                                  name="salary"
                                  defaultValue={post.salary}
-                                 placeholder="Salario (Opcional)"
-                              />
+                                 placeholder="."
+                              ></input><span>Salario (opcional)</span>
+                              </span>
                               {errors?.salary && <p>{errors.salary}</p>}
                            </div>
                         </>

@@ -296,30 +296,35 @@ export default function Settings({ cancel }: any) {
           </Button>
         </div>
 
-        <Input
+        <span className={style.spaneo}>
+        <input
           type="text"
           name="github"
-          error={errors.github}
           onChange={handleChanges}
-          placeholder="Ingresa tu Usuario de Github"
+          placeholder="."
           defaultValue={changes?.github}
-        ></Input>
-        <Input
+        ></input><span>Ingresa tu Usuario de Github</span>
+        </span>
+
+        <span className={style.spaneo}>
+        <input
           type="url"
-          error={errors.linkedin}
           onChange={handleChanges}
-          placeholder="Ingresa la Url de tu Linkedin"
+          placeholder="."
           name="linkedin"
           defaultValue={changes?.linkedin}
-        ></Input>
-        <Input
+        ></input><span>Ingresa la Url de tu Linkedin</span>
+        </span>
+
+        <span className={style.spaneo}>
+        <input
           type="url"
-          error={errors.portfolio}
           onChange={handleChanges}
-          placeholder="Ingresa la Url de tu portafolio"
+          placeholder="."
           name="portfolio"
           defaultValue={changes?.portfolio}
-        ></Input> 
+        ></input><span>Ingresa la Url de tu portafolio</span>
+        </span> 
         <div className={style.buttons}>
           <Button
             type="submit"

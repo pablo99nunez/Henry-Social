@@ -1,11 +1,16 @@
 @import "../../Styles/variables.scss";
 
+$isDark: false;
+
 :root {
-
-  --placeholderSize: .5em;
-  --placeholderInputGap: .25em;
-
-  }
+--brightness: #{if($isDark, 75%, 50%)};
+--animationSpeed: .5s;
+--placeholderSize: .5em;
+--placeholderInputGap: .25em;
+--underlineSize: 1em;
+--underlineColorActive: hsl(0deg, 0%, 0%);
+--underlineColorInactive: hsla(0, 100%, 0%, 1);
+}
   
 .settings_wrap {
   z-index: 2000;
@@ -127,7 +132,46 @@
     }
   }
 
-
+  .spaneo{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-top: calc(var(--placeholderSize) + var(--placeholderInputGap));
+    padding-bottom: .75em;
+    input{
+      height: 4vh;
+      width: 100%;
+      font-size: 1.3em;
+      background-color: transparent;
+      border: none;
+      border-bottom: 2px solid var(--underlineColorInactive);
+      transition: border var(--animationSpeed);
+      will-change: border;
+      outline: none;
+      &::placeholder{
+          color:transparent;
+      }
+      &+span{
+          text-align: left;
+          position: absolute;
+          font-size: 1.2em;
+          left: .05em;
+          top: 0;
+          transition: top var(--animationSpeed), font-size var(--animationSpeed);
+          will-change: top, font-size;
+          pointer-events: none;
+          width: 100%;
+      }
+      &:focus,
+      &:not(:placeholder-shown){
+          border-bottom-color: black;
+          &+span{
+              top:calc(-1em - 2 * var(--placeholderInputGap));
+              font-size: var(--placeholderSize)
+          }
+      }
+    }
+  }
 
   .footer_settings {
     display: flex;
@@ -187,5 +231,8 @@
   .changeKey{
     color:red;
     cursor:pointer;
+    position:absolute;
+    margin-top: 2vh;
+    text-decoration: underline;
   }
 }
