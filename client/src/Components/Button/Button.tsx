@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { ButtonHTMLAttributes, useRef } from "react";
 import styles from "./Button.module.scss";
 import { motion } from "framer-motion";
 import tinycolor from "tinycolor2";
@@ -6,6 +6,7 @@ import tinycolor from "tinycolor2";
 type Props = {
   children: any;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onSubmit?: React.MouseEventHandler<HTMLButtonElement>;
   active?: boolean;
   style?: any;
   backgroundColor?: string;
@@ -22,6 +23,7 @@ type Props = {
 export default function Button({
   children,
   onClick,
+  onSubmit,
   active,
   ref,
   style,
@@ -63,6 +65,7 @@ export default function Button({
       initial="initial"
       animate={active ? "active" : "initial"}
       onClick={onClick}
+      onSubmit={onSubmit}
       whileHover={!disabled ? "active" : ""}
       ref={button}
       whileTap={{

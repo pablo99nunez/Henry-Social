@@ -10,11 +10,17 @@
   border: none;
   border-bottom: 2px solid $black;
   margin: 0.3rem 0;
+  
+  transition: border var(--animationSpeed);
+  will-change: border;
+  outline: none;
+
 
   &::placeholder {
     color: $blackLow;
-  }
 
+  }
+  
   &:focus {
     outline: none;
   }
@@ -23,3 +29,5 @@
 .invalid {
   border-color: red;
 }
+
+

@@ -1,0 +1,25 @@
+@import "../../Styles/variables.scss";
+
+.error{
+  background:$red;
+  border-radius: 5px;
+  padding: 1rem;
+  text-align: center;
+  font-size: .7em;
+  box-shadow: 5px 5px 10px rgba(0,0,0,.8);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+
+  .errorArrow{
+    width: 20px;
+    aspect-ratio: 1/1;
+    background-color: $red;
+    transform: rotate(45deg);
+    position: absolute;
+    bottom:-10px;
+    left:10px;
+  }
+}
+
