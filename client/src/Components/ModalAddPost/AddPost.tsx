@@ -161,6 +161,19 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
    const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       const name = e.currentTarget.name;
+      setPost({
+         text: "",
+         image: "",
+         company: "",
+         position: "",
+         companyLink: "",
+         companyImage: null,
+         salary: 0,
+         costoClases: "0",
+         temasClases: "",
+         tecnologíaClases: "",
+         tags: [],
+      });
       if (name === typePost) {
          return setTypePost("normal");
       }
