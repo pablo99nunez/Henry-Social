@@ -6,6 +6,7 @@ import {
   GithubAuthProvider,
   signInWithEmailAndPassword,
   signOut,
+  sendEmailVerification
 } from "firebase/auth";
 import { IUser } from "../../models/User";
 import axios from "axios";
@@ -49,6 +50,11 @@ export async function signUpWithEmail(userInfo: IUser) {
       .then((doc) => {
         if (password)
           return createUserWithEmailAndPassword(auth, email, password);
+      })
+      .then(userCredential => {
+        if(userCredential) sendEmailVerification(userCredential?.user, {
+          url: "http://localhost:3000"
+        });
       })
       .catch((e) => {
         throw new Error(e);

@@ -102,13 +102,12 @@ export default function Login(): JSX.Element {
           delete newUser.lastName;
           await signUpWithEmail(newUser).then(() => {
             InfoAlert.fire("Usuario creado con exito");
+            navigate("/verification");
           });
         } else if (input.password != undefined) {
           await signInWithEmail(input.email, input.password);
+          navigate("/");
         }
-
-        navigate("/");
-        setLoading(false);
       } catch (e) {
         console.error(e);
         InfoAlert.fire({ title: "Algo salio mal", icon: "error" });

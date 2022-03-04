@@ -1,5 +1,4 @@
-import axios, { AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { auth } from "../../../src/services/firebase/firebase";
@@ -12,7 +11,9 @@ export default function useLogin() {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user && user.email) {
-        dispatch(getUser(user.email));
+        if(user.emailVerified) {
+          dispatch(getUser(user.email));
+        } else navigate("/verification");
       } else {
         navigate("/login");
       }
