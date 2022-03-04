@@ -9,15 +9,20 @@ import ProfilePicture from "./ProfilePicture/ProfilePicture";
 import Content from "./Content/Content";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import Image from "./Image/Image";
+import { PromiseProvider } from "mongoose";
 
 type Props = {
   post: IPost;
+  share: boolean;
+  setShare: Function;
+  contenedor: Function;
 };
 
-const Post: FC<Props> = ({ post }) => {
+const Post: FC<Props> = ({ post, setShare, share, contenedor}) => {
   const [eliminated, setEliminated] = useState(false);
 
   const [openComment, setOpenComment] = useState(false);
+
 
   return (
     <div
@@ -50,6 +55,9 @@ const Post: FC<Props> = ({ post }) => {
                 post={post}
                 setOpenComment={setOpenComment}
                 openComment={openComment}
+                openShare={share}
+                setOpenShare={setShare}
+                contenedor = {contenedor}
               ></Interactions>
             )}
           </div>

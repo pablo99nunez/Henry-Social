@@ -6,6 +6,8 @@ import { IconContext } from "react-icons";
 import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
 
 import Button from "../Button/Button";
+import Modal from "../Modal/Modal";
+import ChangeKey from "../ChangeKey/ChangeKey";
 import style from "./Settings.module.scss";
 import Input from "../Input/Input";
 import axios from "axios";
@@ -34,6 +36,10 @@ export default function Settings({ cancel }: any) {
     github: false,
     portfolio: false,
   });
+  const [key, setKey] = useState(false);
+  const cambiarClave = () => {
+    setKey(true);
+  }
   const [complete, setComplete] = useState(false);
   const [newAvatar, setNewAvatar] = useState<string | null>(null);
 
@@ -160,9 +166,9 @@ export default function Settings({ cancel }: any) {
     let imgUrl: string;
     if (imgInput.current?.files && imgInput.current?.files?.length !== 0) {
       imgUrl = await uploadFile(imgInput.current.files[0]);
-
       if (user?._id)
       dispatch(editUser(user._id, { ...changes, avatar: imgUrl }));
+      
       /* axios
       .put("/user", {
         _id: user?._id,
@@ -188,8 +194,8 @@ export default function Settings({ cancel }: any) {
     }
     if (user?._id)
     dispatch(editUser(user._id, changes ));
-    
-  };
+  }
+  ;
 
   const onChangeRole = (e: any): void => {
     if (user?.admin) {
@@ -200,7 +206,15 @@ export default function Settings({ cancel }: any) {
     } else throw new Error("Only admins can change roles");
   };
 
+
   return (
+    <>
+      <Modal isOpen={key} setIsOpen={setKey} title="Cambiar contraseña">
+        <ChangeKey cancel={(e?: any) => {
+            e && e.preventDefault();
+            return setKey(false);
+           }}/>
+      </Modal>
     <form className={style.settings_wrap}>
       <div id={style.avt_cont}>
         <img
@@ -305,12 +319,13 @@ export default function Settings({ cancel }: any) {
           placeholder="Ingresa la Url de tu portafolio"
           name="portfolio"
           defaultValue={changes?.portfolio}
-        ></Input>
+        ></Input> 
         <div className={style.buttons}>
           <Button
             type="submit"
             backgroundColor="#000"
             disabled={!complete}
+            onSubmit={cancel}
             onClick={saveChanges}
           >
             Guardar cambios
@@ -320,7 +335,11 @@ export default function Settings({ cancel }: any) {
           </Button>
           <Button>Eliminar perfil</Button>
         </div>
+        <a className={style.changeKey}
+        onClick={cambiarClave}
+        >Cambiar clave</a>
       </div>
     </form>
+    </>
   );
 }

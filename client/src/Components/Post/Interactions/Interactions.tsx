@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useState} from "react";
 import { BsChatSquareDots } from "react-icons/bs";
+import { IoArrowRedoOutline, IoArrowRedoSharp } from "react-icons/io5";
 import { IPost } from "../../../../../src/models/Post";
 import { Like } from "../../Like/Like";
 import { SharePost } from "../../SharePosts/SharePost"
@@ -9,12 +10,18 @@ type Props = {
     post: IPost;
     setOpenComment: Function;
     openComment: boolean;
+    openShare: boolean;
+    setOpenShare: Function;
+    contenedor:Function;
 };
 
 export default function Interactions({
     post,
     setOpenComment,
     openComment,
+    openShare,
+    setOpenShare,
+    contenedor
 }: Props) {
     return (
         <div className={style.post_interacciones}>
@@ -29,7 +36,12 @@ export default function Interactions({
                         <span>{post?.numComments}</span>
                     </div>
                 </div>
-                <SharePost post={post}></SharePost>
+                <div 
+                onClick={() => {setOpenShare(!openShare); contenedor(post);}}
+                >
+                <IoArrowRedoOutline />
+                <span>{post?.nShares}</span>
+                </div>
             </div>
         </div>
     );
