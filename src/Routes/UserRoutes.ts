@@ -38,7 +38,7 @@ router.get("/users", async (req, res) => {
   try {
     if (username) {
       const users = await User.find({
-        name: { $regex: username },
+        name: { $regex: username, $options:"i" },
       });
       return res.json(users);
     }
