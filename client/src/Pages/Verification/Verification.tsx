@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Helmet } from 'react-helmet';
 
 const Verification: React.FC = () => {
   return (
@@ -8,6 +8,11 @@ const Verification: React.FC = () => {
       placeItems: "center",
       height: "100%"
     }}>
+      <Helmet>
+          <meta charSet="utf-8"/>
+          <meta name="Error Page" content="Verifica tu email"/>
+          <title>Verificación | Henry Social</title>
+      </Helmet>
       <h1 style={{
         color: 'yellow',
         textAlign: 'center'

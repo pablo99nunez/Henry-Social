@@ -3,6 +3,7 @@ import { BsGoogle, BsGithub } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { BiEdit } from "react-icons/bi";
 import { IconContext } from "react-icons";
+import { Helmet } from "react-helmet";
 
 import {
   signUpWithEmail,
@@ -53,10 +54,6 @@ export default function Login(): JSX.Element {
   const navigate = useNavigate();
   const user = useUser();
   const btn = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    document.title = `${action ? 'Iniciar Sesion' : ' Registrate'} | Henry Social`
-  }, [action])
 
   useEffect(() => {
     const { firstName, lastName, username, password, email } = input;
@@ -210,6 +207,11 @@ export default function Login(): JSX.Element {
         <LoadingPage />
       ) : (
         <div id={style.cont}>
+          <Helmet>
+            <meta charSet="utf-8"/>
+            <meta name={`Página de ${action ? 'Inicio de sesión' : 'registro'} | Henry Social`}  content="Formulario"/>
+            <title>{action ? 'Iniciar Sesion' : ' Registrate'} | Henry Social</title>
+          </Helmet>
           <header>
             <div id={style.title_cont}>
               <img
