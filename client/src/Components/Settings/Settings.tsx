@@ -210,7 +210,10 @@ export default function Settings({ cancel }: any) {
   return (
     <>
       <Modal isOpen={key} setIsOpen={setKey} title="Cambiar contraseña">
-        <ChangeKey />
+        <ChangeKey cancel={(e?: any) => {
+            e && e.preventDefault();
+            return setKey(false);
+           }}/>
       </Modal>
     <form className={style.settings_wrap}>
       <div id={style.avt_cont}>
@@ -316,7 +319,7 @@ export default function Settings({ cancel }: any) {
           placeholder="Ingresa la Url de tu portafolio"
           name="portfolio"
           defaultValue={changes?.portfolio}
-        ></Input>
+        ></Input> 
         <div className={style.buttons}>
           <Button
             type="submit"
@@ -332,7 +335,7 @@ export default function Settings({ cancel }: any) {
           </Button>
           <Button>Eliminar perfil</Button>
         </div>
-        <a
+        <a className={style.changeKey}
         onClick={cambiarClave}
         >Cambiar clave</a>
       </div>

@@ -1,0 +1,65 @@
+$isDark: false;
+
+:root {
+--brightness: #{if($isDark, 75%, 50%)};
+--background: #{if($isDark, #333, #fff)};
+--foreground: #{if($isDark, #aaa, #333)};
+--animationSpeed: .5s;
+--placeholderSize: .5em;
+--placeholderInputGap: .25em;
+--underlineSize: .05em;
+--underlineColorActive: hsl(0deg, 0%, var(--brightness));
+--underlineColorInactive: hsla(0, 0%, var(--brightness), .25);
+}
+.changeKey{
+.formulario{
+    display: grid;
+    justify-content: space-around;
+    grid-gap: 2.5vh 0vh;
+    .password{
+        position: relative;
+        display: inline-block;
+        font-size: 1.3em;
+        margin-top: calc(var(--placeholderSize) + var(--placeholderInputGap));
+        padding-bottom: .75em;
+            input{
+                height: 4vh;
+                width: 30vh;
+                font-size: inherit;
+                font-weight: bold;
+                background-color: transparent;
+                border: none;
+                border-bottom: var(--underlineSize) solid var(--underlineColorInactive);
+                transition: border var(--animationSpeed);
+                will-change: border;
+                outline: none;
+                &::placeholder{
+                    color:transparent;
+                }
+                &+span{
+                    text-align: left;
+                    position: absolute;
+                    left: .05em;
+                    top: 0;
+                    transition: top var(--animationSpeed), font-size var(--animationSpeed);
+                    will-change: top, font-size;
+                    pointer-events: none;
+                    width: 100%;
+                }
+                &:focus,
+                &:not(:placeholder-shown){
+                    border-bottom-color: var(--underlineColorActive);
+                    &+span{
+                        top:calc(-1em - 2 * var(--placeholderInputGap));
+                        font-size: var(--placeholderSize)
+                    }
+                }
+            }
+    }
+
+    .buttons{
+        display: flex;
+        justify-content: space-around;
+    }
+}
+}
