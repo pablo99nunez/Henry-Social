@@ -101,8 +101,8 @@ export default function User() {
       <NavSearch></NavSearch>
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
         <Settings
-          cancel={(e: any) => {
-            e.preventDefault();
+          cancel={(e?: any) => {
+            e && e.preventDefault();
             return setEdit(false);
           }}
         />

@@ -1,4 +1,5 @@
-import style from "./Error.module.scss";
+import style from "./ErrorMessage.module.scss";
+
 export default function Error({ e }: { e: string | undefined }) {
     return (
         <div className={style.error} style={{display: `${e ? "block" : "none"}`}}>

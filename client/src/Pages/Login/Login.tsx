@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BsGoogle, BsGithub } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { BiEdit } from "react-icons/bi";
+import { IconContext } from "react-icons";
 
 import {
   signUpWithEmail,
@@ -8,7 +10,6 @@ import {
   signUpWithGitHub,
   signInWithEmail,
 } from "../../../../src/services/firebase/login-methods";
-import { IUser } from "../../../../src/models/User";
 import style from "./Login.module.scss";
 import useUser from "../../Hooks/useUser";
 import Button from "../../Components/Button/Button";
@@ -26,8 +27,9 @@ enum USER_ACTION {
 let userExists: boolean;
 
 export default function Login(): JSX.Element {
-  const [input, setInput] = useState<IUser>({
-    name: "",
+  const [input, setInput] = useState<any>({
+    firstName: "",
+    lastName: "",
     username: "",
     password: "",
     email: "",
@@ -37,7 +39,8 @@ export default function Login(): JSX.Element {
     notifications: [],
   });
   const [errors, setErrors] = useState({
-    name: false,
+    firstName: false,
+    lastName: false,
     username: false,
     password: false,
     email: false,
@@ -45,7 +48,8 @@ export default function Login(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [formComplete, setFromComplete] = useState(false);
   const [userAlreadyExist, setUserAlreadyExist] = useState(false);
-  const [action, setAction] = useState(USER_ACTION.logIn);
+  const [action, setAction] = useState(USER_ACTION.signUp);
+  const [newAvatar, setNewAvatar] = useState<string | null>(null);
   const navigate = useNavigate();
   const user = useUser();
   const btn = useRef<HTMLButtonElement>(null);
@@ -55,7 +59,7 @@ export default function Login(): JSX.Element {
   }, [action])
 
   useEffect(() => {
-    const { name, username, password, email } = input;
+    const { firstName, lastName, username, password, email } = input;
     let cleanUp = false;
     if (user !== null) return navigate("/");
     setTimeout(() => {
@@ -64,8 +68,7 @@ export default function Login(): JSX.Element {
     if(action === 1) {
       email && password && setFromComplete(true);
     } else {
-      console.log(!userAlreadyExist);
-      if(name && username && !userAlreadyExist && password && email) {
+      if(firstName && lastName && username && !userAlreadyExist && password && email) {
         if(btn.current) btn.current.disabled = false;
         return setFromComplete(true);
       } 
@@ -91,7 +94,13 @@ export default function Login(): JSX.Element {
         setLoading(true);
 
         if (action == USER_ACTION.signUp) {
-          await signUpWithEmail(input).then(() => {
+          const newUser = {
+            ...input,
+            name: `${input.firstName.trim()} ${input.lastName.trim()}`
+          }
+          delete newUser.firstName;
+          delete newUser.lastName;
+          await signUpWithEmail(newUser).then(() => {
             InfoAlert.fire("Usuario creado con exito");
           });
         } else if (input.password != undefined) {
@@ -178,6 +187,7 @@ export default function Login(): JSX.Element {
 
     if (property === null) throw new Error();
     if (property === "avatar" && e.target.files) {
+      setNewAvatar(URL.createObjectURL(e.target.files[0]));
       setInput({ ...input, avatar: e.target.files[0] });
     } else {
       setInput({ ...input, [property]: e.target.value });
@@ -260,21 +270,45 @@ export default function Login(): JSX.Element {
                     placeholder="Username"
                   />
                   <LoginInput
-                    valid={!errors.name}
-                    id="name"
+                    valid={!errors.firstName}
+                    id="firstname"
                     type="text"
                     title="Los nombres deben empezar con mayúscula."
-                    name="name"
+                    name="firstName"
                     onChange={handleInputChange}
-                    placeholder="Nombre"
+                    placeholder="Nombres"
                   />
                   <LoginInput
-                    id="avatar"
-                    type="file"
-                    name="avatar"
+                    valid={!errors.lastName}
+                    id="lastName"
+                    type="text"
+                    title="Los nombres deben empezar con mayúscula."
+                    name="lastName"
                     onChange={handleInputChange}
-                    placeholder="Avatar"
+                    placeholder="Apellidos"
                   />
+                  <div id={style.avt_cont}>
+                    <img
+                      src={
+                        newAvatar ||
+                        (typeof user?.avatar === "string" && user?.avatar) ||
+                        "https://s5.postimg.cc/537jajaxj/default.png"
+                      }
+                      alt="avatar"
+                    />
+                    <label htmlFor="newAvatar" id={style.editIcon}>
+                      <IconContext.Provider value={{ color: "yellow", size: "25px" }}>
+                        <BiEdit />
+                      </IconContext.Provider>
+                    </label>
+                    <input
+                      // ref={imgInput}
+                      name="avatar"
+                      id="newAvatar"
+                      onChange={handleInputChange}
+                      type="file"
+                    />
+                  </div>
                 </>
               ) : (
                 <></>
