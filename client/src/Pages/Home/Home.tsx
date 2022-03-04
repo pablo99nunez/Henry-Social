@@ -26,6 +26,8 @@ const Home = () => {
   useEffect(() => {
     dispatch(getPosts());
   }, []);
+
+  document.title = 'Henry Social'
   return (
     <>
       {loading ? (

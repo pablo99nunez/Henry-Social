@@ -83,10 +83,24 @@
                visibility: hidden;
             }
          }
+
+         .textarea_with_error {
+            width: 100%;
+
+            textarea {
+               width: 100%;
+            }
+
+            p {
+               margin-top: 0.2rem;
+               color: #df1313;
+            }
+         }
       }
    }
    .add_post_tags,
-   .add_post_buttons {
+   .add_post_buttons,
+   .error_button {
       gap: 0.5rem;
       width: 100%;
       display: flex;
@@ -110,7 +124,7 @@
    .add_post_tags button.deselect:hover {
       background-color: $greyLight;
    }
-   .add_post_buttons {
+   .add_post_buttons{
       margin-top: 1rem;
       justify-content: flex-end;
       button,
@@ -124,6 +138,31 @@
          &:hover {
             transform: scale(1.1);
          }
+      }
+
+      .disabledSubmit {
+         border: 1px solid #df1313;
+         pointer-events: none;
+      }
+   }
+   .error_button{
+      margin-top: 1rem;
+      justify-content: flex-end;
+      button,
+      input {
+         font-size: 18px;
+         color: $white;
+         border-radius: 5px;
+         padding: 0.5rem 0.7rem;
+      }
+      button{
+         background-color: black;
+         &:hover {
+            transform: scale(1.1);
+         }
+      }
+      input{
+         background-color: gray;
       }
    }
 }

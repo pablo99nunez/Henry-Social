@@ -87,6 +87,7 @@ export default function User() {
     if (user) {
       dispatch(getPosts(user._id));
       setLoading(false);
+      document.title = `${user?.name} | Henry Social`
     }
   }, [user]);
 
@@ -100,8 +101,8 @@ export default function User() {
     <>
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
         <Settings
-          cancel={(e: any) => {
-            e.preventDefault();
+          cancel={(e?: any) => {
+            e && e.preventDefault();
             return setEdit(false);
           }}
         />
@@ -114,8 +115,8 @@ export default function User() {
             <div className={style.photo}>
               <img
                 src={
-                  typeof user?.avatar == "string" && user?.avatar
-                    ? user?.avatar
+                  typeof userLogeado?.avatar == "string" && userLogeado?.avatar
+                    ? userLogeado?.avatar
                     : "https://s5.postimg.cc/537jajaxj/default.png"
                 }
                 alt=""
@@ -160,7 +161,7 @@ export default function User() {
                   {user?.role + (user?.cohorte ? " | " + user?.cohorte : "")}
                 </h2>
                 <div className={style.bio}>
-                  <h3>{user?.bio}</h3>
+                  <h3>{userLogeado?.bio}</h3>
                 </div>
               </div>
 
@@ -177,8 +178,8 @@ export default function User() {
                 </div>
 
                 <div>
-                  {user?.linkedin ? (
-                    <a href={user?.linkedin} target="_blank">
+                  {userLogeado?.linkedin ? (
+                    <a href={userLogeado?.linkedin} target="_blank">
                       <div>
                         <img
                           src={linkedin}
@@ -188,17 +189,11 @@ export default function User() {
                       </div>
                     </a>
                   ) : (
-                    <div>
-                      <img
-                        src={linkedin}
-                        alt="linkedin-profile"
-                        className={style.linkedin_logo}
-                      />
-                    </div>
+                    <div> </div>
                   )}
-                  {user?.github ? (
+                  {userLogeado?.github  ? (
                     <a
-                      href={`https://www.github.com/${user.github}`}
+                      href={`https://www.github.com/${userLogeado?.github}`}
                       target="_blank"
                     >
                       <div>
@@ -210,14 +205,23 @@ export default function User() {
                       </div>
                     </a>
                   ) : (
-                    <div>
-                      <img
-                        src={github}
-                        alt="github-logo"
-                        className={style.github_logo}
-                      />
-                    </div>
+                    <div> </div>
                   )}
+                  {
+                    user?.portfolio ? (
+                      <a href={userLogeado?.portfolio} target="_blank">
+                      <div>
+                        <img
+                          src={github}                    // Buscar icono portfolio
+                          alt="portfolio-logo"
+                          className={style.github_logo}   //Aca falta editar esto  
+                        />
+                      </div>
+                      </a>
+                    ) : (
+                      <div> </div>
+                    )
+                  }
                 </div>
               </div>
             </div>
