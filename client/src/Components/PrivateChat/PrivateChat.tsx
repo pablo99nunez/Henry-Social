@@ -1,33 +1,48 @@
 import React, { useEffect, useRef, useState } from "react";
 import useUser from "../../Hooks/useUser";
-import io from "socket.io-client";
-import style from "./Chat.module.scss";
+import style from "./PrivateChat.module.scss";
 import { BiChevronsUp } from "react-icons/bi";
+import { AiFillCloseCircle } from "react-icons/ai";
 import { IoSend } from "react-icons/io5";
 import Avatar from "../Avatar/Avatar";
 import { motion } from "framer-motion";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import useSound from "use-sound";
+import pop from "../../assets/sounds/pop2.wav";
 import { IState } from "../../redux/reducer";
+import { closeChat } from "../../redux/actions/actions";
 
-const Chat = () => {
+type Props = {
+  name: string;
+  username: string;
+};
+
+const PrivateChat = ({ name, username }: Props) => {
   const socket = useSelector((state: IState) => state.socket);
+  const dispatch = useDispatch();
+  const [play] = useSound(pop);
   const user = useUser();
   const input = useRef<HTMLTextAreaElement>(null);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [message, setMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState();
   const [newMessage, setNewMessage] = useState(0);
   const scrollToMe = useRef<HTMLDivElement>(null);
+  const chat = useRef<HTMLDivElement>(null);
+  const close = useRef<HTMLDivElement>(null);
   const [listMessage, setListMessage] = useState<any[]>([]);
+  const [isHovering, setIsHovering] = useState(false);
 
   const handleClick = (e: any) => {
-    setOpen(!open);
+    console.log(e.target, close.current);
+    e.target !== close.current && setOpen(!open);
   };
 
   const SendMessage = () => {
     if (message) {
       const messageData = {
-        author: user?.username,
+        receiver: username,
+        sender: user?.username,
         name: user?.name,
         avatar: user?.avatar,
         message: message,
@@ -36,19 +51,30 @@ const Chat = () => {
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-
-      socket.emit("send_message", messageData);
+      console.log("Enviando mensaje desde cliente");
+      socket.emit("send_private_message", messageData);
       setListMessage([...listMessage, messageData]);
       setMessage("");
     }
   };
   useEffect(() => {
     //Traer los mensajes previos
-    const list = localStorage.getItem("ChatGlobal");
+    /* const list = localStorage.getItem("ChatGlobal");
     if (typeof list === "string") setListMessage(JSON.parse(list));
+ */
+    socket?.on("receive_private_message", (data) => {
+      console.log("recibiendo mensaje", data, data.sender, username);
+      if (data.sender === username) {
+        setArrivalMessage(data);
 
-    socket?.on("receive_message", (data) => {
-      setArrivalMessage(data);
+        play();
+      }
+    });
+    chat.current?.addEventListener("mouseenter", () => {
+      setIsHovering(true);
+    });
+    chat.current?.addEventListener("mouseleave", () => {
+      setIsHovering(false);
     });
   }, []);
 
@@ -66,8 +92,9 @@ const Chat = () => {
     }
   }, [open]);
   useEffect(() => {
-    localStorage.setItem("ChatGlobal", JSON.stringify(listMessage));
+    /* localStorage.setItem("ChatGlobal", JSON.stringify(listMessage)); */
     scrollToMe.current?.scrollIntoView({ behavior: "smooth" });
+    console.log(scrollToMe.current);
   }, [listMessage]);
 
   return (
@@ -82,32 +109,53 @@ const Chat = () => {
             : { y: 580 }
         }
         className={style.chat_window}
+        ref={chat}
+        exit={{
+          rotateX: -90,
+          originY: 1,
+          perspective: 100,
+          transition: {
+            bounce: 0.1,
+          },
+        }}
       >
         <div
           onClick={(e) => handleClick(e)}
-          className={`${style.chat_header} ${newMessage && style.newMessage}`}
+          className={`${newMessage !== 0 && style.newMessage} ${
+            style.chat_header
+          } `}
         >
-          <p>Live Chat</p>
+          <p>{name}</p>
           <motion.div animate={!open ? { rotateZ: 0 } : { rotateZ: 180 }}>
             <BiChevronsUp></BiChevronsUp>
           </motion.div>
-          <div className={style.number}>{newMessage != 0 && newMessage}</div>
+          {isHovering && (
+            <motion.div
+              className={style.close}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              whileHover={{ color: "#ff2f2b" }}
+              ref={close}
+              onClick={() => dispatch(closeChat(username))}
+            >
+              <AiFillCloseCircle />
+            </motion.div>
+          )}
+          <div className={style.number}>{newMessage !== 0 && newMessage}</div>
         </div>
         <div className={style.chat_body}>
-          {listMessage.map((msg) => (
+          {listMessage.map((msg, i) => (
             <motion.div
-              className={style.message}
               ref={scrollToMe}
+              key={i}
               initial={{ scale: 1, rotateZ: 20 }}
               animate={{ scale: 1, rotateZ: 0 }}
               transition={{
                 type: "tween",
               }}
-              id={
-                user?.username === msg.author
-                  ? `${style.you}`
-                  : `${style.other}`
-              }
+              className={`${style.message} ${
+                user?.username === msg.sender ? style.you : style.other
+              }`}
             >
               <Avatar avatar={msg.avatar}></Avatar>
               <div className={style.message_wrap}>
@@ -144,4 +192,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default PrivateChat;

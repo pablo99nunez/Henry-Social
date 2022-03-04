@@ -6,14 +6,8 @@ import Login from "./Pages/Login/Login";
 import PostDetail from "./Pages/PostDetail/PostDetail";
 import useLogin from "./Hooks/useLogin";
 import Payment from "./Components/Present/Payment";
-
-import { useEffect } from "react";
-import { setSocket } from "./redux/actions/actions";
-import { useDispatch } from "react-redux";
-
-const url = import.meta.env.PROD
-  ? "https://henry-social-back.herokuapp.com"
-  : "http://localhost:3001";
+import Chats from "./Components/Chats/Chats";
+import NavSearch from "./Components/NavSearch/NavSearch";
 
 function App() {
   useLogin();

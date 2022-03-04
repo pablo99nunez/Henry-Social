@@ -30,6 +30,7 @@ import {
   ErrorAlert,
   InfoAlert,
 } from "../../Components/Alert/Alert";
+import Chats from "../../Components/Chats/Chats";
 
 export default function User() {
   const [edit, setEdit] = useState(false);
@@ -97,7 +98,6 @@ export default function User() {
     <LoadingPage />
   ) : (
     <>
-      <NavSearch></NavSearch>
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
         <Settings
           cancel={(e: any) => {
@@ -108,6 +108,7 @@ export default function User() {
       </Modal>
 
       <div className={style.User}>
+        <NavSearch></NavSearch>
         <div className={style.head_profile}>
           <div className={style.head_profile_central}>
             <div className={style.photo}>
@@ -255,8 +256,8 @@ export default function User() {
             </div>
             <div className={style.mistery_box}>{"Mysterious NavBar"}</div>
           </div>
-          <Chat />
         </div>
+        <Chats></Chats>
       </div>
     </>
   );

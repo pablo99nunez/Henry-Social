@@ -22,6 +22,8 @@ export const SEARCH_USERS = "SEARCH_USERS";
 export const FILTER_BY_TAG = "FILTER_BY_TAG";
 export const SET_SOCKET = "SET_SOCKET";
 export const GET_ONLINE_USERS = "GET_ONLINE_USERS";
+export const OPEN_CHAT = "OPEN_CHAT";
+export const CLOSE_CHAT = "CLOSE_CHAT";
 
 export interface IAction {
   type: string;
@@ -214,4 +216,14 @@ export function setSocket() {
 export function getOnlineUsers(users: any[]) {
   return (dispatch: Function) =>
     dispatch({ type: GET_ONLINE_USERS, payload: users });
+}
+
+export function openChat(username: string, name: string) {
+  return (dispatch: Function) =>
+    dispatch({ type: OPEN_CHAT, payload: { username, name } });
+}
+
+export function closeChat(username: string) {
+  return (dispatch: Function) =>
+    dispatch({ type: CLOSE_CHAT, payload: username });
 }

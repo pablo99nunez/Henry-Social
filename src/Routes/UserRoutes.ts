@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from "express";
 import axios from "axios";
-import User, { IUser } from "../models/User";
+import User from "../models/User";
 import { INotification, NotificationType } from "../models/User";
 
 const router = Router();
@@ -279,7 +279,9 @@ router.post("/notification", async (req, res) => {
         },
         { new: true }
       )
-        .then((e) => res.json(e))
+        .then((e) => {
+          res.json(e);
+        })
         .catch((e) => {
           throw new Error(e);
         });

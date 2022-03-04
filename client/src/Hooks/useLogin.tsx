@@ -18,13 +18,16 @@ export default function useLogin() {
         dispatch(setSocket());
       } else {
         navigate("/login");
+        socket?.disconnect();
+        socket?.close();
+        localStorage.clear();
       }
     });
   }, []);
   useEffect(() => {
     if (user) {
       socket?.connect();
-      socket.emit("add_user", user._id);
-    } else socket?.disconnect();
+      socket?.emit("add_user", user._id);
+    }
   }, [socket, user]);
 }

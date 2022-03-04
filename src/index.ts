@@ -12,6 +12,7 @@ import stripeRouter from "./Routes/StripeRoutes";
 import http from "http";
 import { Server } from "socket.io";
 import User, { IUser } from "./models/User";
+import Post from "./models/Post";
 const app: express.Application = express();
 app.use(cors());
 
@@ -40,7 +41,7 @@ app.use("/", stripeRouter);
 
 const server = http.createServer(app);
 
-const io = new Server(server, {
+export const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
@@ -55,7 +56,7 @@ type User = {
   socketId: string;
 };
 
-let users: User[] = [];
+export let users: User[] = [];
 
 const addUser = async (userId: string, socketId: string) => {
   if (!users.some((user: User) => user.userId === userId)) {
@@ -96,11 +97,32 @@ io.on("connection", (socket) => {
 
     io.emit("get_users", users);
   });
-
+  socket.on("send_notification", async (id: string) => {
+    console.log("Sending notis");
+    Post.findById(id)
+      .populate("author", "_id username")
+      .then((post) => {
+        if (post) {
+          const destiny = users.find(
+            (user) => user.username === post.author.username
+          );
+          if (destiny) {
+            io.to(destiny.socketId).emit("get_notification");
+          }
+        }
+      });
+  });
   socket.on("send_message", (data) => {
     socket.broadcast.emit("receive_message", data);
   });
+  socket.on("send_private_message", (data) => {
+    const destiny = users.find((e) => e.username === data.receiver);
+    console.log("Devolviendo mensaje al cliente", destiny);
 
+    if (destiny) {
+      socket.to(destiny.socketId).emit("receive_private_message", data);
+    }
+  });
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
     removeUser(socket.id);

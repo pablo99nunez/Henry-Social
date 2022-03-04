@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../../../../src/services/firebase/firebase";
 import useUser from "../../Hooks/useUser";
-import { getOnlineUsers } from "../../redux/actions/actions";
+import { getOnlineUsers, openChat } from "../../redux/actions/actions";
 import { IState } from "../../redux/reducer";
 import Avatar from "../Avatar/Avatar";
 import style from "./SideMessages.module.scss";
@@ -12,7 +12,7 @@ const SideMessages = () => {
   const dispatch = useDispatch();
   const user = useUser();
   useEffect(() => {
-    socket.on("get_users", (usersSocket) => {
+    socket?.on("get_users", (usersSocket) => {
       dispatch(getOnlineUsers(usersSocket));
     });
   }, [socket]);
@@ -24,7 +24,11 @@ const SideMessages = () => {
         {users?.map(
           (e: any, i: number) =>
             e.userId !== user?._id && (
-              <div key={i} className={style.user}>
+              <div
+                key={i}
+                className={style.user}
+                onClick={() => dispatch(openChat(e.username, e.name))}
+              >
                 <Avatar avatar={e.avatar}></Avatar>
                 <div>
                   <h3> {e.name} </h3>
