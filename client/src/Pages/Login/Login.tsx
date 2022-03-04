@@ -48,7 +48,7 @@ export default function Login(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [formComplete, setFromComplete] = useState(false);
   const [userAlreadyExist, setUserAlreadyExist] = useState(false);
-  const [action, setAction] = useState(USER_ACTION.signUp);
+  const [action, setAction] = useState(USER_ACTION.logIn);
   const [newAvatar, setNewAvatar] = useState<string | null>(null);
   const navigate = useNavigate();
   const user = useUser();
