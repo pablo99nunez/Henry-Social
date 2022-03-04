@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { BsThreeDots,BsTrophy } from "react-icons/bs";
+import { BsThreeDots } from "react-icons/bs";
 import { FaBan } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { IPost } from "../../../../../src/models/Post";
@@ -73,16 +73,10 @@ export default function Options({ post, setEliminated }: Props) {
                         Eliminar publicación.
                     </p>
                 ) : (
-                    <div>
-                        <p className={style.item}>
-                            <BsTrophy />
-                            Premiar el contenido
-                        </p>
-                        <p className={style.item} onClick={handleDemand}>
-                            <FaBan />
-                            Denunciar publicación.
-                        </p>
-                    </div>
+                    <p className={style.item} onClick={handleDemand}>
+                        <FaBan />
+                        Denunciar publicación.
+                    </p>
                 )}
             </div>
         </div>

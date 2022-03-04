@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { BsChatSquareDots } from "react-icons/bs";
+import { BsChatSquareDots,BsTrophy } from "react-icons/bs";
 import { IoArrowRedoOutline, IoArrowRedoSharp } from "react-icons/io5";
 import { IPost } from "../../../../../src/models/Post";
 import { Like } from "../../Like/Like";
@@ -35,12 +35,17 @@ export default function Interactions({
                         <BsChatSquareDots />
                         <span>{post?.numComments}</span>
                     </div>
+
                 </div>
                 <div 
+                className={style.post_icon}
                 onClick={() => {setOpenShare(!openShare); contenedor(post);}}
                 >
                 <IoArrowRedoOutline />
                 <span>{post?.nShares}</span>
+                </div>
+                <div className={style.post_icon}>
+                    <BsTrophy/>
                 </div>
             </div>
         </div>
