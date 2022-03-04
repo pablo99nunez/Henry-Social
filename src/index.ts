@@ -9,6 +9,7 @@ import axios from "axios";
 import userRouter from "./Routes/UserRoutes";
 import postRouter from "./Routes/PostRoutes";
 import stripeRouter from "./Routes/StripeRoutes";
+import conversationRouter from "./Routes/ConversationRoutes";
 import http from "http";
 import { Server } from "socket.io";
 import User, { IUser } from "./models/User";
@@ -38,6 +39,7 @@ app.get("/", (req, res) => {
 app.use("/", userRouter);
 app.use("/", postRouter);
 app.use("/", stripeRouter);
+app.use("/conversation", conversationRouter);
 
 const server = http.createServer(app);
 
@@ -116,7 +118,7 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("receive_message", data);
   });
   socket.on("send_private_message", (data) => {
-    const destiny = users.find((e) => e.username === data.receiver);
+    const destiny = users.find((e) => e.userId === data.receiver);
     console.log("Devolviendo mensaje al cliente", destiny);
 
     if (destiny) {

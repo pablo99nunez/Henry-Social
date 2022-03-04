@@ -27,7 +27,7 @@ const SideMessages = () => {
               <div
                 key={i}
                 className={style.user}
-                onClick={() => dispatch(openChat(e.username, e.name))}
+                onClick={() => dispatch(openChat(e.username, e.name, e.userId))}
               >
                 <Avatar avatar={e.avatar}></Avatar>
                 <div>

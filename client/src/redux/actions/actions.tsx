@@ -218,9 +218,10 @@ export function getOnlineUsers(users: any[]) {
     dispatch({ type: GET_ONLINE_USERS, payload: users });
 }
 
-export function openChat(username: string, name: string) {
+export function openChat(username: string, name: string, userB: string) {
+  console.log(userB);
   return (dispatch: Function) =>
-    dispatch({ type: OPEN_CHAT, payload: { username, name } });
+    dispatch({ type: OPEN_CHAT, payload: { username, name, userB } });
 }
 
 export function closeChat(username: string) {

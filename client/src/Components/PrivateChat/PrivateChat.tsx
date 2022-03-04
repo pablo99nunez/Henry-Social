@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import useUser from "../../Hooks/useUser";
 import style from "./PrivateChat.module.scss";
+import { IMessage } from "../../../../src/models/Conversation";
 import { BiChevronsUp } from "react-icons/bi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { IoSend } from "react-icons/io5";
@@ -11,13 +12,15 @@ import useSound from "use-sound";
 import pop from "../../assets/sounds/pop2.wav";
 import { IState } from "../../redux/reducer";
 import { closeChat } from "../../redux/actions/actions";
+import axios from "axios";
 
 type Props = {
   name: string;
   username: string;
+  userB: string;
 };
 
-const PrivateChat = ({ name, username }: Props) => {
+const PrivateChat = ({ name, username, userB }: Props) => {
   const socket = useSelector((state: IState) => state.socket);
   const dispatch = useDispatch();
   const [play] = useSound(pop);
@@ -34,23 +37,39 @@ const PrivateChat = ({ name, username }: Props) => {
   const [isHovering, setIsHovering] = useState(false);
 
   const handleClick = (e: any) => {
-    console.log(e.target, close.current);
     e.target !== close.current && setOpen(!open);
   };
 
-  const SendMessage = () => {
-    if (message) {
+  function getTime(): string {
+    const hours =
+      new Date(Date.now()).getHours().toString().length == 1
+        ? `0${new Date(Date.now()).getHours()}`
+        : new Date(Date.now()).getHours();
+    const minutes =
+      new Date(Date.now()).getMinutes().toString().length == 1
+        ? `0${new Date(Date.now()).getMinutes()}`
+        : new Date(Date.now()).getMinutes();
+    return hours + ":" + minutes;
+  }
+
+  const SendMessage = async () => {
+    if (
+      message &&
+      user?.username &&
+      typeof user.avatar === "string" &&
+      user.name
+    ) {
       const messageData = {
-        receiver: username,
-        sender: user?.username,
-        name: user?.name,
-        avatar: user?.avatar,
+        receiver: userB,
+        sender: user._id,
+        name: user.name,
+        avatar: user.avatar,
         message: message,
-        time:
-          new Date(Date.now()).getHours() +
-          ":" +
-          new Date(Date.now()).getMinutes(),
-      };
+        time: getTime(),
+      } as IMessage;
+
+      axios.post("/conversation/message", messageData);
+
       console.log("Enviando mensaje desde cliente");
       socket.emit("send_private_message", messageData);
       setListMessage([...listMessage, messageData]);
@@ -62,14 +81,22 @@ const PrivateChat = ({ name, username }: Props) => {
     /* const list = localStorage.getItem("ChatGlobal");
     if (typeof list === "string") setListMessage(JSON.parse(list));
  */
-    socket?.on("receive_private_message", (data) => {
-      console.log("recibiendo mensaje", data, data.sender, username);
-      if (data.sender === username) {
-        setArrivalMessage(data);
+    if (user?._id) {
+      axios
+        .post("/conversation/find", { userA: user._id, userB })
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            setListMessage(res.data.messages);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [user]);
 
-        play();
-      }
-    });
+  useEffect(() => {
     chat.current?.addEventListener("mouseenter", () => {
       setIsHovering(true);
     });
@@ -77,6 +104,16 @@ const PrivateChat = ({ name, username }: Props) => {
       setIsHovering(false);
     });
   }, []);
+
+  useEffect(() => {
+    socket?.on("receive_private_message", (data) => {
+      console.log("recibiendo mensaje", data, data.sender);
+      if (data.sender === userB) {
+        setArrivalMessage(data);
+        play();
+      }
+    });
+  }, [socket]);
 
   useEffect(() => {
     if (arrivalMessage) {
@@ -94,7 +131,6 @@ const PrivateChat = ({ name, username }: Props) => {
   useEffect(() => {
     /* localStorage.setItem("ChatGlobal", JSON.stringify(listMessage)); */
     scrollToMe.current?.scrollIntoView({ behavior: "smooth" });
-    console.log(scrollToMe.current);
   }, [listMessage]);
 
   return (
@@ -154,7 +190,7 @@ const PrivateChat = ({ name, username }: Props) => {
                 type: "tween",
               }}
               className={`${style.message} ${
-                user?.username === msg.sender ? style.you : style.other
+                user?._id === msg.sender ? style.you : style.other
               }`}
             >
               <Avatar avatar={msg.avatar}></Avatar>
