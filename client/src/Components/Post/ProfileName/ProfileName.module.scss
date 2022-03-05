@@ -1,0 +1,18 @@
+@import "../../../Styles/variables.scss";
+
+.post_profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    h4 {
+      color: $grey;
+    }
+    img {
+      width: 20%;
+      max-height: 3rem;
+      object-fit: cover;
+      float: right;
+      align-self: flex-end;
+      justify-self: right;
+    }
+  }
