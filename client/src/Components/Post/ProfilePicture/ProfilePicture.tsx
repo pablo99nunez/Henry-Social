@@ -1,4 +1,4 @@
-import style from "../Post.module.scss";
+import style from "./ProfilePicture.module.scss";
 import { useNavigate } from "react-router-dom";
 import { IPost } from "../../../../../src/models/Post";
 import Avatar from "../../Avatar/Avatar";
