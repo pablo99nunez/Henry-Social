@@ -11,8 +11,9 @@ import ChangeKey from "../ChangeKey/ChangeKey";
 import style from "./Settings.module.scss";
 import Input from "../Input/Input";
 import axios from "axios";
-import { editUser } from "../../redux/actions/actions";
+import { editUser, signOut } from "../../redux/actions/actions";
 import useUser from "../../Hooks/useUser";
+import { auth } from "../../firebase/firebase";
 
 export default function Settings({ cancel }: any) {
   const user = useUser();
@@ -60,6 +61,19 @@ export default function Settings({ cancel }: any) {
   }, [user]);
 
   let typerTimer: NodeJS.Timeout;
+
+  const deleteUser = async () => {
+    if (user?._id) {
+      dispatch(signOut());
+      await axios.delete("/delete-user", {
+        data: {
+          userId: user._id,
+          adminId: user._id,
+          uid: user.uid,
+        },
+      });
+    }
+  };
 
   const validateUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
@@ -330,7 +344,9 @@ export default function Settings({ cancel }: any) {
             <Button onClick={cancel} backgroundColor="#FF1">
               Cancelar
             </Button>
-            <Button>Eliminar perfil</Button>
+            <Button type="button" onClick={deleteUser}>
+              Eliminar perfil
+            </Button>
           </div>
           <a className={style.changeKey} onClick={cambiarClave}>
             Cambiar clave

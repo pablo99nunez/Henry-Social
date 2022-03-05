@@ -27,6 +27,7 @@ export interface INotification {
 
 export interface IUser {
   _id?: string;
+  uid: string;
   name: string;
   email: string;
   username?: string;
@@ -53,6 +54,7 @@ const userSchema = new Schema<IUser>({
     type: String,
     require: true,
   },
+  uid: String,
   username: {
     type: String,
     default: null,

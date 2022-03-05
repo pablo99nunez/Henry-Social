@@ -29,21 +29,27 @@ import { io, Socket } from "socket.io-client";
 
 export interface IState {
   user: IUser | null;
-  profile: IUser;
+  profile: IUser | null;
   posts: IPost[];
   results: IPost[];
-  post: IPost;
+  post: IPost | null;
   comments: Comment[];
   Users: IUser[];
-  socket: Socket;
+  socket: Socket | null;
   usersOnline: any[];
   chats: any[];
 }
 
 const initialState = {
   user: null,
-  profile: {},
-  Users: {},
+  profile: null,
+  posts: [],
+  results: [],
+  post: null,
+  comments: [],
+  Users: [],
+  socket: null,
+  usersOnline: [],
   chats: [],
 } as IState;
 

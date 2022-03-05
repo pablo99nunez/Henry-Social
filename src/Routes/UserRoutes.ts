@@ -5,6 +5,7 @@ import User from "../models/User";
 import { INotification, NotificationType } from "../models/User";
 import { Comment } from "../models/Post";
 import Post from "../models/Post";
+import { auth } from "../services/firebase/firebase";
 
 const router = Router();
 
@@ -39,6 +40,7 @@ router.get("/users", async (req, res) => {
   const { username } = req.query;
   try {
     if (username) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       username.toLowerCase();
       const users = await User.find({
@@ -314,35 +316,41 @@ router.get("/deleteNotis", async (req, res) => {
 });
 
 router.delete("/delete-user", async (req, res) => {
-  const { userId, adminId } = req.body;
+  const { userId, adminId, uid } = req.body;
 
-  const adminUser = await User.findById(adminId);
-  if (!adminUser?.admin) return res.status(403).send("Only for admins users.");
+  try {
+    const adminUser = await User.findById(adminId);
+    if (!adminUser?.admin && userId !== adminId)
+      return res.status(403).send("Only for admins users.");
 
-  const user: any = await User.findByIdAndDelete(userId);
-  if (!user) return res.status(404).send("This user wasn't found.");
+    const user: any = await User.findByIdAndDelete(userId);
+    if (!user) return res.status(404).send("This user wasn't found.");
 
-  // Elimina todos los seguidores y seguidos
-  await User.updateMany(
-    {},
-    { $pull: { followers: user.username, following: user.username } }
-  );
-  // Busca todos los post con X author
-  const postUser = await Post.find({ author: userId });
-  // Guarda en un array todos los id de esos post con X author
-  const postIdByUser = postUser.map((post) => post._id);
-  // Elimina los Post de X author
-  await Post.deleteMany({ author: userId });
-  // Elimina los comentarios de X author
-  await Comment.deleteMany({ author: userId });
-  // Elimina los likes de X autor
-  // Por cada id busca y elimina en el modelo Comment,
-  // comentarios hechos en post con el postId del author ya eliminado.
-  for (const id of postIdByUser) {
-    await Comment.deleteMany({ postId: id });
+    // Elimina todos los seguidores y seguidos
+    await User.updateMany(
+      {},
+      { $pull: { followers: user.username, following: user.username } }
+    );
+    // Busca todos los post con X author
+    const postUser = await Post.find({ author: userId });
+    // Guarda en un array todos los id de esos post con X author
+    const postIdByUser = postUser.map((post) => post._id);
+    // Elimina los Post de X author
+    await Post.deleteMany({ author: userId });
+    // Elimina los comentarios de X author
+    await Comment.deleteMany({ author: userId });
+    // Elimina los likes de X autor
+    // Por cada id busca y elimina en el modelo Comment,
+    // comentarios hechos en post con el postId del author ya eliminado.
+    for (const id of postIdByUser) {
+      await Comment.deleteMany({ postId: id });
+    }
+
+    await auth.deleteUser(uid);
+    res.send(user);
+  } catch (e) {
+    res.status(400).json({ error: e });
   }
-
-  res.send(user);
 });
 
 export default router;
