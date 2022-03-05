@@ -54,22 +54,20 @@ const PrivateChat = ({ name, username, userB }: Props) => {
 
   const SendMessage = async () => {
     if (
-      message &&
-      user?.username &&
-      typeof user.avatar === "string" &&
-      user.name
+      message 
     ) {
+      console.log("informacion del mensjae",message)
+      console.log("user B",userB)
+      console.log("user id",user?._id)
       const messageData = {
         receiver: userB,
-        sender: user._id,
-        name: user.name,
-        avatar: user.avatar,
+        sender: user?._id,
+        name: user?.name,
+        avatar: user?.avatar,
         message: message,
         time: getTime(),
       } as IMessage;
-
-      axios.post("/conversation/message", messageData);
-
+      await axios.post("/conversation/message", messageData);
       console.log("Enviando mensaje desde cliente");
       socket.emit("send_private_message", messageData);
       setListMessage([...listMessage, messageData]);
@@ -77,10 +75,6 @@ const PrivateChat = ({ name, username, userB }: Props) => {
     }
   };
   useEffect(() => {
-    //Traer los mensajes previos
-    /* const list = localStorage.getItem("ChatGlobal");
-    if (typeof list === "string") setListMessage(JSON.parse(list));
- */
     if (user?._id) {
       axios
         .post("/conversation/find", { userA: user._id, userB })
@@ -94,9 +88,10 @@ const PrivateChat = ({ name, username, userB }: Props) => {
           console.log(e);
         });
     }
-  }, [user]);
+  }, []);
 
   useEffect(() => {
+    console.log("useChat",chat)
     chat.current?.addEventListener("mouseenter", () => {
       setIsHovering(true);
     });
@@ -104,16 +99,6 @@ const PrivateChat = ({ name, username, userB }: Props) => {
       setIsHovering(false);
     });
   }, []);
-
-  useEffect(() => {
-    socket?.on("receive_private_message", (data) => {
-      console.log("recibiendo mensaje", data, data.sender);
-      if (data.sender === userB) {
-        setArrivalMessage(data);
-        play();
-      }
-    });
-  }, [socket]);
 
   useEffect(() => {
     if (arrivalMessage) {
@@ -128,9 +113,17 @@ const PrivateChat = ({ name, username, userB }: Props) => {
       setNewMessage(0);
     }
   }, [open]);
+
   useEffect(() => {
-    /* localStorage.setItem("ChatGlobal", JSON.stringify(listMessage)); */
-    scrollToMe.current?.scrollIntoView({ behavior: "smooth" });
+    socket.on("receive_private_message", (data) => {
+      console.log("recibiendo mensaje", "Mensaje", data.message,"id del sender", data.sender);
+      if (data.sender === userB) {
+        setArrivalMessage(data);
+        play();
+      }
+    });
+
+    scrollToMe.current?.scrollIntoView({ block: "end" });
   }, [listMessage]);
 
   return (
@@ -213,13 +206,10 @@ const PrivateChat = ({ name, username, userB }: Props) => {
             value={message}
             placeholder="Escribe algo..."
             onChange={(e) => {
-              if (e.target.value.slice(-1) === "\n") return SendMessage();
+              if (e.target.value.slice(-1) === "\n")  SendMessage();
               setMessage(e.target.value);
             }}
             ref={input}
-            /* onKeyPress={(e) => {
-              e.key === "Enter" && SendMessage();
-            }} */
           />
           <IoSend onClick={SendMessage}></IoSend>
         </div>

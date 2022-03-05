@@ -36,7 +36,6 @@ const Chat = () => {
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-
       socket.emit("send_message", messageData);
       setListMessage([...listMessage, messageData]);
       setMessage("");
@@ -133,9 +132,6 @@ const Chat = () => {
               setMessage(e.target.value);
             }}
             ref={input}
-            /* onKeyPress={(e) => {
-              e.key === "Enter" && SendMessage();
-            }} */
           />
           <IoSend onClick={SendMessage}></IoSend>
         </div>

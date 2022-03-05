@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { openChat } from "../../redux/actions/actions";
 import { IState } from "../../redux/reducer";
@@ -13,17 +13,21 @@ export default function Chats() {
   const socket = useSelector((state: IState) => state.socket);
   useEffect(() => {
     socket?.on("receive_private_message", (data) => {
-      if (!chats.some((e) => e.username === data.username)) {
-        console.log(data);
+      console.log(data)
+      if (!chats.some((e) => e.name === data.name)) {
         dispatch(openChat(data.sender, data.name, data.receiver));
       }
+     
     });
-  }, []);
+  }, [socket,dispatch]);
+  console.log(chats)
   return (
     <div className={style.chats}>
       <AnimatePresence>
         <Chat></Chat>
+
         {chats?.map((e, i) => {
+          console.log(e)
           return (
             <PrivateChat
               username={e.username}
