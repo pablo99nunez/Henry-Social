@@ -8,6 +8,7 @@ import style from "./User.module.scss";
 import linkedin from "../../assets/icons/linkedin2.png";
 import github from "../../assets/icons/github2.png";
 import coffee from "../../assets/icons/coffee-cup3.png";
+import portafolioIcon from "../../assets/icons/portafolio.png";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import Button from "../../Components/Button/Button";
 import Settings from "../../Components/Settings/Settings";

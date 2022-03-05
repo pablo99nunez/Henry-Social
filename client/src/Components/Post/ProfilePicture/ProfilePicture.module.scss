@@ -1,0 +1,11 @@
+@import "../../../Styles/variables.scss";
+
+.post_profile_img {
+    img {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 100%;
+      border: 1px solid $yellow;
+      object-fit: cover;
+    }
+  }

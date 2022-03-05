@@ -8,15 +8,12 @@ import styles from "./Posts.module.scss";
 import Post from "../Post/Post";
 import AddPost from "../ModalAddPost/AddPost";
 import Modal from "../Modal/Modal";
-import { SharePost } from "../SharePosts/SharePost";
 import { motion } from "framer-motion";
 const Posts = () => {
   const dispatch = useDispatch();
   const posts = useSelector((state: IState) => state.results);
   const [order, setOrder] = useState("Reciente");
   const [showModal, setShowModal] = useState(false);
-  const [share, setShare] = useState(false);
-  const [cont, contenedor] = useState({})
   const plusVariants = {
     normal: { scale: 1 },
     active: { scale: 50, rotateZ: 180, x: 200, zIndex: 5000 },
@@ -42,7 +39,6 @@ const Posts = () => {
 
   return (
     <div className={styles.posts_wrap}>
-      {share ? <SharePost share={share} setShare={setShare} post={contenedor}/> : <span></span>}
       <div className={styles.header}>
         <div className={styles.orders}>
           <h2
@@ -93,7 +89,7 @@ const Posts = () => {
       >
         {posts?.map((e) => (
           <motion.div key={e._id} variants={postVariants}>
-            <Post post={e} share={share} setShare={setShare} contenedor={contenedor}></Post>
+            <Post post={e}/>
           </motion.div>
         ))}
       </motion.div>

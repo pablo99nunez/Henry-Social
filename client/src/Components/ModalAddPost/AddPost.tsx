@@ -22,6 +22,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
    const [typePost, setTypePost] = useState("normal");
    const [errors, setErrors] = useState({
+      text: "",
       company: "",
       companyLink: "",
       salary: "",
@@ -34,7 +35,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
    });
    const [post, setPost] = useState<any>({
       text: "",
-      image: "",
+      image: null,
       company: "",
       position: "",
       companyLink: "",
@@ -47,19 +48,19 @@ const AddPost: FC<Props> = ({ setOpen }) => {
    });
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.name === "companyImage" && e.target.files)
+      if (e.target.name === "companyImage" || e.target.name === "image" && e.target.files)
          setPost({ ...post, [e.target.name]: e.target.files[0] });
       else setPost({ ...post, [e.target.name]: e.target.value });
 
       setErrors(
          validate(
             {
-               ...post,
-               [e.target.name]: e.target.value,
-               tags:
-                  e.target.name === "text"
-                     ? e.target.value.match(/(#)\w+/g)
-                     : post.text,
+              ...post,
+              [e.target.name]: e.target.value,
+              tags:
+                e.target.name === "text"
+                  ? e.target.value.match(/(#)\w+/g)
+                  : post.text,
             },
             typePost
          )
@@ -97,40 +98,41 @@ const AddPost: FC<Props> = ({ setOpen }) => {
             : post.companyImage;
 
       const downloadURLImage =
-         post.image instanceof File ? await uploadFile(post.image) : post.image;
-      console.log(downloadURLImage);
-      if (user)
-         if (post.text) {
-            axios
-               .post(`/post`, {
-                  body: post.text,
-                  company: post.company,
-                  position: post.position,
-                  companyLink: post.companyLink,
-                  companyImage: downloadURLCompany,
-                  pregunta: post.pregunta,
-                  salary: post.salary,
-                  author: user,
-                  typePost,
-                  tags: post.tags,
-                  image: downloadURLImage,
-               })
-               .then((data) => {
-                  InfoAlert.fire({
-                     title: "Publicado con éxito",
-                     icon: "success",
-                  });
-                  setOpen(false);
-                  dispatch(getPosts());
-                  return data;
-               })
-               .catch((error) => console.error("Error:", error));
-         } else if (!post.text) {
-            setErrors({
-               ...errors,
-               text: "Agregue algo de contenido a su publicación",
+         post.image instanceof File 
+            ? await uploadFile(post.image) 
+            : post.image;
+
+      if (user && post.text) {
+        axios
+          .post(`/post`, {
+            body: post.text,
+            company: post.company,
+            position: post.position,
+            companyLink: post.companyLink,
+            companyImage: downloadURLCompany,
+            pregunta: post.pregunta,
+            salary: post.salary,
+            author: user,
+            typePost,
+            tags: post.tags,
+            image: downloadURLImage,
+          })
+          .then((data) => {
+            InfoAlert.fire({
+              title: "Publicado con éxito",
+              icon: "success",
             });
-         }
+            setOpen(false);
+            dispatch(getPosts());
+            return data;
+          })
+          .catch((error) => console.error("Error:", error));
+      } else if (!post.text) {
+        setErrors({
+            ...errors,
+            text: "Agregue algo de contenido a su publicación",
+        });
+      }
    };
 
    const types = [
@@ -158,8 +160,8 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
    return (
       <motion.form
-         onSubmit={(e) => handleSubmit(e)}
          onChange={(e) => handleChange(e)}
+         onSubmit={(e) => handleSubmit(e)}
          className={styles.modal_add_post}
          animate={{
             scaleX: 1,
