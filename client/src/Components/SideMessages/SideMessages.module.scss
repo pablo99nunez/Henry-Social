@@ -17,15 +17,27 @@
   .aside_resume_messages {
     display: flex;
     gap: 1rem;
-    place-items: center;
-    place-content: center;
-    .aside_message_img {
-      width: 3rem;
-      height: 3rem;
-      border-radius: 100%;
-      background: url("https://assets.soyhenry.com/henry-landing/assets/peopleImages/sofi.jpg");
-      background-repeat: no-repeat;
-      background-size: cover;
+    justify-content: left;
+    flex-direction: column;
+
+    .user {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+      gap: 1rem;
+      div::after {
+        content: "";
+        width: 10px;
+        z-index: 30;
+        top: calc(50% - 5px);
+        right: 0;
+        aspect-ratio: 1/1;
+        background-color: green;
+        border-radius: 50%;
+        position: absolute;
+      }
     }
   }
 }

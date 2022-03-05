@@ -10,6 +10,7 @@ export default function Notifications() {
   const [open, setOpen] = useState(false);
   const [notifications, news] = useNotifications();
   const container = useRef<HTMLDivElement>(null);
+
   const variants = {
     open: {
       scale: 1,

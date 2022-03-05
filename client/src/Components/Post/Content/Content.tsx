@@ -1,13 +1,15 @@
-import { useNavigate } from "react-router-dom";
-import { IPost } from "../../../../../src/models/Post";
-import PostPregunta from "../Types/PostPregunta";
 import style from "./Content.module.scss";
+import { useNavigate } from "react-router-dom";
+import PostPregunta from "../Types/PostPregunta";
+import { IPost } from "../../../../../src/models/Post";
+import PostShare from './PostShare';
 type Props = {
   post: IPost;
 };
 
 export default function Content({ post }: Props) {
   const navigate = useNavigate();
+
   const renderType = () => {
     switch (post?.typePost) {
       case "boom": {
@@ -43,6 +45,9 @@ export default function Content({ post }: Props) {
           </>
         );
       }
+      case "share": {
+        return <PostShare post={post} />;
+      }
       case "pregunta": {
         return <PostPregunta post={post} />;
       }
@@ -52,10 +57,10 @@ export default function Content({ post }: Props) {
     }
   };
 
-  return (
+  return ( 
     <div
       onClick={() => {
-        navigate("/post/" + post._id);
+        post.typePost !== 'share' && navigate("/post/" + post._id);
       }}
     >
       {renderType()}

@@ -5,6 +5,8 @@ import style from "./Like.module.scss";
 import { IPost } from "../../../../src/models/Post";
 import useUser from "../../Hooks/useUser";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { IState } from "../../redux/reducer";
 
 type Props = {
   post: IPost;
@@ -13,16 +15,18 @@ type Props = {
 export const Like: FC<Props> = ({ post }) => {
   const icon = useRef<HTMLDivElement>(null);
   const [like, setLike] = useState<boolean>(false);
+  const socket = useSelector((state: IState) => state.socket);
   const [sum, setSum] = useState(true);
   const user = useUser();
-  const handleLike = () => {
+  const handleLike = async () => {
     if (user) {
       setLike(!like);
 
-      axios.post("/like", {
+      await axios.post("/like", {
         _id: post._id,
         author: user,
       });
+      socket.emit("send_notification", post._id);
     }
   };
   useEffect(() => {
@@ -52,7 +56,7 @@ export const Like: FC<Props> = ({ post }) => {
           handleLike();
         }}
       >
-        {like ? <BsHeartFill /> : <BsHeart></BsHeart>}
+        {like ? <BsHeartFill /> : <BsHeart/>}
       </motion.div>
       <p>{post?.nLikes?.length + (like ? (sum ? 1 : 0) : sum ? 0 : -1)}</p>
       {

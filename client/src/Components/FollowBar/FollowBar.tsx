@@ -6,10 +6,9 @@ import { useState } from "react";
 
 export default function FollowBar() {
   const [more, setMore] = useState(false);
-  const { profile, post } =
-    useSelector((state: IState) => state) || [];
+  const { profile, post } = useSelector((state: IState) => state) || [];
 
-  const seguidos = profile?.following || post?.author?.following || []
+  const seguidos = profile?.following || post?.author?.following || [];
 
   return (
     <div className="followBar">

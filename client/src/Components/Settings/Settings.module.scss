@@ -6,14 +6,13 @@
   --placeholderInputGap: .25em;
 
   }
-  
+
 .settings_wrap {
   z-index: 2000;
   padding: 2rem;
   border-radius: 8px;
   display: flex;
   gap: 1rem;
-
 
   #avt_cont {
     display: grid;
@@ -45,7 +44,7 @@
       -ms-transition: 250ms ease-out;
       -o-transition: 250ms ease-out;
 
-      &:hover{
+      &:hover {
         cursor: pointer;
         border-radius: 10px;
         -webkit-border-radius: 10px;
@@ -59,8 +58,6 @@
       display: none;
     }
   }
-
-
 
   .inputBox {
     display: flex;
