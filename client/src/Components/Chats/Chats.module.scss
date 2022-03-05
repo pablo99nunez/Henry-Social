@@ -1,0 +1,15 @@
+.chats {
+  display: flex;
+  flex-direction: row-reverse;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  padding: 0 1rem;
+  gap: 1rem;
+  z-index: 2000;
+  height: fit-content;
+  pointer-events: none;
+  > * {
+    pointer-events: all;
+  }
+}

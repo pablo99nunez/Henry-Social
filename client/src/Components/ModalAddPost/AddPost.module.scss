@@ -2,89 +2,89 @@
 @import "../../Styles/mixins.scss";
 
 .modal_add_post {
-   gap: 1rem;
-   max-width: 100%;
-   @include flex-column;
-   justify-content: space-evenly;
-   .add_post_content {
+  gap: 1rem;
+  max-width: 100%;
+  @include flex-column;
+  justify-content: space-evenly;
+  .add_post_content {
+    gap: 20px;
+    width: 100%;
+    @include flex-column;
+    .content__inputs {
       gap: 20px;
       width: 100%;
-      @include flex-column;
-      .content__inputs {
-         gap: 20px;
-         width: 100%;
-         display: flex;
-         flex-wrap: wrap;
-         justify-content: space-between;
-         input {
-            width: 40%;
-            border: none;
-            outline: none;
-            font-size: 18px;
-            background: none;
-            color: black;
-            padding: 15px 0px;
-            border-bottom: 1px solid $blackLow;
-            &::placeholder {
-               color: $blackLow;
-            }
-         }
-         .input_with_error {
-            width: 40%;
-
-            input {
-               width: 100%;
-            }
-
-            p {
-               margin-top: 0.2rem;
-               color: #df1313;
-            }
-         }
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      input {
+        width: 40%;
+        border: none;
+        outline: none;
+        font-size: 18px;
+        background: none;
+        color: black;
+        padding: 15px 0px;
+        border-bottom: 1px solid $blackLow;
+        &::placeholder {
+          color: $blackLow;
+        }
       }
-      .content__textImage {
-         gap: 15px;
-         display: flex;
-         textarea {
-            width: 100%;
-            height: 70px;
-            resize: none;
-            padding: 1rem;
-            outline: none;
-            font-size: 1rem;
-            overflow: hidden;
-            line-height: 1.2;
-            max-height: 150px;
-            border-radius: 10px;
-            font-family: inherit;
-            &.active {
-               height: 150px;
-               overflow: auto;
-            }
-            &.error{
-               border: #df1313 2px solid;
-            }
-         }
-         .boxImage {
-            width: 50%;
-            label {
-               gap: 10px;
-               height: 100%;
-               cursor: pointer;
-               @include flex-aic;
-               text-align: center;
-               justify-content: center;
-               background-color: $greyLight;
-            }
-            input {
-               width: 0;
-               height: 0;
-               position: absolute;
-               visibility: hidden;
-            }
-         }
+      .input_with_error {
+        width: 40%;
 
-         .textarea_with_error {
+        input {
+          width: 100%;
+        }
+
+        p {
+          margin-top: 0.2rem;
+          color: #df1313;
+        }
+      }
+    }
+    .content__textImage {
+      gap: 15px;
+      display: flex;
+      textarea {
+        width: 100%;
+        height: 70px;
+        resize: none;
+        padding: 1rem;
+        outline: none;
+        font-size: 1rem;
+        overflow: hidden;
+        line-height: 1.2;
+        max-height: 150px;
+        border-radius: 10px;
+        font-family: inherit;
+        &.active {
+          height: 150px;
+          overflow: auto;
+        }
+        &.error {
+          border: #df1313 2px solid;
+        }
+      }
+      .boxImage {
+        width: 50%;
+        label {
+          gap: 10px;
+          height: 100%;
+          cursor: pointer;
+          @include flex-aic;
+          text-align: center;
+          justify-content: center;
+          background-color: $greyLight;
+        }
+        input {
+          width: 0;
+          height: 0;
+          position: absolute;
+          visibility: hidden;
+        }
+      }
+
+  .textarea_with_error {
             width: 100%;
 
             textarea {
@@ -96,51 +96,48 @@
                color: #df1313;
             }
          }
+      }}
+  .add_post_tags,
+  .add_post_buttons ,
+   .error_button { gap: 0.5rem;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    button,
+    input {
+      outline: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 15px;
+      padding: 0.5rem 0.6rem;
+      background-color: $light;
+      border: 1px solid $blackLow;
+      &.select {
+        color: $white;
+        background: $blackLow;
       }
-   }
-   .add_post_tags,
-   .add_post_buttons,
-   .error_button {
-      gap: 0.5rem;
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      button,
-      input {
-         outline: none;
-         cursor: pointer;
-         font-size: 14px;
-         font-weight: bold;
-         border-radius: 15px;
-         padding: 0.5rem 0.6rem;
-         background-color: $light;
-         border: 1px solid $blackLow;
-         &.select {
-            color: $white;
-            background: $blackLow;
-         }
+    }
+  }
+  .add_post_tags button.deselect:hover {
+    background-color: $greyLight;
+  }
+  .add_post_buttons {
+    margin-top: 1rem;
+    justify-content: flex-end;
+    button,
+    input {
+      font-size: 18px;
+      color: $white;
+      border-radius: 5px;
+      background: black;
+      padding: 0.5rem 0.7rem;
+      transition: transform 0.2s ease-in;
+      &:hover {
+        transform: scale(1.1);
       }
-   }
-   .add_post_tags button.deselect:hover {
-      background-color: $greyLight;
-   }
-   .add_post_buttons{
-      margin-top: 1rem;
-      justify-content: flex-end;
-      button,
-      input {
-         font-size: 18px;
-         color: $white;
-         border-radius: 5px;
-         background: black;
-         padding: 0.5rem 0.7rem;
-         transition: transform 0.2s ease-in;
-         &:hover {
-            transform: scale(1.1);
-         }
-      }
-
-      .disabledSubmit {
+    }
+.disabledSubmit {
          border: 1px solid #df1313;
          pointer-events: none;
       }
@@ -167,42 +164,42 @@
    }
 }
 @media screen and (max-width: 524px) {
-   .modal_add_post .add_post_content {
-      .content__inputs {
-         flex-direction: column;
-         input {
-            width: 100%;
-            padding: 10px 0px;
-         }
+  .modal_add_post .add_post_content {
+    .content__inputs {
+      flex-direction: column;
+      input {
+        width: 100%;
+        padding: 10px 0px;
       }
-      .content__textImage {
-         gap: 5px;
-         flex-direction: column;
-         .boxImage {
-            width: 100%;
-            height: 50px;
-            max-height: max-content;
-         }
+    }
+    .content__textImage {
+      gap: 5px;
+      flex-direction: column;
+      .boxImage {
+        width: 100%;
+        height: 50px;
+        max-height: max-content;
       }
-   }
+    }
+  }
 }
 @media screen and (max-width: 524px) {
-   .modal_add_post .add_post_content {
-      .content__inputs {
-         flex-direction: column;
-         input {
-            width: 100%;
-            padding: 10px 0px;
-         }
+  .modal_add_post .add_post_content {
+    .content__inputs {
+      flex-direction: column;
+      input {
+        width: 100%;
+        padding: 10px 0px;
       }
-      .content__textImage {
-         gap: 5px;
-         flex-direction: column;
-         .boxImage {
-            width: 100%;
-            height: 50px;
-            max-height: max-content;
-         }
+    }
+    .content__textImage {
+      gap: 5px;
+      flex-direction: column;
+      .boxImage {
+        width: 100%;
+        height: 50px;
+        max-height: max-content;
       }
-   }
+    }
+  }
 }

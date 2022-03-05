@@ -1,7 +1,7 @@
 @import "../../Styles/variables.scss";
 
 .chat_window {
-  width: 400px;
+  width: 300px;
   height: 620px;
   display: flex;
   flex-direction: column;
@@ -27,6 +27,15 @@
     cursor: pointer;
     p {
       line-height: 45px;
+    }
+    .close {
+      position: absolute;
+      right: 1rem;
+      color: #00000033;
+      svg {
+        color: inherit;
+        pointer-events: none;
+      }
     }
   }
   .chat_body {
@@ -76,7 +85,7 @@
       }
     }
   }
-  #you {
+  .you {
     justify-content: flex-start;
     flex-direction: row-reverse;
     .message_wrap {
@@ -91,7 +100,7 @@
     }
   }
 
-  #other {
+  .other {
     justify-content: flex-start;
     .message_wrap {
       align-items: flex-start;
@@ -111,8 +120,9 @@
     display: flex;
     padding: 1rem;
     background-color: #69696988;
-    backdrop-filter: blur(5px);
     gap: 1rem;
+    backdrop-filter: blur(5px);
+
     align-items: center;
     textarea {
       padding: 1rem;

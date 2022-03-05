@@ -31,6 +31,7 @@ import {
   ErrorAlert,
   InfoAlert,
 } from "../../Components/Alert/Alert";
+import Chats from "../../Components/Chats/Chats";
 
 export default function User() {
   const [edit, setEdit] = useState(false);
@@ -87,7 +88,7 @@ export default function User() {
     if (user) {
       dispatch(getPosts(user._id));
       setLoading(false);
-      document.title = `${user?.name} | Henry Social`
+      document.title = `${user?.name} | Henry Social`;
     }
   }, [user]);
 
@@ -99,7 +100,6 @@ export default function User() {
     <LoadingPage />
   ) : (
     <>
-      <NavSearch></NavSearch>
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
         <Settings
           cancel={(e?: any) => {
@@ -110,6 +110,7 @@ export default function User() {
       </Modal>
 
       <div className={style.User}>
+        <NavSearch></NavSearch>
         <div className={style.head_profile}>
           <div className={style.head_profile_central}>
             <div className={style.photo}>
@@ -191,7 +192,7 @@ export default function User() {
                   ) : (
                     <div> </div>
                   )}
-                  {user?.github  ? (
+                  {user?.github ? (
                     <a
                       href={`https://www.github.com/${user?.github}`}
                       target="_blank"
@@ -207,21 +208,19 @@ export default function User() {
                   ) : (
                     <div> </div>
                   )}
-                  {
-                    user?.portfolio ? (
-                      <a href={user?.portfolio} target="_blank">
+                  {user?.portfolio ? (
+                    <a href={user?.portfolio} target="_blank">
                       <div>
                         <img
                           src={portafolioIcon} // Buscar icono portfolio
                           alt="portfolio-logo"
-                          className={style.portafolio_logo} //Aca falta editar esto  
+                          className={style.portafolio_logo} //Aca falta editar esto
                         />
                       </div>
-                      </a>
-                    ) : (
-                      <div> </div>
-                    )
-                  }
+                    </a>
+                  ) : (
+                    <div> </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -260,8 +259,8 @@ export default function User() {
             </div>
             <div className={style.mistery_box}>{"Mysterious NavBar"}</div>
           </div>
-          <Chat />
         </div>
+        <Chats></Chats>
       </div>
     </>
   );
