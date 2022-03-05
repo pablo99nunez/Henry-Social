@@ -44,7 +44,8 @@ router.get("/users", async (req, res) => {
       // @ts-ignore
       username.toLowerCase();
       const users = await User.find({
-        name: { $regex: new RegExp("^" + username, "i") },
+        name: { $regex: username, $options:"i" },
+
       });
       return res.json(users);
     }
