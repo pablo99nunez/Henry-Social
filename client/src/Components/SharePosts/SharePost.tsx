@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState, FC } from "react";
 import {IPost} from '../../../../src/models/Post'
-import { BsShare, BsShareFill } from "react-icons/bs";
+import { IoArrowRedoOutline, IoArrowRedoSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
 import useUser from "../../Hooks/useUser";
 import axios from "axios";
 
 type Props = {
-    post: IPost
+    post: IPost;
+    share: boolean;
+    setShare: Function;
 }
 
 export const SharePost:FC<Props> = ({ post }) => {
@@ -41,21 +43,10 @@ export const SharePost:FC<Props> = ({ post }) => {
         <div 
         //className={style.like}
         >
-        <motion.div
-                variants={variants}
-            //animate={share = "shared"}
-                transition={{
-                duration: 0.3,
-            }}
-          //className={/*style.heart*/}
-                ref={icon}
-                onClick={() => {
-                handleShare();
-            }}
-        >
-            {share ? <BsShareFill /> : <BsShare></BsShare>}
-        </motion.div>
-        <p>{post?.nShares}</p>
+            <div>
+                <h1>{post?.author}</h1>
+            </div>
+        <p></p>
         {
 
         }

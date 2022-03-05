@@ -1,18 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BiEdit } from "react-icons/bi";
 import { IconContext } from "react-icons";
+import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
 
 import Button from "../Button/Button";
+import Modal from "../Modal/Modal";
+import ChangeKey from "../ChangeKey/ChangeKey";
 import style from "./Settings.module.scss";
 import Input from "../Input/Input";
 import axios from "axios";
 import { editUser } from "../../redux/actions/actions";
 import useUser from "../../Hooks/useUser";
 
-import { InfoAlert } from "../Alert/Alert";
-import { useDispatch } from "react-redux";
-import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
 
 export default function Settings({ cancel }: any) {
   const user = useUser();
@@ -29,13 +30,18 @@ export default function Settings({ cancel }: any) {
     portfolio: user?.portfolio,
     role: user?.role,
   });
-  const [complete, setComplete] = useState(false);
   const [errors, setErrors] = useState({
     username: false,
     linkedin: false,
     github: false,
     portfolio: false,
   });
+  const [key, setKey] = useState(false);
+  const cambiarClave = () => {
+    setKey(true);
+  }
+  const [complete, setComplete] = useState(false);
+  const [newAvatar, setNewAvatar] = useState<string | null>(null);
 
   useEffect(() => {
     let complete = true;
@@ -47,7 +53,12 @@ export default function Settings({ cancel }: any) {
     setComplete(complete);
   }, [errors]);
 
-  const [newAvatar, setNewAvatar] = useState<string | null>(null);
+  useEffect(() => {
+    return () => {
+      cancel();
+      navigate(`/profile/${changes.username}`);
+    }
+  }, [user])
 
   let typerTimer: NodeJS.Timeout;
 
@@ -87,8 +98,14 @@ export default function Settings({ cancel }: any) {
         break;
       case "github":
         if (!/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(target.value)) {
-          setErrors({ ...errors, [target.name]: true });
-          return;
+          if(!target.value.length) {
+            setChanges({
+              ...changes,
+              [target.name]: target.value.length === 0 && null,
+            });
+            return setErrors({ ...errors, [target.name]: false });
+          }
+          return setErrors({ ...errors, [target.name]: true });
         }
         break;
       case "linkedin":
@@ -97,8 +114,14 @@ export default function Settings({ cancel }: any) {
             target.value
           )
         ) {
-          setErrors({ ...errors, [target.name]: true });
-          return;
+          if(!target.value.length) {
+            setChanges({
+              ...changes,
+              [target.name]: target.value.length === 0 && null,
+            });
+            return setErrors({ ...errors, [target.name]: false });
+          }
+          return setErrors({ ...errors, [target.name]: true });
         }
         break;
       case "portfolio":
@@ -107,8 +130,14 @@ export default function Settings({ cancel }: any) {
             target.value
           )
         ) {
-          setErrors({ ...errors, [target.name]: true });
-          return;
+          if(!target.value.length) {
+            setChanges({
+              ...changes,
+              [target.name]: target.value.length === 0 && null,
+            });
+            return setErrors({ ...errors, [target.name]: false });
+          }
+          return setErrors({ ...errors, [target.name]: true });
         }
         break;
       case "avatar":
@@ -135,11 +164,11 @@ export default function Settings({ cancel }: any) {
   const saveChanges = async (e: any) => {
     e.preventDefault();
     let imgUrl: string;
-    if (imgInput.current?.files?.length !== 0) {
+    if (imgInput.current?.files && imgInput.current?.files?.length !== 0) {
       imgUrl = await uploadFile(imgInput.current.files[0]);
-
       if (user?._id)
       dispatch(editUser(user._id, { ...changes, avatar: imgUrl }));
+      
       /* axios
       .put("/user", {
         _id: user?._id,
@@ -165,8 +194,8 @@ export default function Settings({ cancel }: any) {
     }
     if (user?._id)
     dispatch(editUser(user._id, changes ));
-    
-  };
+  }
+  ;
 
   const onChangeRole = (e: any): void => {
     if (user?.admin) {
@@ -177,7 +206,15 @@ export default function Settings({ cancel }: any) {
     } else throw new Error("Only admins can change roles");
   };
 
+
   return (
+    <>
+      <Modal isOpen={key} setIsOpen={setKey} title="Cambiar contraseña">
+        <ChangeKey cancel={(e?: any) => {
+            e && e.preventDefault();
+            return setKey(false);
+           }}/>
+      </Modal>
     <form className={style.settings_wrap}>
       <div id={style.avt_cont}>
         <img
@@ -282,12 +319,13 @@ export default function Settings({ cancel }: any) {
           placeholder="Ingresa la Url de tu portafolio"
           name="portfolio"
           defaultValue={changes?.portfolio}
-        ></Input>
+        ></Input> 
         <div className={style.buttons}>
           <Button
             type="submit"
             backgroundColor="#000"
             disabled={!complete}
+            onSubmit={cancel}
             onClick={saveChanges}
           >
             Guardar cambios
@@ -297,7 +335,11 @@ export default function Settings({ cancel }: any) {
           </Button>
           <Button>Eliminar perfil</Button>
         </div>
+        <a className={style.changeKey}
+        onClick={cambiarClave}
+        >Cambiar clave</a>
       </div>
     </form>
+    </>
   );
 }
