@@ -104,7 +104,6 @@ const Chat = () => {
           <button onClick={SendMessage}>&#9658;</button>
         </div>
       </motion.div>
-      )
     </>
   );
 };
