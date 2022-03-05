@@ -283,7 +283,9 @@ router.post("/notification", async (req, res) => {
         },
         { new: true }
       )
-        .then((e) => res.json(e))
+        .then((e) => {
+          res.json(e);
+        })
         .catch((e) => {
           throw new Error(e);
         });

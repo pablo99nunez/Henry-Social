@@ -8,6 +8,7 @@ export interface IPost {
   postTime: string;
   nLikes: [string];
   numComments: number;
+  nShares:number;
   author: IUser;
   _id: number;
   typePost: string;
@@ -39,8 +40,8 @@ interface Comment {
   text: string;
   author: IUser;
   nLikes: [string];
-}
 
+}
 interface Like {
   referenceId: ObjectId; // Reference to post
   likeTime: string;
@@ -57,6 +58,10 @@ const postSchema = new Schema({
     type: [Schema.Types.ObjectId],
     ref: "User",
     default: [],
+  },
+  nShares: {
+    type: Number,
+    default: 0
   },
   numComments: {
     type: Number,

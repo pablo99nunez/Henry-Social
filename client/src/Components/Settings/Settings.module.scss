@@ -1,5 +1,12 @@
 @import "../../Styles/variables.scss";
 
+:root {
+
+  --placeholderSize: .5em;
+  --placeholderInputGap: .25em;
+
+  }
+
 .settings_wrap {
   z-index: 2000;
   padding: 2rem;
@@ -30,7 +37,7 @@
       -moz-border-radius: 50px;
       -ms-border-radius: 50px;
       -o-border-radius: 50px;
-      transition: 250ms ease-out;
+      transition: 200ms ease-out;
       transition-property: border;
       -webkit-transition: 250ms ease-out;
       -moz-transition: 250ms ease-out;
@@ -117,6 +124,8 @@
     }
   }
 
+
+
   .footer_settings {
     display: flex;
     flex-direction: column;
@@ -170,7 +179,10 @@
     font-weight: bold;
     font-size: 10px;
     text-decoration: underline;
-
     gap: 1rem;
+  }
+  .changeKey{
+    color:red;
+    cursor:pointer;
   }
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CSS from "csstype";
 import { FiAlertCircle, FiEye, FiEyeOff } from "react-icons/fi";
 import style from "./LoginInput.module.scss";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 interface InputProps {
   id: string;
@@ -45,7 +46,7 @@ export default function LoginInput({
     <div className={style.input_cont}>
       <label
         htmlFor={id}
-        title={title}
+
         style={{
           display: valid === undefined ? "none" : valid ? "none" : "block",
         }}
@@ -53,7 +54,8 @@ export default function LoginInput({
         {" "}
         <FiAlertCircle />{" "}
       </label>
-      {
+      {valid ? <></> : <div id={style.err_msg}><ErrorMessage e={title}/></div>}
+        {
         <span
           id={style.eye}
           style={{
@@ -69,6 +71,7 @@ export default function LoginInput({
       }
       <input
         id={id}
+        title={title}
         type={type === "password" && visibility ? "text" : type}
         name={name}
         placeholder={placeholder}

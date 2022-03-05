@@ -11,11 +11,14 @@ export default function (
       regExp = new RegExp(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/);
       return validate(regExp.test(input.value));
     case "password":
-      regExp = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/);
+      regExp = new RegExp(/^(?=.*?[A-Z])(?=.*?[0-9]).{8,}$/);
       return validate(regExp.test(input.value));
-    case "name":
+    case "firstName":
       regExp = new RegExp(
-        /^([A-Z][a-z]{2,}) ?([A-Z][a-z]{2,})? ?([A-Z][a-z]{2,})? ([A-Z][a-z]{2,})$/
+        /^([A-Z][a-z]{2,}) ?([A-Z][a-z]{2,})?$/)
+      return validate(regExp.test(input.value));
+    case "lastName":
+      regExp = new RegExp(/^([A-Z][a-z]{2,}) ?([A-Z][a-z]{2,})?$/
       );
       return validate(regExp.test(input.value));
     case "username":
@@ -23,6 +26,8 @@ export default function (
       return !username
         ? validate(regExp.test(input.value))
         : validate(username !== input.value);
+    case "avatar":
+      return true;
     default:
       return false;
   }

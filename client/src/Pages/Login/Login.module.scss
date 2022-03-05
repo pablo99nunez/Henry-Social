@@ -109,6 +109,52 @@
           }
         }
       }
+
+      #avt_cont {
+        display: grid;
+        place-items: center;
+        position: absolute;
+        left: -175px;
+    
+        img {
+          border-radius: 50%;
+          object-fit: cover;
+          width: 150px;
+          height: 150px;
+        }
+    
+        #editIcon {
+          background-color: $greyDark;
+          padding: 5px;
+          border-radius: 50px;
+          position: absolute;
+          bottom: 0;
+          right: 20px;
+          -webkit-border-radius: 50px;
+          -moz-border-radius: 50px;
+          -ms-border-radius: 50px;
+          -o-border-radius: 50px;
+          transition: 250ms ease-out;
+          transition-property: border;
+          -webkit-transition: 250ms ease-out;
+          -moz-transition: 250ms ease-out;
+          -ms-transition: 250ms ease-out;
+          -o-transition: 250ms ease-out;
+    
+          &:hover{
+            cursor: pointer;
+            border-radius: 10px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            -ms-border-radius: 10px;
+            -o-border-radius: 10px;
+          }
+        }
+    
+        input[type="file"] {
+          display: none;
+        }
+      }
     }
 
     #alt_cont {

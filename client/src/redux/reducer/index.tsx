@@ -19,7 +19,13 @@ import {
   ORDER_BY,
   FILTER_BY_FOLLOW,
   FILTER_BY_TAG,
+  SET_SOCKET,
+  GET_ONLINE_USERS,
+  OPEN_CHAT,
+  CLOSE_CHAT,
 } from "../actions/actions";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { io, Socket } from "socket.io-client";
 
 export interface IState {
   user: IUser | null;
@@ -29,12 +35,16 @@ export interface IState {
   post: IPost;
   comments: Comment[];
   Users: IUser[];
+  socket: Socket;
+  usersOnline: any[];
+  chats: any[];
 }
 
 const initialState = {
   user: null,
   profile: {},
   Users: {},
+  chats: [],
 } as IState;
 
 export default function rootReducer(state = initialState, action: IAction) {
@@ -204,6 +214,37 @@ export default function rootReducer(state = initialState, action: IAction) {
           .sort((a: IPost, b: IPost) => {
             return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
           }),
+      };
+    }
+
+    case SET_SOCKET: {
+      return {
+        ...state,
+        socket: io("http://localhost:3001", {
+          autoConnect: false,
+        }),
+      };
+    }
+
+    case GET_ONLINE_USERS: {
+      return {
+        ...state,
+        usersOnline: action.payload,
+      };
+    }
+
+    case OPEN_CHAT: {
+      return {
+        ...state,
+        chats: state.chats.some((e) => e.username === action.payload.username)
+          ? state.chats
+          : [...state.chats, action.payload],
+      };
+    }
+    case CLOSE_CHAT: {
+      return {
+        ...state,
+        chats: state.chats.filter((e) => e.username !== action.payload),
       };
     }
 

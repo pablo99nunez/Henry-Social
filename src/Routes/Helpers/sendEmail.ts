@@ -1,7 +1,7 @@
-import nodemailer from "nodemailer";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 
 interface emailNeeds {
-  transporter: nodemailer.Transporter;
+  transporter: any; // nodemailer.Transporter;
   deleted?: boolean;
   from: string | undefined;
   to: string | undefined;

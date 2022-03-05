@@ -5,7 +5,7 @@ require("dotenv").config();
 import { Router, Request, Response } from "express";
 import Post, { Comment } from "../models/Post";
 import User, { NotificationType } from "../models/User";
-import nodemailer from "nodemailer";
+const nodemailer = require("nodemailer");
 import axios from "axios";
 
 import sendEmail from "./Helpers/sendEmail";

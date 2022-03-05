@@ -7,7 +7,7 @@ export function validateChange(input: any) {
     tecnologíaClases: "",
     costoClases: "",
     imageCompany: "",
-    question: "",
+    pregunta: "",
     text: "",
   };
   if (!input.company) {
@@ -41,23 +41,25 @@ export function validateChange(input: any) {
     } else if(!/\.(jpg|png)$/i.test(input.imageCompany)){
        errors.imageCompany = 'Debes ingresar una URL valida'
     }*/
-  if (!input.tecnologíaClases) {
-    errors.tecnologíaClases = "Nombre de tecnologia es requerido";
-  } else if (!/^[a-z ,.'-]+$/i.test(input.tecnologíaClases)) {
-    errors.tecnologíaClases = "Nombre de tecnologia invalido";
-  }
+    /*
+    if (!input.tecnologíaClases) {
+       errors.tecnologíaClases = "Nombre de tecnologia es requerido";
+    } else if (!/^[a-z ,.'-]+$/i.test(input.tecnologíaClases)) {
+       errors.tecnologíaClases = "Nombre de tecnologia invalido";
+    }
+  */
+    if (!input.costoClases) {
+       errors.costoClases = "Solo se permiten numeros";
+    }
 
-  if (!input.costoClases) {
-    errors.costoClases = "Solo se permiten numeros";
-  }
+    if(!input.pregunta){
+      errors.pregunta = "Debes ingresar una pregunta"
+    }
+    if(!input.text){
+       errors.text = 'Debes ingresar contenido'
+    }
 
-  if (!input.question) {
-    errors.question = "Debes ingresar una pregunta";
-  }
-
-  if (input.text.length < 1) {
-    errors.text = "Debes ingresar contenido";
-  }
-
-  return errors;
-}
+ 
+    return errors;
+ };
+ 
