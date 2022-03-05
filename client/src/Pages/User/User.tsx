@@ -8,6 +8,7 @@ import style from "./User.module.scss";
 import linkedin from "../../assets/icons/linkedin2.png";
 import github from "../../assets/icons/github2.png";
 import coffee from "../../assets/icons/coffee-cup3.png";
+import portafolioIcon from "../../assets/icons/portafolio.png";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import Button from "../../Components/Button/Button";
 import Settings from "../../Components/Settings/Settings";
@@ -87,7 +88,7 @@ export default function User() {
     if (user) {
       dispatch(getPosts(user._id));
       setLoading(false);
-      document.title = `${user?.name} | Henry Social`
+      document.title = `${user?.name} | Henry Social`;
     }
   }, [user]);
 
@@ -115,8 +116,8 @@ export default function User() {
             <div className={style.photo}>
               <img
                 src={
-                  typeof userLogeado?.avatar === "string" && userLogeado?.avatar
-                    ? userLogeado?.avatar
+                  typeof user?.avatar == "string" && user?.avatar
+                    ? user?.avatar
                     : "https://s5.postimg.cc/537jajaxj/default.png"
                 }
                 alt=""
@@ -161,7 +162,7 @@ export default function User() {
                   {user?.role + (user?.cohorte ? " | " + user?.cohorte : "")}
                 </h2>
                 <div className={style.bio}>
-                  <h3>{userLogeado?.bio}</h3>
+                  <h3>{user?.bio}</h3>
                 </div>
               </div>
 
@@ -178,8 +179,8 @@ export default function User() {
                 </div>
 
                 <div>
-                  {userLogeado?.linkedin ? (
-                    <a href={userLogeado?.linkedin} target="_blank">
+                  {user?.linkedin ? (
+                    <a href={user?.linkedin} target="_blank">
                       <div>
                         <img
                           src={linkedin}
@@ -191,9 +192,9 @@ export default function User() {
                   ) : (
                     <div> </div>
                   )}
-                  {userLogeado?.github  ? (
+                  {user?.github ? (
                     <a
-                      href={`https://www.github.com/${userLogeado?.github}`}
+                      href={`https://www.github.com/${user?.github}`}
                       target="_blank"
                     >
                       <div>
@@ -207,21 +208,19 @@ export default function User() {
                   ) : (
                     <div> </div>
                   )}
-                  {
-                    user?.portfolio ? (
-                      <a href={userLogeado?.portfolio} target="_blank">
+                  {user?.portfolio ? (
+                    <a href={user?.portfolio} target="_blank">
                       <div>
                         <img
-                          src={github}                    // Buscar icono portfolio
+                          src={portafolioIcon} // Buscar icono portfolio
                           alt="portfolio-logo"
-                          className={style.github_logo}   //Aca falta editar esto
+                          className={style.portafolio_logo} //Aca falta editar esto
                         />
                       </div>
-                      </a>
-                    ) : (
-                      <div> </div>
-                    )
-                  }
+                    </a>
+                  ) : (
+                    <div> </div>
+                  )}
                 </div>
               </div>
             </div>

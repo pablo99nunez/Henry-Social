@@ -1,0 +1,36 @@
+@import "../../Styles/variables.scss";
+
+.share{
+  width: 100%;
+  display: flex;
+  padding: 10px;
+  height: max-content;
+  background: $blackLow;
+  flex-direction: column;
+  textarea, input {
+    outline: none;
+    border: none;
+    background: transparent;
+    &[type='submit']{
+      padding: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-left: auto;
+      font-weight: bold;
+      border-radius: 5px;
+      background-color: $yellow;
+      transition: transform .5s ease;
+      &:hover{
+        transform: scale(1.1);
+      }
+    }
+  }
+  textarea{
+    width: 100%;
+    resize: none;
+    color: $white;            
+    font-size: 16px;
+    margin-top: 15px;
+    font-family: inherit;
+  }
+}

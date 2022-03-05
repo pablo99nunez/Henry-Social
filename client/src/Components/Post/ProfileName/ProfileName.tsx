@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import { IPost } from "../../../../../src/models/Post";
-import style from "../Post.module.scss";
+import style from "./ProfileName.module.scss";
 
 import { getMomento } from "../../../helpers/momento";
 

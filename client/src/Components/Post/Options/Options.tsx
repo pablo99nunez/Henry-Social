@@ -6,13 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { IPost } from "../../../../../src/models/Post";
 import useUser from "../../../Hooks/useUser";
 import { InfoAlert } from "../../Alert/Alert";
-import style from "../Post.module.scss";
+import style from "./Options.module.scss";
 type Props = {
   post: IPost;
   setEliminated: Function;
+  shared: boolean;
 };
 
-export default function Options({ post, setEliminated }: Props) {
+export default function Options({ post, setEliminated, shared }: Props) {
   const userLogeado = useUser();
   const [demand, setDemand] = useState(false);
   const [options, setOptions] = useState(false);
@@ -60,7 +61,10 @@ export default function Options({ post, setEliminated }: Props) {
     }
   };
   return !demand ? (
-    <div className={style.post_options}>
+    <div
+      style={{ display: shared ? "none" : "flex" }}
+      className={style.post_options}
+    >
       <BsThreeDots onClick={() => setOptions(!options)} />
       <div
         className={`${style.post_optionsList} ${
