@@ -52,7 +52,7 @@ export const Like: FC<Props> = ({ post }) => {
           handleLike();
         }}
       >
-        {like ? <BsHeartFill /> : <BsHeart></BsHeart>}
+        {like ? <BsHeartFill /> : <BsHeart/>}
       </motion.div>
       <p>{post?.nLikes?.length + (like ? (sum ? 1 : 0) : sum ? 0 : -1)}</p>
       {
