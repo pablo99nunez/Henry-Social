@@ -11,6 +11,7 @@ import useUser from "../../Hooks/useUser";
 import { useDispatch } from "react-redux";
 import { getPosts } from "../../redux/actions/actions";
 import Present from "../../Components/Present/Present";
+import Chats from "../../Components/Chats/Chats";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -33,7 +34,7 @@ const Home = () => {
         <LoadingPage />
       ) : (
         <div className={style.home}>
-          <NavSearch />
+          <NavSearch></NavSearch>
           <div className={style.home_position}>
             <div className={style.aside}>
               <SideTags />
@@ -44,7 +45,7 @@ const Home = () => {
               <Present></Present>
             </div>
           </div>
-          <Chat />
+          <Chats></Chats>
         </div>
       )}
     </>

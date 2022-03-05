@@ -1,13 +1,12 @@
-import './Placeholder.scss'
+import "./Placeholder.scss";
 
 const Placeholder = () => {
-
   return (
-    <div className='box'>
-      <div className='image'></div>
-      <div className='text'></div>
+    <div className="box">
+      <div className="image"></div>
+      <div className="text"></div>
     </div>
-  )
-}
+  );
+};
 
-export default Placeholder
+export default Placeholder;

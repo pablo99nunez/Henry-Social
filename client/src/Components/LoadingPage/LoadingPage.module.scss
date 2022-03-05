@@ -3,7 +3,7 @@
   height: 100%;
   display: grid;
   place-items: center;
-  
+
   #load {
     pointer-events: none;
     z-index: 2;
@@ -12,7 +12,7 @@
     #load {
       animation: loading infinite 10s linear;
       -webkit-animation: loading infinite 1s linear;
-  }
+    }
   }
   @keyframes loading {
     from {
@@ -23,4 +23,3 @@
     }
   }
 }
-

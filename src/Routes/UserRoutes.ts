@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from "express";
 import axios from "axios";
-import User, { IUser } from "../models/User";
+import User from "../models/User";
 import { INotification, NotificationType } from "../models/User";
+import { Comment } from "../models/Post";
+import Post from "../models/Post";
+import { auth } from "../services/firebase/firebase";
 
 const router = Router();
 
@@ -37,8 +40,12 @@ router.get("/users", async (req, res) => {
   const { username } = req.query;
   try {
     if (username) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      username.toLowerCase();
       const users = await User.find({
-        name: { $regex: username },
+        name: { $regex: username, $options:"i" },
+
       });
       return res.json(users);
     }
@@ -119,11 +126,11 @@ router.post("/follow", async (req, res) => {
   const { seguidor, seguido } = req.body;
   try {
     if (await isFollowing(seguidor, seguido)) {
-      //Si el seguidor ya sigue al seguido
+      // Si el seguidor ya sigue al seguido
       await axios.post("/unfollow", {
         seguido,
         seguidor,
-      }); //Deja de seguir al usuario
+      }); // Deja de seguir al usuario
       const userSeguidor = await axios
         .post("/findUser", {
           username: seguidor,
@@ -154,7 +161,7 @@ router.post("/follow", async (req, res) => {
           .catch((e) => {
             throw new Error(e);
           });
-        axios.post("/notification", {
+        await axios.post("/notification", {
           type: NotificationType.Follow,
           emisor: userSeguidor,
           receptor: userSeguido,
@@ -166,7 +173,7 @@ router.post("/follow", async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(403).json({ error: error });
+    res.status(403).json({ error });
   }
 });
 
@@ -191,7 +198,7 @@ router.post("/unfollow", async (req, res) => {
     );
     res.json({ resultA, resultB });
   } catch (error) {
-    res.status(400).json({ error: error });
+    res.status(400).json({ error });
   }
 });
 
@@ -236,7 +243,7 @@ router.post("/notification", async (req, res) => {
           case NotificationType.Like:
             {
               notification = {
-                content: `${emisor.name} le ha dado like a tu publicacion`,
+                content: `${emisor.name} le ha dado like a tu publicación`,
                 link: notification.link,
                 type: notification.type,
                 emisor: emisor.username,
@@ -248,7 +255,7 @@ router.post("/notification", async (req, res) => {
           case NotificationType.Comment:
             {
               notification = {
-                content: `${emisor.name} ha comentado tu publicacion`,
+                content: `${emisor.name} ha comentado tu publicación`,
                 link: notification.link,
                 type: notification.type,
                 emisor: emisor.username,
@@ -279,7 +286,9 @@ router.post("/notification", async (req, res) => {
         },
         { new: true }
       )
-        .then((e) => res.json(e))
+        .then((e) => {
+          res.json(e);
+        })
         .catch((e) => {
           throw new Error(e);
         });
@@ -308,17 +317,41 @@ router.get("/deleteNotis", async (req, res) => {
 });
 
 router.delete("/delete-user", async (req, res) => {
-  const { userId, adminId } = req.body;
+  const { userId, adminId, uid } = req.body;
 
-  const adminUser = await User.findById(adminId);
+  try {
+    const adminUser = await User.findById(adminId);
+    if (!adminUser?.admin && userId !== adminId)
+      return res.status(403).send("Only for admins users.");
 
-  console.log(adminUser, adminId);
-  if (!adminUser?.admin) return res.status(403).send("Only for admins roles.");
+    const user: any = await User.findByIdAndDelete(userId);
+    if (!user) return res.status(404).send("This user wasn't found.");
 
-  const user = await User.findByIdAndDelete(userId);
-  if (!user) return res.status(404).send("This user wasn't found.");
+    // Elimina todos los seguidores y seguidos
+    await User.updateMany(
+      {},
+      { $pull: { followers: user.username, following: user.username } }
+    );
+    // Busca todos los post con X author
+    const postUser = await Post.find({ author: userId });
+    // Guarda en un array todos los id de esos post con X author
+    const postIdByUser = postUser.map((post) => post._id);
+    // Elimina los Post de X author
+    await Post.deleteMany({ author: userId });
+    // Elimina los comentarios de X author
+    await Comment.deleteMany({ author: userId });
+    // Elimina los likes de X autor
+    // Por cada id busca y elimina en el modelo Comment,
+    // comentarios hechos en post con el postId del author ya eliminado.
+    for (const id of postIdByUser) {
+      await Comment.deleteMany({ postId: id });
+    }
 
-  res.send(user);
+    await auth.deleteUser(uid);
+    res.send(user);
+  } catch (e) {
+    res.status(400).json({ error: e });
+  }
 });
 
 export default router;

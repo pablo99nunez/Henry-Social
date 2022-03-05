@@ -9,7 +9,7 @@ import {
   signUpWithGmail,
   signUpWithGitHub,
   signInWithEmail,
-} from "../../../../src/services/firebase/login-methods";
+} from "../../../src/firebase/login-methods";
 import style from "./Login.module.scss";
 import useUser from "../../Hooks/useUser";
 import Button from "../../Components/Button/Button";
@@ -55,8 +55,10 @@ export default function Login(): JSX.Element {
   const btn = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    document.title = `${action ? 'Iniciar Sesion' : ' Registrate'} | Henry Social`
-  }, [action])
+    document.title = `${
+      action ? "Iniciar Sesion" : " Registrate"
+    } | Henry Social`;
+  }, [action]);
 
   useEffect(() => {
     const { firstName, lastName, username, password, email } = input;
@@ -65,14 +67,21 @@ export default function Login(): JSX.Element {
     setTimeout(() => {
       if (user === null && !cleanUp) setLoading(false);
     }, 1000);
-    if(action === 1) {
+    if (action === 1) {
       email && password && setFromComplete(true);
     } else {
-      if(firstName && lastName && username && !userAlreadyExist && password && email) {
-        if(btn.current) btn.current.disabled = false;
+      if (
+        firstName &&
+        lastName &&
+        username &&
+        !userAlreadyExist &&
+        password &&
+        email
+      ) {
+        if (btn.current) btn.current.disabled = false;
         return setFromComplete(true);
-      } 
-      if(btn.current) btn.current.disabled = true;
+      }
+      if (btn.current) btn.current.disabled = true;
       setFromComplete(false);
     }
     return () => {
@@ -96,8 +105,8 @@ export default function Login(): JSX.Element {
         if (action == USER_ACTION.signUp) {
           const newUser = {
             ...input,
-            name: `${input.firstName.trim()} ${input.lastName.trim()}`
-          }
+            name: `${input.firstName.trim()} ${input.lastName.trim()}`,
+          };
           delete newUser.firstName;
           delete newUser.lastName;
           await signUpWithEmail(newUser).then(() => {
@@ -150,7 +159,7 @@ export default function Login(): JSX.Element {
       | React.FocusEvent<HTMLInputElement>
   ) {
     const target = e.target as HTMLInputElement;
-    if(!target.value.length) return;
+    if (!target.value.length) return;
     axios
       .get("/user", {
         params: {
@@ -166,7 +175,7 @@ export default function Login(): JSX.Element {
             [target.name]: true,
           });
           if (btn.current) btn.current.disabled = true;
-        } 
+        }
         if (formComplete && btn.current) btn.current.disabled = false;
       });
   }
@@ -297,7 +306,9 @@ export default function Login(): JSX.Element {
                       alt="avatar"
                     />
                     <label htmlFor="newAvatar" id={style.editIcon}>
-                      <IconContext.Provider value={{ color: "yellow", size: "25px" }}>
+                      <IconContext.Provider
+                        value={{ color: "yellow", size: "25px" }}
+                      >
                         <BiEdit />
                       </IconContext.Provider>
                     </label>
