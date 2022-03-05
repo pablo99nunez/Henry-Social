@@ -1,11 +1,9 @@
 import styles from "./NavSearch.module.scss";
-import { BsBellFill } from "react-icons/bs";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import useUser from "../../Hooks/useUser";
 import { closeSession } from "../../../../src/services/firebase/login-methods";
-import Button from "../Button/Button";
 import { searchUsers, signOut } from "../../redux/actions/actions";
 import { InfoAlert } from "../Alert/Alert";
 import { useState } from "react";

@@ -103,7 +103,6 @@ export default function Login(): JSX.Element {
           });
         } else if (input.password != undefined) {
           await signInWithEmail(input.email, input.password);
-          navigate("/");
         }
       } catch (e) {
         console.error(e);
