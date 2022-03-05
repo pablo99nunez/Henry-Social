@@ -313,7 +313,7 @@ router.delete("/delete-user", async (req, res) => {
   const adminUser = await User.findById(adminId);
 
   console.log(adminUser, adminId);
-  if (!adminUser?.admin) return res.status(403).send("Only for admins roles.");
+  // if (!adminUser?.admin) return res.status(403).send("Only for admins roles.");
 
   const user = await User.findByIdAndDelete(userId);
   if (!user) return res.status(404).send("This user wasn't found.");

@@ -38,13 +38,23 @@ const Verification: React.FC = () => {
   const handleResend = () => {
     if(auth.currentUser) sendEmailVerification(auth.currentUser, {
       url: "http://localhost:3000"
-    });
+    }).then(r => {
+      InfoAlert.fire({
+        title: "Se ha enviado el email",
+        icon: "success"
+      });
+    }).catch(error => {
+      InfoAlert.fire({
+        title: "No se pudo enviar el email",
+        icon: "error"
+      });
+    })
   }
 
   useEffect(() => {
-    if(auth.currentUser?.emailVerified) return navigate("/");
-    setVerifying(false);
-  })
+    if(auth.currentUser && !auth.currentUser?.emailVerified) return setVerifying(false);
+    navigate("/");
+  }, [auth.currentUser])
 
   return (
     <>{
