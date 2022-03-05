@@ -17,7 +17,6 @@ export default function Chats() {
       if (!chats.some((e) => e.name === data.name)) {
         dispatch(openChat(data.sender, data.name, data.receiver));
       }
-     
     });
   }, [socket,dispatch]);
   console.log(chats)
