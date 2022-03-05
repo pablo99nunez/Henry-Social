@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { auth } from "../../../src/services/firebase/firebase";
+import { auth } from "../../src/firebase/firebase";
 import { getUser, setSocket } from "../redux/actions/actions";
 import { IState } from "../redux/reducer";
 
