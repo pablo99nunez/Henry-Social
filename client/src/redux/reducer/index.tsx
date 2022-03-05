@@ -42,6 +42,7 @@ export default function rootReducer(state = initialState, action: IAction) {
     case GET_USER: {
       return { ...state, user: action.payload };
     }
+
     case FOLLOW_USER: {
       return {
         ...state,
@@ -49,18 +50,21 @@ export default function rootReducer(state = initialState, action: IAction) {
         profile: action.payload.seguido,
       };
     }
+
     case SIGN_OUT: {
       return {
         ...state,
         user: null,
       };
     }
+
     case GET_PROFILE: {
       return {
         ...state,
         profile: action.payload,
       };
     }
+
     case GET_POSTS: {
       let results = action.payload.sort((a: IPost, b: IPost) => {
         return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
@@ -78,12 +82,14 @@ export default function rootReducer(state = initialState, action: IAction) {
         results,
       };
     }
+
     case SEARCH_USERS: {
       return {
         ...state,
         Users: action.payload,
       };
     }
+
     case FILTER_BY_TYPE: {
       let results = action.payload.sort((a: IPost, b: IPost) => {
         return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
@@ -100,12 +106,14 @@ export default function rootReducer(state = initialState, action: IAction) {
         results,
       };
     }
+
     case FILTER_BY_TAG: {
       return {
         ...state,
         results: action.payload,
       };
     }
+
     case GET_POST: {
       return {
         ...state,
@@ -113,6 +121,7 @@ export default function rootReducer(state = initialState, action: IAction) {
         comments: action.payload.comments,
       };
     }
+
     case CLEAR_POST: {
       return {
         ...state,
@@ -120,12 +129,14 @@ export default function rootReducer(state = initialState, action: IAction) {
         comments: null,
       };
     }
+
     case CLEAR_PROFILE: {
       return {
         ...state,
         profile: null,
       };
     }
+
     case LIKE_POST: {
       return {
         ...state,
@@ -134,18 +145,21 @@ export default function rootReducer(state = initialState, action: IAction) {
         }),
       };
     }
+
     case MAKE_ADMIN: {
       return {
         ...state,
         profile: action.payload,
       };
     }
+
     case SEE_NOTIFICATION: {
       return {
         ...state,
         user: action.payload,
       };
     }
+
     case FILTER_BY_LIKE: {
       return {
         ...state,
@@ -177,6 +191,7 @@ export default function rootReducer(state = initialState, action: IAction) {
         results: result,
       };
     }
+
     case FILTER_BY_FOLLOW: {
       return {
         ...state,

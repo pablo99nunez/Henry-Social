@@ -28,7 +28,7 @@ export interface IAction {
 }
 
 export function getUser(email: string) {
-  return function (dispatch: Function) {
+  return (dispatch: Function) => {
     axios.post("/findUser", { email }).then((res) => {
       return dispatch({ type: GET_USER, payload: res.data });
     });
@@ -36,20 +36,20 @@ export function getUser(email: string) {
 }
 
 export function editUser(_id: string, changes: any) {
-  return async function (dispatch: Function) {
+  return async (dispatch: Function) => {
     const user = await axios.put("/user", { _id, changes }).then((e) => e.data);
     return dispatch({ type: GET_USER, payload: user });
   };
 }
 
 export function signOut() {
-  return function (dispatch: Function) {
+  return (dispatch: Function) => {
     return dispatch({ type: SIGN_OUT });
   };
 }
 
 export function followUser(seguidor: string, seguido: string) {
-  return function (dispatch: Function) {
+  return (dispatch: Function) => {
     axios
       .post("/follow", {
         seguidor,
@@ -68,7 +68,7 @@ export function followUser(seguidor: string, seguido: string) {
 }
 
 export function getProfile(username: string) {
-  return function (dispatch: Function) {
+  return (dispatch: Function) => {
     axios.post("/findUser", { username }).then((res) => {
       return dispatch({ type: GET_PROFILE, payload: res.data });
     });
@@ -76,7 +76,7 @@ export function getProfile(username: string) {
 }
 
 export function getPosts(_id: string | undefined = "") {
-  return function (dispatch: Function) {
+  return (dispatch: Function) => {
     _id
       ? axios.post("/posts", { _id }).then((res) => {
           return dispatch({ type: GET_POSTS, payload: res.data });
@@ -88,7 +88,7 @@ export function getPosts(_id: string | undefined = "") {
 }
 
 export function filterBySection(typePost: string) {
-  return async function (dispatch: Function) {
+  return async (dispatch: Function) => {
     try {
       const res = await axios.post("/posts", {
         props: {
@@ -120,7 +120,7 @@ export function filterByTag(tag: string): Function {
 }
 
 export function searchUsers(username: string) {
-  return async function (dispatch: Function) {
+  return async (dispatch: Function) => {
     try {
       const res = await axios.get(`/users?username=${username}`);
       return dispatch({
@@ -132,8 +132,9 @@ export function searchUsers(username: string) {
     }
   };
 }
-export function getPost(id: String) {
-  return function (dispatch: Function) {
+
+export function getPost(id: string) {
+  return (dispatch: Function) => {
     axios.get("/post/" + id).then((post) => {
       if (post.data) {
         axios.get("/comments/" + post.data._id).then((comments) => {
@@ -151,11 +152,13 @@ export function getPost(id: String) {
     });
   };
 }
-export function clear(page: String) {
-  return function (dispatch: Function) {
+
+export function clear(page: string) {
+  return (dispatch: Function) => {
     return dispatch({ type: page === "profile" ? CLEAR_PROFILE : CLEAR_POST });
   };
 }
+
 export function likePost(post: IPost, user: IUser) {
   return (dispatch: Function) => {
     axios
@@ -166,6 +169,7 @@ export function likePost(post: IPost, user: IUser) {
       .then((e) => dispatch({ type: LIKE_POST, payload: e.data }));
   };
 }
+
 export function makeAdmin(username: string) {
   return (dispatch: Function) => {
     axios
@@ -173,6 +177,7 @@ export function makeAdmin(username: string) {
       .then((e) => dispatch({ type: MAKE_ADMIN, payload: e.data }));
   };
 }
+
 export function seeNotification(id: number, userId: string) {
   return (dispatch: Function) => {
     axios.put("/notification", { id, userId }).then((e) => {
@@ -200,6 +205,7 @@ export function filterByOrder(order: string) {
     return dispatch({ type: ORDER_BY, payload: { order } });
   };
 }
+
 export function filterByFollow() {
   return async (dispatch: Function) => {
     return dispatch({ type: FILTER_BY_FOLLOW });

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from "express";
 import axios from "axios";
-import User, { IUser } from "../models/User";
+import User from "../models/User";
 import { INotification, NotificationType } from "../models/User";
 import { Comment } from "../models/Post";
 import Post from "../models/Post";
@@ -39,8 +39,10 @@ router.get("/users", async (req, res) => {
   const { username } = req.query;
   try {
     if (username) {
+      // @ts-ignore
+      username.toLowerCase();
       const users = await User.find({
-        name: { $regex: username },
+        name: { $regex: new RegExp("^" + username, "i") },
       });
       return res.json(users);
     }
@@ -156,7 +158,7 @@ router.post("/follow", async (req, res) => {
           .catch((e) => {
             throw new Error(e);
           });
-        axios.post("/notification", {
+        await axios.post("/notification", {
           type: NotificationType.Follow,
           emisor: userSeguidor,
           receptor: userSeguido,
@@ -238,7 +240,7 @@ router.post("/notification", async (req, res) => {
           case NotificationType.Like:
             {
               notification = {
-                content: `${emisor.name} le ha dado like a tu publicacion`,
+                content: `${emisor.name} le ha dado like a tu publicación`,
                 link: notification.link,
                 type: notification.type,
                 emisor: emisor.username,
@@ -250,7 +252,7 @@ router.post("/notification", async (req, res) => {
           case NotificationType.Comment:
             {
               notification = {
-                content: `${emisor.name} ha comentado tu publicacion`,
+                content: `${emisor.name} ha comentado tu publicación`,
                 link: notification.link,
                 type: notification.type,
                 emisor: emisor.username,
