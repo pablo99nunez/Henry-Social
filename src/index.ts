@@ -14,6 +14,7 @@ import http from "http";
 import { Server } from "socket.io";
 import User, { IUser } from "./models/User";
 import Post from "./models/Post";
+import { auth } from "./services/firebase/firebase";
 const app: express.Application = express();
 app.use(cors());
 
@@ -134,6 +135,7 @@ io.on("connection", (socket) => {
 
 server.listen(process.env.PORT, () => {
   console.log("Server listening at " + process.env.PORT);
+
   axios.defaults.baseURL =
     process.env.MODE === "PRODUCTION"
       ? "https://henry-social-back.herokuapp.com"
