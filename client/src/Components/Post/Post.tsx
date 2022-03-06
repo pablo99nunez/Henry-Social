@@ -10,8 +10,6 @@ import Content from "./Content/Content";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import Image from "./Image/Image";
 import { SharePost } from "../SharePosts/SharePost";
-import { PromiseProvider } from "mongoose";
-// import useUser from "../../Hooks/useUser";
 
 type Props = {
   post: IPost;
@@ -20,13 +18,12 @@ type Props = {
 
 const Post: FC<Props> = ({ post, shared = false}) => {
   const [openShare, setOpenShare] = useState(false);
-  const [eliminated, setEliminated] = useState(false);
   const [openComment, setOpenComment] = useState(false);
 
   return (
     <div
       className={style.postContainer}
-      style={{ display: eliminated ? "none" : "flex" , zIndex: shared ? '80' : '50'}}
+      style={{zIndex: shared ? '80' : '50'}}
     >
       {!post?._id ? (
         <h2 style={{ textAlign: "center", color: "white" }}>
@@ -53,7 +50,6 @@ const Post: FC<Props> = ({ post, shared = false}) => {
             <Options 
               post={post} 
               shared={shared} 
-              setEliminated={setEliminated}
             />
             {(post.respuesta || post.typePost !== "pregunta") && (
               <Interactions

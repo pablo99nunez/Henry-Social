@@ -13,6 +13,7 @@ export enum NotificationType {
   Like,
   Comment,
   CommentLike,
+  Share,
 }
 
 export interface INotification {

@@ -30,10 +30,10 @@ export const SharePost:FC<Props> = ({ post, openShare, setOpenShare }) => {
       e.preventDefault()
       if (user) {
         axios
-          .post(`/post`, {
+          .post(`/share`, {
             author: user,
             body: textareaRef.current.value,
-            company: post._id, // Por mientras esta siendo utilizada esta propiedad para el id del Post a compartir
+            company: post.typePost === 'share' ? post.company : post._id, // Por mientras esta siendo utilizada esta propiedad para el id del Post a compartir
             typePost: 'share',
           })
           .then((data) => {
@@ -43,6 +43,7 @@ export const SharePost:FC<Props> = ({ post, openShare, setOpenShare }) => {
             });
             setOpenShare(!openShare)
             dispatch(getPosts());
+            textareaRef.current.value = ''
             return data;
           })
           .catch((error) => console.error("Error:", error));

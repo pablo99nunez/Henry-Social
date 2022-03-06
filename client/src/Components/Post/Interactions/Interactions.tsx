@@ -1,17 +1,16 @@
-import React, {useState} from "react";
-import { BsChatSquareDots } from "react-icons/bs";
-import { IoArrowRedoOutline, IoArrowRedoSharp } from "react-icons/io5";
-import { IPost } from "../../../../../src/models/Post";
+import React from "react";
 import { Like } from "../../Like/Like";
-import { SharePost } from "../../SharePosts/SharePost"
 import style from "./Interactions.module.scss";
+import { BsChatSquareDots } from "react-icons/bs";
+import { IoArrowRedoOutline } from "react-icons/io5";
+import { IPost } from "../../../../../src/models/Post";
 
 type Props = {
   post: IPost;
-  setOpenComment: Function;
+  setOpenComment: React.Dispatch<React.SetStateAction<boolean>>;
   openComment: boolean;
   openShare: boolean;
-  setOpenShare: Function;
+  setOpenShare: React.Dispatch<React.SetStateAction<boolean>>;
   shared: boolean;
 };
 
@@ -30,21 +29,30 @@ export default function Interactions({
     >
       <div className={style.post_like_comments}>
         <Like post={post}></Like>
+
         <div
           className={style.post_icon}
-          onClick={() => setOpenComment(!openComment)}
+          onClick={() => {
+            setOpenComment(!openComment)
+            openShare && setOpenShare(!openShare)
+          }}
         >
           <div className={style.post_icon}>
               <BsChatSquareDots />
               <span>{post?.numComments}</span>
           </div>
         </div>
+
         <div 
-          onClick={() => {setOpenShare(!openShare)}}
+          onClick={() => {
+            setOpenShare(!openShare)
+            openComment && setOpenComment(!openComment)
+          }}
         >
           <IoArrowRedoOutline />
           <span>{post?.nShares}</span>
         </div>
+
       </div>
     </div>
   );
