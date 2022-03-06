@@ -306,7 +306,7 @@ export default function Settings({ cancel }: any) {
               TA
             </Button>
           </div>
-
+          </div>
         <span className={style.spaneo}>
         <input
           type="text"

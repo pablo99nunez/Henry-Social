@@ -25,22 +25,21 @@ export default function Interactions({
   shared,
 }: Props) {
     return (
+      <div>
         <div className={style.post_interacciones}>
             <div className={style.post_like_comments}>
                 <Like post={post}></Like>
                 <div
                     className={style.post_icon}
-                    onClick={() => setOpenComment(!openComment)}
-                >
+                    onClick={() => setOpenComment(!openComment)}>
                     <div className={style.post_icon}>
                         <BsChatSquareDots />
                         <span>{post?.numComments}</span>
                     </div>
-
                 </div>
                 <div 
                 className={style.post_icon}
-                onClick={() => {setOpenShare(!openShare); contenedor(post);}}
+                onClick={() => {setOpenShare(!openShare)}}
                 >
                 <IoArrowRedoOutline />
                 <span>{post?.nShares}</span>
@@ -51,14 +50,11 @@ export default function Interactions({
             </div>
         </div>
         <div
-          onClick={() => {
-            setOpenShare(!openShare);
-          }}
+          onClick={() => setOpenShare(!openShare)}
         >
           <IoArrowRedoOutline />
           <span>{post?.nShares}</span>
         </div>
       </div>
-    </div>
   );
 }

@@ -7,7 +7,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { IUser } from "../../models/User";
+import { IUser } from "../../../src/models/User";
 import axios from "axios";
 import { uploadFile } from "./Helpers/uploadFile";
 
