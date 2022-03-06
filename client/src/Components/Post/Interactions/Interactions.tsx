@@ -41,7 +41,7 @@ export default function Interactions({
           className={style.post_icon}
           onClick={() => {
             setOpenShare(!openShare);
-            contenedor(post);
+            // contenedor(post); ???
           }}
         >
           <IoArrowRedoOutline />
@@ -59,6 +59,6 @@ export default function Interactions({
         <IoArrowRedoOutline />
         <span>{post?.nShares}</span>
       </div>
-      </div>
+    </div>
   );
 }
