@@ -29,13 +29,13 @@ export function validate(input: any, typePost: string) {
    };
 
    if (typePost === "empleo") {
-      if (!input.company) {
+      if (!input.company || input.company.trim() === "") {
          errors.company = "Nombre de compañia es requerido";
       } else if (!/^[a-z ,.'-]+$/i.test(input.company)) {
          errors.company = "Nombre de compañia invalido";
       }
 
-      if (!input.companyLink) {
+      if (!input.companyLink || input.companyLink.trim() === "") {
          errors.companyLink = "Ingrese la URL del sitio de la empresa";
       } else if (
          !/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(
@@ -51,7 +51,7 @@ export function validate(input: any, typePost: string) {
          errors.salary = "Solo se permiten numeros";
       }
 
-      if (!input.position) {
+      if (!input.position || input.position.trim() === "") {
          errors.position = "Debes ingresar un puesto";
       }
 
@@ -68,13 +68,13 @@ export function validate(input: any, typePost: string) {
    }
 
    if (typePost === "boom") {
-      if (!input.company) {
+      if (!input.company || input.company.trim() === "") {
          errors.company = "Nombre de compañia es requerido";
       } else if (!/^[a-z ,.'-]+$/i.test(input.company)) {
          errors.company = "Nombre de compañia invalido";
       }
 
-      if (!input.position) {
+      if (!input.position || input.position.trim() === "") {
          errors.position = "Debes ingresar un puesto";
       }
 
@@ -86,7 +86,7 @@ export function validate(input: any, typePost: string) {
    }
 
    if (typePost === "pregunta") {
-      if (!input.pregunta) {
+      if (!input.pregunta || input.pregunta.trim() === "") {
          errors.pregunta = "Debes definir tu pregunta";
       }
 
@@ -190,17 +190,17 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
       const downloadURLImage =
          post.image instanceof File ? await uploadFile(post.image) : post.image;
-      console.log(downloadURLImage);
+      console.log(post.text.trim());
       if (user)
-         if (post.text) {
+         if (post.text && post.text.trim() !== "") {
             axios
                .post(`/post`, {
                   body: post.text,
-                  company: post.company,
-                  position: post.position,
+                  company: post.company.trim(),
+                  position: post.position.trim(),
                   companyLink: post.companyLink,
                   companyImage: downloadURLCompany,
-                  pregunta: post.pregunta,
+                  pregunta: post.pregunta.trim(),
                   salary: post.salary,
                   author: user,
                   typePost,
@@ -217,7 +217,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   return data;
                })
                .catch((error) => console.error("Error:", error));
-         } else if (!post.text || post.text.split(" ").length === 0) {
+         } else if (!post.text || post.text.trim() === "") {
             setErrors({
                ...errors,
                text: "Agregue algo de contenido a su publicación",
