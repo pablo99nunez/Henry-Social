@@ -1,154 +1,276 @@
 @import "../../Styles/variables.scss";
 @import "../../Styles/mixins.scss";
+$isDark: false;
+
+:root {
+  --brightness: #{if($isDark, 75%, 50%)};
+  --background: #{if($isDark, #333, #fff)};
+  --foreground: #{if($isDark, #aaa, #333)};
+  --animationSpeed: 0.5s;
+  --placeholderSize: 0.5em;
+  --placeholderInputGap: 0.25em;
+  --underlineSize: 0.05em;
+  --underlineColorActive: hsl(0deg, 0%, var(--brightness));
+  --underlineColorInactive: hsla(0, 0%, var(--brightness), 0.25);
+}
 
 .modal_add_post {
-    gap: 1rem;
-    max-width: 100%;
+  gap: 1rem;
+  max-width: 100%;
+  @include flex-column;
+  justify-content: space-evenly;
+  .add_post_content {
+    gap: 20px;
+    width: 100%;
     @include flex-column;
-    justify-content: space-evenly;
-    .add_post_content {
+    .content__inputs {
+      gap: 20px;
+      width: 100%;
+      @include flex-column;
+      .content__inputs {
         gap: 20px;
-        width: 100%;
-        @include flex-column;
-        .content__inputs {
-            gap: 20px;
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            input {
-                width: 40%;
-                border: none;
-                outline: none;
-                font-size: 18px;
-                background: none;
-                color: black;
-                padding: 15px 0px;
-                border-bottom: 1px solid $blackLow;
-                &::placeholder {
-                    color: $blackLow;
-                }
-            }
-        }
-        .content__textImage {
-            gap: 15px;
-            display: flex;
-            textarea {
-                width: 100%;
-                height: 70px;
-                resize: none;
-                padding: 1rem;
-                outline: none;
-                font-size: 1rem;
-                overflow: hidden;
-                line-height: 1.2;
-                max-height: 150px;
-                border-radius: 10px;
-                font-family: inherit;
-                &.active {
-                    height: 150px;
-                    overflow: auto;
-                }
-            }
-            .boxImage {
-                width: 50%;
-                label {
-                    gap: 10px;
-                    height: 100%;
-                    cursor: pointer;
-                    @include flex-aic;
-                    text-align: center;
-                    justify-content: center;
-                    background-color: $greyLight;
-                }
-                input {
-                    width: 0;
-                    height: 0;
-                    position: absolute;
-                    visibility: hidden;
-                }
-            }
-        }
-    }
-    .add_post_tags,
-    .add_post_buttons {
-        gap: 0.5rem;
         width: 100%;
         display: flex;
         flex-wrap: wrap;
-        button,
+        justify-content: space-between;
         input {
-            outline: none;
-            cursor: pointer;
-            font-size: 14px;
+          width: 40%;
+          border: none;
+          outline: none;
+          font-size: 18px;
+          background: none;
+          color: black;
+          padding: 15px 0px;
+          border-bottom: 1px solid $blackLow;
+          &::placeholder {
+            color: $blackLow;
+          }
+        }
+        .input_with_error {
+          width: 40%;
+          .input_effects {
+            position: relative;
+            display: inline-block;
+            font-size: 1.2em;
+            margin-top: calc(
+              var(--placeholderSize) + var(--placeholderInputGap)
+            );
+            padding-bottom: 0.75em;
+          }
+          input {
+            width: 100%;
+            height: 4vh;
+            font-size: inherit;
             font-weight: bold;
-            border-radius: 15px;
-            padding: 0.5rem 0.6rem;
-            background-color: $light;
-            border: 1px solid $blackLow;
-            &.select {
-                color: $white;
-                background: $blackLow;
+            background-color: transparent;
+            border: none;
+            border-bottom: var(--underlineSize) solid
+              var(--underlineColorInactive);
+            transition: border var(--animationSpeed);
+            will-change: border;
+            outline: none;
+            &::placeholder {
+              color: transparent;
             }
+            & + span {
+              text-align: left;
+              position: absolute;
+              left: 0.05em;
+              top: 0;
+              transition: top var(--animationSpeed),
+                font-size var(--animationSpeed);
+              will-change: top, font-size;
+              pointer-events: none;
+              width: 100%;
+            }
+            &:focus,
+            &:not(:placeholder-shown) {
+              border-bottom-color: var(--underlineColorActive);
+              & + span {
+                top: calc(-1em - 2 * var(--placeholderInputGap));
+                font-size: var(--placeholderSize);
+              }
+            }
+          }
+          p {
+            margin-top: 0.2rem;
+            color: #df1313;
+          }
         }
-    }
-    .add_post_tags button.deselect:hover {
-        background-color: $greyLight;
-    }
-    .add_post_buttons {
-        margin-top: 1rem;
-        justify-content: flex-end;
-        button,
+      }
+      .input_with_error {
+        width: 40%;
+
         input {
-            font-size: 18px;
-            color: $white;
-            border-radius: 5px;
-            background: black;
-            padding: 0.5rem 0.7rem;
-            transition: transform 0.2s ease-in;
-            &:hover {
-                transform: scale(1.1);
-            }
+          width: 100%;
         }
+
+        p {
+          margin-top: 0.2rem;
+          color: #df1313;
+        }
+      }
     }
+    .content__textImage {
+      gap: 15px;
+      display: flex;
+      textarea {
+        width: 100%;
+        height: 70px;
+        resize: none;
+        padding: 1rem;
+        outline: none;
+        font-size: 1rem;
+        overflow: hidden;
+        line-height: 1.2;
+        max-height: 150px;
+        border-radius: 10px;
+        font-family: inherit;
+        &.active {
+          height: 150px;
+          overflow: auto;
+        }
+        &.error {
+          border: #df1313 2px solid;
+        }
+      }
+      .boxImage {
+        width: 50%;
+        label {
+          gap: 10px;
+          height: 100%;
+          cursor: pointer;
+          @include flex-aic;
+          text-align: center;
+          justify-content: center;
+          background-color: $greyLight;
+        }
+        input {
+          width: 0;
+          height: 0;
+          position: absolute;
+          visibility: hidden;
+        }
+      }
+
+      .textarea_with_error {
+        width: 100%;
+
+        textarea {
+          width: 100%;
+        }
+
+        p {
+          margin-top: 0.2rem;
+          color: #df1313;
+        }
+      }
+    }
+  }
+  .add_post_tags,
+  .add_post_buttons,
+  .error_button {
+    gap: 0.5rem;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    button,
+    input {
+      outline: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 15px;
+      padding: 0.5rem 0.6rem;
+      background-color: $light;
+      border: 1px solid $blackLow;
+      &.select {
+        color: $white;
+        background: $blackLow;
+      }
+    }
+  }
+  .add_post_tags button.deselect:hover {
+    background-color: $greyLight;
+  }
+  .add_post_buttons {
+    margin-top: 1rem;
+    justify-content: flex-end;
+    button,
+    input {
+      font-size: 18px;
+      color: $white;
+      border-radius: 5px;
+      background: black;
+      padding: 0.5rem 0.7rem;
+      transition: transform 0.2s ease-in;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+    .disabledSubmit {
+      border: 1px solid #df1313;
+      pointer-events: none;
+    }
+  }
+  .error_button {
+    margin-top: 1rem;
+    justify-content: flex-end;
+    button,
+    input {
+      font-size: 18px;
+      color: $white;
+      border-radius: 5px;
+      padding: 0.5rem 0.7rem;
+    }
+    button {
+      background-color: black;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+    input {
+      background-color: gray;
+    }
+  }
 }
 @media screen and (max-width: 524px) {
-    .modal_add_post .add_post_content {
-        .content__inputs {
-            flex-direction: column;
-            input {
-                width: 100%;
-                padding: 10px 0px;
-            }
-        }
-        .content__textImage {
-            gap: 5px;
-            flex-direction: column;
-            .boxImage {
-                width: 100%;
-                height: 50px;
-                max-height: max-content;
-            }
-        }
+  .modal_add_post .add_post_content {
+    .content__inputs {
+      flex-direction: column;
+      input {
+        width: 100%;
+        padding: 10px 0px;
+      }
     }
+    .content__textImage {
+      gap: 5px;
+      flex-direction: column;
+      .boxImage {
+        width: 100%;
+        height: 50px;
+        max-height: max-content;
+      }
+    }
+  }
 }
 @media screen and (max-width: 524px) {
-    .modal_add_post .add_post_content {
-        .content__inputs {
-            flex-direction: column;
-            input {
-                width: 100%;
-                padding: 10px 0px;
-            }
-        }
-        .content__textImage {
-            gap: 5px;
-            flex-direction: column;
-            .boxImage {
-                width: 100%;
-                height: 50px;
-                max-height: max-content;
-            }
-        }
+  .modal_add_post .add_post_content {
+    .content__inputs {
+      flex-direction: column;
+      input {
+        width: 100%;
+        padding: 10px 0px;
+      }
     }
+    .content__textImage {
+      gap: 5px;
+      flex-direction: column;
+      .boxImage {
+        width: 100%;
+        height: 50px;
+        max-height: max-content;
+      }
+    }
+  }
 }

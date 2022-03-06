@@ -7,7 +7,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { IUser } from "../../models/User";
+import { IUser } from "../../../src/models/User";
 import axios from "axios";
 import { uploadFile } from "./Helpers/uploadFile";
 
@@ -35,20 +35,20 @@ export async function signUpWithEmail(userInfo: IUser) {
   if (password == undefined)
     throw new Error("Necesitas ingresar una contraseña");
   try {
-    const downloadURL = avatar instanceof File ? uploadFile(avatar) : avatar;
-    await axios
-      .post("/user", {
-        name,
-        username,
-        email,
-        avatar: downloadURL,
-      })
-      .then((doc) => {
-        if (password)
-          return createUserWithEmailAndPassword(auth, email, password);
-      })
-      .catch((e) => {
-        throw new Error(e);
+    const downloadURL =
+      avatar instanceof File
+        ? uploadFile(avatar)
+        : "https://s5.postimg.cc/537jajaxj/default.png";
+
+    if (password)
+      await createUserWithEmailAndPassword(auth, email, password).then((e) => {
+        axios.post("/user", {
+          name,
+          username,
+          email,
+          avatar: downloadURL,
+          uid: e.user.uid,
+        });
       });
   } catch (e) {
     throw new Error("ERROR " + e);
@@ -59,7 +59,7 @@ export function signUpWithGmail() {
   const provider = new GoogleAuthProvider();
   return signInWithPopup(auth, provider)
     .then(async (result) => {
-      const { email, displayName, photoURL } = result.user;
+      const { email, displayName, photoURL, uid } = result.user;
       const username = await defaultUsername(displayName);
 
       try {
@@ -68,6 +68,7 @@ export function signUpWithGmail() {
           email,
           avatar: photoURL,
           username,
+          uid,
         });
       } catch (e) {
         throw new Error("ERROR" + e);
@@ -83,7 +84,7 @@ export function signUpWithGitHub() {
   const provider = new GithubAuthProvider();
   return signInWithPopup(auth, provider)
     .then(async (result) => {
-      const { email, displayName, photoURL } = result.user;
+      const { email, displayName, photoURL, uid } = result.user;
       const username = await defaultUsername(displayName);
       try {
         await axios.post("/user", {
@@ -91,6 +92,7 @@ export function signUpWithGitHub() {
           email,
           avatar: photoURL,
           username,
+          uid,
         });
       } catch (e) {
         throw new Error("ERROR" + e);

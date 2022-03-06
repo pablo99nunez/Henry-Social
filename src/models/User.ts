@@ -7,12 +7,14 @@ enum Roles {
   Instructor = "Instructor",
   TA = "TA",
 }
+
 export enum NotificationType {
   Follow,
   Like,
   Comment,
-  CommentLike
+  CommentLike,
 }
+
 export interface INotification {
   type: NotificationType;
   content: string;
@@ -22,8 +24,10 @@ export interface INotification {
   avatar: string;
   new: boolean;
 }
+
 export interface IUser {
   _id?: string;
+  uid: string;
   name: string;
   email: string;
   username?: string;
@@ -42,7 +46,7 @@ export interface IUser {
   admin: boolean;
   notifications: INotification[];
   company?: string;
-  position?:string;
+  position?: string;
 }
 
 const userSchema = new Schema<IUser>({
@@ -50,6 +54,7 @@ const userSchema = new Schema<IUser>({
     type: String,
     require: true,
   },
+  uid: String,
   username: {
     type: String,
     default: null,

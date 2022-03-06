@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ButtonHTMLAttributes, useRef } from "react";
 import styles from "./Button.module.scss";
 import { motion } from "framer-motion";
 import tinycolor from "tinycolor2";
@@ -6,6 +6,7 @@ import tinycolor from "tinycolor2";
 type Props = {
   children: any;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onSubmit?: React.MouseEventHandler<HTMLButtonElement>;
   active?: boolean;
   style?: any;
   backgroundColor?: string;
@@ -13,20 +14,25 @@ type Props = {
   name?: string;
   type?: any;
   value?: string;
-  ref?: any;
+  disabled?: boolean;
+  title?: string;
   id?: string;
+  ref?: any;
 };
 
 export default function Button({
   children,
   onClick,
+  onSubmit,
   active,
+  ref,
   style,
+  title,
+  disabled,
   backgroundColor = "#ff1",
   color,
   name,
   type,
-  ref,
   value,
   id,
 }: Props) {
@@ -47,17 +53,21 @@ export default function Button({
       scale: 1.07,
     },
   };
+  const button = useRef(ref);
   return (
     <motion.button
       id={id}
-      ref={ref}
+      disabled={disabled}
+      title={title}
       type={type ? type : "submit"}
       value={value ? value : ""}
       variants={variants}
       initial="initial"
       animate={active ? "active" : "initial"}
       onClick={onClick}
-      whileHover="active"
+      onSubmit={onSubmit}
+      whileHover={!disabled ? "active" : ""}
+      ref={button}
       whileTap={{
         scale: 1.07,
       }}
@@ -66,7 +76,7 @@ export default function Button({
         type: "tween",
       }}
       style={style}
-      className={styles.button}
+      className={`${styles.button} ${disabled && styles.disabled}`}
       name={name}
     >
       {children}

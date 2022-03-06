@@ -9,7 +9,11 @@ import axios from "axios";
 import userRouter from "./Routes/UserRoutes";
 import postRouter from "./Routes/PostRoutes";
 import stripeRouter from "./Routes/StripeRoutes";
-
+import conversationRouter from "./Routes/ConversationRoutes";
+import http from "http";
+import { Server } from "socket.io";
+import User, { IUser } from "./models/User";
+import Post from "./models/Post";
 const app: express.Application = express();
 app.use(cors());
 
@@ -35,8 +39,100 @@ app.get("/", (req, res) => {
 app.use("/", userRouter);
 app.use("/", postRouter);
 app.use("/", stripeRouter);
+app.use("/conversation", conversationRouter);
 
-app.listen(process.env.PORT, () => {
+const server = http.createServer(app);
+
+export const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
+type User = {
+  userId: string;
+  name: string;
+  avatar: string;
+  username: string;
+  socketId: string;
+};
+
+export let users: User[] = [];
+
+const addUser = async (userId: string, socketId: string) => {
+  if (!users.some((user: User) => user.userId === userId)) {
+    try {
+      const userDb = await User.findById(userId);
+      if (userDb && typeof userDb.avatar === "string" && userDb.username) {
+        console.log({
+          userId,
+          name: userDb.name,
+          avatar: userDb.avatar,
+          username: userDb.username,
+          socketId,
+        });
+        users.push({
+          userId,
+          name: userDb.name,
+          avatar: userDb.avatar,
+          username: userDb.username,
+          socketId,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+};
+
+const removeUser = (socketId: string) => {
+  users = users.filter((e) => e.socketId !== socketId);
+};
+
+io.on("connection", (socket) => {
+  console.log("User Connected", socket.id);
+
+  socket.on("add_user", async (userId: string) => {
+    await addUser(userId, socket.id);
+    console.log("Users connected:", users);
+
+    io.emit("get_users", users);
+  });
+  socket.on("send_notification", async (id: string) => {
+    console.log("Sending notis");
+    Post.findById(id)
+      .populate("author", "_id username")
+      .then((post) => {
+        if (post) {
+          const destiny = users.find(
+            (user) => user.username === post.author.username
+          );
+          if (destiny) {
+            io.to(destiny.socketId).emit("get_notification");
+          }
+        }
+      });
+  });
+  socket.on("send_message", (data) => {
+    socket.broadcast.emit("receive_message", data);
+  });
+  socket.on("send_private_message", (data) => {
+    const destiny = users.find((e) => e.userId === data.receiver);
+    console.log("Devolviendo mensaje al cliente", destiny);
+
+    if (destiny) {
+      socket.to(destiny.socketId).emit("receive_private_message", data);
+    }
+  });
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+    removeUser(socket.id);
+    io.emit("get_users", users);
+  });
+});
+
+server.listen(process.env.PORT, () => {
   console.log("Server listening at " + process.env.PORT);
   axios.defaults.baseURL =
     process.env.MODE === "PRODUCTION"

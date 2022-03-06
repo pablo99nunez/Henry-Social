@@ -8,6 +8,7 @@ import style from "./User.module.scss";
 import linkedin from "../../assets/icons/linkedin2.png";
 import github from "../../assets/icons/github2.png";
 import coffee from "../../assets/icons/coffee-cup3.png";
+import portafolioIcon from "../../assets/icons/portafolio.png";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import Button from "../../Components/Button/Button";
 import Settings from "../../Components/Settings/Settings";
@@ -23,6 +24,14 @@ import {
 import { useProfile } from "../../Hooks/useProfile";
 import { IState } from "../../redux/reducer";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {
+  ConfirmAlert,
+  ErrorAlert,
+  InfoAlert,
+} from "../../Components/Alert/Alert";
+import Chats from "../../Components/Chats/Chats";
 
 export default function User() {
   const [edit, setEdit] = useState(false);
@@ -34,6 +43,7 @@ export default function User() {
   const posts = useSelector((state: IState) => state.posts);
   const userLogeado = useUser();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function handleFollow() {
     if (userLogeado?.username && user?.username && userLogeado.following) {
@@ -43,6 +53,26 @@ export default function User() {
   }
   function handleAdmin() {
     if (username) dispatch(makeAdmin(username));
+  }
+  async function handleDeleteUser(userId: string, adminId: string) {
+    try {
+      ConfirmAlert.fire("¿Estas seguro que deseas eliminar el usuario?").then(
+        async (res) => {
+          if (res.isConfirmed) {
+            await axios.delete("/delete-user", {
+              data: {
+                userId,
+                adminId,
+              },
+            });
+            navigate("/");
+            InfoAlert.fire("Has eliminado a " + user?.name);
+          }
+        }
+      );
+    } catch (e) {
+      ErrorAlert.fire("Error" + e);
+    }
   }
   useEffect(() => {
     return () => {
@@ -58,6 +88,7 @@ export default function User() {
     if (user) {
       dispatch(getPosts(user._id));
       setLoading(false);
+      document.title = `${user?.name} | Henry Social`;
     }
   }, [user]);
 
@@ -69,35 +100,52 @@ export default function User() {
     <LoadingPage />
   ) : (
     <>
-      <NavSearch></NavSearch>
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
         <Settings
-          cancel={(e: any) => {
-            e.preventDefault();
+          cancel={(e?: any) => {
+            e && e.preventDefault();
             return setEdit(false);
           }}
         />
       </Modal>
 
       <div className={style.User}>
+        <NavSearch></NavSearch>
         <div className={style.head_profile}>
           <div className={style.head_profile_central}>
             <div className={style.photo}>
               <img
                 src={
-                  typeof user?.avatar == "string"
+                  isOwner
+                    ? typeof userLogeado?.avatar == "string" &&
+                      userLogeado?.avatar
+                      ? userLogeado?.avatar
+                      : "https://s5.postimg.cc/537jajaxj/default.png"
+                    : typeof user?.avatar == "string" && user?.avatar
                     ? user?.avatar
                     : "https://s5.postimg.cc/537jajaxj/default.png"
                 }
                 alt=""
+                referrerPolicy="no-referrer"
               />
             </div>
             <div className={style.details}>
               <div className={style.buttons}>
                 {userLogeado?.admin ? (
-                  <Button onClick={handleAdmin}>
-                    {user?.admin ? "Eliminar rol de Admin" : "Hacer Admin"}
-                  </Button>
+                  <>
+                    <Button onClick={handleAdmin}>
+                      {user?.admin ? "Eliminar rol de Admin" : "Hacer Admin"}
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        if (user?._id && userLogeado?._id) {
+                          handleDeleteUser(user._id, userLogeado._id);
+                        }
+                      }}
+                    >
+                      Delete user
+                    </Button>
+                  </>
                 ) : null}
                 {isOwner ? (
                   <Button onClick={editProfile}>Editar Perfil</Button>
@@ -136,11 +184,8 @@ export default function User() {
                 </div>
 
                 <div>
-                  {user?.linkedin ? (
-                    <a
-                      href={`https://www.linkedin.com/in/${user.linkedin}`}
-                      target="_blank"
-                    >
+                  {isOwner && userLogeado?.linkedin ? (
+                    <a href={userLogeado?.linkedin} target="_blank">
                       <div>
                         <img
                           src={linkedin}
@@ -149,36 +194,58 @@ export default function User() {
                         />
                       </div>
                     </a>
+                  ) : user?.linkedin ? (
+                    <a href={user?.linkedin} target="_blank">
+                      <div>
+                        <img src={linkedin} alt="linkedin-profile" />
+                      </div>
+                    </a>
                   ) : (
-                    <div>
-                      <img
-                        src={linkedin}
-                        alt="linkedin-profile"
-                        className={style.linkedin_logo}
-                      />
-                    </div>
+                    <div> </div>
                   )}
-                  {user?.github ? (
+                  {isOwner && userLogeado?.github ? (
                     <a
-                      href={`https://www.github.com/${user.github}`}
+                      href={`https://www.github.com/${userLogeado?.github}`}
                       target="_blank"
                     >
                       <div>
+                        <img src={github} alt="github-logo" />
+                      </div>
+                    </a>
+                  ) : user?.github ? (
+                    <a
+                      href={`https://www.github.com/${user?.github}`}
+                      target="_blank"
+                    >
+                      <div>
+                        <img src={github} alt="github-logo" />
+                      </div>
+                    </a>
+                  ) : (
+                    <div> </div>
+                  )}
+                  {isOwner && userLogeado?.portfolio ? (
+                    <a href={userLogeado?.portfolio} target="_blank">
+                      <div>
                         <img
                           src={github}
-                          alt="github-logo"
+                          alt="portfolio-logo"
+                          className={style.github_logo}
+                        />
+                      </div>
+                    </a>
+                  ) : user?.portfolio ? (
+                    <a href={user?.portfolio} target="_blank">
+                      <div>
+                        <img
+                          src={github}
+                          alt="portfolio-logo"
                           className={style.github_logo}
                         />
                       </div>
                     </a>
                   ) : (
-                    <div>
-                      <img
-                        src={github}
-                        alt="github-logo"
-                        className={style.github_logo}
-                      />
-                    </div>
+                    <div> </div>
                   )}
                 </div>
               </div>
@@ -191,19 +258,21 @@ export default function User() {
             <div className={style.posts}>
               <div className={style.filters}>
                 <h3
-                  className={filter == 1 ? style.active : ""}
+                  className={filter === 1 ? style.active : ""}
                   onClick={() => {
-                    dispatch(getPosts(user._id));
-                    setFilter(1);
+                    if (user?._id) {
+                      dispatch(getPosts(user._id));
+                      setFilter(1);
+                    }
                   }}
                 >
                   Publicaciones
                 </h3>
                 <h3>|</h3>
                 <h3
-                  className={filter == 2 ? style.active : ""}
+                  className={filter === 2 ? style.active : ""}
                   onClick={() => {
-                    if (user._id) {
+                    if (user?._id) {
                       dispatch(filterByLike(user._id));
                       setFilter(2);
                     }
@@ -216,10 +285,10 @@ export default function User() {
                 <Post post={e} key={i}></Post>
               ))}
             </div>
-            <div className={style.mistery_box}>{"Misterious NavBar"}</div>
+            <div className={style.mistery_box}>{"Mysterious NavBar"}</div>
           </div>
-          <Chat />
         </div>
+        <Chats></Chats>
       </div>
     </>
   );

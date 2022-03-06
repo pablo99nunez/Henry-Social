@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BsGoogle, BsGithub } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { BiEdit } from "react-icons/bi";
+import { IconContext } from "react-icons";
 
 import {
   signUpWithEmail,
   signUpWithGmail,
   signUpWithGitHub,
   signInWithEmail,
-} from "../../../../src/services/firebase/login-methods";
-import { IUser } from "../../../../src/models/User";
+} from "../../../src/firebase/login-methods";
 import style from "./Login.module.scss";
 import useUser from "../../Hooks/useUser";
 import Button from "../../Components/Button/Button";
@@ -23,9 +24,12 @@ enum USER_ACTION {
   logIn,
 }
 
+let userExists: boolean;
+
 export default function Login(): JSX.Element {
-  const [input, setInput] = useState<IUser>({
-    name: "",
+  const [input, setInput] = useState<any>({
+    firstName: "",
+    lastName: "",
     username: "",
     password: "",
     email: "",
@@ -35,30 +39,55 @@ export default function Login(): JSX.Element {
     notifications: [],
   });
   const [errors, setErrors] = useState({
-    name: false,
+    firstName: false,
+    lastName: false,
     username: false,
     password: false,
     email: false,
   });
   const [loading, setLoading] = useState(true);
   const [formComplete, setFromComplete] = useState(false);
+  const [userAlreadyExist, setUserAlreadyExist] = useState(false);
   const [action, setAction] = useState(USER_ACTION.logIn);
+  const [newAvatar, setNewAvatar] = useState<string | null>(null);
   const navigate = useNavigate();
   const user = useUser();
   const btn = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const { name, username, password, email } = input;
+    document.title = `${
+      action ? "Iniciar Sesion" : " Registrate"
+    } | Henry Social`;
+  }, [action]);
+
+  useEffect(() => {
+    const { firstName, lastName, username, password, email } = input;
     let cleanUp = false;
     if (user !== null) return navigate("/");
     setTimeout(() => {
       if (user === null && !cleanUp) setLoading(false);
     }, 1000);
-    name && username && password && email && setFromComplete(true);
+    if (action === 1) {
+      email && password && setFromComplete(true);
+    } else {
+      if (
+        firstName &&
+        lastName &&
+        username &&
+        !userAlreadyExist &&
+        password &&
+        email
+      ) {
+        if (btn.current) btn.current.disabled = false;
+        return setFromComplete(true);
+      }
+      if (btn.current) btn.current.disabled = true;
+      setFromComplete(false);
+    }
     return () => {
       cleanUp = true;
     };
-  }, [user, input]);
+  }, [user, input, userAlreadyExist, formComplete]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -74,7 +103,13 @@ export default function Login(): JSX.Element {
         setLoading(true);
 
         if (action == USER_ACTION.signUp) {
-          await signUpWithEmail(input).then(() => {
+          const newUser = {
+            ...input,
+            name: `${input.firstName.trim()} ${input.lastName.trim()}`,
+          };
+          delete newUser.firstName;
+          delete newUser.lastName;
+          await signUpWithEmail(newUser).then(() => {
             InfoAlert.fire("Usuario creado con exito");
           });
         } else if (input.password != undefined) {
@@ -107,7 +142,6 @@ export default function Login(): JSX.Element {
             title: "Usuario logueado con exito",
             icon: "success",
           });
-          // alert("Usuario logueado con exito");
           navigate("/");
         }
       } catch (e) {
@@ -125,6 +159,7 @@ export default function Login(): JSX.Element {
       | React.FocusEvent<HTMLInputElement>
   ) {
     const target = e.target as HTMLInputElement;
+    if (!target.value.length) return;
     axios
       .get("/user", {
         params: {
@@ -132,19 +167,16 @@ export default function Login(): JSX.Element {
         },
       })
       .then((user) => {
-        if (!valForm(target, target.name, user?.data?.username) && user.data) {
+        userExists = !valForm(target, target.name, user?.data?.username);
+        setUserAlreadyExist(userExists);
+        if (userExists && user.data) {
           setErrors({
             ...errors,
             [target.name]: true,
           });
           if (btn.current) btn.current.disabled = true;
-        } else {
-          setErrors({
-            ...errors,
-            [target.name]: false,
-          });
-          if (formComplete && btn.current) btn.current.disabled = false;
         }
+        if (formComplete && btn.current) btn.current.disabled = false;
       });
   }
 
@@ -164,6 +196,7 @@ export default function Login(): JSX.Element {
 
     if (property === null) throw new Error();
     if (property === "avatar" && e.target.files) {
+      setNewAvatar(URL.createObjectURL(e.target.files[0]));
       setInput({ ...input, avatar: e.target.files[0] });
     } else {
       setInput({ ...input, [property]: e.target.value });
@@ -220,7 +253,7 @@ export default function Login(): JSX.Element {
               <LoginInput
                 valid={!errors.password}
                 id="password"
-                title="8 characters long: numbers, 1 uppercase is required"
+                title="Mínimo 8 caracteres, obligarotio un número y una mayúscula."
                 type="password"
                 name="password"
                 placeholder="Contraseña"
@@ -232,7 +265,7 @@ export default function Login(): JSX.Element {
                     valid={!errors.username}
                     id="username"
                     type="text"
-                    title="The username must be unique, 3 characters long, and not special characteres"
+                    title="Este campo no puede estar vacio, no debe tener caracteres especiales, mínimo tres de largo y debe ser único."
                     name="username"
                     onChange={handleInputChange}
                     onKeyUp={(e) => {
@@ -246,21 +279,47 @@ export default function Login(): JSX.Element {
                     placeholder="Username"
                   />
                   <LoginInput
-                    valid={!errors.name}
-                    id="name"
+                    valid={!errors.firstName}
+                    id="firstname"
                     type="text"
-                    title="The names must start with a capital letter"
-                    name="name"
+                    title="Los nombres deben empezar con mayúscula."
+                    name="firstName"
                     onChange={handleInputChange}
-                    placeholder="Nombre"
+                    placeholder="Nombres"
                   />
                   <LoginInput
-                    id="avatar"
-                    type="file"
-                    name="avatar"
+                    valid={!errors.lastName}
+                    id="lastName"
+                    type="text"
+                    title="Los nombres deben empezar con mayúscula."
+                    name="lastName"
                     onChange={handleInputChange}
-                    placeholder="Avatar"
+                    placeholder="Apellidos"
                   />
+                  <div id={style.avt_cont}>
+                    <img
+                      src={
+                        newAvatar ||
+                        (typeof user?.avatar === "string" && user?.avatar) ||
+                        "https://s5.postimg.cc/537jajaxj/default.png"
+                      }
+                      alt="avatar"
+                    />
+                    <label htmlFor="newAvatar" id={style.editIcon}>
+                      <IconContext.Provider
+                        value={{ color: "yellow", size: "25px" }}
+                      >
+                        <BiEdit />
+                      </IconContext.Provider>
+                    </label>
+                    <input
+                      // ref={imgInput}
+                      name="avatar"
+                      id="newAvatar"
+                      onChange={handleInputChange}
+                      type="file"
+                    />
+                  </div>
                 </>
               ) : (
                 <></>

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
-import { filterByOrder, getPosts } from "../../redux/actions/actions";
+import { filterByOrder } from "../../redux/actions/actions";
 import { BsPlusCircleFill } from "react-icons/bs";
 
 import styles from "./Posts.module.scss";
@@ -18,6 +18,7 @@ const Posts = () => {
     normal: { scale: 1 },
     active: { scale: 50, rotateZ: 180, x: 200, zIndex: 5000 },
   };
+  
   const postsVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -88,10 +89,11 @@ const Posts = () => {
       >
         {posts?.map((e) => (
           <motion.div key={e._id} variants={postVariants}>
-            <Post post={e}></Post>
+            <Post post={e}/>
           </motion.div>
         ))}
       </motion.div>
+      {!posts?.length && <h2 className={styles.noPosts}>Nada que ver aqui.</h2>}
     </div>
   );
 };

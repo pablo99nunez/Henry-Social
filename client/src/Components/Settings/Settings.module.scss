@@ -1,5 +1,17 @@
 @import "../../Styles/variables.scss";
 
+$isDark: false;
+
+:root {
+  --brightness: #{if($isDark, 75%, 50%)};
+  --animationSpeed: 0.5s;
+  --placeholderSize: 0.5em;
+  --placeholderInputGap: 0.25em;
+  --underlineSize: 1em;
+  --underlineColorActive: hsl(0deg, 0%, 0%);
+  --underlineColorInactive: hsla(0, 100%, 0%, 1);
+}
+
 .settings_wrap {
   z-index: 2000;
   padding: 2rem;
@@ -7,10 +19,49 @@
   display: flex;
   gap: 1rem;
 
-  img {
-    border-radius: 50%;
-    object-fit: cover;
-    width: 100px;
+  #avt_cont {
+    display: grid;
+    place-items: center;
+    position: relative;
+
+    img {
+      border-radius: 50%;
+      object-fit: cover;
+      width: 200px;
+      height: 200px;
+    }
+
+    #editIcon {
+      background-color: $greyDark;
+      padding: 5px;
+      border-radius: 50px;
+      position: absolute;
+      bottom: 55px;
+      right: 20px;
+      -webkit-border-radius: 50px;
+      -moz-border-radius: 50px;
+      -ms-border-radius: 50px;
+      -o-border-radius: 50px;
+      transition: 200ms ease-out;
+      transition-property: border;
+      -webkit-transition: 250ms ease-out;
+      -moz-transition: 250ms ease-out;
+      -ms-transition: 250ms ease-out;
+      -o-transition: 250ms ease-out;
+
+      &:hover {
+        cursor: pointer;
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        -ms-border-radius: 10px;
+        -o-border-radius: 10px;
+      }
+    }
+
+    input[type="file"] {
+      display: none;
+    }
   }
 
   .inputBox {
@@ -78,6 +129,47 @@
     }
   }
 
+  .spaneo {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-top: calc(var(--placeholderSize) + var(--placeholderInputGap));
+    padding-bottom: 0.75em;
+    input {
+      height: 4vh;
+      width: 100%;
+      font-size: 1.3em;
+      background-color: transparent;
+      border: none;
+      border-bottom: 2px solid var(--underlineColorInactive);
+      transition: border var(--animationSpeed);
+      will-change: border;
+      outline: none;
+      &::placeholder {
+        color: transparent;
+      }
+      & + span {
+        text-align: left;
+        position: absolute;
+        font-size: 1.2em;
+        left: 0.05em;
+        top: 0;
+        transition: top var(--animationSpeed), font-size var(--animationSpeed);
+        will-change: top, font-size;
+        pointer-events: none;
+        width: 100%;
+      }
+      &:focus,
+      &:not(:placeholder-shown) {
+        border-bottom-color: black;
+        & + span {
+          top: calc(-1em - 2 * var(--placeholderInputGap));
+          font-size: var(--placeholderSize);
+        }
+      }
+    }
+  }
+
   .footer_settings {
     display: flex;
     flex-direction: column;
@@ -122,6 +214,22 @@
     border: rgba(255, 255, 1, 1) 1px solid;
     background-color: rgba(255, 255, 1, 1);
     font-weight: bold;
+    text-decoration: underline;
+  }
+  .delete_button {
+    border-radius: 5px;
+    border: rgba(255, 255, 1, 1) 1px solid;
+    background-color: rgb(255, 1, 1);
+    font-weight: bold;
+    font-size: 10px;
+    text-decoration: underline;
+    gap: 1rem;
+  }
+  .changeKey {
+    color: red;
+    cursor: pointer;
+    position: absolute;
+    margin-top: 2vh;
     text-decoration: underline;
   }
 }

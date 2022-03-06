@@ -11,6 +11,7 @@ import FollowBar from "../../Components/FollowBar/FollowBar";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import SideMessages from "../../Components/SideMessages/SideMessages";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
+import Chats from "../../Components/Chats/Chats";
 
 export default function PostDetail() {
   const { id } = useParams();
@@ -28,7 +29,7 @@ export default function PostDetail() {
 
   return (
     <>
-      <NavSearch />
+      <NavSearch></NavSearch>
       <div id="postDetail">
         <div id="content">
           <div id="follow-bar">
@@ -46,6 +47,7 @@ export default function PostDetail() {
           </div>
         </div>
       </div>
+      <Chats></Chats>
     </>
   );
 }
