@@ -31,6 +31,7 @@ import {
   ErrorAlert,
   InfoAlert,
 } from "../../Components/Alert/Alert";
+import Chats from "../../Components/Chats/Chats";
 
 export default function User() {
   const [edit, setEdit] = useState(false);
@@ -87,7 +88,7 @@ export default function User() {
     if (user) {
       dispatch(getPosts(user._id));
       setLoading(false);
-      document.title = `${user?.name} | Henry Social`
+      document.title = `${user?.name} | Henry Social`;
     }
   }, [user]);
 
@@ -99,7 +100,6 @@ export default function User() {
     <LoadingPage />
   ) : (
     <>
-      <NavSearch></NavSearch>
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
         <Settings
           cancel={(e?: any) => {
@@ -110,17 +110,20 @@ export default function User() {
       </Modal>
 
       <div className={style.User}>
+        <NavSearch></NavSearch>
         <div className={style.head_profile}>
           <div className={style.head_profile_central}>
             <div className={style.photo}>
               <img
-                src={ isOwner ? (
-                  typeof userLogeado?.avatar == "string" && userLogeado?.avatar
-                    ? userLogeado?.avatar
-                    : "https://s5.postimg.cc/537jajaxj/default.png" ) :
-                    ( typeof user?.avatar == "string" && user?.avatar
+                src={
+                  isOwner
+                    ? typeof userLogeado?.avatar == "string" &&
+                      userLogeado?.avatar
+                      ? userLogeado?.avatar
+                      : "https://s5.postimg.cc/537jajaxj/default.png"
+                    : typeof user?.avatar == "string" && user?.avatar
                     ? user?.avatar
-                    : "https://s5.postimg.cc/537jajaxj/default.png")
+                    : "https://s5.postimg.cc/537jajaxj/default.png"
                 }
                 alt=""
                 referrerPolicy="no-referrer"
@@ -184,54 +187,66 @@ export default function User() {
                   {isOwner && userLogeado?.linkedin ? (
                     <a href={userLogeado?.linkedin} target="_blank">
                       <div>
-                        <img src={linkedin} alt="linkedin-profile"
+                        <img
+                          src={linkedin}
+                          alt="linkedin-profile"
                           className={style.linkedin_logo}
                         />
                       </div>
                     </a>
                   ) : user?.linkedin ? (
                     <a href={user?.linkedin} target="_blank">
-                    <div>
-                      <img src={linkedin} alt="linkedin-profile"
-                      />
-                    </div>
-                 </a>
-                  ):<div> </div>}
-                  {isOwner && userLogeado?.github ? (
-                    <a href={`https://www.github.com/${userLogeado?.github}`}
-                      target="_blank">
                       <div>
-                        <img src={github} alt="github-logo"
-                        />
+                        <img src={linkedin} alt="linkedin-profile" />
+                      </div>
+                    </a>
+                  ) : (
+                    <div> </div>
+                  )}
+                  {isOwner && userLogeado?.github ? (
+                    <a
+                      href={`https://www.github.com/${userLogeado?.github}`}
+                      target="_blank"
+                    >
+                      <div>
+                        <img src={github} alt="github-logo" />
                       </div>
                     </a>
                   ) : user?.github ? (
-                    <a href={`https://www.github.com/${user?.github}`}
-                      target="_blank">
+                    <a
+                      href={`https://www.github.com/${user?.github}`}
+                      target="_blank"
+                    >
                       <div>
-                        <img src={github} alt="github-logo"
+                        <img src={github} alt="github-logo" />
+                      </div>
+                    </a>
+                  ) : (
+                    <div> </div>
+                  )}
+                  {isOwner && userLogeado?.portfolio ? (
+                    <a href={userLogeado?.portfolio} target="_blank">
+                      <div>
+                        <img
+                          src={github}
+                          alt="portfolio-logo"
+                          className={style.github_logo}
                         />
                       </div>
                     </a>
-                  ):<div> </div>}
-                  {isOwner && userLogeado?.portfolio ? (
-                      <a href={userLogeado?.portfolio} target="_blank">
+                  ) : user?.portfolio ? (
+                    <a href={user?.portfolio} target="_blank">
                       <div>
-                        <img src={github} alt="portfolio-logo"
-                          className={style.github_logo}     
+                        <img
+                          src={github}
+                          alt="portfolio-logo"
+                          className={style.github_logo}
                         />
                       </div>
-                      </a>
-                    ) : user?.portfolio ? (
-                      <a href={user?.portfolio} target="_blank">
-                      <div>
-                        <img src={github} alt="portfolio-logo"
-                          className={style.github_logo}     
-                        />
-                      </div>
-                      </a>
-                    ) : <div> </div> 
-                  }
+                    </a>
+                  ) : (
+                    <div> </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -270,8 +285,8 @@ export default function User() {
             </div>
             <div className={style.mistery_box}>{"Mysterious NavBar"}</div>
           </div>
-          <Chat />
         </div>
+        <Chats></Chats>
       </div>
     </>
   );

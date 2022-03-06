@@ -10,13 +10,12 @@ import NotFound from "./Pages/NotFound/NotFound";
 
 function App() {
   useLogin();
-
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Home />}/>
-        <Route path="/login" element={<Login />}/>
-        <Route path="/profile/:username" element={<User />}/>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile/:username" element={<User />} />
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/Payment" element={<Payment />} />
         <Route path="*" element={<NotFound />} />

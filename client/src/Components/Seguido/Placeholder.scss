@@ -1,22 +1,25 @@
-.box{
-  gap: 1rem; 
+.box {
+  gap: 1rem;
   display: flex;
   align-items: center;
-  animation: placeholder ease .5s infinite alternate;
+  animation: placeholder ease 0.5s infinite alternate;
   @keyframes placeholder {
-    to{opacity: .5;}
+    to {
+      opacity: 0.5;
+    }
   }
-  .image, .text{
-      background-color: #444;
+  .image,
+  .text {
+    background-color: #444;
   }
   .image {
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
   }
   .text {
-      width: 60%;
-      height: 1.5rem;
-      border-radius: .5rem;
-  }    
+    width: 60%;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+  }
 }
