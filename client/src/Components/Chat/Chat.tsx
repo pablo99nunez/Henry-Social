@@ -3,22 +3,25 @@ import useUser from "../../Hooks/useUser";
 import io from "socket.io-client";
 import style from "./Chat.module.scss";
 import { BiChevronsUp } from "react-icons/bi";
+import { IoSend } from "react-icons/io5";
 import Avatar from "../Avatar/Avatar";
 import { motion } from "framer-motion";
-
-const url = import.meta.env.PROD
-  ? "https://henry-social-back.herokuapp.com"
-  : "http://localhost:3001";
-const socket = io(url);
+import { useSelector } from "react-redux";
+import { IState } from "../../redux/reducer";
 
 const Chat = () => {
+  const socket = useSelector((state: IState) => state.socket);
   const user = useUser();
+  const input = useRef<HTMLTextAreaElement>(null);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [arrivalMessage, setArrivalMessage] = useState();
+  const [newMessage, setNewMessage] = useState(0);
   const scrollToMe = useRef<HTMLDivElement>(null);
   const [listMessage, setListMessage] = useState<any[]>([]);
+
   const handleClick = (e: any) => {
-    setOpen((prevState) => !prevState);
+    setOpen(!open);
   };
 
   const SendMessage = () => {
@@ -33,40 +36,73 @@ const Chat = () => {
           ":" +
           new Date(Date.now()).getMinutes(),
       };
+
       socket.emit("send_message", messageData);
+      setListMessage([...listMessage, messageData]);
       setMessage("");
     }
   };
+  useEffect(() => {
+    //Traer los mensajes previos
+    const list = localStorage.getItem("ChatGlobal");
+    if (typeof list === "string") setListMessage(JSON.parse(list));
+
+    socket?.on("receive_message", (data) => {
+      setArrivalMessage(data);
+    });
+  }, []);
 
   useEffect(() => {
-    socket.on("receive_message", (data) => {
-      setListMessage([...listMessage, data]);
-    });
-    scrollToMe.current?.scrollIntoView({ block: "end", behavior: "smooth" });
-  }, [socket, listMessage]);
+    if (arrivalMessage) {
+      setListMessage([...listMessage, arrivalMessage]);
+      !open && setNewMessage(newMessage + 1);
+    }
+  }, [arrivalMessage]);
+
+  useEffect(() => {
+    if (open) {
+      input.current?.focus();
+      setNewMessage(0);
+    }
+  }, [open]);
+  useEffect(() => {
+    localStorage.setItem("ChatGlobal", JSON.stringify(listMessage));
+    scrollToMe.current?.scrollIntoView({ behavior: "smooth" });
+  }, [listMessage]);
 
   return (
     <>
       <motion.div
+        initial={{ y: 580 }}
         animate={
-          !open
+          open
             ? {
-                y: 375,
+                y: 0,
               }
-            : { y: 0 }
+            : { y: 580 }
         }
         className={style.chat_window}
       >
-        <div onClick={(e) => handleClick(e)} className={style.chat_header}>
+        <div
+          onClick={(e) => handleClick(e)}
+          className={`${style.chat_header} ${newMessage && style.newMessage}`}
+        >
           <p>Live Chat</p>
           <motion.div animate={!open ? { rotateZ: 0 } : { rotateZ: 180 }}>
             <BiChevronsUp></BiChevronsUp>
           </motion.div>
+          <div className={style.number}>{newMessage != 0 && newMessage}</div>
         </div>
         <div className={style.chat_body}>
           {listMessage.map((msg) => (
-            <div
+            <motion.div
               className={style.message}
+              ref={scrollToMe}
+              initial={{ scale: 1, rotateZ: 20 }}
+              animate={{ scale: 1, rotateZ: 0 }}
+              transition={{
+                type: "tween",
+              }}
               id={
                 user?.username === msg.author
                   ? `${style.you}`
@@ -85,26 +121,25 @@ const Chat = () => {
                   <p id={style.time}>{msg.time}</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-          <div ref={scrollToMe}></div>
         </div>
         <div className={style.chat_footer}>
-          <input
-            type="text"
+          <textarea
             value={message}
-            placeholder="Type Message..."
+            placeholder="Escribe algo..."
             onChange={(e) => {
+              if (e.target.value.slice(-1) === "\n") return SendMessage();
               setMessage(e.target.value);
             }}
-            onKeyPress={(e) => {
+            ref={input}
+            /* onKeyPress={(e) => {
               e.key === "Enter" && SendMessage();
-            }}
+            }} */
           />
-          <button onClick={SendMessage}>&#9658;</button>
+          <IoSend onClick={SendMessage}></IoSend>
         </div>
       </motion.div>
-      )
     </>
   );
 };

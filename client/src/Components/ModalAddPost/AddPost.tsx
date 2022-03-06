@@ -6,7 +6,7 @@ import { getPosts } from "../../redux/actions/actions";
 import { InfoAlert } from "../Alert/Alert";
 import { FaUpload, FaCheck } from "react-icons/fa";
 import styles from "./AddPost.module.scss";
-import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
+import { uploadFile } from "../../firebase/Helpers/uploadFile";
 import { motion } from "framer-motion";
 
 type Props = {
@@ -21,7 +21,7 @@ export function validate(input: any, typePost: string) {
       companyLink: "",
       salary: "",
       position: "",
-      /*tecnologíaClases: "",
+      /*tecnologíaClases:"",
       costoClases: "", */
       imageCompany: "",
       pregunta: "",
@@ -217,7 +217,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   return data;
                })
                .catch((error) => console.error("Error:", error));
-         } else if (!post.text) {
+         } else if (!post.text || post.text.split(" ").length === 0) {
             setErrors({
                ...errors,
                text: "Agregue algo de contenido a su publicación",

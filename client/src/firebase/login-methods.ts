@@ -39,19 +39,16 @@ export async function signUpWithEmail(userInfo: IUser) {
       avatar instanceof File
         ? uploadFile(avatar)
         : "https://s5.postimg.cc/537jajaxj/default.png";
-    await axios
-      .post("/user", {
-        name,
-        username,
-        email,
-        avatar: downloadURL,
-      })
-      .then((doc) => {
-        if (password)
-          return createUserWithEmailAndPassword(auth, email, password);
-      })
-      .catch((e) => {
-        throw new Error(e);
+
+    if (password)
+      await createUserWithEmailAndPassword(auth, email, password).then((e) => {
+        axios.post("/user", {
+          name,
+          username,
+          email,
+          avatar: downloadURL,
+          uid: e.user.uid,
+        });
       });
   } catch (e) {
     throw new Error("ERROR " + e);
@@ -62,7 +59,7 @@ export function signUpWithGmail() {
   const provider = new GoogleAuthProvider();
   return signInWithPopup(auth, provider)
     .then(async (result) => {
-      const { email, displayName, photoURL } = result.user;
+      const { email, displayName, photoURL, uid } = result.user;
       const username = await defaultUsername(displayName);
 
       try {
@@ -71,6 +68,7 @@ export function signUpWithGmail() {
           email,
           avatar: photoURL,
           username,
+          uid,
         });
       } catch (e) {
         throw new Error("ERROR" + e);
@@ -86,7 +84,7 @@ export function signUpWithGitHub() {
   const provider = new GithubAuthProvider();
   return signInWithPopup(auth, provider)
     .then(async (result) => {
-      const { email, displayName, photoURL } = result.user;
+      const { email, displayName, photoURL, uid } = result.user;
       const username = await defaultUsername(displayName);
       try {
         await axios.post("/user", {
@@ -94,6 +92,7 @@ export function signUpWithGitHub() {
           email,
           avatar: photoURL,
           username,
+          uid,
         });
       } catch (e) {
         throw new Error("ERROR" + e);

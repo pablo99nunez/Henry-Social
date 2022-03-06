@@ -41,7 +41,7 @@ export default function ListSearch() {
                     className={`${styles.notification}`}
                     onClick={() => navigate("/profile/" + e.username)}
                   >
-                    <Avatar avatar={e.avatar}></Avatar>
+                    <Avatar avatar={e.avatar} />
                     <div>
                       <h3>{e.name}</h3>
                     </div>

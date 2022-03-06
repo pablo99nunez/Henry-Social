@@ -9,25 +9,24 @@ import ProfilePicture from "./ProfilePicture/ProfilePicture";
 import Content from "./Content/Content";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import Image from "./Image/Image";
+import { SharePost } from "../SharePosts/SharePost";
 import { PromiseProvider } from "mongoose";
+// import useUser from "../../Hooks/useUser";
 
 type Props = {
   post: IPost;
-  share: boolean;
-  setShare: Function;
-  contenedor: Function;
+  shared: boolean;
 };
 
-const Post: FC<Props> = ({ post, setShare, share, contenedor}) => {
+const Post: FC<Props> = ({ post, shared = false}) => {
+  const [openShare, setOpenShare] = useState(false);
   const [eliminated, setEliminated] = useState(false);
-
   const [openComment, setOpenComment] = useState(false);
-
 
   return (
     <div
       className={style.postContainer}
-      style={{ display: eliminated ? "none" : "flex" }}
+      style={{ display: eliminated ? "none" : "flex" , zIndex: shared ? '80' : '50'}}
     >
       {!post?._id ? (
         <h2 style={{ textAlign: "center", color: "white" }}>
@@ -35,39 +34,50 @@ const Post: FC<Props> = ({ post, setShare, share, contenedor}) => {
         </h2>
       ) : post ? (
         <div
-          className={`${style.post} ${
-            post?.typePost === "empleo" && style.postJob
-          } ${post?.typePost === "boom" && style.postBoom}
-          ${post?.typePost === "pregunta" && style.postPregunta}`}
+          className={`${style.post} 
+            ${post?.typePost === "empleo" && style.postJob} 
+            ${post?.typePost === "boom" && style.postBoom}
+            ${post?.typePost === "pregunta" && style.postPregunta}
+            ${shared && style.shared}
+          `}
         >
           {post?.typePost !== "pregunta" && (
-            <ProfilePicture post={post}></ProfilePicture>
+            <ProfilePicture post={post}/>
           )}
           <div className={style.post_wrap}>
             {post?.typePost !== "pregunta" && (
-              <ProfileName post={post}></ProfileName>
+              <ProfileName post={post}/>
             )}
-            <Content post={post}></Content>
-            <Image post={post}></Image>
-            <Options post={post} setEliminated={setEliminated}></Options>
+            <Content post={post}/>
+            <Image post={post}/>
+            <Options 
+              post={post} 
+              shared={shared} 
+              setEliminated={setEliminated}
+            />
             {(post.respuesta || post.typePost !== "pregunta") && (
               <Interactions
                 post={post}
-                setOpenComment={setOpenComment}
+                shared={shared}
                 openComment={openComment}
-                openShare={share}
-                setOpenShare={setShare}
-                contenedor = {contenedor}
-              ></Interactions>
+                setOpenComment={setOpenComment}
+                openShare={openShare}
+                setOpenShare={setOpenShare}
+              />
             )}
           </div>
         </div>
       ) : (
         <LoadingPage />
       )}
+      <SharePost                 
+        post={post}
+        openShare={openShare}
+        setOpenShare={setOpenShare}
+      />
       <CommentModal open={openComment} postId={post?._id} />
     </div>
   );
 };
 
-export default Post
+export default Post;

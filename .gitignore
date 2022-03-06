@@ -119,3 +119,5 @@ dist
 *.scss.map
 /.idea/
 package-lock.json
+
+src/services/firebase/henry-social-firebase-adminsdk-gwhl9-d68b5a6b18.json
