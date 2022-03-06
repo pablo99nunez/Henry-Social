@@ -76,4 +76,4 @@ const Post: FC<Props> = ({ post, shared = false}) => {
   );
 };
 
-export default Post
+export default Post;

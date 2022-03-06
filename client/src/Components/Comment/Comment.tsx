@@ -2,17 +2,17 @@ import "./Comment.scss";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Like } from "../Like/Like";
-import { FaRegComment, FaEllipsisH, FaBan, FaRegFrown} from "react-icons/fa";
+import { FaRegComment, FaEllipsisH, FaBan, FaRegFrown } from "react-icons/fa";
 import Avatar from "../Avatar/Avatar";
 import { getMomento } from "../../helpers/momento";
 
 const Comment = ({ key, data }: any) => {
   const [options, setOptions] = useState(false);
-  
+
   return (
     <div className="comment" key={key}>
       <div className="picture">
-        <Avatar avatar={data.author.avatar}/>
+        <Avatar avatar={data.author.avatar} />
       </div>
 
       <div className="info">
@@ -20,9 +20,7 @@ const Comment = ({ key, data }: any) => {
           <Link className="name" to={`/profile/${data.postId}`}>
             {data.author.name}
           </Link>
-          <span className="cohorteDate">
-            · {getMomento(data?.postTime)}
-          </span>
+          <span className="cohorteDate">· {getMomento(data?.postTime)}</span>
         </div>
 
         <div className="content">

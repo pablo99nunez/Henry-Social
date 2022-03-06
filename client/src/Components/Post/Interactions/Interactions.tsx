@@ -20,7 +20,7 @@ export default function Interactions({
   openComment,
   openShare,
   setOpenShare,
-  shared
+  shared,
 }: Props) {
   return (
     <div 

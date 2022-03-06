@@ -74,6 +74,14 @@
             font-size: 2rem;
           }
         }
+        &:nth-child(4):hover::before {
+            content:"Premiar contenido";
+            transition: ease-in-out all 1s;
+            position: absolute;
+            bottom: 3.2rem;
+            font-size: .7rem;
+            color: #cccc;
+        }
       }
     }  
     &.shared{

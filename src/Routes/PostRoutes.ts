@@ -2,15 +2,15 @@
 
 // tslint:disable-next-line:no-var-requires
 require("dotenv").config();
-import {Router, Request, Response} from "express";
-import Post, {Comment} from "../models/Post";
-import User, {NotificationType} from "../models/User";
-import nodemailer from "nodemailer";
+import { Router, Request, Response } from "express";
+import Post, { Comment } from "../models/Post";
+import User, { NotificationType } from "../models/User";
+const nodemailer = require("nodemailer");
 import axios from "axios";
 
 import sendEmail from "./Helpers/sendEmail";
 
-const {MAIL, MAIL_PASSWORD} = process.env;
+const { MAIL, MAIL_PASSWORD } = process.env;
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
