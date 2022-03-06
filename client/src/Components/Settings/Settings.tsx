@@ -322,51 +322,50 @@ export default function Settings({ cancel }: any) {
               TA
             </Button>
           </div>
-
-          <Input
-            type="text"
-            name="github"
-            error={errors.github}
-            onChange={handleChanges}
-            placeholder="Ingresa tu Usuario de Github"
-            defaultValue={changes?.github}
-          ></Input>
-          <Input
-            type="url"
-            error={errors.linkedin}
-            onChange={handleChanges}
-            placeholder="Ingresa la Url de tu Linkedin"
-            name="linkedin"
-            defaultValue={changes?.linkedin}
-          ></Input>
-          <Input
-            type="url"
-            error={errors.portfolio}
-            onChange={handleChanges}
-            placeholder="Ingresa la Url de tu portafolio"
-            name="portfolio"
-            defaultValue={changes?.portfolio}
-          ></Input>
-          <div className={style.buttons}>
-            <Button
-              type="submit"
-              backgroundColor="#000"
-              disabled={!complete}
-              onSubmit={cancel}
-              onClick={saveChanges}
-            >
-              Guardar cambios
-            </Button>
-            <Button onClick={cancel} backgroundColor="#FF1">
-              Cancelar
-            </Button>
-            <Button type="button" onClick={deleteUser}>
-              Eliminar perfil
-            </Button>
           </div>
-          <a className={style.changeKey} onClick={cambiarClave}>
-            Cambiar clave
-          </a>
+        <span className={style.spaneo}>
+        <input
+          type="text"
+          name="github"
+          onChange={handleChanges}
+          placeholder="."
+          defaultValue={changes?.github}
+        ></input><span>Ingresa tu Usuario de Github</span>
+        </span>
+
+        <span className={style.spaneo}>
+        <input
+          type="url"
+          onChange={handleChanges}
+          placeholder="."
+          name="linkedin"
+          defaultValue={changes?.linkedin}
+        ></input><span>Ingresa la Url de tu Linkedin</span>
+        </span>
+
+        <span className={style.spaneo}>
+        <input
+          type="url"
+          onChange={handleChanges}
+          placeholder="."
+          name="portfolio"
+          defaultValue={changes?.portfolio}
+        ></input><span>Ingresa la Url de tu portafolio</span>
+        </span> 
+        <div className={style.buttons}>
+          <Button
+            type="submit"
+            backgroundColor="#000"
+            disabled={!complete}
+            onSubmit={cancel}
+            onClick={saveChanges}
+          >
+            Guardar cambios
+          </Button>
+          <Button onClick={cancel} backgroundColor="#FF1">
+            Cancelar
+          </Button>
+          <Button>Eliminar perfil</Button>
         </div>
       </form>
     </>

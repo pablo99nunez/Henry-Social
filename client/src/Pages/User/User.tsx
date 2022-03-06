@@ -116,7 +116,12 @@ export default function User() {
             <div className={style.photo}>
               <img
                 src={
-                  typeof user?.avatar == "string" && user?.avatar
+                  isOwner
+                    ? typeof userLogeado?.avatar == "string" &&
+                      userLogeado?.avatar
+                      ? userLogeado?.avatar
+                      : "https://s5.postimg.cc/537jajaxj/default.png"
+                    : typeof user?.avatar == "string" && user?.avatar
                     ? user?.avatar
                     : "https://s5.postimg.cc/537jajaxj/default.png"
                 }
@@ -179,8 +184,8 @@ export default function User() {
                 </div>
 
                 <div>
-                  {user?.linkedin ? (
-                    <a href={user?.linkedin} target="_blank">
+                  {isOwner && userLogeado?.linkedin ? (
+                    <a href={userLogeado?.linkedin} target="_blank">
                       <div>
                         <img
                           src={linkedin}
@@ -189,32 +194,53 @@ export default function User() {
                         />
                       </div>
                     </a>
-                  ) : (
-                    <div> </div>
-                  )}
-                  {user?.github ? (
-                    <a
-                      href={`https://www.github.com/${user?.github}`}
-                      target="_blank"
-                    >
+                  ) : user?.linkedin ? (
+                    <a href={user?.linkedin} target="_blank">
                       <div>
-                        <img
-                          src={github}
-                          alt="github-logo"
-                          className={style.github_logo}
-                        />
+                        <img src={linkedin} alt="linkedin-profile" />
                       </div>
                     </a>
                   ) : (
                     <div> </div>
                   )}
-                  {user?.portfolio ? (
+                  {isOwner && userLogeado?.github ? (
+                    <a
+                      href={`https://www.github.com/${userLogeado?.github}`}
+                      target="_blank"
+                    >
+                      <div>
+                        <img src={github} alt="github-logo" />
+                      </div>
+                    </a>
+                  ) : user?.github ? (
+                    <a
+                      href={`https://www.github.com/${user?.github}`}
+                      target="_blank"
+                    >
+                      <div>
+                        <img src={github} alt="github-logo" />
+                      </div>
+                    </a>
+                  ) : (
+                    <div> </div>
+                  )}
+                  {isOwner && userLogeado?.portfolio ? (
+                    <a href={userLogeado?.portfolio} target="_blank">
+                      <div>
+                        <img
+                          src={github}
+                          alt="portfolio-logo"
+                          className={style.github_logo}
+                        />
+                      </div>
+                    </a>
+                  ) : user?.portfolio ? (
                     <a href={user?.portfolio} target="_blank">
                       <div>
                         <img
-                          src={portafolioIcon} // Buscar icono portfolio
+                          src={github}
                           alt="portfolio-logo"
-                          className={style.portafolio_logo} //Aca falta editar esto
+                          className={style.github_logo}
                         />
                       </div>
                     </a>
