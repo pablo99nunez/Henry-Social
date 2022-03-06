@@ -22,7 +22,15 @@ export default function Settings({ cancel }: any) {
   const btn = useRef<HTMLButtonElement>(null);
   const imgInput = useRef<HTMLInputElement>(null);
 
-  const [changes, setChanges] = useState({
+  interface Changes {
+    username: string | null | undefined;
+    bio: string | null | undefined;
+    linkedin: string | null | undefined;
+    github: string | null | undefined;
+    portfolio: string | null | undefined;
+    role: string | null | undefined;
+  }
+  const [changes, setChanges] = useState<Changes>({
     username: user?.username,
     bio: user?.bio,
     linkedin: user?.linkedin,
@@ -30,7 +38,13 @@ export default function Settings({ cancel }: any) {
     portfolio: user?.portfolio,
     role: user?.role,
   });
-  const [errors, setErrors] = useState({
+  interface Errors {
+    username: boolean;
+    linkedin: boolean;
+    github: boolean;
+    portfolio: boolean;
+  }
+  const [errors, setErrors] = useState<Errors>({
     username: false,
     linkedin: false,
     github: false,
@@ -45,11 +59,13 @@ export default function Settings({ cancel }: any) {
 
   useEffect(() => {
     let complete = true;
-    Object.keys(errors).forEach((e) => {
-      if (errors[e]) {
+    let k: keyof Errors;
+    for (k in errors) {
+      if (errors[k]) {
         complete = false;
       }
-    });
+    }
+
     setComplete(complete);
   }, [errors]);
 
@@ -114,7 +130,7 @@ export default function Settings({ cancel }: any) {
           if (!target.value.length) {
             setChanges({
               ...changes,
-              [target.name]: target.value.length === 0 && null,
+              [target.name]: target.value.length === 0 || null,
             });
             return setErrors({ ...errors, [target.name]: false });
           }
