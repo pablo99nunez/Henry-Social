@@ -65,7 +65,7 @@ const PrivateChat = ({ name, username, userB }: Props) => {
         time: getTime(),
       } as IMessage;
 
-      axios.post("/conversation/message", messageData);
+      await axios.post("/conversation/message", messageData);
 
       console.log("Enviando mensaje desde cliente");
       socket?.emit("send_private_message", messageData);

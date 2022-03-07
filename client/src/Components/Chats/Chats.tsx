@@ -15,7 +15,7 @@ export default function Chats() {
     socket?.on("receive_private_message", (data) => {
       if (!chats.some((e) => e.username === data.username)) {
         console.log(data);
-        dispatch(openChat(data.sender, data.name, data.receiver));
+        dispatch(openChat(data.username, data.name, data.sender));
       }
     });
   }, []);

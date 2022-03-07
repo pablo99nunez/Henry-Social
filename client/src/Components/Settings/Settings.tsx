@@ -368,7 +368,9 @@ export default function Settings({ cancel }: any) {
           <Button onClick={cancel} backgroundColor="#FF1">
             Cancelar
           </Button>
-          <Button>Eliminar perfil</Button>
+          <Button type="button" onClick={deleteUser}>
+            Eliminar perfil
+          </Button>
         </div>
       </form>
     </>
