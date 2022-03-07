@@ -21,7 +21,6 @@ export default function Settings({ cancel }: any) {
   const dispatch = useDispatch();
   const btn = useRef<HTMLButtonElement>(null);
   const imgInput = useRef<HTMLInputElement>(null);
-
   interface Changes {
     username: string | null | undefined;
     bio: string | null | undefined;
@@ -50,12 +49,13 @@ export default function Settings({ cancel }: any) {
     github: false,
     portfolio: false,
   });
-  const [key, setKey] = useState(false);
-  const cambiarClave = () => {
-    setKey(true);
-  };
   const [complete, setComplete] = useState(false);
   const [newAvatar, setNewAvatar] = useState<string | null>(null);
+  const [key, setKey] = useState(false);
+
+  const changeKey = () => {
+    setKey(true);
+  };
 
   useEffect(() => {
     let complete = true;
@@ -244,26 +244,31 @@ export default function Settings({ cancel }: any) {
       </Modal>
       <form className={style.settings_wrap}>
         <div id={style.avt_cont}>
-          <img
-            src={
-              newAvatar ||
-              (typeof user?.avatar === "string" && user?.avatar) ||
-              "https://s5.postimg.cc/537jajaxj/default.png"
-            }
-            alt="avatar"
-          />
-          <label htmlFor="newAvatar" id={style.editIcon}>
-            <IconContext.Provider value={{ color: "yellow", size: "35px" }}>
-              <BiEdit />
-            </IconContext.Provider>
-          </label>
-          <input
-            ref={imgInput}
-            name="avatar"
-            id="newAvatar"
-            onChange={handleChanges}
-            type="file"
-          />
+          <div>
+            <img
+              src={
+                newAvatar ||
+                (typeof user?.avatar === "string" && user?.avatar) ||
+                "https://s5.postimg.cc/537jajaxj/default.png"
+              }
+              alt="avatar"
+            />
+            <label htmlFor="newAvatar" id={style.editIcon}>
+              <IconContext.Provider value={{ color: "yellow", size: "35px" }}>
+                <BiEdit />
+              </IconContext.Provider>
+            </label>
+            <input
+              ref={imgInput}
+              name="avatar"
+              id="newAvatar"
+              onChange={handleChanges}
+              type="file"
+            />
+          </div>
+          <p
+            onClick={changeKey}
+          >Cambiar contraseña</p>
         </div>
         <div>
           <div className={style.inputBox}>
