@@ -8,7 +8,7 @@ import { FaUpload, FaCheck } from "react-icons/fa";
 import styles from "./AddPost.module.scss";
 import { uploadFile } from "../../firebase/Helpers/uploadFile";
 import { motion } from "framer-motion";
-
+import validate from "./validate";
 type Props = {
    // eslint-disable-next-line @typescript-eslint/ban-types
    setOpen: Function;

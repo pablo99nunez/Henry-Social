@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BsGoogle, BsGithub } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { BiEdit } from "react-icons/bi";
 import { IconContext } from "react-icons";
 
@@ -19,14 +19,10 @@ import valForm from "./valForm";
 import axios from "axios";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
-enum USER_ACTION {
-  signUp,
-  logIn,
-}
 
 let userExists: boolean;
 
-export default function Login(): JSX.Element {
+export default function Login({ USER_ACTION, action, handleActionChange}: any): JSX.Element {
   const [input, setInput] = useState<any>({
     firstName: "",
     lastName: "",
@@ -48,17 +44,10 @@ export default function Login(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [formComplete, setFromComplete] = useState(false);
   const [userAlreadyExist, setUserAlreadyExist] = useState(false);
-  const [action, setAction] = useState(USER_ACTION.logIn);
   const [newAvatar, setNewAvatar] = useState<string | null>(null);
   const navigate = useNavigate();
   const user = useUser();
   const btn = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    document.title = `${
-      action ? "Iniciar Sesion" : " Registrate"
-    } | Henry Social`;
-  }, [action]);
 
   useEffect(() => {
     const { firstName, lastName, username, password, email } = input;
@@ -209,11 +198,6 @@ export default function Login(): JSX.Element {
     if (formComplete && btn.current) btn.current.disabled = false;
   }
 
-  const handleActionChange = () => {
-    const Act = action ? USER_ACTION.signUp : USER_ACTION.logIn;
-    setAction(Act);
-  };
-
   return (
     <>
       {loading ? (
@@ -221,13 +205,15 @@ export default function Login(): JSX.Element {
       ) : (
         <div id={style.cont}>
           <header>
-            <div id={style.title_cont}>
-              <img
-                src="https://assets.soyhenry.com/assets/LOGO-HENRY-03.png"
-                alt="icon"
-              />
-              <h1> | Social </h1>
-            </div>
+            <Link to="/landing">
+              <div id={style.title_cont}>
+                <img
+                  src="https://assets.soyhenry.com/assets/LOGO-HENRY-03.png"
+                  alt="icon"
+                />
+                <h1> | Social </h1>
+              </div>
+            </Link>
             <button className={style.act_btn} onClick={handleActionChange}>
               {" "}
               {action === USER_ACTION.signUp

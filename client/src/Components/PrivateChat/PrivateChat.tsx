@@ -8,8 +8,6 @@ import { IoSend } from "react-icons/io5";
 import Avatar from "../Avatar/Avatar";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import useSound from "use-sound";
-import pop from "../../assets/sounds/pop2.wav";
 import { IState } from "../../redux/reducer";
 import { closeChat } from "../../redux/actions/actions";
 import axios from "axios";
@@ -23,7 +21,6 @@ type Props = {
 const PrivateChat = ({ name, username, userB }: Props) => {
   const socket = useSelector((state: IState) => state.socket); 
   const dispatch = useDispatch();
-  const [play] = useSound(pop);
   const user = useUser();
   const input = useRef<HTMLTextAreaElement>(null);
   const [open, setOpen] = useState(true);
@@ -71,7 +68,7 @@ const PrivateChat = ({ name, username, userB }: Props) => {
       axios.post("/conversation/message", messageData);
 
       console.log("Enviando mensaje desde cliente");
-      socket.emit("send_private_message", messageData);
+      socket?.emit("send_private_message", messageData);
       setListMessage([...listMessage, messageData]);
       setMessage("");
     }
@@ -110,7 +107,6 @@ const PrivateChat = ({ name, username, userB }: Props) => {
       console.log("recibiendo mensaje", data, data.sender);
       if (data.sender === userB) {
         setArrivalMessage(data);
-        play();
       }
     });
   }, [socket]);
