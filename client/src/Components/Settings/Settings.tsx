@@ -322,7 +322,8 @@ export default function Settings({ cancel }: any) {
               TA
             </Button>
           </div>
-        </div>
+       
+        <div className={style.inputBox}>
         <span className={style.spaneo}>
           <input
             type="text"
@@ -346,15 +347,15 @@ export default function Settings({ cancel }: any) {
         </span>
 
         <span className={style.spaneo}>
-          <input
-            type="url"
-            onChange={handleChanges}
-            placeholder="."
-            name="portfolio"
-            defaultValue={changes?.portfolio || ""}
-          ></input>
-          <span>Ingresa la Url de tu portafolio</span>
-        </span>
+        <input
+          type="url"
+          onChange={handleChanges}
+          placeholder="."
+          name="portfolio"
+          //defaultValue={changes?.portfolio}
+        ></input><span>Ingresa la Url de tu portafolio</span>
+        </span> 
+        </div>
         <div className={style.buttons}>
           <Button
             type="submit"
@@ -369,6 +370,7 @@ export default function Settings({ cancel }: any) {
             Cancelar
           </Button>
           <Button>Eliminar perfil</Button>
+        </div>
         </div>
       </form>
     </>

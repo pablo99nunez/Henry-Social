@@ -10,6 +10,7 @@ import github from "../../assets/icons/github2.png";
 import coffee from "../../assets/icons/coffee-cup3.png";
 import portafolioIcon from "../../assets/icons/portafolio.png";
 import NavSearch from "../../Components/NavSearch/NavSearch";
+import SideMessages from "../../Components/SideMessages/SideMessages";
 import Button from "../../Components/Button/Button";
 import Settings from "../../Components/Settings/Settings";
 import useUser from "../../Hooks/useUser";
@@ -285,7 +286,9 @@ export default function User() {
                 <Post post={e} key={i}></Post>
               ))}
             </div>
-            <div className={style.mistery_box}>{"Mysterious NavBar"}</div>
+            <div className={style.mistery_box}>
+              <SideMessages />
+            </div>
           </div>
         </div>
         <Chats></Chats>

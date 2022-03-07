@@ -17,16 +17,9 @@ $isDark: false;
 .modal_add_post {
   gap: 1rem;
   max-width: 100%;
-  @include flex-column;
-  justify-content: space-evenly;
   .add_post_content {
     gap: 20px;
     width: 100%;
-    @include flex-column;
-    .content__inputs {
-      gap: 20px;
-      width: 100%;
-      @include flex-column;
       .content__inputs {
         gap: 20px;
         width: 100%;
@@ -110,7 +103,6 @@ $isDark: false;
           color: #df1313;
         }
       }
-    }
     .content__textImage {
       gap: 15px;
       display: flex;
