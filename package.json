@@ -34,11 +34,13 @@
         "nodemailer": "^6.7.2",
         "package-lock-only": "0.0.4",
         "socket.io": "^4.4.1",
+        "socket.io-client": "^4.4.1",
         "standard": "^16.0.4",
         "stripe": "^8.205.0",
         "sweetalert2": "^11.4.4",
         "tinycolor2": "^1.4.2",
-        "ts-node": "^10.5.0"
+        "ts-node": "^10.5.0",
+        "use-sound": "^4.0.1"
     },
     "devDependencies": {
         "@types/cors": "^2.8.12",

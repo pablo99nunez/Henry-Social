@@ -18,7 +18,7 @@ export default function useLogin() {
         dispatch(getUser(user.email));
         dispatch(setSocket());
       } else {
-        navigate("/login");
+        navigate("/landing");
         socket?.disconnect();
         socket?.close();
         localStorage.clear();
