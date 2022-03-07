@@ -1,32 +1,94 @@
 @import "../../Styles/variables.scss";
 @import "../../Styles/mixins.scss";
+$isDark: false;
+
+:root {
+  --brightness: #{if($isDark, 75%, 50%)};
+  --background: #{if($isDark, #333, #fff)};
+  --foreground: #{if($isDark, #aaa, #333)};
+  --animationSpeed: 0.5s;
+  --placeholderSize: 0.5em;
+  --placeholderInputGap: 0.25em;
+  --underlineSize: 0.05em;
+  --underlineColorActive: hsl(0deg, 0%, var(--brightness));
+  --underlineColorInactive: hsla(0, 0%, var(--brightness), 0.25);
+}
 
 .modal_add_post {
   gap: 1rem;
   max-width: 100%;
-  @include flex-column;
-  justify-content: space-evenly;
   .add_post_content {
     gap: 20px;
     width: 100%;
-    @include flex-column;
-    .content__inputs {
-      gap: 20px;
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      input {
-        width: 40%;
-        border: none;
-        outline: none;
-        font-size: 18px;
-        background: none;
-        color: black;
-        padding: 15px 0px;
-        border-bottom: 1px solid $blackLow;
-        &::placeholder {
-          color: $blackLow;
+      .content__inputs {
+        gap: 20px;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        input {
+          width: 40%;
+          border: none;
+          outline: none;
+          font-size: 18px;
+          background: none;
+          color: black;
+          padding: 15px 0px;
+          border-bottom: 1px solid $blackLow;
+          &::placeholder {
+            color: $blackLow;
+          }
+        }
+        .input_with_error {
+          width: 40%;
+          .input_effects {
+            position: relative;
+            display: inline-block;
+            font-size: 1.2em;
+            margin-top: calc(
+              var(--placeholderSize) + var(--placeholderInputGap)
+            );
+            padding-bottom: 0.75em;
+          }
+          input {
+            width: 100%;
+            height: 4vh;
+            font-size: inherit;
+            font-weight: bold;
+            background-color: transparent;
+            border: none;
+            border-bottom: var(--underlineSize) solid
+              var(--underlineColorInactive);
+            transition: border var(--animationSpeed);
+            will-change: border;
+            outline: none;
+            &::placeholder {
+              color: transparent;
+            }
+            & + span {
+              text-align: left;
+              position: absolute;
+              left: 0.05em;
+              top: 0;
+              transition: top var(--animationSpeed),
+                font-size var(--animationSpeed);
+              will-change: top, font-size;
+              pointer-events: none;
+              width: 100%;
+            }
+            &:focus,
+            &:not(:placeholder-shown) {
+              border-bottom-color: var(--underlineColorActive);
+              & + span {
+                top: calc(-1em - 2 * var(--placeholderInputGap));
+                font-size: var(--placeholderSize);
+              }
+            }
+          }
+          p {
+            margin-top: 0.2rem;
+            color: #df1313;
+          }
         }
       }
       .input_with_error {
@@ -41,7 +103,6 @@
           color: #df1313;
         }
       }
-    }
     .content__textImage {
       gap: 15px;
       display: flex;
@@ -84,22 +145,24 @@
         }
       }
 
-  .textarea_with_error {
-            width: 100%;
+      .textarea_with_error {
+        width: 100%;
 
-            textarea {
-               width: 100%;
-            }
+        textarea {
+          width: 100%;
+        }
 
-            p {
-               margin-top: 0.2rem;
-               color: #df1313;
-            }
-         }
-      }}
+        p {
+          margin-top: 0.2rem;
+          color: #df1313;
+        }
+      }
+    }
+  }
   .add_post_tags,
-  .add_post_buttons ,
-   .error_button { gap: 0.5rem;
+  .add_post_buttons,
+  .error_button {
+    gap: 0.5rem;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -137,31 +200,31 @@
         transform: scale(1.1);
       }
     }
-.disabledSubmit {
-         border: 1px solid #df1313;
-         pointer-events: none;
+    .disabledSubmit {
+      border: 1px solid #df1313;
+      pointer-events: none;
+    }
+  }
+  .error_button {
+    margin-top: 1rem;
+    justify-content: flex-end;
+    button,
+    input {
+      font-size: 18px;
+      color: $white;
+      border-radius: 5px;
+      padding: 0.5rem 0.7rem;
+    }
+    button {
+      background-color: black;
+      &:hover {
+        transform: scale(1.1);
       }
-   }
-   .error_button{
-      margin-top: 1rem;
-      justify-content: flex-end;
-      button,
-      input {
-         font-size: 18px;
-         color: $white;
-         border-radius: 5px;
-         padding: 0.5rem 0.7rem;
-      }
-      button{
-         background-color: black;
-         &:hover {
-            transform: scale(1.1);
-         }
-      }
-      input{
-         background-color: gray;
-      }
-   }
+    }
+    input {
+      background-color: gray;
+    }
+  }
 }
 @media screen and (max-width: 524px) {
   .modal_add_post .add_post_content {

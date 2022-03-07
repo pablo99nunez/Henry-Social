@@ -53,6 +53,10 @@ const initialState = {
   chats: [],
 } as IState;
 
+const urlBackend = import.meta.env.PROD
+  ? "https://henry-social-back.herokuapp.com"
+  : "http://localhost:3001";
+
 export default function rootReducer(state = initialState, action: IAction) {
   switch (action.type) {
     case GET_USER: {
@@ -226,7 +230,7 @@ export default function rootReducer(state = initialState, action: IAction) {
     case SET_SOCKET: {
       return {
         ...state,
-        socket: io("http://localhost:3001", {
+        socket: io(urlBackend, {
           autoConnect: false,
         }),
       };
