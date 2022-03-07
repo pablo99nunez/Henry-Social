@@ -19,14 +19,10 @@ import valForm from "./valForm";
 import axios from "axios";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
-enum USER_ACTION {
-  signUp,
-  logIn,
-}
 
 let userExists: boolean;
 
-export default function Login(): JSX.Element {
+export default function Login({ USER_ACTION, action, handleActionChange}: any): JSX.Element {
   const [input, setInput] = useState<any>({
     firstName: "",
     lastName: "",
@@ -48,17 +44,10 @@ export default function Login(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [formComplete, setFromComplete] = useState(false);
   const [userAlreadyExist, setUserAlreadyExist] = useState(false);
-  const [action, setAction] = useState(USER_ACTION.logIn);
   const [newAvatar, setNewAvatar] = useState<string | null>(null);
   const navigate = useNavigate();
   const user = useUser();
   const btn = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    document.title = `${
-      action ? "Iniciar Sesion" : " Registrate"
-    } | Henry Social`;
-  }, [action]);
 
   useEffect(() => {
     const { firstName, lastName, username, password, email } = input;
@@ -208,11 +197,6 @@ export default function Login(): JSX.Element {
 
     if (formComplete && btn.current) btn.current.disabled = false;
   }
-
-  const handleActionChange = () => {
-    const Act = action ? USER_ACTION.signUp : USER_ACTION.logIn;
-    setAction(Act);
-  };
 
   return (
     <>

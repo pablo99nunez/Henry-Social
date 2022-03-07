@@ -6,7 +6,7 @@ import post from '../../assets/images/Post.png'
 import questions from '../../assets/images/Questions.png'
 import welcome from '../../assets/images/Welcome1.png'
 
-export default function LandingPage(){
+export default function LandingPage({ handleActionChange }:any){
 
     return(
         <div>
@@ -20,12 +20,18 @@ export default function LandingPage(){
                         <h1> | Social </h1>
                     </div>
                     <div className={style.headers_buttons}>
-                    <button className={style.act_btn}>
-                        <Link to='/login' >Ingresar</Link>
-                    </button>
-                    <button className={style.act_btn2}>
-                        <Link to='/login'>Registrarse</Link>
-                    </button>
+                    <Link to='/login' >
+                        <button className={style.act_btn}
+                            onClick={handleActionChange}
+                            value="logIn"
+                        >Ingresar</button>
+                    </Link>
+                    <Link to='/login'>
+                        <button className={style.act_btn2}
+                            onClick={handleActionChange}
+                            value="signUp"
+                        >Registrarse</button>
+                    </Link>
                     </div>
                 </header>
                 <div id={style.first_section}>
