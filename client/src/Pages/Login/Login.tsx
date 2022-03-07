@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BsGoogle, BsGithub } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { BiEdit } from "react-icons/bi";
 import { IconContext } from "react-icons";
 
@@ -221,13 +221,15 @@ export default function Login(): JSX.Element {
       ) : (
         <div id={style.cont}>
           <header>
-            <div id={style.title_cont}>
-              <img
-                src="https://assets.soyhenry.com/assets/LOGO-HENRY-03.png"
-                alt="icon"
-              />
-              <h1> | Social </h1>
-            </div>
+            <Link to="/landing">
+              <div id={style.title_cont}>
+                <img
+                  src="https://assets.soyhenry.com/assets/LOGO-HENRY-03.png"
+                  alt="icon"
+                />
+                <h1> | Social </h1>
+              </div>
+            </Link>
             <button className={style.act_btn} onClick={handleActionChange}>
               {" "}
               {action === USER_ACTION.signUp

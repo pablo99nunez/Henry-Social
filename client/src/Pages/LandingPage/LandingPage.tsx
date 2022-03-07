@@ -1,4 +1,3 @@
-import React from "react";
 import style from './LandingPage.module.scss'
 import { Link } from "react-router-dom";
 import chat from '../../assets/images/Chat.gif'

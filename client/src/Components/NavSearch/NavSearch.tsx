@@ -21,6 +21,7 @@ const NavSearch = () => {
       .then(() => {
         dispatch(signOut());
         InfoAlert.fire("Has cerrado sesión");
+        navigate("/login");
       })
       .catch((e) =>
         InfoAlert.fire({
@@ -29,7 +30,6 @@ const NavSearch = () => {
         })
       );
 
-    navigate("/login");
   };
   const users = useSelector((state: IState) => state.Users);
   const [input, setInput] = useState("");
