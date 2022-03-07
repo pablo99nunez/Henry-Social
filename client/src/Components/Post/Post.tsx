@@ -13,10 +13,10 @@ import { SharePost } from "../SharePosts/SharePost";
 
 type Props = {
   post: IPost;
-  shared: boolean;
+  shared?: boolean;
 };
 
-const Post: FC<Props> = ({ post, shared = false}) => {
+const Post: FC<Props> = ({ post, shared = false }) => {
   const [openShare, setOpenShare] = useState(false);
   const [openComment, setOpenComment] = useState(false);
 
@@ -38,9 +38,7 @@ const Post: FC<Props> = ({ post, shared = false}) => {
             ${shared && style.shared}
           `}
         >
-          {post?.typePost !== "pregunta" && (
-            <ProfilePicture post={post}/>
-          )}
+          {post?.typePost !== "pregunta" && <ProfilePicture post={post} />}
           <div className={style.post_wrap}>
             {post?.typePost !== "pregunta" && (
               <ProfileName post={post}/>
@@ -66,7 +64,7 @@ const Post: FC<Props> = ({ post, shared = false}) => {
       ) : (
         <LoadingPage />
       )}
-      <SharePost                 
+      <SharePost
         post={post}
         openShare={openShare}
         setOpenShare={setOpenShare}

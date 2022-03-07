@@ -26,7 +26,7 @@ export const Like: FC<Props> = ({ post }) => {
         _id: post._id,
         author: user,
       });
-      socket.emit("send_notification", post._id);
+      socket?.emit("send_notification", post._id);
     }
   };
   useEffect(() => {
@@ -56,7 +56,7 @@ export const Like: FC<Props> = ({ post }) => {
           handleLike();
         }}
       >
-        {like ? <BsHeartFill /> : <BsHeart/>}
+        {like ? <BsHeartFill /> : <BsHeart />}
       </motion.div>
       <p>{post?.nLikes?.length + (like ? (sum ? 1 : 0) : sum ? 0 : -1)}</p>
       {

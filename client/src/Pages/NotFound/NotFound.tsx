@@ -13,7 +13,7 @@ const NotFound = () => {
       <NavSearch />
       <div className={styles.content}>
         <h1>404</h1>
-        <h2>No esperebamos esta visita,<br/> estas opciones podrían ayudarte</h2>
+        <h2>No esperabamos esta visita,<br/> estas opciones podrían ayudarte</h2>
         <div className={styles.links}>
           <Link to='/'>Ir a Inicio</Link>
           {user && <Link to={`/profile/${user?.username}`}>Ver Perfil</Link>}

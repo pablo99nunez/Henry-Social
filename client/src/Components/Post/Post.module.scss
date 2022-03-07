@@ -7,7 +7,7 @@
   flex-direction: column;
   justify-content: center;
   background: black;
-  .post{
+  .post {
     gap: 1rem;
     width: 100%;
     padding: 1.5rem;
@@ -21,7 +21,7 @@
     &.postJob {
       box-shadow: 0 0 5px 5px #1a5fc733;
       border: 1px solid #1a5fc7;
-      .post_wrap{
+      .post_wrap {
         width: max-content;
       }
     }
@@ -75,16 +75,16 @@
           }
         }
         &:nth-child(4):hover::before {
-            content:"Premiar contenido";
-            transition: ease-in-out all 1s;
-            position: absolute;
-            bottom: 3.2rem;
-            font-size: .7rem;
-            color: #cccc;
+          content: "Premiar contenido";
+          transition: ease-in-out all 1s;
+          position: absolute;
+          bottom: 3.2rem;
+          font-size: 0.7rem;
+          color: #cccc;
         }
       }
-    }  
-    &.shared{
+    }
+    &.shared {
       border-radius: 0;
       border: 1px solid rgba(128, 128, 128, 0.5);
     }

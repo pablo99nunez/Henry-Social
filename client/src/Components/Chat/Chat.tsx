@@ -37,7 +37,7 @@ const Chat = () => {
           new Date(Date.now()).getMinutes(),
       };
 
-      socket.emit("send_message", messageData);
+      socket?.emit("send_message", messageData);
       setListMessage([...listMessage, messageData]);
       setMessage("");
     }

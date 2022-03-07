@@ -52,7 +52,6 @@ export default function Interactions({
           <IoArrowRedoOutline />
           <span>{post?.nShares}</span>
         </div>
-
       </div>
     </div>
   );
