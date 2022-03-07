@@ -15,10 +15,10 @@ import { PromiseProvider } from "mongoose";
 
 type Props = {
   post: IPost;
-  shared: boolean;
+  shared?: boolean;
 };
 
-const Post: FC<Props> = ({ post, shared = false}) => {
+const Post: FC<Props> = ({ post, shared = false }) => {
   const [openShare, setOpenShare] = useState(false);
   const [eliminated, setEliminated] = useState(false);
   const [openComment, setOpenComment] = useState(false);
@@ -26,7 +26,10 @@ const Post: FC<Props> = ({ post, shared = false}) => {
   return (
     <div
       className={style.postContainer}
-      style={{ display: eliminated ? "none" : "flex" , zIndex: shared ? '80' : '50'}}
+      style={{
+        display: eliminated ? "none" : "flex",
+        zIndex: shared ? "80" : "50",
+      }}
     >
       {!post?._id ? (
         <h2 style={{ textAlign: "center", color: "white" }}>
@@ -41,18 +44,14 @@ const Post: FC<Props> = ({ post, shared = false}) => {
             ${shared && style.shared}
           `}
         >
-          {post?.typePost !== "pregunta" && (
-            <ProfilePicture post={post}/>
-          )}
+          {post?.typePost !== "pregunta" && <ProfilePicture post={post} />}
           <div className={style.post_wrap}>
-            {post?.typePost !== "pregunta" && (
-              <ProfileName post={post}/>
-            )}
-            <Content post={post}/>
-            <Image post={post}/>
-            <Options 
-              post={post} 
-              shared={shared} 
+            {post?.typePost !== "pregunta" && <ProfileName post={post} />}
+            <Content post={post} />
+            <Image post={post} />
+            <Options
+              post={post}
+              shared={shared}
               setEliminated={setEliminated}
             />
             {(post.respuesta || post.typePost !== "pregunta") && (
@@ -70,7 +69,7 @@ const Post: FC<Props> = ({ post, shared = false}) => {
       ) : (
         <LoadingPage />
       )}
-      <SharePost                 
+      <SharePost
         post={post}
         openShare={openShare}
         setOpenShare={setOpenShare}

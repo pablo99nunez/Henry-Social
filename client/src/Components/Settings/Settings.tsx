@@ -22,7 +22,15 @@ export default function Settings({ cancel }: any) {
   const btn = useRef<HTMLButtonElement>(null);
   const imgInput = useRef<HTMLInputElement>(null);
 
-  const [changes, setChanges] = useState({
+  interface Changes {
+    username: string | null | undefined;
+    bio: string | null | undefined;
+    linkedin: string | null | undefined;
+    github: string | null | undefined;
+    portfolio: string | null | undefined;
+    role: string | null | undefined;
+  }
+  const [changes, setChanges] = useState<Changes>({
     username: user?.username,
     bio: user?.bio,
     linkedin: user?.linkedin,
@@ -30,7 +38,13 @@ export default function Settings({ cancel }: any) {
     portfolio: user?.portfolio,
     role: user?.role,
   });
-  const [errors, setErrors] = useState({
+  interface Errors {
+    username: boolean;
+    linkedin: boolean;
+    github: boolean;
+    portfolio: boolean;
+  }
+  const [errors, setErrors] = useState<Errors>({
     username: false,
     linkedin: false,
     github: false,
@@ -45,11 +59,13 @@ export default function Settings({ cancel }: any) {
 
   useEffect(() => {
     let complete = true;
-    Object.keys(errors).forEach((e) => {
-      if (errors[e]) {
+    let k: keyof Errors;
+    for (k in errors) {
+      if (errors[k]) {
         complete = false;
       }
-    });
+    }
+
     setComplete(complete);
   }, [errors]);
 
@@ -111,10 +127,10 @@ export default function Settings({ cancel }: any) {
         break;
       case "github":
         if (!/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(target.value)) {
-          if (!target.value.length) {
+          if (target.value.length === 0) {
             setChanges({
               ...changes,
-              [target.name]: target.value.length === 0 && null,
+              [target.name]: "",
             });
             return setErrors({ ...errors, [target.name]: false });
           }
@@ -127,10 +143,10 @@ export default function Settings({ cancel }: any) {
             target.value
           )
         ) {
-          if (!target.value.length) {
+          if (target.value.length === 0) {
             setChanges({
               ...changes,
-              [target.name]: target.value.length === 0 && null,
+              [target.name]: "",
             });
             return setErrors({ ...errors, [target.name]: false });
           }
@@ -139,14 +155,14 @@ export default function Settings({ cancel }: any) {
         break;
       case "portfolio":
         if (
-          !/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/.test(
+          !/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/.test(
             target.value
           )
         ) {
-          if (!target.value.length) {
+          if (target.value.length === 0) {
             setChanges({
               ...changes,
-              [target.name]: target.value.length === 0 && null,
+              [target.name]: "",
             });
             return setErrors({ ...errors, [target.name]: false });
           }
@@ -309,23 +325,25 @@ export default function Settings({ cancel }: any) {
        
         <div className={style.inputBox}>
         <span className={style.spaneo}>
-        <input
-          type="text"
-          name="github"
-          onChange={handleChanges}
-          placeholder="."
-          defaultValue={changes?.github}
-        ></input><span>Ingresa tu Usuario de Github</span>
+          <input
+            type="text"
+            name="github"
+            onChange={handleChanges}
+            placeholder="."
+            defaultValue={changes?.github || ""}
+          ></input>
+          <span>Ingresa tu Usuario de Github</span>
         </span>
 
         <span className={style.spaneo}>
-        <input
-          type="url"
-          onChange={handleChanges}
-          placeholder="."
-          name="linkedin"
-          defaultValue={changes?.linkedin}
-        ></input><span>Ingresa la Url de tu Linkedin</span>
+          <input
+            type="url"
+            onChange={handleChanges}
+            placeholder="."
+            name="linkedin"
+            defaultValue={changes?.linkedin || ""}
+          ></input>
+          <span>Ingresa la Url de tu Linkedin</span>
         </span>
 
         <span className={style.spaneo}>
@@ -334,7 +352,7 @@ export default function Settings({ cancel }: any) {
           onChange={handleChanges}
           placeholder="."
           name="portfolio"
-          defaultValue={changes?.portfolio}
+          //defaultValue={changes?.portfolio}
         ></input><span>Ingresa la Url de tu portafolio</span>
         </span> 
         </div>

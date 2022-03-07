@@ -67,7 +67,7 @@ export default function User() {
               },
             });
             navigate("/");
-            InfoAlert.fire("Has eliminado a " + user.name);
+            InfoAlert.fire("Has eliminado a " + user?.name);
           }
         }
       );
@@ -139,7 +139,7 @@ export default function User() {
                     </Button>
                     <Button
                       onClick={() => {
-                        if (user._id) {
+                        if (user?._id && userLogeado?._id) {
                           handleDeleteUser(user._id, userLogeado._id);
                         }
                       }}
@@ -261,8 +261,10 @@ export default function User() {
                 <h3
                   className={filter === 1 ? style.active : ""}
                   onClick={() => {
-                    dispatch(getPosts(user._id));
-                    setFilter(1);
+                    if (user?._id) {
+                      dispatch(getPosts(user._id));
+                      setFilter(1);
+                    }
                   }}
                 >
                   Publicaciones
@@ -271,7 +273,7 @@ export default function User() {
                 <h3
                   className={filter === 2 ? style.active : ""}
                   onClick={() => {
-                    if (user._id) {
+                    if (user?._id) {
                       dispatch(filterByLike(user._id));
                       setFilter(2);
                     }

@@ -47,8 +47,9 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (
-      e.target.name === "companyImage" ||
-      (e.target.name === "image" && e.target.files)
+      (e.target.name === "companyImage" ||
+        (e.target.name === "image" && e.target.files)) &&
+      e.target.files
     )
       setPost({ ...post, [e.target.name]: e.target.files[0] });
     else setPost({ ...post, [e.target.name]: e.target.value });
@@ -87,7 +88,16 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       return setTypePost("normal");
     }
     setTypePost(name);
-    setErrors("");
+    setErrors({
+      text: "",
+      company: "",
+      companyLink: "",
+      salary: "",
+      position: "",
+      imageCompany: "",
+      pregunta: "",
+      getError: false,
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -159,7 +169,6 @@ const AddPost: FC<Props> = ({ setOpen }) => {
 
   return (
     <motion.form
-      onChange={(e) => handleChange(e)}
       onSubmit={(e) => handleSubmit(e)}
       className={styles.modal_add_post}
       animate={{
@@ -187,6 +196,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   <div className={styles.input_with_error}>
                     <input
                       type="text"
+                      onChange={(e) => handleChange(e)}
                       name="tecnologíaClases"
                       placeholder="Tecnología"
                       defaultValue={post.tecnologíaClases}
@@ -199,11 +209,13 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   <input
                     type="text"
                     name="temasClases"
+                    onChange={(e) => handleChange(e)}
                     placeholder="Temas"
                     defaultValue={post.temasClases}
                   />
                   <input
                     name="costoClases"
+                    onChange={(e) => handleChange(e)}
                     type="number"
                     defaultValue={post.costoClases}
                     placeholder="Costo de las clases"
@@ -215,6 +227,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                     <span className={styles.input_effects}>
                       <input
                         type="text"
+                        onChange={(e) => handleChange(e)}
                         name="company"
                         defaultValue={post.company}
                         placeholder="."
@@ -230,6 +243,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                         type="text"
                         name="position"
                         defaultValue={post.position}
+                        onChange={(e) => handleChange(e)}
                         placeholder="."
                         required
                       />
@@ -241,6 +255,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                     type="file"
                     accept=".png"
                     name="companyImage"
+                    onChange={(e) => handleChange(e)}
                     defaultValue={post.companyImage}
                     placeholder="Imagen de la empresa"
                   />
@@ -255,6 +270,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                         type="url"
                         defaultValue={post.companyLink}
                         placeholder="."
+                        onChange={(e) => handleChange(e)}
                         required
                       />{" "}
                       <span>Link del Empleo</span>
@@ -266,6 +282,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                       <input
                         min="0"
                         type="number"
+                        onChange={(e) => handleChange(e)}
                         name="salary"
                         defaultValue={post.salary}
                         placeholder="."
@@ -315,7 +332,13 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   <FaUpload />
                 )}
               </label>
-              <input type="file" name="image" id="image" />
+
+              <input
+                type="file"
+                name="image"
+                id="image"
+                onChange={(e) => handleChange(e)}
+              />
             </div>
           )}
         </div>
