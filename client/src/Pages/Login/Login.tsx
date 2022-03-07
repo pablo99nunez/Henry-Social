@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BsGoogle, BsGithub } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { BiEdit } from "react-icons/bi";
 import { IconContext } from "react-icons";
 import { Helmet } from "react-helmet";
@@ -10,7 +10,7 @@ import {
   signUpWithGmail,
   signUpWithGitHub,
   signInWithEmail,
-} from "../../../../src/services/firebase/login-methods";
+} from "../../../src/firebase/login-methods";
 import style from "./Login.module.scss";
 import useUser from "../../Hooks/useUser";
 import Button from "../../Components/Button/Button";
@@ -20,14 +20,10 @@ import valForm from "./valForm";
 import axios from "axios";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
-enum USER_ACTION {
-  signUp,
-  logIn,
-}
 
 let userExists: boolean;
 
-export default function Login(): JSX.Element {
+export default function Login({ USER_ACTION, action, handleActionChange}: any): JSX.Element {
   const [input, setInput] = useState<any>({
     firstName: "",
     lastName: "",
@@ -49,7 +45,6 @@ export default function Login(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [formComplete, setFromComplete] = useState(false);
   const [userAlreadyExist, setUserAlreadyExist] = useState(false);
-  const [action, setAction] = useState(USER_ACTION.logIn);
   const [newAvatar, setNewAvatar] = useState<string | null>(null);
   const navigate = useNavigate();
   const user = useUser();
@@ -62,14 +57,21 @@ export default function Login(): JSX.Element {
     setTimeout(() => {
       if (user === null && !cleanUp) setLoading(false);
     }, 1000);
-    if(action === 1) {
+    if (action === 1) {
       email && password && setFromComplete(true);
     } else {
-      if(firstName && lastName && username && !userAlreadyExist && password && email) {
-        if(btn.current) btn.current.disabled = false;
+      if (
+        firstName &&
+        lastName &&
+        username &&
+        !userAlreadyExist &&
+        password &&
+        email
+      ) {
+        if (btn.current) btn.current.disabled = false;
         return setFromComplete(true);
-      } 
-      if(btn.current) btn.current.disabled = true;
+      }
+      if (btn.current) btn.current.disabled = true;
       setFromComplete(false);
     }
     return () => {
@@ -93,8 +95,8 @@ export default function Login(): JSX.Element {
         if (action == USER_ACTION.signUp) {
           const newUser = {
             ...input,
-            name: `${input.firstName.trim()} ${input.lastName.trim()}`
-          }
+            name: `${input.firstName.trim()} ${input.lastName.trim()}`,
+          };
           delete newUser.firstName;
           delete newUser.lastName;
           await signUpWithEmail(newUser).then(() => {
@@ -145,7 +147,7 @@ export default function Login(): JSX.Element {
       | React.FocusEvent<HTMLInputElement>
   ) {
     const target = e.target as HTMLInputElement;
-    if(!target.value.length) return;
+    if (!target.value.length) return;
     axios
       .get("/user", {
         params: {
@@ -161,7 +163,7 @@ export default function Login(): JSX.Element {
             [target.name]: true,
           });
           if (btn.current) btn.current.disabled = true;
-        } 
+        }
         if (formComplete && btn.current) btn.current.disabled = false;
       });
   }
@@ -195,11 +197,6 @@ export default function Login(): JSX.Element {
     if (formComplete && btn.current) btn.current.disabled = false;
   }
 
-  const handleActionChange = () => {
-    const Act = action ? USER_ACTION.signUp : USER_ACTION.logIn;
-    setAction(Act);
-  };
-
   return (
     <>
       {loading ? (
@@ -212,13 +209,15 @@ export default function Login(): JSX.Element {
             <title>{action ? 'Iniciar Sesion' : ' Registrate'} | Henry Social</title>
           </Helmet>
           <header>
-            <div id={style.title_cont}>
-              <img
-                src="https://assets.soyhenry.com/assets/LOGO-HENRY-03.png"
-                alt="icon"
-              />
-              <h1> | Social </h1>
-            </div>
+            <Link to="/landing">
+              <div id={style.title_cont}>
+                <img
+                  src="https://assets.soyhenry.com/assets/LOGO-HENRY-03.png"
+                  alt="icon"
+                />
+                <h1> | Social </h1>
+              </div>
+            </Link>
             <button className={style.act_btn} onClick={handleActionChange}>
               {" "}
               {action === USER_ACTION.signUp
@@ -297,7 +296,9 @@ export default function Login(): JSX.Element {
                       alt="avatar"
                     />
                     <label htmlFor="newAvatar" id={style.editIcon}>
-                      <IconContext.Provider value={{ color: "yellow", size: "25px" }}>
+                      <IconContext.Provider
+                        value={{ color: "yellow", size: "25px" }}
+                      >
                         <BiEdit />
                       </IconContext.Provider>
                     </label>

@@ -4,10 +4,10 @@ import { IState } from "../../redux/reducer/index";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Helmet } from 'react-helmet';
-import { auth } from "../../../../src/services/firebase/firebase";
+import { auth } from "../../../src/firebase/firebase";
 import { sendEmailVerification } from 'firebase/auth';
 
-import { closeSession } from "../../../../src/services/firebase/login-methods";
+import { closeSession } from "../../firebase/login-methods";
 import { signOut } from "../../redux/actions/actions";
 import { InfoAlert } from "../../Components/Alert/Alert";
 import style from "./Verification.module.scss";

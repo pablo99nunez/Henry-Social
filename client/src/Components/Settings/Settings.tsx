@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BiEdit } from "react-icons/bi";
 import { IconContext } from "react-icons";
-import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
+import { uploadFile } from "../../../src/firebase/Helpers/uploadFile";
 
 import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
@@ -11,9 +11,9 @@ import ChangeKey from "../ChangeKey/ChangeKey";
 import style from "./Settings.module.scss";
 import Input from "../Input/Input";
 import axios from "axios";
-import { editUser } from "../../redux/actions/actions";
+import { editUser, signOut } from "../../redux/actions/actions";
 import useUser from "../../Hooks/useUser";
-
+import { auth } from "../../firebase/firebase";
 
 export default function Settings({ cancel }: any) {
   const user = useUser();
@@ -22,7 +22,15 @@ export default function Settings({ cancel }: any) {
   const btn = useRef<HTMLButtonElement>(null);
   const imgInput = useRef<HTMLInputElement>(null);
 
-  const [changes, setChanges] = useState({
+  interface Changes {
+    username: string | null | undefined;
+    bio: string | null | undefined;
+    linkedin: string | null | undefined;
+    github: string | null | undefined;
+    portfolio: string | null | undefined;
+    role: string | null | undefined;
+  }
+  const [changes, setChanges] = useState<Changes>({
     username: user?.username,
     bio: user?.bio,
     linkedin: user?.linkedin,
@@ -30,7 +38,13 @@ export default function Settings({ cancel }: any) {
     portfolio: user?.portfolio,
     role: user?.role,
   });
-  const [errors, setErrors] = useState({
+  interface Errors {
+    username: boolean;
+    linkedin: boolean;
+    github: boolean;
+    portfolio: boolean;
+  }
+  const [errors, setErrors] = useState<Errors>({
     username: false,
     linkedin: false,
     github: false,
@@ -39,17 +53,19 @@ export default function Settings({ cancel }: any) {
   const [key, setKey] = useState(false);
   const cambiarClave = () => {
     setKey(true);
-  }
+  };
   const [complete, setComplete] = useState(false);
   const [newAvatar, setNewAvatar] = useState<string | null>(null);
 
   useEffect(() => {
     let complete = true;
-    Object.keys(errors).forEach((e) => {
-      if (errors[e]) {
+    let k: keyof Errors;
+    for (k in errors) {
+      if (errors[k]) {
         complete = false;
       }
-    });
+    }
+
     setComplete(complete);
   }, [errors]);
 
@@ -57,10 +73,23 @@ export default function Settings({ cancel }: any) {
     return () => {
       cancel();
       navigate(`/profile/${changes.username}`);
-    }
-  }, [user])
+    };
+  }, [user]);
 
   let typerTimer: NodeJS.Timeout;
+
+  const deleteUser = async () => {
+    if (user?._id) {
+      dispatch(signOut());
+      await axios.delete("/delete-user", {
+        data: {
+          userId: user._id,
+          adminId: user._id,
+          uid: user.uid,
+        },
+      });
+    }
+  };
 
   const validateUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
@@ -98,10 +127,10 @@ export default function Settings({ cancel }: any) {
         break;
       case "github":
         if (!/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(target.value)) {
-          if(!target.value.length) {
+          if (target.value.length === 0) {
             setChanges({
               ...changes,
-              [target.name]: target.value.length === 0 && null,
+              [target.name]: "",
             });
             return setErrors({ ...errors, [target.name]: false });
           }
@@ -114,10 +143,10 @@ export default function Settings({ cancel }: any) {
             target.value
           )
         ) {
-          if(!target.value.length) {
+          if (target.value.length === 0) {
             setChanges({
               ...changes,
-              [target.name]: target.value.length === 0 && null,
+              [target.name]: "",
             });
             return setErrors({ ...errors, [target.name]: false });
           }
@@ -126,14 +155,14 @@ export default function Settings({ cancel }: any) {
         break;
       case "portfolio":
         if (
-          !/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/.test(
+          !/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/.test(
             target.value
           )
         ) {
-          if(!target.value.length) {
+          if (target.value.length === 0) {
             setChanges({
               ...changes,
-              [target.name]: target.value.length === 0 && null,
+              [target.name]: "",
             });
             return setErrors({ ...errors, [target.name]: false });
           }
@@ -141,7 +170,7 @@ export default function Settings({ cancel }: any) {
         }
         break;
       case "avatar":
-        if (target.files) {  
+        if (target.files) {
           setNewAvatar(URL.createObjectURL(target.files[0]));
           return;
         }
@@ -167,8 +196,8 @@ export default function Settings({ cancel }: any) {
     if (imgInput.current?.files && imgInput.current?.files?.length !== 0) {
       imgUrl = await uploadFile(imgInput.current.files[0]);
       if (user?._id)
-      dispatch(editUser(user._id, { ...changes, avatar: imgUrl }));
-      
+        dispatch(editUser(user._id, { ...changes, avatar: imgUrl }));
+
       /* axios
       .put("/user", {
         _id: user?._id,
@@ -192,11 +221,8 @@ export default function Settings({ cancel }: any) {
         });
       }); */
     }
-    if (user?._id)
-    dispatch(editUser(user._id, changes ));
-  }
-  ;
-
+    if (user?._id) dispatch(editUser(user._id, changes));
+  };
   const onChangeRole = (e: any): void => {
     if (user?.admin) {
       setChanges({
@@ -206,120 +232,130 @@ export default function Settings({ cancel }: any) {
     } else throw new Error("Only admins can change roles");
   };
 
-
   return (
     <>
       <Modal isOpen={key} setIsOpen={setKey} title="Cambiar contraseña">
-        <ChangeKey cancel={(e?: any) => {
+        <ChangeKey
+          cancel={(e?: any) => {
             e && e.preventDefault();
             return setKey(false);
-           }}/>
+          }}
+        />
       </Modal>
-    <form className={style.settings_wrap}>
-      <div id={style.avt_cont}>
-        <img
-          src={
-            newAvatar ||
-            (typeof user?.avatar === "string" && user?.avatar) ||
-            "https://s5.postimg.cc/537jajaxj/default.png"
-          }
-          alt="avatar"
-        />
-        <label htmlFor="newAvatar" id={style.editIcon}>
-          <IconContext.Provider value={{ color: "yellow", size: "35px" }}>
-            <BiEdit />
-          </IconContext.Provider>
-        </label>
-        <input
-          ref={imgInput}
-          name="avatar"
-          id="newAvatar"
-          onChange={handleChanges}
-          type="file"
-        />
-      </div>
-      <div>
-        <div className={style.inputBox}>
-          <h3>Nombre de usuario</h3>
-          <Input
-            error={errors.username}
-            type="text"
-            name="username"
-            placeholder="Nombre de usuario"
-            onKeyUp={(e: any) => {
-              clearTimeout(typerTimer);
-              typerTimer = setTimeout(() => validateUsername(e), 500);
-            }}
-            onKeyDown={() => {
-              clearTimeout(typerTimer);
-            }}
-            onBlur={validateUsername}
-            defaultValue={changes?.username}
-          ></Input>
-        </div>
-        <div className={style.inputBox}>
-          <h3>Biografia</h3>
-          <Input
+      <form className={style.settings_wrap}>
+        <div id={style.avt_cont}>
+          <img
+            src={
+              newAvatar ||
+              (typeof user?.avatar === "string" && user?.avatar) ||
+              "https://s5.postimg.cc/537jajaxj/default.png"
+            }
+            alt="avatar"
+          />
+          <label htmlFor="newAvatar" id={style.editIcon}>
+            <IconContext.Provider value={{ color: "yellow", size: "35px" }}>
+              <BiEdit />
+            </IconContext.Provider>
+          </label>
+          <input
+            ref={imgInput}
+            name="avatar"
+            id="newAvatar"
             onChange={handleChanges}
-            name="bio"
-            placeholder="Escribe sobre ti..."
-            defaultValue={changes?.bio}
-          ></Input>
+            type="file"
+          />
         </div>
-        <div className={style.buttons}>
-          <Button
-            type="button"
-            active={changes?.role === "Estudiante"}
-            onClick={onChangeRole}
-            disabled={user?.admin ? false : true}
-            value="Estudiante"
-          >
-            Estudiante
-          </Button>
-          <Button
-            type="button"
-            active={changes?.role === "Instructor"}
-            onClick={onChangeRole}
-            disabled={user?.admin ? false : true}
-            value="Instructor"
-          >
-            Instructor
-          </Button>
-          <Button
-            type="button"
-            active={changes?.role === "TA"}
-            onClick={onChangeRole}
-            disabled={user?.admin ? false : true}
-            value="TA"
-          >
-            TA
-          </Button>
-        </div>
+        <div>
+          <div className={style.inputBox}>
+            <h3>Nombre de usuario</h3>
+            <Input
+              error={errors.username}
+              type="text"
+              name="username"
+              placeholder="Nombre de usuario"
+              onKeyUp={(e: any) => {
+                clearTimeout(typerTimer);
+                typerTimer = setTimeout(() => validateUsername(e), 500);
+              }}
+              onKeyDown={() => {
+                clearTimeout(typerTimer);
+              }}
+              onBlur={validateUsername}
+              defaultValue={changes?.username}
+            ></Input>
+          </div>
+          <div className={style.inputBox}>
+            <h3>Biografia</h3>
+            <Input
+              onChange={handleChanges}
+              name="bio"
+              placeholder="Escribe sobre ti..."
+              defaultValue={changes?.bio}
+            ></Input>
+          </div>
+          <div className={style.buttons}>
+            <Button
+              type="button"
+              active={changes?.role === "Estudiante"}
+              onClick={onChangeRole}
+              disabled={user?.admin ? false : true}
+              value="Estudiante"
+            >
+              Estudiante
+            </Button>
+            <Button
+              type="button"
+              active={changes?.role === "Instructor"}
+              onClick={onChangeRole}
+              disabled={user?.admin ? false : true}
+              value="Instructor"
+            >
+              Instructor
+            </Button>
+            <Button
+              type="button"
+              active={changes?.role === "TA"}
+              onClick={onChangeRole}
+              disabled={user?.admin ? false : true}
+              value="TA"
+            >
+              TA
+            </Button>
+          </div>
+       
+        <div className={style.inputBox}>
+        <span className={style.spaneo}>
+          <input
+            type="text"
+            name="github"
+            onChange={handleChanges}
+            placeholder="."
+            defaultValue={changes?.github || ""}
+          ></input>
+          <span>Ingresa tu Usuario de Github</span>
+        </span>
 
-        <Input
-          type="text"
-          name="github"
-          error={errors.github}
-          onChange={handleChanges}
-          placeholder="Ingresa tu Usuario de Github"
-          defaultValue={changes?.github}
-        ></Input>
-        <Input
+        <span className={style.spaneo}>
+          <input
+            type="url"
+            onChange={handleChanges}
+            placeholder="."
+            name="linkedin"
+            defaultValue={changes?.linkedin || ""}
+          ></input>
+          <span>Ingresa la Url de tu Linkedin</span>
+        </span>
+
+        <span className={style.spaneo}>
+        <input
           type="url"
-          error={errors.linkedin}
           onChange={handleChanges}
-          placeholder="Ingresa la Url de tu Linkedin"
-          name="linkedin"
-          defaultValue={changes?.linkedin}
-        ></Input>
-        <Input
-          type="url"
-          error={errors.portfolio}
-          onChange={handleChanges}
-          placeholder="Ingresa la Url de tu portafolio"
+          placeholder="."
           name="portfolio"
-          defaultValue={changes?.portfolio}
-        ></Input> 
+          //defaultValue={changes?.portfolio}
+        ></input><span>Ingresa la Url de tu portafolio</span>
+        </span> 
+        </div>
         <div className={style.buttons}>
           <Button
             type="submit"
@@ -335,11 +371,8 @@ export default function Settings({ cancel }: any) {
           </Button>
           <Button>Eliminar perfil</Button>
         </div>
-        <a className={style.changeKey}
-        onClick={cambiarClave}
-        >Cambiar clave</a>
-      </div>
-    </form>
+        </div>
+      </form>
     </>
   );
 }

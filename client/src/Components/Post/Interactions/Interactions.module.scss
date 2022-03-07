@@ -1,0 +1,24 @@
+@import "../../../Styles/variables.scss";
+
+.post_interacciones {
+  display: flex;
+  justify-content: space-between;
+  svg {
+    font-size: 1.5rem;
+  }
+  .post_like_comments {
+    display: flex;
+    gap: 2rem;
+    div {
+      display: flex;
+      place-items: center;
+      gap: 0.6rem;
+    }
+  }
+  .post_icon {
+    color: $yellow;
+    span {
+      color: $white;
+    }
+  }
+}

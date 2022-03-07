@@ -3,7 +3,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import useUser from "../../Hooks/useUser";
-import { closeSession } from "../../../../src/services/firebase/login-methods";
+import { closeSession } from "../../../src/firebase/login-methods";
 import { searchUsers, signOut } from "../../redux/actions/actions";
 import { InfoAlert } from "../Alert/Alert";
 import { useState } from "react";
@@ -20,11 +20,11 @@ const NavSearch = () => {
     await closeSession()
       .then(() => {
         dispatch(signOut());
-        InfoAlert.fire("Has cerrado sesion");
+        InfoAlert.fire("Has cerrado sesión");
       })
       .catch((e) =>
         InfoAlert.fire({
-          title: "No pudiste cerrar sesion" + e.message,
+          title: "No pudiste cerrar sesión" + e.message,
           icon: "error",
         })
       );
@@ -74,7 +74,7 @@ const NavSearch = () => {
           }}
           className={styles.notifications}
         >
-          <Notifications></Notifications>
+          <Notifications />
 
           <div
             className={styles.nav_button_profile}
@@ -84,7 +84,7 @@ const NavSearch = () => {
           >
             <Avatar
               avatar={
-                typeof user?.avatar == "string"
+                typeof user?.avatar === "string"
                   ? user?.avatar
                   : "https://s5.postimg.cc/537jajaxj/default.png"
               }
@@ -106,7 +106,7 @@ const NavSearch = () => {
               cursor: "pointer",
             }}
             onClick={handleSignOut}
-          ></FaSignOutAlt>
+          />
         </div>
       </div>
     </nav>

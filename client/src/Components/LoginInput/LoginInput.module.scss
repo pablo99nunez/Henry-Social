@@ -7,7 +7,7 @@
 
   #eye {
     color: $grey;
-    
+
     &:hover {
       cursor: pointer;
     }
@@ -27,8 +27,7 @@
       }
     }
   }
-
-  #err_msg {
+#err_msg {
     position: absolute;
     color: white;
     top: -65px;
@@ -43,7 +42,7 @@
     -ms-transition: 200ms ease opacity;
     -o-transition: 200ms ease opacity;
   }
-  
+
   input {
     font-size: 16px;
     background-color: transparent;
@@ -73,7 +72,7 @@
 @media (min-width: 750px) {
   .input_cont {
     width: 100%;
-  
+
     input {
       width: 100%;
     }

@@ -12,6 +12,7 @@ import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 import useUser from "../../Hooks/useUser";
 import { getPosts } from "../../redux/actions/actions";
 import Present from "../../Components/Present/Present";
+import Chats from "../../Components/Chats/Chats";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -49,7 +50,7 @@ const Home = () => {
               <Present></Present>
             </div>
           </div>
-          <Chat />
+          <Chats></Chats>
         </div>
       )}
     </>

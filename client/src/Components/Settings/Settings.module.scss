@@ -1,19 +1,23 @@
 @import "../../Styles/variables.scss";
 
+$isDark: false;
+
 :root {
+  --brightness: #{if($isDark, 75%, 50%)};
+  --animationSpeed: 0.5s;
+  --placeholderSize: 0.5em;
+  --placeholderInputGap: 0.25em;
+  --underlineSize: 1em;
+  --underlineColorActive: hsl(0deg, 0%, 0%);
+  --underlineColorInactive: hsla(0, 100%, 0%, 1);
+}
 
-  --placeholderSize: .5em;
-  --placeholderInputGap: .25em;
-
-  }
-  
 .settings_wrap {
   z-index: 2000;
   padding: 2rem;
   border-radius: 8px;
   display: flex;
   gap: 1rem;
-
 
   #avt_cont {
     display: grid;
@@ -45,7 +49,7 @@
       -ms-transition: 250ms ease-out;
       -o-transition: 250ms ease-out;
 
-      &:hover{
+      &:hover {
         cursor: pointer;
         border-radius: 10px;
         -webkit-border-radius: 10px;
@@ -59,8 +63,6 @@
       display: none;
     }
   }
-
-
 
   .inputBox {
     display: flex;
@@ -127,7 +129,46 @@
     }
   }
 
-
+  .spaneo {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-top: calc(var(--placeholderSize) + var(--placeholderInputGap));
+    padding-bottom: 0.75em;
+    input {
+      height: 4vh;
+      width: 100%;
+      font-size: 1.3em;
+      background-color: transparent;
+      border: none;
+      border-bottom: 2px solid var(--underlineColorInactive);
+      transition: border var(--animationSpeed);
+      will-change: border;
+      outline: none;
+      &::placeholder {
+        color: transparent;
+      }
+      & + span {
+        text-align: left;
+        position: absolute;
+        font-size: 1.2em;
+        left: 0.05em;
+        top: 0;
+        transition: top var(--animationSpeed), font-size var(--animationSpeed);
+        will-change: top, font-size;
+        pointer-events: none;
+        width: 100%;
+      }
+      &:focus,
+      &:not(:placeholder-shown) {
+        border-bottom-color: black;
+        & + span {
+          top: calc(-1em - 2 * var(--placeholderInputGap));
+          font-size: var(--placeholderSize);
+        }
+      }
+    }
+  }
 
   .footer_settings {
     display: flex;
@@ -184,8 +225,11 @@
     text-decoration: underline;
     gap: 1rem;
   }
-  .changeKey{
-    color:red;
-    cursor:pointer;
+  .changeKey {
+    color: red;
+    cursor: pointer;
+    position: absolute;
+    margin-top: 2vh;
+    text-decoration: underline;
   }
 }
