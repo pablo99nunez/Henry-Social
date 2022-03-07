@@ -50,15 +50,5 @@ export default function Interactions({
                 </div>
             </div>
         </div>
-        <div
-          onClick={() => {
-            setOpenShare(!openShare);
-          }}
-        >
-          <IoArrowRedoOutline />
-          <span>{post?.nShares}</span>
-        </div>
-      </div>
-    </div>
   );
 }

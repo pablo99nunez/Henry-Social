@@ -6,7 +6,7 @@ import { getPosts } from "../../redux/actions/actions";
 import { InfoAlert } from "../Alert/Alert";
 import { FaUpload, FaCheck } from "react-icons/fa";
 import styles from "./AddPost.module.scss";
-import { uploadFile } from "../../../../src/services/firebase/Helpers/uploadFile";
+import { uploadFile } from "../../firebase/Helpers/uploadFile";
 import { motion } from "framer-motion";
 
 type Props = {
