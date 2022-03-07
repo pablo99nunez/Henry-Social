@@ -3,6 +3,7 @@ import { BsGoogle, BsGithub } from "react-icons/bs";
 import { useNavigate, Link } from "react-router-dom";
 import { BiEdit } from "react-icons/bi";
 import { IconContext } from "react-icons";
+import { Helmet } from "react-helmet";
 
 import {
   signUpWithEmail,
@@ -100,13 +101,11 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
           delete newUser.lastName;
           await signUpWithEmail(newUser).then(() => {
             InfoAlert.fire("Usuario creado con exito");
+            navigate("/verification");
           });
         } else if (input.password != undefined) {
           await signInWithEmail(input.email, input.password);
         }
-
-        navigate("/");
-        setLoading(false);
       } catch (e) {
         console.error(e);
         InfoAlert.fire({ title: "Algo salio mal", icon: "error" });
@@ -204,6 +203,11 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
         <LoadingPage />
       ) : (
         <div id={style.cont}>
+          <Helmet>
+            <meta charSet="utf-8"/>
+            <meta name={`Página de ${action ? 'Inicio de sesión' : 'registro'} | Henry Social`}  content="Formulario"/>
+            <title>{action ? 'Iniciar Sesion' : ' Registrate'} | Henry Social</title>
+          </Helmet>
           <header>
             <Link to="/landing">
               <div id={style.title_cont}>

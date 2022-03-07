@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
+
 import FollowBar from "../../Components/FollowBar/FollowBar";
 import Chat from "../../Components/Chat/Chat";
 import Post from "../../Components/Post/Post";
@@ -89,7 +91,6 @@ export default function User() {
     if (user) {
       dispatch(getPosts(user._id));
       setLoading(false);
-      document.title = `${user?.name} | Henry Social`;
     }
   }, [user]);
 
@@ -101,6 +102,12 @@ export default function User() {
     <LoadingPage />
   ) : (
     <>
+      <Helmet>
+          <meta charSet="utf-8"/>
+          <meta name="Perfil" content="Información del usuario"/>
+          <title>{`${user?.name} | Henry Social`}</title>
+      </Helmet>
+      <NavSearch></NavSearch>
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
         <Settings
           cancel={(e?: any) => {
