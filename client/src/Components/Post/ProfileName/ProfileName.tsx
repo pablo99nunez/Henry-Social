@@ -20,9 +20,6 @@ export default function ProfileName({ post }: Props) {
         {post?.author?.name}
       </h3>
       <h4>{getMomento(post?.postTime)}</h4>
-      {typeof post?.companyImage === "string" && (
-        <img src={post?.companyImage} alt="company" />
-      )}
     </div>
   );
 }
