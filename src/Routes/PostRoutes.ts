@@ -41,6 +41,16 @@ router.post("/post", async (req, res) => {
   }
 });
 
+router.post("/editPost", async (req, res) => {
+  const { post, idPost } = req.body
+  try {
+    Post.findByIdAndUpdate(idPost, post)
+    .then((post) => res.json(post))
+  } catch (e) {
+    res.status(401).json({ error: e });
+  }
+});
+
 router.delete("/post", async (req, res) => {
   const { _id } = req.body;
   try {

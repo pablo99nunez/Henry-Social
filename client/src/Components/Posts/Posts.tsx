@@ -9,16 +9,20 @@ import Post from "../Post/Post";
 import AddPost from "../ModalAddPost/AddPost";
 import Modal from "../Modal/Modal";
 import { motion } from "framer-motion";
+import useUser from "../../Hooks/useUser";
 const Posts = () => {
   const dispatch = useDispatch();
   const posts = useSelector((state: IState) => state.results);
+  const user = useUser();
+  const filter = useSelector((state: IState) => state.filter);
   const [order, setOrder] = useState("Reciente");
   const [showModal, setShowModal] = useState(false);
+  const [edit, setEdit] = useState(false);
   const plusVariants = {
     normal: { scale: 1 },
     active: { scale: 50, rotateZ: 180, x: 200, zIndex: 5000 },
   };
-  
+
   const postsVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -54,13 +58,17 @@ const Posts = () => {
           >
             Relevante
           </h2>
-          {/* <h2>|</h2>
-          <h2
-            className={order === "Seguidos" ? styles.active : ""}
-            onClick={() => setOrder("Seguidos")}
-          >
-            Seguidos
-          </h2> */}
+          {filter === "pregunta" && user?.role !== "Estudiante" && (
+            <>
+              <h2>|</h2>
+              <h2
+                className={order === "Pendientes" ? styles.active : ""}
+                onClick={() => setOrder("Pendientes")}
+              >
+                Pendientes
+              </h2>
+            </>
+          )}
         </div>
         <motion.div
           variants={plusVariants}
@@ -74,11 +82,11 @@ const Posts = () => {
         </motion.div>
 
         <Modal
-          title="Crea una publicacion"
+          title={`${edit ? "Editar" : "Crea una"} publicacion`}
           isOpen={showModal}
           setIsOpen={setShowModal}
         >
-          <AddPost setOpen={setShowModal} />
+          <AddPost setOpen={setShowModal} edit={edit} setEdit={setEdit} />
         </Modal>
       </div>
       <motion.div
@@ -89,7 +97,7 @@ const Posts = () => {
       >
         {posts?.map((e) => (
           <motion.div key={e._id} variants={postVariants}>
-            <Post post={e}/>
+            <Post post={e} setEdit={setEdit} setShowModal={setShowModal} />
           </motion.div>
         ))}
       </motion.div>

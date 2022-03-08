@@ -23,6 +23,7 @@ import {
   GET_ONLINE_USERS,
   OPEN_CHAT,
   CLOSE_CHAT,
+  SET_POST_EDIT,
 } from "../actions/actions";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { io, Socket } from "socket.io-client";
@@ -33,9 +34,11 @@ export interface IState {
   posts: IPost[];
   results: IPost[];
   post: IPost | null;
+  postEdit: any;
   comments: Comment[];
   Users: IUser[];
   socket: Socket | null;
+  filter: string;
   usersOnline: any[];
   chats: any[];
 }
@@ -43,9 +46,11 @@ export interface IState {
 const initialState = {
   user: null,
   profile: null,
+  filter: "",
   posts: [],
   results: [],
   post: null,
+  postEdit: null,
   comments: [],
   Users: [],
   socket: null,
@@ -100,6 +105,7 @@ export default function rootReducer(state = initialState, action: IAction) {
         ...state,
         posts: action.payload,
         results,
+        filter: "all",
       };
     }
 
@@ -111,7 +117,7 @@ export default function rootReducer(state = initialState, action: IAction) {
     }
 
     case FILTER_BY_TYPE: {
-      let results = action.payload.sort((a: IPost, b: IPost) => {
+      let results = action.payload.data.sort((a: IPost, b: IPost) => {
         return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
       });
       if (state.user?.role === "Estudiante") {
@@ -124,6 +130,7 @@ export default function rootReducer(state = initialState, action: IAction) {
       return {
         ...state,
         results,
+        filter: action.payload.type,
       };
     }
 
@@ -205,6 +212,9 @@ export default function rootReducer(state = initialState, action: IAction) {
             });
           }
           break;
+        case "Pendientes": {
+          result = result?.filter((e: IPost) => !e.respuesta);
+        }
       }
       return {
         ...state,
@@ -246,7 +256,7 @@ export default function rootReducer(state = initialState, action: IAction) {
     case OPEN_CHAT: {
       return {
         ...state,
-        chats: state.chats.some((e) => e.username === action.payload.username)
+        chats: state.chats.some((e) => e.userB === action.payload.userB)
           ? state.chats
           : [...state.chats, action.payload],
       };
@@ -254,7 +264,14 @@ export default function rootReducer(state = initialState, action: IAction) {
     case CLOSE_CHAT: {
       return {
         ...state,
-        chats: state.chats.filter((e) => e.username !== action.payload),
+        chats: state.chats.filter((e) => e.userB !== action.payload),
+      };
+    }
+
+    case SET_POST_EDIT: {
+      return {
+        ...state,
+        postEdit: action.payload,
       };
     }
 

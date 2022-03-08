@@ -25,6 +25,7 @@ export const SET_SOCKET = "SET_SOCKET";
 export const GET_ONLINE_USERS = "GET_ONLINE_USERS";
 export const OPEN_CHAT = "OPEN_CHAT";
 export const CLOSE_CHAT = "CLOSE_CHAT";
+export const SET_POST_EDIT = "SET_POST_EDIT";
 
 export interface IAction {
   type: string;
@@ -94,7 +95,7 @@ export function getPosts(_id: string | undefined = "") {
   };
 }
 
-export function filterBySection(typePost: string) {
+export function filterByType(typePost: string) {
   return async (dispatch: Function) => {
     try {
       const res = await axios.post("/posts", {
@@ -104,7 +105,7 @@ export function filterBySection(typePost: string) {
       });
       return dispatch({
         type: FILTER_BY_TYPE,
-        payload: res.data,
+        payload: { data: res.data, type: typePost },
       });
     } catch (error) {
       console.log(error);
@@ -226,13 +227,16 @@ export function getOnlineUsers(users: any[]) {
     dispatch({ type: GET_ONLINE_USERS, payload: users });
 }
 
-export function openChat(username: string, name: string, userB: string) {
-  console.log(userB);
+export function openChat(name: string, userB: string, opened?: boolean) {
   return (dispatch: Function) =>
-    dispatch({ type: OPEN_CHAT, payload: { username, name, userB } });
+    dispatch({ type: OPEN_CHAT, payload: { name, userB, opened } });
 }
 
-export function closeChat(username: string) {
+export function closeChat(userB: string) {
+  return (dispatch: Function) => dispatch({ type: CLOSE_CHAT, payload: userB });
+}
+
+export function setPostEdit(post: any) {
   return (dispatch: Function) =>
-    dispatch({ type: CLOSE_CHAT, payload: username });
+    dispatch({ type: SET_POST_EDIT, payload: post });
 }

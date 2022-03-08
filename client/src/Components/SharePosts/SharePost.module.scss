@@ -1,17 +1,20 @@
 @import "../../Styles/variables.scss";
 
-.share{
-  width: 100%;
+.share {
+  width: 90%;
   display: flex;
+  background-color: $greyDark;
   padding: 10px;
+  box-shadow: inset 0px 10px 5px 0px #00000044;
+  border-radius: 0 0 8px 8px;
   height: max-content;
-  background: $blackLow;
   flex-direction: column;
-  textarea, input {
+  textarea,
+  input {
     outline: none;
     border: none;
     background: transparent;
-    &[type='submit']{
+    &[type="submit"] {
       padding: 10px;
       cursor: pointer;
       font-size: 14px;
@@ -19,16 +22,16 @@
       font-weight: bold;
       border-radius: 5px;
       background-color: $yellow;
-      transition: transform .5s ease;
-      &:hover{
+      transition: transform 0.5s ease;
+      &:hover {
         transform: scale(1.1);
       }
     }
   }
-  textarea{
+  textarea {
     width: 100%;
     resize: none;
-    color: $white;            
+    color: $white;
     font-size: 16px;
     margin-top: 15px;
     font-family: inherit;

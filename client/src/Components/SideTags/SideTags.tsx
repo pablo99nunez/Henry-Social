@@ -6,13 +6,14 @@ import styles from "./SideTags.module.scss";
 import { HiLink } from "react-icons/hi";
 import {
   filterByTag,
-  filterBySection,
+  filterByType,
   getPosts,
 } from "../../redux/actions/actions";
+import useUser from "../../Hooks/useUser";
 
 const SideTags = () => {
   const [activeSection, setActiveSection] = useState<any>("all");
-
+  const user = useUser();
   const posts = useSelector((state: IState) => state.posts);
   const dispatch = useDispatch();
   const [tags, setTags] = useState([]);
@@ -23,7 +24,7 @@ const SideTags = () => {
       if (e.target.id === "all") {
         return dispatch(getPosts());
       }
-      return dispatch(filterBySection(e.target.id));
+      return dispatch(filterByType(e.target.id));
     } else {
       setActiveSection("");
       return dispatch(filterByTag(e.target.title));
@@ -116,6 +117,7 @@ const SideTags = () => {
           >
             Preguntas Frecuentes
           </li>
+
           {/*  <li
             className={
               activeSection.recurso ? `${styles.active} category` : "category"
