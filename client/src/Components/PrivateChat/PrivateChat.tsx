@@ -14,16 +14,16 @@ import axios from "axios";
 
 type Props = {
   name: string;
-  username: string;
   userB: string;
+  opened?: boolean;
 };
 
-const PrivateChat = ({ name, username, userB }: Props) => {
+const PrivateChat = ({ name, userB, opened }: Props) => {
   const socket = useSelector((state: IState) => state.socket);
   const dispatch = useDispatch();
   const user = useUser();
   const input = useRef<HTMLTextAreaElement>(null);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(opened);
   const [message, setMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState();
   const [newMessage, setNewMessage] = useState(0);
@@ -82,7 +82,6 @@ const PrivateChat = ({ name, username, userB }: Props) => {
       axios
         .post("/conversation/find", { userA: user._id, userB })
         .then((res) => {
-          console.log(res);
           if (res.data) {
             setListMessage(res.data.messages);
           }
@@ -168,7 +167,7 @@ const PrivateChat = ({ name, username, userB }: Props) => {
               animate={{ opacity: 1 }}
               whileHover={{ color: "#ff2f2b" }}
               ref={close}
-              onClick={() => dispatch(closeChat(username))}
+              onClick={() => dispatch(closeChat(userB))}
             >
               <AiFillCloseCircle />
             </motion.div>

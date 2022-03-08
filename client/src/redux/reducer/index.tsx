@@ -246,7 +246,7 @@ export default function rootReducer(state = initialState, action: IAction) {
     case OPEN_CHAT: {
       return {
         ...state,
-        chats: state.chats.some((e) => e.username === action.payload.username)
+        chats: state.chats.some((e) => e.userB === action.payload.userB)
           ? state.chats
           : [...state.chats, action.payload],
       };
@@ -254,7 +254,7 @@ export default function rootReducer(state = initialState, action: IAction) {
     case CLOSE_CHAT: {
       return {
         ...state,
-        chats: state.chats.filter((e) => e.username !== action.payload),
+        chats: state.chats.filter((e) => e.userB !== action.payload),
       };
     }
 
