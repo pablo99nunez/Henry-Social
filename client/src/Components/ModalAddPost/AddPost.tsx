@@ -14,7 +14,7 @@ type Props = {
    setOpen: Function;
 };
 
-export function validate(input: any, typePost: string) {
+export function Validate(input: any, typePost: string) {
    const errors = {
       text: "",
       company: "",

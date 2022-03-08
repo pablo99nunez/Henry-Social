@@ -1,34 +1,18 @@
-<<<<<<< HEAD
 import React, { useState } from "react";
 import { BsChatSquareDots, BsTrophy } from "react-icons/bs";
 
 import { IoArrowRedoOutline, IoArrowRedoSharp } from "react-icons/io5";
 import { IPost } from "../../../../../src/models/Post";
-=======
-import React from "react";
->>>>>>> origin/dev
 import { Like } from "../../Like/Like";
 import style from "./Interactions.module.scss";
-import { BsChatSquareDots } from "react-icons/bs";
-import { IoArrowRedoOutline } from "react-icons/io5";
-import { IPost } from "../../../../../src/models/Post";
 
 type Props = {
-<<<<<<< HEAD
-   post: IPost;
-   setOpenComment: Function;
-   openComment: boolean;
-   openShare: boolean;
-   setOpenShare: Function;
-   shared: boolean;
-=======
   post: IPost;
   setOpenComment: React.Dispatch<React.SetStateAction<boolean>>;
   openComment: boolean;
   openShare: boolean;
   setOpenShare: React.Dispatch<React.SetStateAction<boolean>>;
   shared: boolean;
->>>>>>> origin/dev
 };
 
 export default function Interactions({
@@ -39,47 +23,6 @@ export default function Interactions({
    setOpenShare,
    shared,
 }: Props) {
-<<<<<<< HEAD
-   return (
-      <>
-         <div className={style.post_interacciones}>
-            <div className={style.post_like_comments}>
-               <Like post={post}></Like>
-               <div
-                  className={style.post_icon}
-                  onClick={() => setOpenComment(!openComment)}
-               >
-                  <div className={style.post_icon}>
-                     <BsChatSquareDots />
-                     <span>{post?.numComments}</span>
-                  </div>
-               </div>
-               <div
-                  className={style.post_icon}
-                  onClick={() => {
-                     setOpenShare(!openShare);
-                     contenedor(post);
-                  }}
-               >
-                  <IoArrowRedoOutline />
-                  <span>{post?.nShares}</span>
-               </div>
-               <div className={style.post_icon}>
-                  <BsTrophy />
-               </div>
-            </div>
-         </div>
-         <div
-            onClick={() => {
-               setOpenShare(!openShare);
-            }}
-         >
-            <IoArrowRedoOutline />
-            <span>{post?.nShares}</span>
-         </div>
-      </>
-   );
-=======
   return (
     <div 
       style={{display: shared ? 'none' : 'flex'}}
@@ -113,5 +56,4 @@ export default function Interactions({
       </div>
     </div>
   );
->>>>>>> origin/dev
 }
