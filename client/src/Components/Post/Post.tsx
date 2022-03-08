@@ -25,7 +25,7 @@ const Post: FC<Props> = ({ post, setEdit, setShowModal, shared = false }) => {
   return (
     <div
       className={style.postContainer}
-      style={{zIndex: shared ? '80' : '50'}}
+      style={{ zIndex: shared ? "80" : "50" }}
     >
       {!post?._id ? (
         <h2 style={{ textAlign: "center", color: "white" }}>
@@ -42,16 +42,14 @@ const Post: FC<Props> = ({ post, setEdit, setShowModal, shared = false }) => {
         >
           {post?.typePost !== "pregunta" && <ProfilePicture post={post} />}
           <div className={style.post_wrap}>
-            {post?.typePost !== "pregunta" && (
-              <ProfileName post={post}/>
-            )}
-            <Content post={post}/>
-            <Image post={post}/>
-            <Options 
-              post={post} 
+            {post?.typePost !== "pregunta" && <ProfileName post={post} />}
+            <Content post={post} />
+            <Image post={post} />
+            <Options
+              post={post}
               setEdit={setEdit}
               setShowModal={setShowModal}
-              shared={shared} 
+              shared={shared}
             />
             {(post.respuesta || post.typePost !== "pregunta") && (
               <Interactions
