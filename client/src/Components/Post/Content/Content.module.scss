@@ -1,23 +1,32 @@
-.linkEmpleo{
+.postEmpleo {
+  .linkEmpleo {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100px;
+    object-fit: scale-down;
+    margin-bottom: 0.8rem;
+  }
 }
 
-.contentBoom{
-    position: relative;
-    left: -25px;
-    padding-bottom: 1rem;
-    padding-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    img{
-        width: 100px;
-        height: auto;
-        margin-bottom: 0.8rem;
-    }
-    h4{
-        margin-bottom: 0.5rem;
-    }
+.contentBoom {
+  position: relative;
+  left: -25px;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 0.8rem;
+  }
+  h4 {
+    margin-bottom: 0.5rem;
+  }
 }

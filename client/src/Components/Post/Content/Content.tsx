@@ -2,7 +2,7 @@ import style from "./Content.module.scss";
 import { useNavigate } from "react-router-dom";
 import PostPregunta from "../Types/PostPregunta";
 import { IPost } from "../../../../../src/models/Post";
-import PostShare from './PostShare';
+import PostShare from "./PostShare";
 type Props = {
   post: IPost;
 };
@@ -18,33 +18,47 @@ export default function Content({ post }: Props) {
             {typeof post?.companyImage === "string" && (
               <img src={post?.companyImage} alt="company" />
             )}
-              <h4 /* ref={headerRef} */>
-                💥💥💥Contratad@ para {post?.company} como {post?.position} 
-                💥💥💥
-              </h4>
-              <div style={{fontSize:"15px"}}>
-              {post.body}
-              </div>
+            <h4 /* ref={headerRef} */>
+              💥💥💥Contratad@ para {post?.company} como {post?.position}
+              💥💥💥
+            </h4>
+            <div style={{ fontSize: "15px" }}>{post.body}</div>
           </div>
         );
       }
       case "empleo": {
         return (
-          <>
-            <p style={{fontSize:"20px"}}>Busqueda laboral:</p>
-            <p>
-              {post?.company} esta buscando {post?.position}
-            </p>
+          <div className={style.postEmpleo}>
+            <img
+              src={
+                typeof post?.companyImage === "string" ? post?.companyImage : ""
+              }
+              alt="company"
+            />
+
+            <h3>
+              <strong>{post?.company}</strong> esta buscando{" "}
+              <strong>{post?.position}</strong>
+            </h3>
             <br></br>
-            <div style={{fontSize:"14px"}}>
-            {post?.body}
-            </div>
+            <div style={{ fontSize: "14px" }}>{post?.body}</div>
             <br></br>
             <div className={style.linkEmpleo}>
-            <a href={post?.companyLink}><strong style={{color:"#1a5fc7"}}>Link de la oferta</strong> 📌</a>
-            {post?.salary ? <p> <strong style={{color:"#1a5fc7"}}>Salario:</strong> {post?.salary}</p> : <p></p>}
+              <a href={post?.companyLink}>
+                <strong style={{ color: "#1a5fc7" }}>Link de la oferta</strong>{" "}
+                📌
+              </a>
+              {post?.salary ? (
+                <p>
+                  {" "}
+                  <strong style={{ color: "#1a5fc7" }}>Salario:</strong>{" "}
+                  {post?.salary}
+                </p>
+              ) : (
+                <p></p>
+              )}
             </div>
-          </>
+          </div>
         );
       }
       case "share": {
@@ -59,10 +73,10 @@ export default function Content({ post }: Props) {
     }
   };
 
-  return ( 
+  return (
     <div
       onClick={() => {
-        post.typePost !== 'share' && navigate("/post/" + post._id);
+        post.typePost !== "share" && navigate("/post/" + post._id);
       }}
     >
       {renderType()}
