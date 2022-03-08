@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { BsChatSquareDots, BsTrophy } from "react-icons/bs";
+
+import { IoArrowRedoOutline, IoArrowRedoSharp } from "react-icons/io5";
+import { IPost } from "../../../../../src/models/Post";
 import { Like } from "../../Like/Like";
 import style from "./Interactions.module.scss";
-import { BsChatSquareDots } from "react-icons/bs";
-import { IoArrowRedoOutline } from "react-icons/io5";
-import { IPost } from "../../../../../src/models/Post";
 
 type Props = {
   post: IPost;
@@ -15,43 +16,45 @@ type Props = {
 };
 
 export default function Interactions({
-  post,
-  setOpenComment,
-  openComment,
-  openShare,
-  setOpenShare,
-  shared,
+   post,
+   setOpenComment,
+   openComment,
+   openShare,
+   setOpenShare,
+   shared,
 }: Props) {
   return (
+     <div>
     <div 
       style={{display: shared ? 'none' : 'flex'}}
       className={style.post_interacciones}
-    >
+      >
       <div className={style.post_like_comments}>
-        <Like post={post}></Like>
+         <Like post={post}></Like>
 
-        <div
-          className={style.post_icon}
-          onClick={() => {
+         <div
+            className={style.post_icon}
+            onClick={() => {
             setOpenComment(!openComment)
             openShare && setOpenShare(!openShare)
-          }}
-        >
-          <div className={style.post_icon}>
-              <BsChatSquareDots />
-              <span>{post?.numComments}</span>
-          </div>
-        </div>
+            }}
+         >
+            <div className={style.post_icon}>
+               <BsChatSquareDots />
+               <span>{post?.numComments}</span>
+            </div>
+         </div>
 
-        <div 
-          onClick={() => {
+         <div 
+            onClick={() => {
             setOpenShare(!openShare)
             openComment && setOpenComment(!openComment)
-          }}
-        >
-          <IoArrowRedoOutline />
-          <span>{post?.nShares}</span>
-        </div>
+            }}
+         >
+            <IoArrowRedoOutline />
+            <span>{post?.nShares}</span>
+         </div>
+      </div>
       </div>
     </div>
   );
