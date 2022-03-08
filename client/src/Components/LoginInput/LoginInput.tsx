@@ -15,6 +15,7 @@ interface InputProps {
   onBlur?(e: React.FocusEvent<HTMLInputElement>): void;
   onKeyUp?(e: React.KeyboardEvent<HTMLInputElement>): void;
   onKeyDown?(e: React.KeyboardEvent<HTMLInputElement>): void;
+  className?: string
 }
 
 const eyeStyles: CSS.Properties = {
@@ -33,6 +34,7 @@ export default function LoginInput({
   onKeyUp,
   onKeyDown,
   onBlur,
+  ...props
 }: InputProps): JSX.Element {
   const [visibility, setVisibility] = useState(false);
 
@@ -70,6 +72,7 @@ export default function LoginInput({
         </span>
       }
       <input
+        {...props}
         id={id}
         title={title}
         type={type === "password" && visibility ? "text" : type}

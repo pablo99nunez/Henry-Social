@@ -72,29 +72,25 @@ export default function ChangeKey({cancel}:any){
 		e.preventDefault();
 		if(input.newPassword.length === 0 || input.confirmPassword.length === 0) return;
 		if(input.newPassword !== input.confirmPassword) return;
-
+		
 		const newPassword = input.newPassword;
-
+		
 		if(!(/^(?=.*?[A-Z])(?=.*?[0-9]).{8,}$/.test(newPassword))) return;
-
-
-		console.log(input);
+		
 		if(auth.currentUser && user) {
-			console.log(auth.currentUser);
 			const credential = EmailAuthProvider.credential(user.email, input.currentPassword);
 				reauthenticateWithCredential(auth.currentUser, credential)
 					.then(userCredential => {
-						console.log(userCredential);
 						return updatePassword(userCredential.user, input.newPassword);
 					})
-					.then(r => {
+					.then(() => {
 						cancel(e, true);
 						InfoAlert.fire({
 							title: "Tu contraseña se ha actualizado con exito",
 							icon: "success"
 						})
 					})
-					.catch(err => {
+					.catch(() => {
 						cancel(e, true);
 						InfoAlert.fire({
 							title: "Tu contraseña actual es incorrecta",
