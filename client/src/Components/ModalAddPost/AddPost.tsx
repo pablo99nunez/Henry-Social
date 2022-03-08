@@ -1,24 +1,44 @@
 import axios from "axios";
-import React, { useState, FC } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, FC, useRef, Dispatch, SetStateAction } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import useUser from "../../Hooks/useUser";
-import { getPosts } from "../../redux/actions/actions";
+import { getPosts, setPostEdit } from "../../redux/actions/actions";
 import { InfoAlert } from "../Alert/Alert";
-import { FaUpload, FaCheck } from "react-icons/fa";
 import styles from "./AddPost.module.scss";
 import { uploadFile } from "../../firebase/Helpers/uploadFile";
 import { motion } from "framer-motion";
 import validate from "./validate";
+import { IState } from "../../redux/reducer";
 type Props = {
   // eslint-disable-next-line @typescript-eslint/ban-types
   setOpen: Function;
+  edit: boolean;
+  setEdit: Dispatch<SetStateAction<boolean>>;
 };
 
-const AddPost: FC<Props> = ({ setOpen }) => {
+const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
   const user = useUser();
   const dispatch = useDispatch();
+  const imagePost = useRef<HTMLInputElement>(null)
+  const imageComPost = useRef<HTMLInputElement>(null)
+  const { postEdit } = useSelector((state: IState) => state);
+  const [typePost, setTypePost] = useState(postEdit?.typePost || "normal");
 
-  const [typePost, setTypePost] = useState("normal");
+  const [post, setPost] = useState({
+    text: postEdit?.body || "",
+    image: postEdit?.image || null,
+    company: postEdit?.company || "",
+    position: postEdit?.position || "",
+    companyLink: postEdit?.companyLink || "",
+    companyImage: postEdit?.companyImage || null,
+    pregunta: postEdit?.companyImage || "",
+    salary: postEdit?.salary || 0,
+    // costoClases: "0",
+    // tecnologíaClases: "",
+    // temasClases: "",
+    tags: postEdit?.tags || [],
+  });
+
   const [errors, setErrors] = useState({
     text: "",
     company: "",
@@ -31,27 +51,18 @@ const AddPost: FC<Props> = ({ setOpen }) => {
     pregunta: "",
     getError: false,
   });
-  const [post, setPost] = useState<any>({
-    text: "",
-    image: null,
-    company: "",
-    position: "",
-    companyLink: "",
-    companyImage: null,
-    salary: 0,
-    costoClases: "0",
-    temasClases: "",
-    tecnologíaClases: "",
-    tags: [],
-  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files)
     if (
       (e.target.name === "companyImage" ||
         (e.target.name === "image" && e.target.files)) &&
       e.target.files
-    )
-      setPost({ ...post, [e.target.name]: e.target.files[0] });
+    ) 
+      setPost({ 
+        ...post,
+        [e.target.name]: URL.createObjectURL(e.target.files[0]) 
+      })
     else setPost({ ...post, [e.target.name]: e.target.value });
 
     setErrors(
@@ -68,6 +79,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       )
     );
   };
+  
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const name = e.currentTarget.name;
@@ -78,10 +90,11 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       position: "",
       companyLink: "",
       companyImage: null,
-      salary: "",
-      costoClases: "0",
-      temasClases: "",
-      tecnologíaClases: "",
+      pregunta: "",
+      salary: 0,
+      // costoClases: 0,
+      // temasClases: "",
+      // tecnologíaClases: "",
       tags: [],
     });
     if (name === typePost) {
@@ -103,36 +116,46 @@ const AddPost: FC<Props> = ({ setOpen }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const downloadURLCompany =
-      post.companyImage instanceof File
-        ? await uploadFile(post.companyImage)
-        : post.companyImage;
+    const downloadURLCompany = 
+      imageComPost.current?.files && imageComPost.current?.files[0] instanceof File 
+      ? await uploadFile(imageComPost.current?.files[0])
+      : post.companyImage
+    const downloadURLImage = 
+    imagePost.current?.files && imagePost?.current?.files[0] instanceof File 
+      ? await uploadFile(imagePost?.current?.files[0])
+      : post.image
+    
+    if ((user && post.text) || edit) {
+      const dates = {
+        body: post.text,
+        company: post.company,
+        position: post.position,
+        companyLink: post.companyLink,
+        companyImage: downloadURLCompany,
+        pregunta: post.pregunta,
+        salary: post.salary,
+        typePost,
+        image: downloadURLImage,
+        tags: post.tags,
+        author: user
+      }
+      const ruta = edit ? `/editPost` : `/post`
+      const content = edit ? {
+        post: dates,
+        idPost: postEdit?._id || null
+      } : dates
 
-    const downloadURLImage =
-      post.image instanceof File ? await uploadFile(post.image) : post.image;
-
-    if (user && post.text) {
       axios
-        .post(`/post`, {
-          body: post.text,
-          company: post.company,
-          position: post.position,
-          companyLink: post.companyLink,
-          companyImage: downloadURLCompany,
-          pregunta: post.pregunta,
-          salary: post.salary,
-          author: user,
-          typePost,
-          tags: post.tags,
-          image: downloadURLImage,
-        })
+        .post(ruta, content)
         .then((data) => {
           InfoAlert.fire({
-            title: "Publicado con éxito",
+            title: `${edit ? 'Editado' : 'Publicado'} con éxito"`,
             icon: "success",
           });
           setOpen(false);
+          setEdit(false);
           dispatch(getPosts());
+          postEdit && dispatch(setPostEdit(null))
           return data;
         })
         .catch((error) => console.error("Error:", error));
@@ -176,12 +199,18 @@ const AddPost: FC<Props> = ({ setOpen }) => {
         scaleY: 1,
       }}
     >
+      {console.log(post.image)}
       <div className={styles.add_post_content}>
         {typePost === "pregunta" ? (
           <div className={styles.content__inputs}>
             <div className={styles.input_with_error}>
               <span className={styles.input_effects}>
-                <input type="text" name="pregunta" placeholder="." />{" "}
+                <input 
+                  type="text" 
+                  name="pregunta" 
+                  placeholder="." 
+                  defaultValue={post.pregunta}
+                />{" "}
                 <span>¿Cual es tu pregunta?</span>
               </span>
               {errors?.pregunta && <p>{errors.pregunta}</p>}
@@ -199,11 +228,11 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                       onChange={(e) => handleChange(e)}
                       name="tecnologíaClases"
                       placeholder="Tecnología"
-                      defaultValue={post.tecnologíaClases}
+                      // defaultValue={post.tecnologíaClases}
                       required
                     />
                     {/* {errors?.tecnologíaClases && (
-                                 <p>{errors.tecnologíaClases}</p>
+                                  <p>{errors.tecnologíaClases}</p>
                               )} */}
                   </div>
                   <input
@@ -211,13 +240,13 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                     name="temasClases"
                     onChange={(e) => handleChange(e)}
                     placeholder="Temas"
-                    defaultValue={post.temasClases}
+                    // defaultValue={post.temasClases}
                   />
                   <input
                     name="costoClases"
                     onChange={(e) => handleChange(e)}
                     type="number"
-                    defaultValue={post.costoClases}
+                    // defaultValue={post.costoClases}
                     placeholder="Costo de las clases"
                   />
                 </>
@@ -254,9 +283,9 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   <input
                     type="file"
                     accept=".png"
+                    ref={imageComPost}
                     name="companyImage"
                     onChange={(e) => handleChange(e)}
-                    defaultValue={post.companyImage}
                     placeholder="Imagen de la empresa"
                   />
                 </>
@@ -286,7 +315,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                         name="salary"
                         defaultValue={post.salary}
                         placeholder="."
-                      ></input>
+                      />
                       <span>Salario (opcional)</span>
                     </span>
                     {errors?.salary && <p>{errors.salary}</p>}
@@ -311,39 +340,36 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   ? "Describe tu duda."
                   : "¿Que estas pensando?"
               }
+              defaultValue={post.text}
+              onChange={(e: any) => handleChange(e)}
               className={post.text ? styles.active : ""}
-            ></textarea>
+            />
             {errors?.text && <p>{errors.text}</p>}
           </div>
           {typePost === "multimedia" && (
-            <div className={styles.boxImage}>
-              <label
+            <>
+              <label 
                 htmlFor="image"
-                title={
-                  post.image ? "Cambia tu archivo" : "Selecciona tu archivo"
-                }
+                className={`${styles.boxImage} ${post.image && styles.withImage}`}
               >
-                {post.image ? (
-                  <>
-                    <FaCheck />
-                    <p>{post.image.name}</p>
-                  </>
-                ) : (
-                  <FaUpload />
-                )}
+                <div className={styles.hoverImage}>
+                  <span>{post.image ? "Cambiar imagen" : "Seleccionar imagen"}</span>  
+                </div>
+                {post.image && <img src={post.image}/>}
               </label>
-
-              <input
+              <input 
+                id="image"
                 type="file"
                 name="image"
-                id="image"
+                ref={imagePost}
+                accept="image/*"
                 onChange={(e) => handleChange(e)}
               />
-            </div>
+            </>
           )}
         </div>
       </div>
-      <div className={styles.add_post_tags}>
+      <div className={styles.add_post_tags} >
         {types.map((t, i) => (
           <button
             key={i}
@@ -359,10 +385,16 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       <div className={styles.add_post_buttons}>
         <input
           type="submit"
-          value="Publicar"
+          value={edit ? 'Editar' : 'Publicar'}
           className={errors.getError ? styles.disabledSubmit : ""}
         />
-        <button type="button" onClick={() => setOpen(false)}>
+        <button type="button" onClick={() => {
+          setOpen(false)
+          setTimeout(() => {
+            setEdit(false);
+            postEdit && dispatch(setPostEdit(null))
+          }, 2000)
+        }}>
           Cancelar
         </button>
       </div>

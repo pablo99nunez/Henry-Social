@@ -14,6 +14,7 @@ const Posts = () => {
   const posts = useSelector((state: IState) => state.results);
   const [order, setOrder] = useState("Reciente");
   const [showModal, setShowModal] = useState(false);
+  const [edit, setEdit] = useState(false);
   const plusVariants = {
     normal: { scale: 1 },
     active: { scale: 50, rotateZ: 180, x: 200, zIndex: 5000 },
@@ -74,11 +75,11 @@ const Posts = () => {
         </motion.div>
 
         <Modal
-          title="Crea una publicacion"
+          title= {`${edit ? 'Editar' : 'Crea una'} publicacion`}
           isOpen={showModal}
           setIsOpen={setShowModal}
         >
-          <AddPost setOpen={setShowModal} />
+          <AddPost setOpen={setShowModal} edit={edit} setEdit={setEdit} />
         </Modal>
       </div>
       <motion.div
@@ -89,7 +90,7 @@ const Posts = () => {
       >
         {posts?.map((e) => (
           <motion.div key={e._id} variants={postVariants}>
-            <Post post={e}/>
+            <Post post={e} setEdit={setEdit} setShowModal={setShowModal}/>
           </motion.div>
         ))}
       </motion.div>

@@ -25,6 +25,7 @@ export const SET_SOCKET = "SET_SOCKET";
 export const GET_ONLINE_USERS = "GET_ONLINE_USERS";
 export const OPEN_CHAT = "OPEN_CHAT";
 export const CLOSE_CHAT = "CLOSE_CHAT";
+export const SET_POST_EDIT = "SET_POST_EDIT";
 
 export interface IAction {
   type: string;
@@ -235,4 +236,9 @@ export function openChat(username: string, name: string, userB: string) {
 export function closeChat(username: string) {
   return (dispatch: Function) =>
     dispatch({ type: CLOSE_CHAT, payload: username });
+}
+
+export function setPostEdit(post: any) {
+  return (dispatch: Function) =>
+    dispatch({ type: SET_POST_EDIT, payload: post });
 }

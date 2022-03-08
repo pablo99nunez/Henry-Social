@@ -23,6 +23,7 @@ import {
   GET_ONLINE_USERS,
   OPEN_CHAT,
   CLOSE_CHAT,
+  SET_POST_EDIT,
 } from "../actions/actions";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { io, Socket } from "socket.io-client";
@@ -33,6 +34,7 @@ export interface IState {
   posts: IPost[];
   results: IPost[];
   post: IPost | null;
+  postEdit: any;
   comments: Comment[];
   Users: IUser[];
   socket: Socket | null;
@@ -46,6 +48,7 @@ const initialState = {
   posts: [],
   results: [],
   post: null,
+  postEdit: null,
   comments: [],
   Users: [],
   socket: null,
@@ -255,6 +258,13 @@ export default function rootReducer(state = initialState, action: IAction) {
       return {
         ...state,
         chats: state.chats.filter((e) => e.username !== action.payload),
+      };
+    }
+
+    case SET_POST_EDIT: {
+      return {
+        ...state,
+        postEdit: action.payload,
       };
     }
 
