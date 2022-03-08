@@ -115,9 +115,7 @@ export default function User() {
           }}
         />
       </Modal>
-
       <div className={style.User}>
-        <NavSearch></NavSearch>
         <div className={style.head_profile}>
           <div className={style.head_profile_central}>
             <div className={style.photo}>
