@@ -1,4 +1,4 @@
-import { useState, FC } from "react";
+import { useState, FC, Dispatch, SetStateAction } from "react";
 import style from "./Post.module.scss";
 import { IPost } from "../../../../src/models/Post";
 import CommentModal from "../CommentModal/CommentModal";
@@ -13,10 +13,12 @@ import { SharePost } from "../SharePosts/SharePost";
 
 type Props = {
   post: IPost;
+  setEdit: Dispatch<SetStateAction<boolean>>;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
   shared?: boolean;
 };
 
-const Post: FC<Props> = ({ post, shared = false }) => {
+const Post: FC<Props> = ({ post, setEdit, setShowModal, shared = false }) => {
   const [openShare, setOpenShare] = useState(false);
   const [openComment, setOpenComment] = useState(false);
 
@@ -47,6 +49,8 @@ const Post: FC<Props> = ({ post, shared = false }) => {
             <Image post={post}/>
             <Options 
               post={post} 
+              setEdit={setEdit}
+              setShowModal={setShowModal}
               shared={shared} 
             />
             {(post.respuesta || post.typePost !== "pregunta") && (
