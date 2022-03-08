@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
+import { BsChatSquareDots, BsTrophy } from "react-icons/bs";
+
+import { IoArrowRedoOutline, IoArrowRedoSharp } from "react-icons/io5";
+import { IPost } from "../../../../../src/models/Post";
 import { Like } from "../../Like/Like";
 import style from "./Interactions.module.scss";
-import { BsChatSquareDots } from "react-icons/bs";
-import { IoArrowRedoOutline } from "react-icons/io5";
-import { IPost } from "../../../../../src/models/Post";
 
 type Props = {
-   post: IPost;
-   setOpenComment: React.Dispatch<React.SetStateAction<boolean>>;
-   openComment: boolean;
-   openShare: boolean;
-   setOpenShare: React.Dispatch<React.SetStateAction<boolean>>;
-   shared: boolean;
+  post: IPost;
+  setOpenComment: React.Dispatch<React.SetStateAction<boolean>>;
+  openComment: boolean;
+  openShare: boolean;
+  setOpenShare: React.Dispatch<React.SetStateAction<boolean>>;
+  shared: boolean;
 };
 
 export default function Interactions({
@@ -22,8 +23,9 @@ export default function Interactions({
    setOpenShare,
    shared,
 }: Props) {
-   return (
-      <div 
+  return (
+     <div>
+    <div 
       style={{display: shared ? 'none' : 'flex'}}
       className={style.post_interacciones}
       >
@@ -54,5 +56,6 @@ export default function Interactions({
          </div>
       </div>
       </div>
-   );
+    </div>
+  );
 }
