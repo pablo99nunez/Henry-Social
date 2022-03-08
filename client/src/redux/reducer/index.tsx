@@ -38,6 +38,7 @@ export interface IState {
   comments: Comment[];
   Users: IUser[];
   socket: Socket | null;
+  filter: string;
   usersOnline: any[];
   chats: any[];
 }
@@ -45,6 +46,7 @@ export interface IState {
 const initialState = {
   user: null,
   profile: null,
+  filter: "",
   posts: [],
   results: [],
   post: null,
@@ -114,7 +116,7 @@ export default function rootReducer(state = initialState, action: IAction) {
     }
 
     case FILTER_BY_TYPE: {
-      let results = action.payload.sort((a: IPost, b: IPost) => {
+      let results = action.payload.data.sort((a: IPost, b: IPost) => {
         return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
       });
       if (state.user?.role === "Estudiante") {
@@ -127,6 +129,7 @@ export default function rootReducer(state = initialState, action: IAction) {
       return {
         ...state,
         results,
+        filter: action.payload.type,
       };
     }
 
@@ -208,6 +211,9 @@ export default function rootReducer(state = initialState, action: IAction) {
             });
           }
           break;
+        case "Pendientes": {
+          result = result?.filter((e: IPost) => !e.respuesta);
+        }
       }
       return {
         ...state,

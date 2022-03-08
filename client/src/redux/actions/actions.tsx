@@ -95,7 +95,7 @@ export function getPosts(_id: string | undefined = "") {
   };
 }
 
-export function filterBySection(typePost: string) {
+export function filterByType(typePost: string) {
   return async (dispatch: Function) => {
     try {
       const res = await axios.post("/posts", {
@@ -105,7 +105,7 @@ export function filterBySection(typePost: string) {
       });
       return dispatch({
         type: FILTER_BY_TYPE,
-        payload: res.data,
+        payload: { data: res.data, type: typePost },
       });
     } catch (error) {
       console.log(error);
