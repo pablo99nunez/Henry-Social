@@ -22,10 +22,13 @@ import valForm from "./valForm";
 import axios from "axios";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
-
 let userExists: boolean;
 
-export default function Login({ USER_ACTION, action, handleActionChange}: any): JSX.Element {
+export default function Login({
+  USER_ACTION,
+  action,
+  handleActionChange,
+}: any): JSX.Element {
   const [input, setInput] = useState<any>({
     firstName: "",
     lastName: "",
@@ -135,9 +138,14 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
           });
           navigate("/");
         }
-      } catch (e) {
-        console.error(e);
-        InfoAlert.fire({ title: "Algo salio mal", icon: "error" });
+      } catch (e: any) {
+        console.log(e);
+        if (e.message === "EMAIL_EXIST") {
+          InfoAlert.fire({
+            title: "Ya existe una cuenta con este correo",
+            icon: "error",
+          });
+        } else InfoAlert.fire({ title: "Algo salio mal" + e, icon: "error" });
       }
     }
   };
@@ -202,7 +210,7 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
 
   const resetPassword = () => {
     setPassword(true);
-  }
+  };
 
   return (
     <>
@@ -210,10 +218,17 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
         <LoadingPage />
       ) : (
         <div id={style.cont}>
-           <Helmet>
-            <meta charSet="utf-8"/>
-            <meta name={`Página de ${action ? 'Inicio de sesión' : 'registro'} | Henry Social`}  content="Formulario"/>
-            <title>{action ? 'Iniciar Sesion' : ' Registrate'} | Henry Social</title>
+          <Helmet>
+            <meta charSet="utf-8" />
+            <meta
+              name={`Página de ${
+                action ? "Inicio de sesión" : "registro"
+              } | Henry Social`}
+              content="Formulario"
+            />
+            <title>
+              {action ? "Iniciar Sesion" : " Registrate"} | Henry Social
+            </title>
           </Helmet>
           <header>
             <Link to="/landing">
@@ -232,14 +247,18 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
                 : "Registrarse"}{" "}
             </button>
           </header>
-      <Modal isOpen={password} setIsOpen={setPassword} title="Reestablecer contraseña">
-        <ResetPassword
-          cancel={(e?: any) => {
-            e && e.preventDefault();
-            return setPassword(false);
-          }}
-        />
-      </Modal>
+          <Modal
+            isOpen={password}
+            setIsOpen={setPassword}
+            title="Reestablecer contraseña"
+          >
+            <ResetPassword
+              cancel={(e?: any) => {
+                e && e.preventDefault();
+                return setPassword(false);
+              }}
+            />
+          </Modal>
           <div id={style.form_cont}>
             <form onSubmit={handleSubmit}>
               <h1>
@@ -330,18 +349,21 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
                 <></>
               )}
               <div>
-                {
-                  action === USER_ACTION.signUp ? <> </>
-                  : <p onClick={resetPassword} className={style.forgotPassword}>Olvidaste tu contraseña?</p>
-                }
+                {action === USER_ACTION.signUp ? (
+                  <> </>
+                ) : (
+                  <p onClick={resetPassword} className={style.forgotPassword}>
+                    Olvidaste tu contraseña?
+                  </p>
+                )}
               </div>
               <div>
-              <button disabled={loading} type="submit" ref={btn}>
-                {" "}
-                {action === USER_ACTION.signUp
-                  ? "Registrate"
-                  : "Inicia sesión"}{" "}
-              </button>
+                <button disabled={loading} type="submit" ref={btn}>
+                  {" "}
+                  {action === USER_ACTION.signUp
+                    ? "Registrate"
+                    : "Inicia sesión"}{" "}
+                </button>
               </div>
             </form>
             <div id={style.alt_cont}>

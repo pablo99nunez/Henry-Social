@@ -13,8 +13,8 @@ import { SharePost } from "../SharePosts/SharePost";
 
 type Props = {
   post: IPost;
-  setEdit: Dispatch<SetStateAction<boolean>>;
-  setShowModal: Dispatch<SetStateAction<boolean>>;
+  setEdit?: Dispatch<SetStateAction<boolean>>;
+  setShowModal?: Dispatch<SetStateAction<boolean>>;
   shared?: boolean;
 };
 

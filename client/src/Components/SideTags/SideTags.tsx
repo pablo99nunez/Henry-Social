@@ -142,14 +142,15 @@ const SideTags = () => {
         <h2>Tags Populares</h2>
         <nav className={styles.aside_tags_enlaces}>
           <ul>
-            {tags.length &&
-              tags.map((e) => {
-                return (
-                  <li className="tags" onClick={handleClick} title={e[0]}>
-                    {e[0]}
-                  </li>
-                );
-              })}
+            {tags.length
+              ? tags.map((e) => {
+                  return (
+                    <li className="tags" onClick={handleClick} title={e[0]}>
+                      {e[0]}
+                    </li>
+                  );
+                })
+              : null}
           </ul>
         </nav>
       </div>

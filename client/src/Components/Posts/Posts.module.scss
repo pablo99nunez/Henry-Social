@@ -1,6 +1,25 @@
 @import "../../Styles/variables.scss";
 .posts_wrap {
   position: relative;
+  .newPosts {
+    background-color: $violet;
+    color: $white;
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid $grey;
+    align-items: center;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    svg {
+      color: $white;
+      font-size: 2rem;
+    }
+  }
+
   .noPosts {
     margin: 0 auto;
     color: white;

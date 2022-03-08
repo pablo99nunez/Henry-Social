@@ -24,6 +24,7 @@ const PrivateChat = ({ name, userB, opened }: Props) => {
   const user = useUser();
   const input = useRef<HTMLTextAreaElement>(null);
   const [open, setOpen] = useState(opened);
+  const [sending, setSending] = useState(false);
   const [message, setMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState();
   const [newMessage, setNewMessage] = useState(0);
@@ -54,8 +55,10 @@ const PrivateChat = ({ name, userB, opened }: Props) => {
       message &&
       user?.username &&
       typeof user.avatar === "string" &&
-      user.name
+      user.name &&
+      !sending
     ) {
+      setSending(true);
       const messageData = {
         receiver: userB,
         sender: user._id,
@@ -71,6 +74,7 @@ const PrivateChat = ({ name, userB, opened }: Props) => {
       socket?.emit("send_private_message", messageData);
       setListMessage([...listMessage, messageData]);
       setMessage("");
+      setSending(false);
     }
   };
   useEffect(() => {
@@ -216,7 +220,19 @@ const PrivateChat = ({ name, userB, opened }: Props) => {
               e.key === "Enter" && SendMessage();
             }} */
           />
-          <IoSend onClick={SendMessage}></IoSend>
+          <motion.div
+            animate={
+              sending
+                ? {
+                    rotateZ: 360,
+                    transition: { repeat: Infinity, ease: "linear" },
+                  }
+                : { rotateZ: 0 }
+            }
+            className={`${sending && style.disabled}`}
+          >
+            <IoSend onClick={SendMessage}></IoSend>
+          </motion.div>
         </div>
       </motion.div>
     </>
