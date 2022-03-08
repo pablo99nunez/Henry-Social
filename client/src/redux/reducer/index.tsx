@@ -105,6 +105,7 @@ export default function rootReducer(state = initialState, action: IAction) {
         ...state,
         posts: action.payload,
         results,
+        filter: "all",
       };
     }
 
