@@ -14,6 +14,7 @@ export default function useLogin() {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user && user.email) {
+        //if(user.emailVerified) navigate("/")
         if(!user.emailVerified) navigate("/verification");
         dispatch(getUser(user.email));
         dispatch(setSocket());

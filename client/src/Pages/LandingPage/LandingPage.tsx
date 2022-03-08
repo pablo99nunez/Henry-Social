@@ -1,5 +1,7 @@
 import style from './LandingPage.module.scss'
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux';
+import { IState } from '../../redux/reducer';
 import chat from '../../assets/images/Chat.gif'
 import donations from '../../assets/images/Donations.gif'
 import post from '../../assets/images/Post.png'
@@ -7,7 +9,7 @@ import questions from '../../assets/images/Questions.png'
 import welcome from '../../assets/images/Welcome1.png'
 
 export default function LandingPage({ handleActionChange }:any){
-
+    const user = useSelector((state: IState) => state.user)
     return(
         <div>
             <div id={style.cont}>
@@ -19,20 +21,28 @@ export default function LandingPage({ handleActionChange }:any){
                         />
                         <h1> | Social </h1>
                     </div>
+                    {
+                        user?.username ? 
+                        <div className={style.headers_buttons}>
+                            <Link to='/'>
+                            <button className={style.act_btn}>Volver a la Home</button>
+                            </Link>
+                        </div> :
                     <div className={style.headers_buttons}>
-                    <Link to='/login' >
-                        <button className={style.act_btn}
-                            onClick={handleActionChange}
-                            value="logIn"
-                        >Ingresar</button>
-                    </Link>
-                    <Link to='/login'>
-                        <button className={style.act_btn2}
-                            onClick={handleActionChange}
-                            value="signUp"
-                        >Registrarse</button>
-                    </Link>
+                            <Link to='/login' >
+                            <button className={style.act_btn}
+                                onClick={handleActionChange}
+                                value="logIn"
+                            >Ingresar</button>
+                        </Link>
+                        <Link to='/login'>
+                            <button className={style.act_btn2}
+                                onClick={handleActionChange}
+                                value="signUp"
+                            >Registrarse</button>
+                        </Link>
                     </div>
+                    }
                 </header>
                 <div id={style.first_section}>
                     <h1>Henry Social</h1>

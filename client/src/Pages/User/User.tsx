@@ -106,7 +106,7 @@ export default function User() {
           <meta name="Perfil" content="Información del usuario"/>
           <title>{`${user?.name} | Henry Social`}</title>
       </Helmet>
-      <NavSearch/>
+      <NavSearch />
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
         <Settings
           cancel={(e?: any) => {

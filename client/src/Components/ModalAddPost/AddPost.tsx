@@ -19,8 +19,8 @@ type Props = {
 const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
   const user = useUser();
   const dispatch = useDispatch();
-  const imagePost = useRef<HTMLInputElement>(null)
-  const imageComPost = useRef<HTMLInputElement>(null)
+  const imagePost = useRef<HTMLInputElement>(null);
+  const imageComPost = useRef<HTMLInputElement>(null);
   const { postEdit } = useSelector((state: IState) => state);
   const [typePost, setTypePost] = useState(postEdit?.typePost || "normal");
 
@@ -52,19 +52,17 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
     getError: false,
   });
 
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (
       (e.target.name === "companyImage" ||
         (e.target.name === "image" && e.target.files)) &&
       e.target.files
-    ) 
-      setPost({ 
+    )
+      setPost({
         ...post,
-        [e.target.name]: URL.createObjectURL(e.target.files[0]) 
-      })
+        [e.target.name]: URL.createObjectURL(e.target.files[0]),
+      });
     else setPost({ ...post, [e.target.name]: e.target.value });
-
     setErrors(
       validate(
         {
@@ -79,7 +77,6 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
       )
     );
   };
-  
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const name = e.currentTarget.name;
@@ -116,15 +113,16 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const downloadURLCompany = 
-      imageComPost.current?.files && imageComPost.current?.files[0] instanceof File 
-      ? await uploadFile(imageComPost.current?.files[0])
-      : post.companyImage
-    const downloadURLImage = 
-    imagePost.current?.files && imagePost?.current?.files[0] instanceof File 
-      ? await uploadFile(imagePost?.current?.files[0])
-      : post.image
-    
+    const downloadURLCompany =
+      imageComPost.current?.files &&
+      imageComPost.current?.files[0] instanceof File
+        ? await uploadFile(imageComPost.current?.files[0])
+        : post.companyImage;
+    const downloadURLImage =
+      imagePost.current?.files && imagePost?.current?.files[0] instanceof File
+        ? await uploadFile(imagePost?.current?.files[0])
+        : post.image;
+
     if ((user && post.text) || edit) {
       const dates = {
         body: post.text,
@@ -137,25 +135,27 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
         typePost,
         image: downloadURLImage,
         tags: post.tags,
-        author: user
-      }
-      const ruta = edit ? `/editPost` : `/post`
-      const content = edit ? {
-        post: dates,
-        idPost: postEdit?._id || null
-      } : dates
+        author: user,
+      };
+      const ruta = edit ? `/editPost` : `/post`;
+      const content = edit
+        ? {
+            post: dates,
+            idPost: postEdit?._id || null,
+          }
+        : dates;
 
       axios
         .post(ruta, content)
         .then((data) => {
           InfoAlert.fire({
-            title: `${edit ? 'Editado' : 'Publicado'} con éxito"`,
+            title: `${edit ? "Editado" : "Publicado"} con éxito"`,
             icon: "success",
           });
           setOpen(false);
           setEdit(false);
           dispatch(getPosts());
-          postEdit && dispatch(setPostEdit(null))
+          postEdit && dispatch(setPostEdit(null));
           return data;
         })
         .catch((error) => console.error("Error:", error));
@@ -189,7 +189,6 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
       text: "Pregunta",
     },
   ];
-
   return (
     <motion.form
       onSubmit={(e) => handleSubmit(e)}
@@ -199,17 +198,17 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
         scaleY: 1,
       }}
     >
-      {console.log(post.image)}
       <div className={styles.add_post_content}>
         {typePost === "pregunta" ? (
           <div className={styles.content__inputs}>
             <div className={styles.input_with_error}>
               <span className={styles.input_effects}>
-                <input 
-                  type="text" 
-                  name="pregunta" 
-                  placeholder="." 
+                <input
+                  type="text"
+                  name="pregunta"
+                  placeholder="."
                   defaultValue={post.pregunta}
+                  onChange={(e) => handleChange(e)}
                 />{" "}
                 <span>¿Cual es tu pregunta?</span>
               </span>
@@ -348,16 +347,20 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
           </div>
           {typePost === "multimedia" && (
             <>
-              <label 
+              <label
                 htmlFor="image"
-                className={`${styles.boxImage} ${post.image && styles.withImage}`}
+                className={`${styles.boxImage} ${
+                  post.image && styles.withImage
+                }`}
               >
                 <div className={styles.hoverImage}>
-                  <span>{post.image ? "Cambiar imagen" : "Seleccionar imagen"}</span>  
+                  <span>
+                    {post.image ? "Cambiar imagen" : "Seleccionar imagen"}
+                  </span>
                 </div>
-                {post.image && <img src={post.image}/>}
+                {post.image && <img src={post.image} />}
               </label>
-              <input 
+              <input
                 id="image"
                 type="file"
                 name="image"
@@ -369,7 +372,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
           )}
         </div>
       </div>
-      <div className={styles.add_post_tags} >
+      <div className={styles.add_post_tags}>
         {types.map((t, i) => (
           <button
             key={i}
@@ -385,16 +388,19 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
       <div className={styles.add_post_buttons}>
         <input
           type="submit"
-          value={edit ? 'Editar' : 'Publicar'}
+          value={edit ? "Editar" : "Publicar"}
           className={errors.getError ? styles.disabledSubmit : ""}
         />
-        <button type="button" onClick={() => {
-          setOpen(false)
-          setTimeout(() => {
-            setEdit(false);
-            postEdit && dispatch(setPostEdit(null))
-          }, 2000)
-        }}>
+        <button
+          type="button"
+          onClick={() => {
+            setOpen(false);
+            setTimeout(() => {
+              setEdit(false);
+              postEdit && dispatch(setPostEdit(null));
+            }, 2000);
+          }}
+        >
           Cancelar
         </button>
       </div>
