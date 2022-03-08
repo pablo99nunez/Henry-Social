@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import useUser from "../../Hooks/useUser";
-import io from "socket.io-client";
 import style from "./Chat.module.scss";
 import { BiChevronsUp } from "react-icons/bi";
 import { IoSend } from "react-icons/io5";
@@ -8,7 +7,7 @@ import Avatar from "../Avatar/Avatar";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
-
+import getTime from "../../helpers/getTime"
 const Chat = () => {
   const socket = useSelector((state: IState) => state.socket);
   const user = useUser();
@@ -31,12 +30,8 @@ const Chat = () => {
         name: user?.name,
         avatar: user?.avatar,
         message: message,
-        time:
-          new Date(Date.now()).getHours() +
-          ":" +
-          new Date(Date.now()).getMinutes(),
+        time:getTime()
       };
-
       socket?.emit("send_message", messageData);
       setListMessage([...listMessage, messageData]);
       setMessage("");

@@ -23,8 +23,10 @@ import {
   GET_ONLINE_USERS,
   OPEN_CHAT,
   CLOSE_CHAT,
+  GET_CONVERSATION,
+  SEND_MESSAGE
 } from "../actions/actions";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
+
 import { io, Socket } from "socket.io-client";
 
 export interface IState {
@@ -38,6 +40,7 @@ export interface IState {
   socket: Socket | null;
   usersOnline: any[];
   chats: any[];
+  conversation:any[];
 }
 
 const initialState = {
@@ -51,6 +54,7 @@ const initialState = {
   socket: null,
   usersOnline: [],
   chats: [],
+  conversation:[]
 } as IState;
 
 const urlBackend = import.meta.env.PROD
@@ -241,6 +245,18 @@ export default function rootReducer(state = initialState, action: IAction) {
         ...state,
         usersOnline: action.payload,
       };
+    }
+    case GET_CONVERSATION: {
+      return {
+        ...state,
+        conversation:action.payload
+      }
+    }
+    case SEND_MESSAGE: {
+      return {
+        ...state,
+        conversation:action.payload
+      }
     }
 
     case OPEN_CHAT: {

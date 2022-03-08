@@ -9,8 +9,8 @@ import Avatar from "../Avatar/Avatar";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
-import { closeChat } from "../../redux/actions/actions";
-import axios from "axios";
+import { closeChat, getConversation, sendMessage } from "../../redux/actions/actions";
+import getTime from "../../helpers/getTime"
 
 type Props = {
   name: string;
@@ -20,6 +20,7 @@ type Props = {
 
 const PrivateChat = ({ name, username, userB }: Props) => {
   const socket = useSelector((state: IState) => state.socket);
+  const conversation = useSelector((state: IState) => state.conversation);
   const dispatch = useDispatch();
   const user = useUser();
   const input = useRef<HTMLTextAreaElement>(null);
@@ -34,28 +35,12 @@ const PrivateChat = ({ name, username, userB }: Props) => {
   const [isHovering, setIsHovering] = useState(false);
 
   const handleClick = (e: any) => {
+    dispatch(getConversation(user?._id,userB));
     e.target !== close.current && setOpen(!open);
   };
 
-  function getTime(): string {
-    const hours =
-      new Date(Date.now()).getHours().toString().length == 1
-        ? `0${new Date(Date.now()).getHours()}`
-        : new Date(Date.now()).getHours();
-    const minutes =
-      new Date(Date.now()).getMinutes().toString().length == 1
-        ? `0${new Date(Date.now()).getMinutes()}`
-        : new Date(Date.now()).getMinutes();
-    return hours + ":" + minutes;
-  }
-
-  const SendMessage = async () => {
-    if (
-      message 
-    ) {
-      console.log("informacion del mensjae",message)
-      console.log("user B",userB)
-      console.log("user id",user?._id)
+  const SendMessage = () => {
+    if (message ) {
       const messageData = {
         receiver: userB,
         sender: user?._id,
@@ -64,40 +49,28 @@ const PrivateChat = ({ name, username, userB }: Props) => {
         message: message,
         time: getTime(),
       } as IMessage;
-      await axios.post("/conversation/message", messageData);
-      console.log("Enviando mensaje desde cliente");
+      dispatch(sendMessage(messageData));
       socket?.emit("send_private_message", messageData);
       setListMessage([...listMessage, messageData]);
-      setMessage("");
     }
+    setMessage("");
   };
   useEffect(() => {
-    if (user?._id) {
-      axios
-        .post("/conversation/find", { userA: user._id, userB })
-        .then((res) => {
-          console.log(res);
-          if (res.data) {
-            setListMessage(res.data.messages);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  }, []);
-
-  useEffect(() => {
-    console.log("useChat",chat)
+    dispatch(getConversation(user?._id,userB));
+    setListMessage(conversation)
+  }, [dispatch,user?._id]);
+  
+  useEffect(()=>{
     chat.current?.addEventListener("mouseenter", () => {
       setIsHovering(true);
     });
     chat.current?.addEventListener("mouseleave", () => {
       setIsHovering(false);
     });
-  }, []);
+  },[])
 
   useEffect(() => {
+    dispatch(getConversation(user?._id,userB));
     if (arrivalMessage) {
       setListMessage([...listMessage, arrivalMessage]);
       !open && setNewMessage(newMessage + 1);
@@ -105,21 +78,18 @@ const PrivateChat = ({ name, username, userB }: Props) => {
   }, [arrivalMessage]);
 
   useEffect(() => {
+
     if (open) {
       input.current?.focus();
       setNewMessage(0);
     }
+    
   }, [open]);
 
   useEffect(() => {
-    socket.on("receive_private_message", (data) => {
-      console.log("recibiendo mensaje", "Mensaje", data.message,"id del sender", data.sender);
-      if (data.sender === userB) {
-        setArrivalMessage(data);
-        play();
-      }
+    socket?.on("receive_private_message", (data) => {
+      setArrivalMessage(data);
     });
-
     scrollToMe.current?.scrollIntoView({ block: "end" });
   }, [listMessage]);
 
@@ -203,7 +173,7 @@ const PrivateChat = ({ name, username, userB }: Props) => {
             value={message}
             placeholder="Escribe algo..."
             onChange={(e) => {
-              if (e.target.value.slice(-1) === "\n")  SendMessage();
+              if (e.target.value.slice(-1) === "\n") return SendMessage();
               setMessage(e.target.value);
             }}
             ref={input}

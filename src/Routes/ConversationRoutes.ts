@@ -38,9 +38,7 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/message", async (req, res) => {
-  const { avatar, message, name, receiver, sender, time } =
-    req.body as IMessage;
-  console.log(req.body);
+  const { avatar, message, name, receiver, sender, time } = req.body as IMessage;
   if (avatar && message && name && receiver && sender && time) {
     try {
       let conversation = await Conversation.findOne({

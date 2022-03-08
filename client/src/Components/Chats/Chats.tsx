@@ -11,12 +11,10 @@ export default function Chats() {
   const chats = useSelector((state: IState) => state.chats);
   const dispatch = useDispatch();
   const socket = useSelector((state: IState) => state.socket);
+
   useEffect(() => {
     socket?.on("receive_private_message", (data) => {
-      console.log(data)
-      if (!chats.some((e) => e.name === data.name)) {
-        dispatch(openChat(data.sender, data.name, data.receiver));
-      }
+      dispatch(openChat(data.sender, data.name, data.receiver));
     });
   }, [socket,dispatch]);
   console.log(chats)
@@ -24,9 +22,7 @@ export default function Chats() {
     <div className={style.chats}>
       <AnimatePresence>
         <Chat></Chat>
-
         {chats?.map((e, i) => {
-          console.log(e)
           return (
             <PrivateChat
               username={e.username}

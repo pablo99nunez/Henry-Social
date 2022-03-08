@@ -3,6 +3,7 @@ import axios from "axios";
 // import { func } from "joi";
 import { IPost } from "../../../../src/models/Post";
 import { IUser } from "../../../../src/models/User";
+import { IMessage } from "../../../../src/models/Conversation";
 import { closeSession } from "../../firebase/login-methods";
 export const GET_USER = "GET_USER";
 export const FOLLOW_USER = "FOLLOW_USER";
@@ -25,7 +26,8 @@ export const SET_SOCKET = "SET_SOCKET";
 export const GET_ONLINE_USERS = "GET_ONLINE_USERS";
 export const OPEN_CHAT = "OPEN_CHAT";
 export const CLOSE_CHAT = "CLOSE_CHAT";
-
+export const GET_CONVERSATION = "GET_CONVERSATION";
+export const SEND_MESSAGE = "SEND_MESSAGE";
 export interface IAction {
   type: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -226,13 +228,42 @@ export function getOnlineUsers(users: any[]) {
     dispatch({ type: GET_ONLINE_USERS, payload: users });
 }
 
+export function sendMessage(messageData:IMessage) {
+  return async (dispatch:Function) => {
+    try {
+        const message = await axios.post("/conversation/message",messageData);
+        console.log(message.data.messages)
+        return dispatch({
+          type: SEND_MESSAGE,
+          payload: message.data.messages
+        })
+    } catch (error) {
+        console.log(error)
+    }
+  }
+}
+
+export function getConversation(userA: string | undefined, userB: string) {
+    return async (dispatch:Function) => {
+      try {
+          const conversation = await axios.post("/conversation/find", { userA,userB });
+          console.log("action getconversation",conversation)
+          return dispatch({
+            type: GET_CONVERSATION,
+            payload: conversation.data.messages
+          })
+      } catch (error) {
+          console.log(error)
+      }
+    }
+}
 export function openChat(username: string, name: string, userB: string) {
   console.log(userB);
   return (dispatch: Function) =>
     dispatch({ type: OPEN_CHAT, payload: { username, name, userB } });
 }
 
-export function closeChat(username: string) {
+export function closeChat(name: string) {
   return (dispatch: Function) =>
-    dispatch({ type: CLOSE_CHAT, payload: username });
+    dispatch({ type: CLOSE_CHAT, payload: name });
 }

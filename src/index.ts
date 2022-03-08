@@ -118,8 +118,8 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("receive_message", data);
   });
   socket.on("send_private_message", (data) => {
+    console.log(data)
     const destiny = users.find((e) => e.userId === data.receiver);
-    console.log("Devolviendo mensaje al cliente", destiny);
 
     if (destiny) {
       socket.to(destiny.socketId).emit("receive_private_message", data);
