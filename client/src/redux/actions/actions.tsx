@@ -50,7 +50,7 @@ export function editUser(_id: string, changes: any) {
 
 export function signOut() {
   return async (dispatch: Function) => {
-    await closeSession();
+    // await closeSession();
     return dispatch({ type: SIGN_OUT });
   };
 }
