@@ -236,7 +236,8 @@ export default function Settings({ cancel }: any) {
     <>
       <Modal isOpen={key} setIsOpen={setKey} title="Cambiar contraseña">
         <ChangeKey
-          cancel={(e?: any) => {
+          cancel={(e?: any, closeParent?: boolean,) => {
+            if(closeParent) cancel();
             e && e.preventDefault();
             return setKey(false);
           }}

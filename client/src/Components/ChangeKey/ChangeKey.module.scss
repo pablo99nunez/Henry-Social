@@ -29,46 +29,51 @@ $isDark: false;
 				margin-top: calc(var(--placeholderSize) + var(--placeholderInputGap));
 				padding-bottom: .75em;
 
-					input{
-						height: 4vh;
-						width: 30vh;
-						font-size: inherit;
-						font-weight: bold;
-						background-color: transparent;
-						border: none;
-						border-bottom: var(--underlineSize) solid var(--underlineColorInactive);
-						transition: border var(--animationSpeed);
-						will-change: border;
-						outline: none;
+				input{
+					height: 4vh;
+					width: 100%;
+					font-size: inherit;
+					font-weight: bold;
+					background-color: transparent;
+					border: none;
+					border-bottom: var(--underlineSize) solid var(--underlineColorInactive);
+					transition: border var(--animationSpeed);
+					will-change: border;
+					outline: none;
 
-						&::placeholder{
-							color:transparent;
-						}
+					&::placeholder{
+						color:transparent;
+					}
 
+					&+span{
+						text-align: left;
+						position: absolute;
+						left: .05em;
+						top: 0;
+						transition: top var(--animationSpeed), font-size var(--animationSpeed);
+						will-change: top, font-size;
+						pointer-events: none;
+						width: 100%;
+						-webkit-transition: top var(--animationSpeed), font-size var(--animationSpeed);
+						-moz-transition: top var(--animationSpeed), font-size var(--animationSpeed);
+						-ms-transition: top var(--animationSpeed), font-size var(--animationSpeed);
+						-o-transition: top var(--animationSpeed), font-size var(--animationSpeed);
+					}
+
+					&:focus,
+					&:not(:placeholder-shown){
+						border-bottom-color: var(--underlineColorActive);
 						&+span{
-							text-align: left;
-							position: absolute;
-							left: .05em;
-							top: 0;
-							transition: top var(--animationSpeed), font-size var(--animationSpeed);
-							will-change: top, font-size;
-							pointer-events: none;
-							width: 100%;
-							-webkit-transition: top var(--animationSpeed), font-size var(--animationSpeed);
-							-moz-transition: top var(--animationSpeed), font-size var(--animationSpeed);
-							-ms-transition: top var(--animationSpeed), font-size var(--animationSpeed);
-							-o-transition: top var(--animationSpeed), font-size var(--animationSpeed);
-						}
-
-						&:focus,
-						&:not(:placeholder-shown){
-							border-bottom-color: var(--underlineColorActive);
-							&+span{
-									top:calc(-1em - 2 * var(--placeholderInputGap));
-									font-size: var(--placeholderSize)
-							}
+								top:calc(-1em - 2 * var(--placeholderInputGap));
+								font-size: var(--placeholderSize)
 						}
 					}
+				}
+
+				#inv_new_ps,
+				#inv_conf_ps{
+					border-color: red;
+				}
 			}
 		}
 
