@@ -46,14 +46,15 @@ const AddPost: FC<Props> = ({ setOpen }) => {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    
     if (
       (e.target.name === "companyImage" ||
         (e.target.name === "image" && e.target.files)) &&
       e.target.files
     )
       setPost({ ...post, [e.target.name]: e.target.files[0] });
+      
     else setPost({ ...post, [e.target.name]: e.target.value });
-
     setErrors(
       validate(
         {
@@ -166,7 +167,6 @@ const AddPost: FC<Props> = ({ setOpen }) => {
       text: "Pregunta",
     },
   ];
-
   return (
     <motion.form
       onSubmit={(e) => handleSubmit(e)}
@@ -181,7 +181,7 @@ const AddPost: FC<Props> = ({ setOpen }) => {
           <div className={styles.content__inputs}>
             <div className={styles.input_with_error}>
               <span className={styles.input_effects}>
-                <input type="text" name="pregunta" placeholder="." />{" "}
+                <input type="text" name="pregunta" placeholder="." onChange={(e) => handleChange(e)}/>{" "}
                 <span>¿Cual es tu pregunta?</span>
               </span>
               {errors?.pregunta && <p>{errors.pregunta}</p>}
@@ -311,8 +311,10 @@ const AddPost: FC<Props> = ({ setOpen }) => {
                   ? "Describe tu duda."
                   : "¿Que estas pensando?"
               }
+              onChange={(e) => handleChange(e)}
               className={post.text ? styles.active : ""}
-            ></textarea>
+            >
+            </textarea>
             {errors?.text && <p>{errors.text}</p>}
           </div>
           {typePost === "multimedia" && (

@@ -73,13 +73,12 @@ export default function validate(input: any, typePost: string) {
      if (!input.pregunta || input.pregunta.trim() === "") {
         errors.pregunta = "Debes definir tu pregunta";
      }
-
-     if (errors.pregunta) {
-        errors.getError = true;
-     } else {
-        errors.getError = false;
-     }
   }
+  if (errors.pregunta) {
+   errors.getError = true;
+} else {
+   errors.getError = false;
+}
 
   /* if (!input.tecnologíaClases) {
      errors.tecnologíaClases = "Nombre de tecnologia es requerido";
