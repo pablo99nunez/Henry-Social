@@ -19,7 +19,7 @@ type Props = {
 };
 
 const PrivateChat = ({ name, username, userB }: Props) => {
-  const socket = useSelector((state: IState) => state.socket);
+  const socket = useSelector((state: IState) => state.socket); 
   const dispatch = useDispatch();
   const user = useUser();
   const input = useRef<HTMLTextAreaElement>(null);
