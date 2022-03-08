@@ -24,35 +24,37 @@ export default function Interactions({
    shared,
 }: Props) {
   return (
+     <div>
     <div 
       style={{display: shared ? 'none' : 'flex'}}
       className={style.post_interacciones}
-    >
+      >
       <div className={style.post_like_comments}>
-        <Like post={post}></Like>
+         <Like post={post}></Like>
 
-        <div
-          className={style.post_icon}
-          onClick={() => {
+         <div
+            className={style.post_icon}
+            onClick={() => {
             setOpenComment(!openComment)
             openShare && setOpenShare(!openShare)
-          }}
-        >
-          <div className={style.post_icon}>
-              <BsChatSquareDots />
-              <span>{post?.numComments}</span>
-          </div>
-        </div>
+            }}
+         >
+            <div className={style.post_icon}>
+               <BsChatSquareDots />
+               <span>{post?.numComments}</span>
+            </div>
+         </div>
 
-        <div 
-          onClick={() => {
+         <div 
+            onClick={() => {
             setOpenShare(!openShare)
             openComment && setOpenComment(!openComment)
-          }}
-        >
-          <IoArrowRedoOutline />
-          <span>{post?.nShares}</span>
-        </div>
+            }}
+         >
+            <IoArrowRedoOutline />
+            <span>{post?.nShares}</span>
+         </div>
+      </div>
       </div>
     </div>
   );

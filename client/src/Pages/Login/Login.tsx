@@ -16,6 +16,8 @@ import useUser from "../../Hooks/useUser";
 import Button from "../../Components/Button/Button";
 import { InfoAlert } from "../../Components/Alert/Alert";
 import LoginInput from "../../Components/LoginInput/LoginInput";
+import Modal from "../../Components/Modal/Modal";
+import ResetPassword from "../../Components/ResetPassword/ResetPassword";
 import valForm from "./valForm";
 import axios from "axios";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
@@ -46,6 +48,7 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
   const [formComplete, setFromComplete] = useState(false);
   const [userAlreadyExist, setUserAlreadyExist] = useState(false);
   const [newAvatar, setNewAvatar] = useState<string | null>(null);
+  const [password, setPassword] = useState(false);
   const navigate = useNavigate();
   const user = useUser();
   const btn = useRef<HTMLButtonElement>(null);
@@ -197,6 +200,10 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
     if (formComplete && btn.current) btn.current.disabled = false;
   }
 
+  const resetPassword = () => {
+    setPassword(true);
+  }
+
   return (
     <>
       {loading ? (
@@ -225,6 +232,14 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
                 : "Registrarse"}{" "}
             </button>
           </header>
+          <Modal isOpen={password} setIsOpen={setPassword} title="Reestablecer contraseña">
+        <ResetPassword
+          cancel={(e?: any) => {
+            e && e.preventDefault();
+            return setPassword(false);
+          }}
+        />
+      </Modal>
           <div id={style.form_cont}>
             <form onSubmit={handleSubmit}>
               <h1>
@@ -243,7 +258,7 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
               <LoginInput
                 valid={!errors.password}
                 id="password"
-                title="Mínimo 8 caracteres, obligarotio un número y una mayúscula."
+                title="Mínimo 8 caracteres, obligatorio un número y una mayúscula."
                 type="password"
                 name="password"
                 placeholder="Contraseña"
@@ -314,12 +329,20 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
               ) : (
                 <></>
               )}
+              <div>
+                {
+                  action === USER_ACTION.signUp ? <> </>
+                  : <a onClick={resetPassword} className={style.forgotPassword}>Olvidaste tu contraseña?</a>
+                }
+              </div>
+              <div>
               <button disabled={loading} type="submit" ref={btn}>
                 {" "}
                 {action === USER_ACTION.signUp
                   ? "Registrate"
                   : "Inicia sesión"}{" "}
               </button>
+              </div>
             </form>
             <div id={style.alt_cont}>
               <Button
