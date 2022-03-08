@@ -14,16 +14,18 @@ export default function Content({ post }: Props) {
     switch (post?.typePost) {
       case "boom": {
         return (
-          <>
-            <h4 style={{textAlign:"center"}}/* ref={headerRef} */>
-              💥💥💥Contratad@ para {post?.company} como {post?.position} 
-              💥💥💥
-            </h4>
-            <br></br>
-            <div style={{fontSize:"15px"}}>
-            {post.body}
-            </div>
-          </>
+          <div className={style.contentBoom}>
+            {typeof post?.companyImage === "string" && (
+              <img src={post?.companyImage} alt="company" />
+            )}
+              <h4 /* ref={headerRef} */>
+                💥💥💥Contratad@ para {post?.company} como {post?.position} 
+                💥💥💥
+              </h4>
+              <div style={{fontSize:"15px"}}>
+              {post.body}
+              </div>
+          </div>
         );
       }
       case "empleo": {
