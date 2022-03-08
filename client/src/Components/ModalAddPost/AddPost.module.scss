@@ -17,103 +17,97 @@ $isDark: false;
 .modal_add_post {
   gap: 1rem;
   max-width: 100%;
-  @include flex-column;
-  justify-content: space-evenly;
   .add_post_content {
     gap: 20px;
     width: 100%;
-    @include flex-column;
+    margin-bottom: 15px;
     .content__inputs {
       gap: 20px;
       width: 100%;
-      @include flex-column;
-      .content__inputs {
-        gap: 20px;
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        input {
-          width: 40%;
-          border: none;
-          outline: none;
-          font-size: 18px;
-          background: none;
-          color: black;
-          padding: 15px 0px;
-          border-bottom: 1px solid $blackLow;
-          &::placeholder {
-            color: $blackLow;
-          }
-        }
-        .input_with_error {
-          width: 40%;
-          .input_effects {
-            position: relative;
-            display: inline-block;
-            font-size: 1.2em;
-            margin-top: calc(
-              var(--placeholderSize) + var(--placeholderInputGap)
-            );
-            padding-bottom: 0.75em;
-          }
-          input {
-            width: 100%;
-            height: 4vh;
-            font-size: inherit;
-            font-weight: bold;
-            background-color: transparent;
-            border: none;
-            border-bottom: var(--underlineSize) solid
-              var(--underlineColorInactive);
-            transition: border var(--animationSpeed);
-            will-change: border;
-            outline: none;
-            &::placeholder {
-              color: transparent;
-            }
-            & + span {
-              text-align: left;
-              position: absolute;
-              left: 0.05em;
-              top: 0;
-              transition: top var(--animationSpeed),
-                font-size var(--animationSpeed);
-              will-change: top, font-size;
-              pointer-events: none;
-              width: 100%;
-            }
-            &:focus,
-            &:not(:placeholder-shown) {
-              border-bottom-color: var(--underlineColorActive);
-              & + span {
-                top: calc(-1em - 2 * var(--placeholderInputGap));
-                font-size: var(--placeholderSize);
-              }
-            }
-          }
-          p {
-            margin-top: 0.2rem;
-            color: #df1313;
-          }
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      input {
+        width: 40%;
+        border: none;
+        outline: none;
+        font-size: 18px;
+        background: none;
+        color: black;
+        padding: 15px 0px;
+        border-bottom: 1px solid $blackLow;
+        &::placeholder {
+          color: $blackLow;
         }
       }
       .input_with_error {
         width: 40%;
-
+        .input_effects {
+          position: relative;
+          display: inline-block;
+          font-size: 1.2em;
+          margin-top: calc(
+            var(--placeholderSize) + var(--placeholderInputGap)
+          );
+          padding-bottom: 0.75em;
+        }
         input {
           width: 100%;
+          height: 4vh;
+          font-size: inherit;
+          font-weight: bold;
+          background-color: transparent;
+          border: none;
+          border-bottom: var(--underlineSize) solid
+            var(--underlineColorInactive);
+          transition: border var(--animationSpeed);
+          will-change: border;
+          outline: none;
+          &::placeholder {
+            color: transparent;
+          }
+          & + span {
+            text-align: left;
+            position: absolute;
+            left: 0.05em;
+            top: 0;
+            transition: top var(--animationSpeed),
+              font-size var(--animationSpeed);
+            will-change: top, font-size;
+            pointer-events: none;
+            width: 100%;
+          }
+          &:focus,
+          &:not(:placeholder-shown) {
+            border-bottom-color: var(--underlineColorActive);
+            & + span {
+              top: calc(-1em - 2 * var(--placeholderInputGap));
+              font-size: var(--placeholderSize);
+            }
+          }
         }
-
         p {
           margin-top: 0.2rem;
           color: #df1313;
         }
       }
     }
+    .input_with_error {
+      width: 40%;
+
+      input {
+        width: 100%;
+      }
+
+      p {
+        margin-top: 0.2rem;
+        color: #df1313;
+      }
+    }
     .content__textImage {
-      gap: 15px;
+      gap: 10px;
       display: flex;
+      flex-direction: column;
       textarea {
         width: 100%;
         height: 70px;
@@ -134,23 +128,43 @@ $isDark: false;
           border: #df1313 2px solid;
         }
       }
-      .boxImage {
-        width: 50%;
-        label {
-          gap: 10px;
-          height: 100%;
-          cursor: pointer;
+      label {
+        cursor: pointer;
+        margin: 0 auto;
+        width: 200px;
+        height: 150px;
+        position: relative;
+        .hoverImage{
+          width: 100%;
+          height: 99%;
+          color: white;
+          font-size: 18px;
+          font-weight: bold;
           @include flex-aic;
-          text-align: center;
-          justify-content: center;
-          background-color: $greyLight;
-        }
-        input {
-          width: 0;
-          height: 0;
           position: absolute;
-          visibility: hidden;
+          justify-content: center;  
+          background-color: rgba(0, 0, 0, 0.5);
         }
+        img{
+          height: 250px;
+        }
+        &.withImage{
+          width: max-content;
+          height: max-content;
+          .hoverImage{
+            opacity: 0;
+            transition: opacity .2s ease;
+            &:hover{
+              opacity: 1;
+            }
+          }
+        }
+      }
+      input {
+        width: 0;
+        height: 0;
+        position: absolute;
+        visibility: hidden;
       }
 
       .textarea_with_error {
@@ -231,26 +245,6 @@ $isDark: false;
     }
     input {
       background-color: gray;
-    }
-  }
-}
-@media screen and (max-width: 524px) {
-  .modal_add_post .add_post_content {
-    .content__inputs {
-      flex-direction: column;
-      input {
-        width: 100%;
-        padding: 10px 0px;
-      }
-    }
-    .content__textImage {
-      gap: 5px;
-      flex-direction: column;
-      .boxImage {
-        width: 100%;
-        height: 50px;
-        max-height: max-content;
-      }
     }
   }
 }

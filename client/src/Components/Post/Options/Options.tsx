@@ -1,20 +1,26 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
-import { FaBan } from "react-icons/fa";
+import { FaEdit , FaBan } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { IPost } from "../../../../../src/models/Post";
 import useUser from "../../../Hooks/useUser";
 import { InfoAlert } from "../../Alert/Alert";
 import style from "./Options.module.scss";
+import { useDispatch } from "react-redux";
+import { getPosts, setPostEdit } from "../../../redux/actions/actions";
+
+
 type Props = {
-  post: IPost;
-  setEliminated: Function;
-  shared: boolean;
+    post: IPost;
+    setEdit: Dispatch<SetStateAction<boolean>>;
+    setShowModal: Dispatch<SetStateAction<boolean>>;  
+    shared: boolean;
 };
 
-export default function Options({ post, setEliminated, shared }: Props) {
+export default function Options({ post, setEdit, setShowModal, shared }: Props) {
   const userLogeado = useUser();
+  const dispatch = useDispatch();
   const [demand, setDemand] = useState(false);
   const [options, setOptions] = useState(false);
 
@@ -39,6 +45,12 @@ export default function Options({ post, setEliminated, shared }: Props) {
     setDemand(true);
   };
 
+  const handleEdit = async () => {
+    setEdit(true)
+    setShowModal(true)
+    dispatch(setPostEdit(post))
+  };
+
   const handleDelete = async () => {
     const redirect = location.href.includes("post");
     await axios
@@ -52,33 +64,39 @@ export default function Options({ post, setEliminated, shared }: Props) {
             : "Tu publicación fue eliminada.",
           icon: "success",
         });
+        dispatch(getPosts());
         return data;
       })
       .catch((error) => console.error("Error:", error));
-    setEliminated(true);
     if (redirect) {
       navigate("/");
     }
   };
+
   return !demand ? (
-    <div
-      style={{ display: shared ? "none" : "flex" }}
+    <div 
+      style={{display: shared ? 'none' : 'flex'}}
       className={style.post_options}
     >
       <BsThreeDots onClick={() => setOptions(!options)} />
       <div
-        className={`${style.post_optionsList} ${
-          options ? style.view : style.hide
-        }`}
+        className={`${style.post_optionsList} 
+          ${options ? style.view : style.hide}`}
       >
         {userLogeado?.username === post?.author?.username ? (
-          <p className={style.item} onClick={handleDelete}>
-            <FaBan />
-            Eliminar publicación.
-          </p>
+          <>
+            <p className={style.item} onClick={handleEdit}>
+              <FaEdit/>
+              Editar publicación
+            </p>
+            <p className={style.item} onClick={handleDelete}>
+              <FaBan/>
+              Eliminar publicación
+            </p>
+          </>
         ) : (
           <p className={style.item} onClick={handleDemand}>
-            <FaBan />
+            <FaBan/>
             Denunciar publicación.
           </p>
         )}

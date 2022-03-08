@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 import FollowBar from "../../Components/FollowBar/FollowBar";
 import Chat from "../../Components/Chat/Chat";
 import Post from "../../Components/Post/Post";
@@ -10,6 +11,7 @@ import github from "../../assets/icons/github2.png";
 import coffee from "../../assets/icons/coffee-cup3.png";
 import portafolioIcon from "../../assets/icons/portafolio.png";
 import NavSearch from "../../Components/NavSearch/NavSearch";
+import SideMessages from "../../Components/SideMessages/SideMessages";
 import Button from "../../Components/Button/Button";
 import Settings from "../../Components/Settings/Settings";
 import useUser from "../../Hooks/useUser";
@@ -88,7 +90,6 @@ export default function User() {
     if (user) {
       dispatch(getPosts(user._id));
       setLoading(false);
-      document.title = `${user?.name} | Henry Social`;
     }
   }, [user]);
 
@@ -100,6 +101,12 @@ export default function User() {
     <LoadingPage />
   ) : (
     <>
+      <Helmet>
+          <meta charSet="utf-8"/>
+          <meta name="Perfil" content="Información del usuario"/>
+          <title>{`${user?.name} | Henry Social`}</title>
+      </Helmet>
+      <NavSearch/>
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
         <Settings
           cancel={(e?: any) => {
@@ -108,9 +115,7 @@ export default function User() {
           }}
         />
       </Modal>
-
       <div className={style.User}>
-        <NavSearch></NavSearch>
         <div className={style.head_profile}>
           <div className={style.head_profile_central}>
             <div className={style.photo}>
@@ -285,7 +290,9 @@ export default function User() {
                 <Post post={e} key={i}></Post>
               ))}
             </div>
-            <div className={style.mistery_box}>{"Mysterious NavBar"}</div>
+            <div className={style.mistery_box}>
+              <SideMessages />
+            </div>
           </div>
         </div>
         <Chats></Chats>

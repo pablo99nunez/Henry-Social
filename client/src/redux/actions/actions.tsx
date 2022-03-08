@@ -25,6 +25,7 @@ export const SET_SOCKET = "SET_SOCKET";
 export const GET_ONLINE_USERS = "GET_ONLINE_USERS";
 export const OPEN_CHAT = "OPEN_CHAT";
 export const CLOSE_CHAT = "CLOSE_CHAT";
+export const SET_POST_EDIT = "SET_POST_EDIT";
 
 export interface IAction {
   type: string;
@@ -50,7 +51,7 @@ export function editUser(_id: string, changes: any) {
 
 export function signOut() {
   return async (dispatch: Function) => {
-    await closeSession();
+    // await closeSession();
     return dispatch({ type: SIGN_OUT });
   };
 }
@@ -233,4 +234,9 @@ export function openChat(name: string, userB: string, opened?: boolean) {
 
 export function closeChat(userB: string) {
   return (dispatch: Function) => dispatch({ type: CLOSE_CHAT, payload: userB });
+}
+
+export function setPostEdit(post: any) {
+  return (dispatch: Function) =>
+    dispatch({ type: SET_POST_EDIT, payload: post });
 }

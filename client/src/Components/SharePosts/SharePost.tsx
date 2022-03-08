@@ -1,11 +1,5 @@
 import axios from "axios";
-import React, {
-  useRef,
-  FC,
-  MutableRefObject,
-  DetailedHTMLProps,
-  TextareaHTMLAttributes,
-} from "react";
+import React, { useRef, FC } from "react";
 import { InfoAlert } from "../Alert/Alert";
 import useUser from "../../Hooks/useUser";
 import styles from "./SharePost.module.scss";
@@ -23,40 +17,39 @@ export const SharePost: FC<Props> = ({ post, openShare, setOpenShare }) => {
   const user = useUser();
   const dispatch = useDispatch();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const textarea = textareaRef.current
 
   const autosize = () => {
-    const textarea = textareaRef.current;
-    setTimeout(function () {
-      if (textarea) {
-        textarea.style.cssText = "height:auto; padding:0";
-        textarea.style.cssText =
-          "height:" + (textarea.scrollHeight + 10) + "px";
-      }
-    }, 0);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (user && textareaRef.current) {
+    textarea !== null &&
+    setTimeout(function(){
+      textarea.style.cssText = 'height:auto; padding:0';
+      textarea.style.cssText = 'height:' + (textarea.scrollHeight + 10) + 'px';
+    },0);
+  }    
+ 
+  const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (user && textarea) {
       axios
-        .post(`/post`, {
+        .post(`/share`, {
           author: user,
-          body: textareaRef.current.value,
-          company: post._id, // Por mientras esta siendo utilizada esta propiedad para el id del Post a compartir
-          typePost: "share",
+          body: textarea.value,
+          company: post.typePost === 'share' ? post.company : post._id, // Por mientras esta siendo utilizada esta propiedad para el id del Post a compartir
+          typePost: 'share',
         })
         .then((data) => {
           InfoAlert.fire({
             title: "Compartido con éxito.",
             icon: "success",
           });
-          setOpenShare(!openShare);
+          setOpenShare(!openShare)
           dispatch(getPosts());
+          textarea.value = ''
           return data;
         })
         .catch((error) => console.error("Error:", error));
     }
-  };
+  }
 
   return (
     <form

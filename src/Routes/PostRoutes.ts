@@ -23,6 +23,54 @@ const transporter = nodemailer.createTransport({
 
 const router = Router();
 
+router.get("/post/:id", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id).populate("author");
+    res.json(post);
+  } catch (e) {
+    res.status(401).json({ error: e });
+  }
+});
+
+router.post("/post", async (req, res) => {
+  try {
+    const post = await Post.create(req.body);
+    res.json(post);
+  } catch (e) {
+    res.status(401).json({ error: e });
+  }
+});
+
+router.post("/editPost", async (req, res) => {
+  const { post, idPost } = req.body
+  try {
+    Post.findByIdAndUpdate(idPost, post)
+    .then((post) => res.json(post))
+  } catch (e) {
+    res.status(401).json({ error: e });
+  }
+});
+
+router.delete("/post", async (req, res) => {
+  const { _id } = req.body;
+  try {
+    Post.findById(_id)
+      .then((post) => {
+        post?.typePost === 'share' && 
+          Post.findByIdAndUpdate(post.company, {
+            $inc: { nShares: -1 }
+          }).then(() => {console.log('Se quito una compartida')})
+        Post.deleteOne({ _id })
+          .then((postDelete) => {
+            if (postDelete === null) throw new Error("No se encontro el post");
+            res.status(200).json(postDelete)
+          })
+      })
+  } catch (e) {
+    res.status(401).json({ error: e });
+  }
+});
+
 router.post("/posts", async (req, res) => {
   try {
     const { _id, liked, props, tag } = req.body;
@@ -61,12 +109,12 @@ router.post("/posts", async (req, res) => {
   }
 });
 
-router.get("/post/:id", async (req, res) => {
+router.get("/deletePosts", async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id).populate("author");
-    res.json(post);
+    await Post.deleteMany({});
+    res.send("Posts Deleted");
   } catch (e) {
-    res.status(401).json({ error: e });
+    res.json({ error: e });
   }
 });
 
@@ -170,33 +218,38 @@ router.post("/like", async (req, res) => {
   }
 });
 
-router.post("/post", async (req, res) => {
+router.post("/share", async (req,res) => {
+  const { author, company : idPost } = req.body
   try {
-    const post = await Post.create(req.body);
-    res.json(post);
+    Post.create(req.body)
+    .then(e => {
+      Post.findByIdAndUpdate(idPost, {
+        $inc: { nShares: 1 }
+      }).then((post) => {
+        if (post) {
+          axios.post("/notification", {
+            type: NotificationType.Share,
+            receptor: post.author,
+            emisor: author,
+            link: "/post/" + post._id,
+          });
+          res.json(post);
+        }
+      })
+    }).catch((e) => {
+      throw new Error(e);
+    });
   } catch (e) {
-    res.status(401).json({ error: e });
+    res.status(500).json({ error: e });
   }
-});
+})
 
-router.get("/deletePosts", async (req, res) => {
-  try {
-    await Post.deleteMany({});
-    res.send("Posts Deleted");
-  } catch (e) {
-    res.json({ error: e });
-  }
-});
-
-router.delete("/post", async (req, res) => {
-  try {
-    const { _id } = req.body;
-    const result = await Post.findOneAndDelete({ _id });
-    if (result === null) throw new Error("No se encontro el post");
-    res.send(result);
-  } catch (e) {
-    res.status(401).json({ error: e });
-  }
+router.get("/comments/:id", (req, res) => {
+  Comment.find({ postId: req.params.id })
+    .populate("author", "name username avatar")
+    .then((e) => {
+      res.json(e);
+    });
 });
 
 router.post("/comment", async (req, res) => {
@@ -232,14 +285,6 @@ router.get("/deleteComments", (req, res) => {
       res.json("deleted");
     });
   });
-});
-
-router.get("/comments/:id", (req, res) => {
-  Comment.find({ postId: req.params.id })
-    .populate("author", "name username avatar")
-    .then((e) => {
-      res.json(e);
-    });
 });
 
 router.post("/report", async (req: Request, res: Response) => {
