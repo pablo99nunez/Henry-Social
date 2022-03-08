@@ -232,7 +232,7 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
                 : "Registrarse"}{" "}
             </button>
           </header>
-          <Modal isOpen={password} setIsOpen={setPassword} title="Reestablecer contraseña">
+      <Modal isOpen={password} setIsOpen={setPassword} title="Reestablecer contraseña">
         <ResetPassword
           cancel={(e?: any) => {
             e && e.preventDefault();
@@ -332,7 +332,7 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
               <div>
                 {
                   action === USER_ACTION.signUp ? <> </>
-                  : <a onClick={resetPassword} className={style.forgotPassword}>Olvidaste tu contraseña?</a>
+                  : <p onClick={resetPassword} className={style.forgotPassword}>Olvidaste tu contraseña?</p>
                 }
               </div>
               <div>

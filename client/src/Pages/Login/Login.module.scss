@@ -77,6 +77,14 @@
       gap: 1.5rem;
       height: 23.125rem;
 
+      p {
+        text-decoration: underline;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
       h3 {
         position: relative;
         top: 25px;
