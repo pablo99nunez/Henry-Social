@@ -203,7 +203,7 @@ export default function Login({ USER_ACTION, action, handleActionChange}: any): 
         <LoadingPage />
       ) : (
         <div id={style.cont}>
-          <Helmet>
+           <Helmet>
             <meta charSet="utf-8"/>
             <meta name={`Página de ${action ? 'Inicio de sesión' : 'registro'} | Henry Social`}  content="Formulario"/>
             <title>{action ? 'Iniciar Sesion' : ' Registrate'} | Henry Social</title>

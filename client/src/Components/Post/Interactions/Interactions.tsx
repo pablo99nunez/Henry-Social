@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { BsChatSquareDots, BsTrophy } from "react-icons/bs";
+
+import { IoArrowRedoOutline, IoArrowRedoSharp } from "react-icons/io5";
+import { IPost } from "../../../../../src/models/Post";
 import { Like } from "../../Like/Like";
 import style from "./Interactions.module.scss";
-import { BsChatSquareDots } from "react-icons/bs";
-import { IoArrowRedoOutline } from "react-icons/io5";
-import { IPost } from "../../../../../src/models/Post";
 
 type Props = {
   post: IPost;
@@ -15,12 +16,12 @@ type Props = {
 };
 
 export default function Interactions({
-  post,
-  setOpenComment,
-  openComment,
-  openShare,
-  setOpenShare,
-  shared,
+   post,
+   setOpenComment,
+   openComment,
+   openShare,
+   setOpenShare,
+   shared,
 }: Props) {
   return (
     <div 

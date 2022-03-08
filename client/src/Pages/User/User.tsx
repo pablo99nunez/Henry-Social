@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
-
 import FollowBar from "../../Components/FollowBar/FollowBar";
 import Chat from "../../Components/Chat/Chat";
 import Post from "../../Components/Post/Post";
@@ -107,7 +106,7 @@ export default function User() {
           <meta name="Perfil" content="Información del usuario"/>
           <title>{`${user?.name} | Henry Social`}</title>
       </Helmet>
-      <NavSearch></NavSearch>
+      <NavSearch/>
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
         <Settings
           cancel={(e?: any) => {

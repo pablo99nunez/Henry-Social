@@ -18,7 +18,7 @@ const NotFound = () => {
           <meta name="Página de error" content="Página no encontrada"/>
           <title>404 Página no encontrada | Henry Social</title>
         </Helmet>
-      <NavSearch />
+        <NavSearch />
         <div className={styles.content}>
           <h1>404</h1>
           <h2>No esperebamos esta visita,<br/> estas opciones podrían ayudarte</h2>
