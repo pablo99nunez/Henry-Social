@@ -115,6 +115,8 @@
         place-items: center;
         position: absolute;
         left: -175px;
+        max-width: 150px;
+        max-height: 150px;
     
         img {
           border-radius: 50%;
@@ -161,7 +163,7 @@
       display: flex;
       justify-content: center;
       gap: 25px;
-
+      margin-top: 4vh;
       .alt_btns {
         background-color: $yellow;
         border: none;
@@ -250,6 +252,10 @@
           -ms-transition: transform ease-out 300ms;
           -o-transition: transform ease-out 300ms;
         }
+      }
+
+      .forgotPassword{
+        cursor: pointer;
       }
 
       #alt_cont {
