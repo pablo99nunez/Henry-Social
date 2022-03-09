@@ -9,7 +9,7 @@ import Avatar from "../Avatar/Avatar";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
-import Picker from 'emoji-picker-react';
+import Picker from "emoji-picker-react";
 
 const Chat = () => {
   const socket = useSelector((state: IState) => state.socket);
@@ -27,18 +27,18 @@ const Chat = () => {
     setOpen(!open);
   };
 
-  const [chosenEmoji, setChosenEmoji] = useState(null);
-  const onEmojiClick = (event:any,emojiObject:any) => {
-    setChosenEmoji(emojiObject.emoji);
-    if(!chosenEmoji) return;
-    console.log(chosenEmoji)
-    setMessage(prev => prev+chosenEmoji)
-  };
-  const Toggle = () => {
-    setToggle(!toggle)
-    console.log(toggle)
-  }
+  const [chosenEmoji, setChosenEmoji] = useState("");
 
+  const onEmojiClick = (event: any, emojiObject: any) => {
+    setChosenEmoji(emojiObject.emoji);
+    if (!chosenEmoji) return;
+    console.log(chosenEmoji);
+  };
+
+  const Toggle = () => {
+    setToggle(!toggle);
+    console.log(toggle);
+  };
 
   const SendMessage = () => {
     if (message) {
@@ -67,7 +67,9 @@ const Chat = () => {
       setArrivalMessage(data);
     });
   }, []);
-
+  useEffect(() => {
+    setMessage(message + chosenEmoji);
+  }, [chosenEmoji]);
   useEffect(() => {
     if (arrivalMessage) {
       setListMessage([...listMessage, arrivalMessage]);
@@ -85,7 +87,6 @@ const Chat = () => {
     localStorage.setItem("ChatGlobal", JSON.stringify(listMessage));
     scrollToMe.current?.scrollIntoView({ behavior: "smooth" });
   }, [listMessage]);
-
 
   return (
     <>
@@ -147,36 +148,40 @@ const Chat = () => {
             placeholder="Escribe algo..."
             onChange={(e) => {
               setToggle(false);
-              if (e.target.value.slice(-1) === "\n") return SendMessage() 
+              if (e.target.value.slice(-1) === "\n") return SendMessage();
               setMessage(e.target.value);
             }}
             ref={input}
           />
           <div>
-            <BsEmojiSmile onClick={()=>{Toggle()}}/>
-            { toggle && (
-                <Picker
-                  pickerStyle={{
-                    position:"fixed",
-                    bottom:"100px",
-                    right:"36px",
-                    boxShadow:"none",
-                    height:"150px",
-                    width:"240px",
-                  }}
-                  groupNames={{
-                    smileys_people: '',
-                    animals_nature: '',
-                    food_drink: '',
-                    travel_places: '',
-                    activities: '',
-                    objects: '',
-                    symbols: '',
-                    flags: '',
-                  }} 
-                  disableSearchBar={true} 
-                  onEmojiClick={onEmojiClick} 
-                />
+            <BsEmojiSmile
+              onClick={() => {
+                Toggle();
+              }}
+            />
+            {toggle && (
+              <Picker
+                pickerStyle={{
+                  position: "fixed",
+                  bottom: "100px",
+                  right: "36px",
+                  boxShadow: "none",
+                  height: "150px",
+                  width: "240px",
+                }}
+                groupNames={{
+                  smileys_people: "",
+                  animals_nature: "",
+                  food_drink: "",
+                  travel_places: "",
+                  activities: "",
+                  objects: "",
+                  symbols: "",
+                  flags: "",
+                }}
+                disableSearchBar={true}
+                onEmojiClick={onEmojiClick}
+              />
             )}
           </div>
           <IoSend onClick={SendMessage}></IoSend>

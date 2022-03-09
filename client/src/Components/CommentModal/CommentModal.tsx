@@ -6,7 +6,7 @@ import { IoSend } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import useUser from "../../Hooks/useUser";
-import { getPosts } from "../../redux/actions/actions";
+import { getPost, getPosts } from "../../redux/actions/actions";
 
 export default function CommentModal({ open, postId }: any) {
   const [comment, setComment] = useState("");
@@ -33,7 +33,9 @@ export default function CommentModal({ open, postId }: any) {
           setComment("");
           navigate("/post/" + postId);
         });
-    dispatch(getPosts());
+    if (window.location.pathname == "/post/" + postId)
+      dispatch(getPost(postId));
+    else dispatch(getPosts());
   }
   return (
     <AnimatePresence>
