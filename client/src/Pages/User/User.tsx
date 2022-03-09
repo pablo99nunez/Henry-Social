@@ -189,7 +189,7 @@ export default function User() {
                 )}
               </div>
               <div className={style.userInfo}>
-                <h1>{user?.name}</h1>
+                <h1>{user?.name}</h1> 
                 { user?.admin ?
                 <select 
                 className={style.editRole}
