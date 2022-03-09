@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
-import { filterByOrder } from "../../redux/actions/actions";
+import { filterByOrder, getPosts } from "../../redux/actions/actions";
 import { BsPlusCircleFill } from "react-icons/bs";
+import { AiOutlineReload } from "react-icons/ai";
 
 import styles from "./Posts.module.scss";
 import Post from "../Post/Post";
@@ -12,11 +13,15 @@ import { motion } from "framer-motion";
 import useUser from "../../Hooks/useUser";
 const Posts = () => {
   const dispatch = useDispatch();
-  const posts = useSelector((state: IState) => state.results);
+  const {
+    results: posts,
+    filter,
+    socket,
+  } = useSelector((state: IState) => state);
   const user = useUser();
-  const filter = useSelector((state: IState) => state.filter);
   const [order, setOrder] = useState("Reciente");
   const [showModal, setShowModal] = useState(false);
+  const [newPosts, setNewPosts] = useState(false);
   const [edit, setEdit] = useState(false);
   const plusVariants = {
     normal: { scale: 1 },
@@ -36,6 +41,11 @@ const Posts = () => {
     hidden: { opacity: 0, y: 100 },
     show: { opacity: 1, y: 0 },
   };
+  useEffect(() => {
+    socket?.on("receive_posts", () => {
+      setNewPosts(true);
+    });
+  }, [socket]);
 
   useEffect(() => {
     dispatch(filterByOrder(order));
@@ -89,6 +99,18 @@ const Posts = () => {
           <AddPost setOpen={setShowModal} edit={edit} setEdit={setEdit} />
         </Modal>
       </div>
+      {newPosts && (
+        <div
+          className={styles.newPosts}
+          onClick={() => {
+            dispatch(getPosts());
+            setNewPosts(false);
+          }}
+        >
+          <h3>Hay nuevos posts esperandote!</h3>
+          <AiOutlineReload></AiOutlineReload>
+        </div>
+      )}
       <motion.div
         className={styles.posts}
         variants={postsVariants}

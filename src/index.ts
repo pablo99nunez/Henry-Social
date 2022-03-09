@@ -114,6 +114,9 @@ io.on("connection", (socket) => {
         }
       });
   });
+  socket.on("add_post", () => {
+    socket.broadcast.emit("receive_posts");
+  });
   socket.on("send_message", (data) => {
     socket.broadcast.emit("receive_message", data);
   });
