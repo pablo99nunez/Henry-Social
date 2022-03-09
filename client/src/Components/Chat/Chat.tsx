@@ -3,17 +3,20 @@ import useUser from "../../Hooks/useUser";
 import io from "socket.io-client";
 import style from "./Chat.module.scss";
 import { BiChevronsUp } from "react-icons/bi";
+import { BsEmojiSmile } from "react-icons/bs";
 import { IoSend } from "react-icons/io5";
 import Avatar from "../Avatar/Avatar";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
+import Picker from 'emoji-picker-react';
 
 const Chat = () => {
   const socket = useSelector((state: IState) => state.socket);
   const user = useUser();
   const input = useRef<HTMLTextAreaElement>(null);
   const [open, setOpen] = useState(false);
+  const [toggle, setToggle] = useState(false);
   const [message, setMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState();
   const [newMessage, setNewMessage] = useState(0);
@@ -23,6 +26,19 @@ const Chat = () => {
   const handleClick = (e: any) => {
     setOpen(!open);
   };
+
+  const [chosenEmoji, setChosenEmoji] = useState(null);
+  const onEmojiClick = (event:any,emojiObject:any) => {
+    setChosenEmoji(emojiObject.emoji);
+    if(!chosenEmoji) return;
+    console.log(chosenEmoji)
+    setMessage(prev => prev+chosenEmoji)
+  };
+  const Toggle = () => {
+    setToggle(!toggle)
+    console.log(toggle)
+  }
+
 
   const SendMessage = () => {
     if (message) {
@@ -69,6 +85,7 @@ const Chat = () => {
     localStorage.setItem("ChatGlobal", JSON.stringify(listMessage));
     scrollToMe.current?.scrollIntoView({ behavior: "smooth" });
   }, [listMessage]);
+
 
   return (
     <>
@@ -129,14 +146,39 @@ const Chat = () => {
             value={message}
             placeholder="Escribe algo..."
             onChange={(e) => {
-              if (e.target.value.slice(-1) === "\n") return SendMessage();
+              setToggle(false);
+              if (e.target.value.slice(-1) === "\n") return SendMessage() 
               setMessage(e.target.value);
             }}
             ref={input}
-            /* onKeyPress={(e) => {
-              e.key === "Enter" && SendMessage();
-            }} */
           />
+          <div>
+            <BsEmojiSmile onClick={()=>{Toggle()}}/>
+            { toggle && (
+                <Picker
+                  pickerStyle={{
+                    position:"fixed",
+                    bottom:"100px",
+                    right:"36px",
+                    boxShadow:"none",
+                    height:"150px",
+                    width:"240px",
+                  }}
+                  groupNames={{
+                    smileys_people: '',
+                    animals_nature: '',
+                    food_drink: '',
+                    travel_places: '',
+                    activities: '',
+                    objects: '',
+                    symbols: '',
+                    flags: '',
+                  }} 
+                  disableSearchBar={true} 
+                  onEmojiClick={onEmojiClick} 
+                />
+            )}
+          </div>
           <IoSend onClick={SendMessage}></IoSend>
         </div>
       </motion.div>
