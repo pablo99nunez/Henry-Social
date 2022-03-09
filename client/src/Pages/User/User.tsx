@@ -116,7 +116,7 @@ export default function User() {
     if (user?._id !== userLogeado?._id && user?._id) {
       dispatch(editUser(user?._id, changes));
     }
-  }, [userLogeado]);
+  }, [changes]);
   
 
   return loading ? (
@@ -195,7 +195,7 @@ export default function User() {
               </div>
               <div className={style.userInfo}>
                 <h1>{user?.name}</h1>
-                {userLogeado?.admin  ? (
+                {userLogeado?.admin && !isOwner ? (
                   <select className={style.editRole} onChange={changeRole}>
                     <option
                       value="Estudiante"

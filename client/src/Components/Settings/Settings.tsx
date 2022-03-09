@@ -231,7 +231,8 @@ export default function Settings({ cancel }: any) {
         role: e.target.value,
       });
     } else {
-      InfoAlert.fire({ title: "Solicitud enviada!", icon: "success" }) 
+      
+      InfoAlert.fire({ title: "Solicitud enviada!", icon: "success" });
       return cancel(false)
     }
   };
