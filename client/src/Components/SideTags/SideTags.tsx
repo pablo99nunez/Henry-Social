@@ -95,6 +95,7 @@ const SideTags = () => {
           >
             Booms
           </li>
+          {/*
           <li
             className={
               activeSection === "servicio"
@@ -106,6 +107,7 @@ const SideTags = () => {
           >
             Servicios
           </li>
+          */}
           <li
             className={
               activeSection === "pregunta"

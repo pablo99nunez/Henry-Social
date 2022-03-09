@@ -64,7 +64,7 @@ const NavSearch = () => {
             placeholder="Busca otros Henry's "
             autoComplete="off"
           />
-          {!input ? null : users.length === 0 ? <ListSearch /> : <ListSearch />}
+          {!input ? null : users.length === 0 ? "" : <ListSearch />}
         </div>
         <div
           style={{
