@@ -113,10 +113,11 @@ export default function User() {
     setChanges({ role: e.target.value });
   };
   useEffect(() => {
-    if (user?._id) {
-      dispatch(editUser(user._id, changes));
+    if (user?._id !== userLogeado?._id && user?._id) {
+      dispatch(editUser(user?._id, changes));
     }
-  }, [changes]);
+  }, [userLogeado]);
+  
 
   return loading ? (
     <LoadingPage />
@@ -194,7 +195,7 @@ export default function User() {
               </div>
               <div className={style.userInfo}>
                 <h1>{user?.name}</h1>
-                {user?.admin ? (
+                {userLogeado?.admin  ? (
                   <select className={style.editRole} onChange={changeRole}>
                     <option
                       value="Estudiante"
