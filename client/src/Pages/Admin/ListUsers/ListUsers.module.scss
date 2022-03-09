@@ -22,7 +22,22 @@
     }
   }
 }
-.buttons {
+.wrapEditRole {
   display: flex;
+  align-items: center;
   gap: 1rem;
+  .editRole {
+    background-color: transparent;
+    color: currentColor;
+    padding: 1rem;
+    border: none;
+    min-width: 10vh;
+    font-size: 1.2rem;
+    font-weight: bold;
+    outline: none;
+    text-align: center;
+    &option {
+      border: 1px gray solid;
+    }
+  }
 }
