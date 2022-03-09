@@ -24,7 +24,7 @@ const PostShare: FC<Props> = ({ post }) => {
         onClick={ () => navigate("/post/" + post._id) }
         style={{marginBottom: '15px'}}
       >{post.body}</p>
-      {postShare && <Post post={postShare} shared={true}/>}
+      {postShare && <Post post={postShare} setEdit={null} setShowModal={null} shared={true}/>}
     </div>
   )
 }

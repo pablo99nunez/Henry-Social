@@ -8,25 +8,23 @@ import {
   filterByTag,
   filterByType,
   getPosts,
+  setActiveSection,
 } from "../../redux/actions/actions";
 import useUser from "../../Hooks/useUser";
 
 const SideTags = () => {
-  const [activeSection, setActiveSection] = useState<any>("all");
   const user = useUser();
-  const posts = useSelector((state: IState) => state.posts);
   const dispatch = useDispatch();
+  const { posts, activeSection} = useSelector((state: IState) => state);
   const [tags, setTags] = useState([]);
 
   const handleClick = (e: any) => {
     if (e.target.classList.contains("category")) {
-      setActiveSection(e.target.id);
-      if (e.target.id === "all") {
-        return dispatch(getPosts());
-      }
+      dispatch(setActiveSection(e.target.id))
+      if (e.target.id === "all") dispatch(getPosts());
       return dispatch(filterByType(e.target.id));
     } else {
-      setActiveSection("");
+      dispatch(setActiveSection(''))
       return dispatch(filterByTag(e.target.title));
     }
   };

@@ -13,8 +13,8 @@ import { getPosts, setPostEdit } from "../../../redux/actions/actions";
 
 type Props = {
     post: IPost;
-    setEdit: Dispatch<SetStateAction<boolean>>;
-    setShowModal: Dispatch<SetStateAction<boolean>>;  
+    setEdit: Dispatch<SetStateAction<boolean>> | null;
+    setShowModal: Dispatch<SetStateAction<boolean>> | null;  
     shared: boolean;
 };
 
@@ -46,8 +46,8 @@ export default function Options({ post, setEdit, setShowModal, shared }: Props) 
   };
 
   const handleEdit = async () => {
-    setEdit(true)
-    setShowModal(true)
+    setEdit && setEdit(true)
+    setShowModal && setShowModal(true)
     dispatch(setPostEdit(post))
   };
 

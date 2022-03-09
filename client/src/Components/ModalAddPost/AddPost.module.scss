@@ -26,9 +26,9 @@ $isDark: false;
       width: 100%;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      margin-bottom: 15px;
       input {
-        width: 40%;
+        width: max-content;
         border: none;
         outline: none;
         font-size: 18px;
@@ -41,7 +41,8 @@ $isDark: false;
         }
       }
       .input_with_error {
-        width: 40%;
+        width: max-content;
+        position: relative;
         .input_effects {
           position: relative;
           display: inline-block;
@@ -50,6 +51,11 @@ $isDark: false;
             var(--placeholderSize) + var(--placeholderInputGap)
           );
           padding-bottom: 0.75em;
+          input[type=number]::-webkit-inner-spin-button, 
+          input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+          }
         }
         input {
           width: 100%;
@@ -86,8 +92,14 @@ $isDark: false;
             }
           }
         }
+        select{
+          top: 15%;
+          right: 0;
+          padding: 5px;
+          outline: none;
+          position: absolute;
+        }
         p {
-          margin-top: 0.2rem;
           color: #df1313;
         }
       }
