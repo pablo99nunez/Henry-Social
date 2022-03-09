@@ -18,9 +18,9 @@ export const SharePost: FC<Props> = ({ post, openShare, setOpenShare }) => {
   const user = useUser();
   const dispatch = useDispatch();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const textarea = textareaRef.current;
 
   const autosize = () => {
+    const textarea = textareaRef.current;
     textarea !== null &&
       setTimeout(function () {
         textarea.style.cssText = "height:auto; padding:0";
@@ -31,12 +31,13 @@ export const SharePost: FC<Props> = ({ post, openShare, setOpenShare }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const textarea = textareaRef.current;
     if (user && textarea) {
       axios
         .post(`/share`, {
           author: user,
           body: textarea.value,
-          company: post.typePost === "share" ? post.company : post._id, // Por mientras esta siendo utilizada esta propiedad para el id del Post a compartir
+          company: post.typePost === "share" ? post.company : post._id,
           typePost: "share",
         })
         .then((data) => {
@@ -72,6 +73,11 @@ export const SharePost: FC<Props> = ({ post, openShare, setOpenShare }) => {
         <motion.form
           className={styles.share}
           onSubmit={(e) => handleSubmit(e)}
+          onChange={(e) => {
+            console.log('cambios', e.target)
+            console.log(textareaRef)
+            console.log(textareaRef.current)
+          }}
           variants={variants}
           initial="close"
           animate={"open"}

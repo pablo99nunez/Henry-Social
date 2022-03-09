@@ -1,26 +1,30 @@
+import React from 'react';
+import PostShare from "./PostShare";
+import { useDispatch } from "react-redux";
 import style from "./Content.module.scss";
 import { useNavigate } from "react-router-dom";
 import PostPregunta from "../Types/PostPregunta";
 import { IPost } from "../../../../../src/models/Post";
-import PostShare from "./PostShare";
+import { filterByTag, setActiveSection } from "../../../redux/actions/actions";
+
 type Props = {
   post: IPost;
 };
 
 export default function Content({ post }: Props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const renderType = () => {
     switch (post?.typePost) {
       case "boom": {
         return (
           <div className={style.contentBoom}>
-            {typeof post?.companyImage === "string" && (
+            {typeof post?.companyImage === "string" && post?.companyImage && (
               <img src={post?.companyImage} alt="company" />
             )}
-            <h4 /* ref={headerRef} */>
-              💥💥💥Contratad@ para {post?.company} como {post?.position}
-              💥💥💥
+            <h4>
+              💥💥💥Contratad@ para {post?.company} como {post?.position} 💥💥💥
             </h4>
             <div style={{ fontSize: "15px" }}>{post.body}</div>
           </div>
@@ -29,13 +33,9 @@ export default function Content({ post }: Props) {
       case "empleo": {
         return (
           <div className={style.postEmpleo}>
-            <img
-              src={
-                typeof post?.companyImage === "string" ? post?.companyImage : ""
-              }
-              alt="company"
-            />
-
+            {typeof post?.companyImage === "string" && post?.companyImage &&
+              <img src={post?.companyImage} alt="company" />
+            }
             <h3>
               <strong>{post?.company}</strong> esta buscando{" "}
               <strong>{post?.position}</strong>
@@ -44,19 +44,18 @@ export default function Content({ post }: Props) {
             <div style={{ fontSize: "14px" }}>{post?.body}</div>
             <br></br>
             <div className={style.linkEmpleo}>
-              <a href={post?.companyLink}>
-                <strong style={{ color: "#1a5fc7" }}>Link de la oferta</strong>{" "}
-                📌
-              </a>
-              {post?.salary ? (
+              {post?.companyLink && 
+                <a href={post?.companyLink}>
+                  <strong style={{ color: "#1a5fc7" }}>Link de la oferta</strong>{" "}📌
+                </a>
+              }
+              {post?.salary && 
                 <p>
                   {" "}
                   <strong style={{ color: "#1a5fc7" }}>Salario:</strong>{" "}
-                  {post?.salary}
+                  {post?.salary}{" "}{post?.salaryCoin}
                 </p>
-              ) : (
-                <p></p>
-              )}
+              }
             </div>
           </div>
         );
@@ -68,7 +67,22 @@ export default function Content({ post }: Props) {
         return <PostPregunta post={post} />;
       }
       default: {
-        return post.body;
+        const setFilterTag = (e: any) => {
+          dispatch(filterByTag(e.target.textContent))
+          dispatch(setActiveSection(''))
+        }
+        return (
+          <p>
+          {post.body.includes('#') 
+            ? post.body.split(' ').map(e => 
+              <span 
+                className={`${style.spanBody} ${e[0] === '#' && style.hashtag}`}
+                onClick={(e:any) => e[0] === '#' ? navigate("/post/" + post._id) : setFilterTag(e)}
+              >{e}</span>
+              )
+            : post.body}
+          </p>
+        )
       }
     }
   };
@@ -76,7 +90,8 @@ export default function Content({ post }: Props) {
   return (
     <div
       onClick={() => {
-        post.typePost !== "share" && navigate("/post/" + post._id);
+        post.typePost !== "share" && 
+        post.typePost !== "normal" && navigate("/post/" + post._id);
       }}
     >
       {renderType()}

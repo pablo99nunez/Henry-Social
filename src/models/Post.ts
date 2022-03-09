@@ -17,6 +17,7 @@ export interface IPost {
   companyLink: string;
   companyImage: string | File | null;
   salary: number;
+  salaryCoin: string;
   reportedTimes: number;
   question: IQuestions;
   tags: string[];
@@ -90,6 +91,9 @@ const postSchema = new Schema({
   },
   salary: {
     type: Number,
+  },
+  salaryCoin: {
+    type: String,
   },
   question: {
     type: [],

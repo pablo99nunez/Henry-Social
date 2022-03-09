@@ -24,6 +24,7 @@ import {
   OPEN_CHAT,
   CLOSE_CHAT,
   SET_POST_EDIT,
+  SET_ACTIVE_SECTION,
 } from "../actions/actions";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { io, Socket } from "socket.io-client";
@@ -41,6 +42,7 @@ export interface IState {
   filter: string;
   usersOnline: any[];
   chats: any[];
+  activeSection: string;
 }
 
 const initialState = {
@@ -56,6 +58,7 @@ const initialState = {
   socket: null,
   usersOnline: [],
   chats: [],
+  activeSection: 'all',
 } as IState;
 
 const urlBackend = import.meta.env.PROD
@@ -139,6 +142,13 @@ export default function rootReducer(state = initialState, action: IAction) {
         ...state,
         results: action.payload,
       };
+    }
+
+    case SET_ACTIVE_SECTION: {
+        return {
+          ...state, 
+          activeSection: action.payload,
+        }
     }
 
     case GET_POST: {

@@ -33,6 +33,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
     companyImage: postEdit?.companyImage || null,
     pregunta: postEdit?.companyImage || "",
     salary: postEdit?.salary || 0,
+    salaryCoin: postEdit?.salaryCoin || 'DOL',
     // costoClases: "0",
     // tecnologíaClases: "",
     // temasClases: "",
@@ -53,24 +54,34 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name
+    const value = e.target.value
+    const files = e.target.files
+    console.log(e)
     if (
-      (e.target.name === "companyImage" ||
-        (e.target.name === "image" && e.target.files)) &&
-      e.target.files
+      (name === "companyImage" || 
+      (name === "image" && files)) && files
     )
-      setPost({
-        ...post,
-        [e.target.name]: URL.createObjectURL(e.target.files[0]),
+      setPost({ 
+        ...post, 
+        [name]: URL.createObjectURL(files[0])
       });
-    else setPost({ ...post, [e.target.name]: e.target.value });
+    else if ( name === 'text' ) 
+      setPost({
+        ...post, 
+        text: value,
+        tags: value.includes('#') ? value.match(/(#)\w+/g) : []
+      })
+    else setPost({ ...post, [name]: value });
+
     setErrors(
       validate(
         {
           ...post,
-          [e.target.name]: e.target.value,
+          [name]: value,
           tags:
-            e.target.name === "text"
-              ? e.target.value.match(/(#)\w+/g)
+            name === "text"
+              ? value.match(/(#)\w+/g)
               : post.text,
         },
         typePost
@@ -80,7 +91,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const name = e.currentTarget.name;
-    setPost({
+    !edit && setPost({
       text: "",
       image: "",
       company: "",
@@ -89,6 +100,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
       companyImage: null,
       pregunta: "",
       salary: 0,
+      salaryCoin: 'DOL',
       // costoClases: 0,
       // temasClases: "",
       // tecnologíaClases: "",
@@ -132,6 +144,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
         companyImage: downloadURLCompany,
         pregunta: post.pregunta,
         salary: post.salary,
+        salaryCoin: post.salaryCoin,
         typePost,
         image: downloadURLImage,
         tags: post.tags,
@@ -190,6 +203,9 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
       text: "Pregunta",
     },
   ];
+
+  const coins = ['DOL', 'ARS', 'MXN', 'EUR', 'PEN'];
+
   return (
     <motion.form
       onSubmit={(e) => handleSubmit(e)}
@@ -199,6 +215,8 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
         scaleY: 1,
       }}
     >
+      {console.log('edit', postEdit)}
+      {console.log('post', post)}
       <div className={styles.add_post_content}>
         {typePost === "pregunta" ? (
           <div className={styles.content__inputs}>
@@ -218,7 +236,8 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
           </div>
         ) : (
           typePost !== "normal" &&
-          typePost !== "multimedia" && (
+          typePost !== "multimedia" &&
+          typePost !== "share" && (
             <div className={styles.content__inputs}>
               {typePost === "servicio" ? (
                 <>
@@ -318,6 +337,15 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
                       />
                       <span>Salario (opcional)</span>
                     </span>
+                    <select 
+                      name="salaryCoin"
+                      onChange={(e: any) => handleChange(e)}
+                    >
+                      <option value={post.salaryCoin}>{post.salaryCoin}</option> 
+                      {coins.map((e,i) =>
+                        e !== post.salaryCoin && <option key={i} value={e}>{e}</option>
+                      )}
+                    </select>  
                     {errors?.salary && <p>{errors.salary}</p>}
                   </div>
                 </>
@@ -373,19 +401,21 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
           )}
         </div>
       </div>
-      <div className={styles.add_post_tags}>
-        {types.map((t, i) => (
-          <button
-            key={i}
-            name={t.abr}
-            type="button"
-            onClick={(e) => handleClick(e)}
-            className={typePost === t.abr ? styles.select : styles.deselect}
-          >
-            {t.text}
-          </button>
-        ))}
-      </div>
+      {typePost !== 'share' && 
+        <div className={styles.add_post_tags}>
+          {types.map((t, i) => (
+            <button
+              key={i}
+              name={t.abr}
+              type="button"
+              onClick={(e) => handleClick(e)}
+              className={typePost === t.abr ? styles.select : styles.deselect}
+            >
+              {t.text}
+            </button>
+          ))}
+        </div>
+      }
       <div className={styles.add_post_buttons}>
         <input
           type="submit"
@@ -396,10 +426,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
           type="button"
           onClick={() => {
             setOpen(false);
-            setTimeout(() => {
-              setEdit(false);
-              postEdit && dispatch(setPostEdit(null));
-            }, 2000);
+            postEdit && dispatch(setPostEdit(null));
           }}
         >
           Cancelar

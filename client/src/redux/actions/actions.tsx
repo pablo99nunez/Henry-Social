@@ -26,6 +26,7 @@ export const GET_ONLINE_USERS = "GET_ONLINE_USERS";
 export const OPEN_CHAT = "OPEN_CHAT";
 export const CLOSE_CHAT = "CLOSE_CHAT";
 export const SET_POST_EDIT = "SET_POST_EDIT";
+export const SET_ACTIVE_SECTION = "SET_ACTIVE_SECTION";
 
 export interface IAction {
   type: string;
@@ -125,6 +126,11 @@ export function filterByTag(tag: string): Function {
       console.log(error);
     }
   };
+}
+
+export function setActiveSection(section: string): Function {
+  return (dispatch: Function) =>
+    dispatch({ type: SET_ACTIVE_SECTION, payload: section });
 }
 
 export function searchUsers(username: string) {
