@@ -46,7 +46,9 @@ export async function signUpWithEmail(userInfo: IUser) {
         .then((userCredential) => {
           if (userCredential)
             sendEmailVerification(userCredential?.user, {
-              url: "http://localhost:3000",
+              url: import.meta.env.DEV
+                ? "http://localhost:3000"
+                : "https://henry-social.web.app",
             });
           axios.post("/user", {
             name,
