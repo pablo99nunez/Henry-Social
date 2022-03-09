@@ -22,6 +22,7 @@ import {
   followUser,
   getPosts,
   makeAdmin,
+  editUser
 } from "../../redux/actions/actions";
 import { useProfile } from "../../Hooks/useProfile";
 import { IState } from "../../redux/reducer";
@@ -47,6 +48,13 @@ export default function User() {
   const userLogeado = useUser();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  interface Changes {
+    role: string | null | undefined;
+  }
+  const [changes, setChanges] = useState<Changes>({
+    role: user?.role,
+  });
 
   function handleFollow() {
     if (userLogeado?.username && user?.username && userLogeado.following) {
@@ -99,8 +107,14 @@ export default function User() {
   };
 
   const changeRole = (e:any) => {
-    //setRole((e) => [e.target.name] = e.target.value)
+    e.preventDefault()
+    setChanges({role: e.target.value});
   }
+  useEffect(() => {
+    if (user?._id) {
+      dispatch(editUser(user._id,changes))
+    }
+  }, [changes]);
 
   return loading ? (
     <LoadingPage />
@@ -180,16 +194,27 @@ export default function User() {
                 <select 
                 className={style.editRole}
                 onChange={changeRole}>
-                  <option value='Estudiante'>Estudiante</option>
-                  <option value='TA'>TA</option>
-                  <option value='Instructor='>Instructor</option>
+                  <option value='Estudiante'
+                  selected={user?.role === 'Estudiante' ? true : false}
+                  >Estudiante</option>
+                  <option
+                  value='TA' 
+                  selected={user?.role === 'TA' ? true : false}
+                  >TA</option>
+                  <option 
+                  value='Instructor'
+                  selected={user?.role === 'Instructor' ? true : false} 
+                  >Instructor</option>
                 </select>
                 :<h2 style={{ color: "#aaa" }}>
                   {user?.role + (user?.cohorte ? " | " + user?.cohorte : "")}
                 </h2>   
                 }
                 <div className={style.bio}>
-                  <h3>{user?.bio}</h3>
+
+                  <h3>{
+                    isOwner ? userLogeado?.bio : user?.bio
+                    }</h3>
                 </div>
               </div>
 

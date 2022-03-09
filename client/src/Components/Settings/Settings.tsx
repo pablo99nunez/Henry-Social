@@ -308,7 +308,7 @@ export default function Settings({ cancel }: any) {
               type="button"
               active={changes?.role === "Estudiante"}
               onClick={onChangeRole}
-              disabled={user?.admin ? false : true}
+              disabled={user?.role === "Estudiante" ? true : false}
               value="Estudiante"
             >
               Estudiante
@@ -316,6 +316,7 @@ export default function Settings({ cancel }: any) {
             <Button
               type="button"
               active={changes?.role === "Instructor"}
+              disabled={user?.role === "Instructor" ? true : false}
               onClick={onChangeRole}
               value="Instructor"
             >
@@ -324,6 +325,7 @@ export default function Settings({ cancel }: any) {
             <Button
               type="button"
               active={changes?.role === "TA"}
+              disabled={user?.role === "TA" ? true : false}
               onClick={onChangeRole}
               value="TA"
             >
