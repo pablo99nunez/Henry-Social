@@ -24,6 +24,7 @@ import {
   OPEN_CHAT,
   CLOSE_CHAT,
   SET_POST_EDIT,
+  MAKE_MASTER
 } from "../actions/actions";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { io, Socket } from "socket.io-client";
@@ -174,6 +175,13 @@ export default function rootReducer(state = initialState, action: IAction) {
     }
 
     case MAKE_ADMIN: {
+      return {
+        ...state,
+        profile: action.payload,
+      };
+    }
+    
+    case MAKE_MASTER: {
       return {
         ...state,
         profile: action.payload,
