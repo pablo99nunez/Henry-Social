@@ -87,6 +87,20 @@ router.post("/admin", async (req, res) => {
   }
 });
 
+router.post("/master", async (req, res) => {
+  const { username } = req.body;
+  try {
+    const user = await User.findOne({ username });
+    if (user) {
+      user.master = !user.master;
+      await user.save();
+      res.json(user);
+    }
+  } catch (e) {
+    res.status(400).json({ error: e });
+  }
+});
+
 async function isFollowing(userA: string, userB: string) {
   try {
     const isFollowing = await User.findOne({
