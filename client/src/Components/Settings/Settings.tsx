@@ -14,6 +14,7 @@ import axios from "axios";
 import { editUser, signOut } from "../../redux/actions/actions";
 import useUser from "../../Hooks/useUser";
 import { auth } from "../../firebase/firebase";
+import { InfoAlert } from "../Alert/Alert";
 
 export default function Settings({ cancel }: any) {
   const user = useUser();
@@ -229,7 +230,10 @@ export default function Settings({ cancel }: any) {
         ...changes,
         role: e.target.value,
       });
-    } else throw new Error("Only admins can change roles");
+    } else {
+      InfoAlert.fire({ title: "Solicitud enviada!", icon: "success" }) 
+      return cancel(false)
+    }
   };
 
   return (
@@ -304,7 +308,7 @@ export default function Settings({ cancel }: any) {
               type="button"
               active={changes?.role === "Estudiante"}
               onClick={onChangeRole}
-              disabled={user?.admin ? false : true}
+              disabled={user?.role === "Estudiante" ? true : false}
               value="Estudiante"
             >
               Estudiante
@@ -312,8 +316,8 @@ export default function Settings({ cancel }: any) {
             <Button
               type="button"
               active={changes?.role === "Instructor"}
+              disabled={user?.role === "Instructor" ? true : false}
               onClick={onChangeRole}
-              disabled={user?.admin ? false : true}
               value="Instructor"
             >
               Instructor
@@ -321,12 +325,20 @@ export default function Settings({ cancel }: any) {
             <Button
               type="button"
               active={changes?.role === "TA"}
+              disabled={user?.role === "TA" ? true : false}
               onClick={onChangeRole}
-              disabled={user?.admin ? false : true}
               value="TA"
             >
               TA
             </Button>
+            <div>
+            <button 
+            title="En caso de que lo requieras puedes clickear en el rol que deseas y una 
+            solicitud sera enviada a nuestros admins." 
+            className={style.solicitud} 
+            disabled>?</button>
+            <span></span>
+            </div>
           </div>
        
         <div className={style.inputBox}>

@@ -168,3 +168,9 @@
     justify-content: center;
   }
 }
+
+.disabled {
+  svg {
+    color: $grey;
+  }
+}
