@@ -190,7 +190,7 @@ export default function User() {
               </div>
               <div className={style.userInfo}>
                 <h1>{user?.name}</h1>
-                { user?.name ?
+                { user?.admin ?
                 <select 
                 className={style.editRole}
                 onChange={changeRole}>
