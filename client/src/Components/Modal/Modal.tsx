@@ -2,12 +2,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useRef } from "react";
 import styles from "./Modal.module.scss";
 
+type Props = {
+  children: any;
+  title: string;
+  isOpen: boolean;
+  setIsOpen: (value: boolean) => void;
+};
+
 export default function Modal({
   children,
   title = "Modal",
   isOpen = true,
   setIsOpen,
-}: any) {
+}: Props) {
   const modal = useRef<HTMLDivElement>(null);
   const variants = {
     initial: {

@@ -37,7 +37,36 @@ import {
   InfoAlert,
 } from "../../Components/Alert/Alert";
 import Chats from "../../Components/Chats/Chats";
-
+export async function handleDeleteUser(
+  userId: string,
+  adminId: string,
+  uid: string
+) {
+  try {
+    ConfirmAlert.fire("¿Estas seguro que deseas eliminar el usuario?").then(
+      async (res) => {
+        if (res.isConfirmed) {
+          await axios
+            .delete("/delete-user", {
+              data: {
+                userId,
+                adminId,
+                uid,
+              },
+            })
+            .then((e) => {
+              InfoAlert.fire("Has eliminado a " + e.data?.name);
+            })
+            .catch(() => {
+              ErrorAlert.fire("Algo salio mal");
+            });
+        }
+      }
+    );
+  } catch (e) {
+    ErrorAlert.fire("Error" + e);
+  }
+}
 export default function User() {
   const [edit, setEdit] = useState(false);
   const { username } = useParams();
@@ -67,26 +96,7 @@ export default function User() {
   function handleAdmin() {
     if (username) dispatch(makeAdmin(username));
   }
-  async function handleDeleteUser(userId: string, adminId: string) {
-    try {
-      ConfirmAlert.fire("¿Estas seguro que deseas eliminar el usuario?").then(
-        async (res) => {
-          if (res.isConfirmed) {
-            await axios.delete("/delete-user", {
-              data: {
-                userId,
-                adminId,
-              },
-            });
-            navigate("/");
-            InfoAlert.fire("Has eliminado a " + user?.name);
-          }
-        }
-      );
-    } catch (e) {
-      ErrorAlert.fire("Error" + e);
-    }
-  }
+
   useEffect(() => {
     return () => {
       dispatch(clear("profile"));
@@ -169,7 +179,11 @@ export default function User() {
                     <Button
                       onClick={() => {
                         if (user?._id && userLogeado?._id) {
-                          handleDeleteUser(user._id, userLogeado._id);
+                          handleDeleteUser(
+                            user._id,
+                            userLogeado._id,
+                            user.uid
+                          ).then(() => navigate("/"));
                         }
                       }}
                     >
