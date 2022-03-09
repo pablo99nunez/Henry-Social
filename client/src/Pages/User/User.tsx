@@ -21,7 +21,7 @@ import {
   filterByLike,
   followUser,
   getPosts,
-  makeAdmin,
+  makeMaster,
 } from "../../redux/actions/actions";
 import { useProfile } from "../../Hooks/useProfile";
 import { IState } from "../../redux/reducer";
@@ -53,8 +53,8 @@ export default function User() {
       setIsFollowing(!isFollowing);
     }
   }
-  function handleAdmin() {
-    if (username) dispatch(makeAdmin(username));
+  function handleMaster() {
+    if (username) dispatch(makeMaster(username));
   }
   async function handleDeleteUser(userId: string, adminId: string) {
     try {
@@ -136,10 +136,10 @@ export default function User() {
             </div>
             <div className={style.details}>
               <div className={style.buttons}>
-                {userLogeado?.admin ? (
+                {userLogeado?.master ? (
                   <>
-                    <Button onClick={handleAdmin}>
-                      {user?.admin ? "Eliminar rol de Admin" : "Hacer Admin"}
+                    <Button onClick={handleMaster}>
+                      {user?.master ? "Eliminar rol de Admin" : "Hacer Admin"}
                     </Button>
                     <Button
                       onClick={() => {
