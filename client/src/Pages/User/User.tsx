@@ -233,7 +233,7 @@ export default function User() {
                     <a href={userLogeado?.portfolio} target="_blank">
                       <div>
                         <img
-                          src={github}
+                          src={portafolioIcon}
                           alt="portfolio-logo"
                           className={style.github_logo}
                         />
@@ -243,7 +243,7 @@ export default function User() {
                     <a href={user?.portfolio} target="_blank">
                       <div>
                         <img
-                          src={github}
+                          src={portafolioIcon}
                           alt="portfolio-logo"
                           className={style.github_logo}
                         />
