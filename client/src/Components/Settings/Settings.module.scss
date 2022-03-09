@@ -145,6 +145,16 @@ $isDark: false;
     }
   }
 
+  .solicitud:disabled{
+    border-radius: 50%;
+    height: 2vh;
+    width: 2vh;
+    border: none;
+    font-weight: bold;
+    background-color: gray;
+    color: white;
+  }
+
   .spaneo {
     position: relative;
     display: inline-block;

@@ -42,6 +42,7 @@ export default function User() {
   const [filter, setFilter] = useState(1);
   const [user, isOwner] = useProfile(username);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [role, setRole] = useState("")
   const posts = useSelector((state: IState) => state.posts);
   const userLogeado = useUser();
   const dispatch = useDispatch();
@@ -96,6 +97,10 @@ export default function User() {
   const editProfile = (e: any) => {
     return setEdit(true);
   };
+
+  const changeRole = (e:any) => {
+    //setRole((e) => [e.target.name] = e.target.value)
+  }
 
   return loading ? (
     <LoadingPage />
@@ -171,9 +176,18 @@ export default function User() {
               </div>
               <div className={style.userInfo}>
                 <h1>{user?.name}</h1>
-                <h2 style={{ color: "#aaa" }}>
+                { user?.name ?
+                <select 
+                className={style.editRole}
+                onChange={changeRole}>
+                  <option value='Estudiante'>Estudiante</option>
+                  <option value='TA'>TA</option>
+                  <option value='Instructor='>Instructor</option>
+                </select>
+                :<h2 style={{ color: "#aaa" }}>
                   {user?.role + (user?.cohorte ? " | " + user?.cohorte : "")}
-                </h2>
+                </h2>   
+                }
                 <div className={style.bio}>
                   <h3>{user?.bio}</h3>
                 </div>

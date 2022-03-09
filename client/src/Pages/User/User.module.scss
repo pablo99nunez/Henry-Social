@@ -75,6 +75,20 @@
             text-align: center;
             margin-top: 1rem;
           }
+          .editRole{
+            background-color: black;
+            color: white;
+            border: none;
+            min-width: 10vh;
+            font-size: 1rem;
+            margin-top: 1vh;
+            font-weight: bold;
+            outline: none;
+            text-align: center;
+              &option{
+                border: 1px gray solid;
+              }
+          }
         }
 
         .details_bottom {
