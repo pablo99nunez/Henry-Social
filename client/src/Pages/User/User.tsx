@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
+import { openChat } from "../../redux/actions/actions";
+import { IMessage } from "../../../../src/models/Conversation";
 import FollowBar from "../../Components/FollowBar/FollowBar";
 import Chat from "../../Components/Chat/Chat";
 import Post from "../../Components/Post/Post";
 import style from "./User.module.scss";
 import linkedin from "../../assets/icons/linkedin2.png";
 import github from "../../assets/icons/github2.png";
-import coffee from "../../assets/icons/coffee-cup3.png";
 import portafolioIcon from "../../assets/icons/portafolio.png";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import SideMessages from "../../Components/SideMessages/SideMessages";
@@ -16,6 +17,7 @@ import Button from "../../Components/Button/Button";
 import Settings from "../../Components/Settings/Settings";
 import useUser from "../../Hooks/useUser";
 import Modal from "../../Components/Modal/Modal";
+
 import {
   clear,
   filterByLike,
@@ -46,7 +48,7 @@ export default function User() {
   const userLogeado = useUser();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  console.log(user)
   function handleFollow() {
     if (userLogeado?.username && user?.username && userLogeado.following) {
       dispatch(followUser(userLogeado.username, user.username));
@@ -156,9 +158,8 @@ export default function User() {
                   <Button onClick={editProfile}>Editar Perfil</Button>
                 ) : (
                   <>
-                    <Button>
-                      Invitame un cafe
-                      <img src={coffee} alt="coffee-logo" />
+                    <Button onClick={()=>dispatch(openChat(user?.name,user?._id))}>
+                        Enviar un mensaje
                     </Button>
                     <Button onClick={handleFollow} active={isFollowing}>
                       {isFollowing ? "Siguiendo" : "Seguir"}
@@ -290,7 +291,7 @@ export default function User() {
                 <Post post={e} key={i}></Post>
               ))}
             </div>
-            <div className={style.mistery_box}>
+            <div>
               <SideMessages />
             </div>
           </div>

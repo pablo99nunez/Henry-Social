@@ -18,12 +18,12 @@ type Props = {
   opened?: boolean;
 };
 
-const PrivateChat = ({ name, userB, opened }: Props) => {
+const PrivateChat = ({ name, userB }: Props) => {
   const socket = useSelector((state: IState) => state.socket);
   const dispatch = useDispatch();
   const user = useUser();
   const input = useRef<HTMLTextAreaElement>(null);
-  const [open, setOpen] = useState(opened);
+  const [open, setOpen] = useState(true);
   const [sending, setSending] = useState(false);
   const [message, setMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState();
