@@ -227,9 +227,9 @@ export function getOnlineUsers(users: any[]) {
     dispatch({ type: GET_ONLINE_USERS, payload: users });
 }
 
-export function openChat(name: string, userB: string, opened?: boolean) {
+export function openChat(name: string | undefined, userB: string | undefined) {
   return (dispatch: Function) =>
-    dispatch({ type: OPEN_CHAT, payload: { name, userB, opened } });
+    dispatch({ type: OPEN_CHAT, payload: { name, userB} });
 }
 
 export function closeChat(userB: string) {

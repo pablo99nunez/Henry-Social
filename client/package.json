@@ -10,6 +10,7 @@
   "dependencies": {
     "@types/node-sass": "^4.11.2",
     "axios": "^0.26.0",
+    "emoji-picker-react": "^3.5.1",
     "framer-motion": "^6.2.6",
     "node-sass": "^7.0.1",
     "react": "^17.0.2",

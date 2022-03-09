@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
+import { openChat } from "../../redux/actions/actions";
+import { IMessage } from "../../../../src/models/Conversation";
 import FollowBar from "../../Components/FollowBar/FollowBar";
 import Chat from "../../Components/Chat/Chat";
 import Post from "../../Components/Post/Post";
 import style from "./User.module.scss";
 import linkedin from "../../assets/icons/linkedin2.png";
 import github from "../../assets/icons/github2.png";
-import coffee from "../../assets/icons/coffee-cup3.png";
 import portafolioIcon from "../../assets/icons/portafolio.png";
 import NavSearch from "../../Components/NavSearch/NavSearch";
 import SideMessages from "../../Components/SideMessages/SideMessages";
@@ -16,13 +17,14 @@ import Button from "../../Components/Button/Button";
 import Settings from "../../Components/Settings/Settings";
 import useUser from "../../Hooks/useUser";
 import Modal from "../../Components/Modal/Modal";
+
 import {
   clear,
   filterByLike,
   followUser,
   getPosts,
   makeAdmin,
-  editUser
+  editUser,
 } from "../../redux/actions/actions";
 import { useProfile } from "../../Hooks/useProfile";
 import { IState } from "../../redux/reducer";
@@ -43,7 +45,7 @@ export default function User() {
   const [filter, setFilter] = useState(1);
   const [user, isOwner] = useProfile(username);
   const [isFollowing, setIsFollowing] = useState(false);
-  const [role, setRole] = useState("")
+  const [role, setRole] = useState("");
   const posts = useSelector((state: IState) => state.posts);
   const userLogeado = useUser();
   const dispatch = useDispatch();
@@ -106,13 +108,13 @@ export default function User() {
     return setEdit(true);
   };
 
-  const changeRole = (e:any) => {
-    e.preventDefault()
-    setChanges({role: e.target.value});
-  }
+  const changeRole = (e: any) => {
+    e.preventDefault();
+    setChanges({ role: e.target.value });
+  };
   useEffect(() => {
     if (user?._id) {
-      dispatch(editUser(user._id,changes))
+      dispatch(editUser(user._id, changes));
     }
   }, [changes]);
 
@@ -121,9 +123,9 @@ export default function User() {
   ) : (
     <>
       <Helmet>
-          <meta charSet="utf-8"/>
-          <meta name="Perfil" content="Información del usuario"/>
-          <title>{`${user?.name} | Henry Social`}</title>
+        <meta charSet="utf-8" />
+        <meta name="Perfil" content="Información del usuario" />
+        <title>{`${user?.name} | Henry Social`}</title>
       </Helmet>
       <NavSearch />
       <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
@@ -157,12 +159,13 @@ export default function User() {
               <div className={style.buttons}>
                 {userLogeado?.admin || userLogeado?.master ? (
                   <>
-                  {
-                    user?.master ? 
-                    <Button onClick={handleAdmin}>
-                    {user?.admin ? "Eliminar rol de Admin" : "Hacer Admin"}
-                  </Button> : <span></span>
-                  }
+                    {user?.master ? (
+                      <Button onClick={handleAdmin}>
+                        {user?.admin ? "Eliminar rol de Admin" : "Hacer Admin"}
+                      </Button>
+                    ) : (
+                      <span></span>
+                    )}
                     <Button
                       onClick={() => {
                         if (user?._id && userLogeado?._id) {
@@ -178,9 +181,10 @@ export default function User() {
                   <Button onClick={editProfile}>Editar Perfil</Button>
                 ) : (
                   <>
-                    <Button>
-                      Invitame un cafe
-                      <img src={coffee} alt="coffee-logo" />
+                    <Button
+                      onClick={() => dispatch(openChat(user?.name, user?._id))}
+                    >
+                      Enviar un mensaje
                     </Button>
                     <Button onClick={handleFollow} active={isFollowing}>
                       {isFollowing ? "Siguiendo" : "Seguir"}
@@ -189,32 +193,35 @@ export default function User() {
                 )}
               </div>
               <div className={style.userInfo}>
-                <h1>{user?.name}</h1> 
-                { user?.admin ?
-                <select 
-                className={style.editRole}
-                onChange={changeRole}>
-                  <option value='Estudiante'
-                  selected={user?.role === 'Estudiante' ? true : false}
-                  >Estudiante</option>
-                  <option
-                  value='TA' 
-                  selected={user?.role === 'TA' ? true : false}
-                  >TA</option>
-                  <option 
-                  value='Instructor'
-                  selected={user?.role === 'Instructor' ? true : false} 
-                  >Instructor</option>
-                </select>
-                :<h2 style={{ color: "#aaa" }}>
-                  {user?.role + (user?.cohorte ? " | " + user?.cohorte : "")}
-                </h2>   
-                }
+                <h1>{user?.name}</h1>
+                {user?.admin ? (
+                  <select className={style.editRole} onChange={changeRole}>
+                    <option
+                      value="Estudiante"
+                      selected={user?.role === "Estudiante" ? true : false}
+                    >
+                      Estudiante
+                    </option>
+                    <option
+                      value="TA"
+                      selected={user?.role === "TA" ? true : false}
+                    >
+                      TA
+                    </option>
+                    <option
+                      value="Instructor"
+                      selected={user?.role === "Instructor" ? true : false}
+                    >
+                      Instructor
+                    </option>
+                  </select>
+                ) : (
+                  <h2 style={{ color: "#aaa" }}>
+                    {user?.role + (user?.cohorte ? " | " + user?.cohorte : "")}
+                  </h2>
+                )}
                 <div className={style.bio}>
-
-                  <h3>{
-                    isOwner ? userLogeado?.bio : user?.bio
-                    }</h3>
+                  <h3>{isOwner ? userLogeado?.bio : user?.bio}</h3>
                 </div>
               </div>
 
@@ -332,12 +339,12 @@ export default function User() {
                 <Post post={e} key={i}></Post>
               ))}
             </div>
-
+            <div>
               <SideMessages />
-
+            </div>
           </div>
+          <Chats></Chats>
         </div>
-        <Chats></Chats>
       </div>
     </>
   );
