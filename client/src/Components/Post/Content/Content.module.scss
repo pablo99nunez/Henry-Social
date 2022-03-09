@@ -1,8 +1,16 @@
 .postEmpleo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  max-width: 60vh;
   .linkEmpleo {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 40vh;
   }
   img {
     width: 100%;

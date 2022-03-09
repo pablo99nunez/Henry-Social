@@ -293,9 +293,9 @@ export default function User() {
                 <Post post={e} key={i}></Post>
               ))}
             </div>
-            <div className={style.mistery_box}>
+
               <SideMessages />
-            </div>
+
           </div>
         </div>
         <Chats></Chats>
