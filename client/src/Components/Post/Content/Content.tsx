@@ -82,28 +82,32 @@ export default function Content({ post }: Props) {
       default: {
         return (
           <p>
+            {post.body.includes("#")
+              ? post.body.split(" ").map((word, i) => (
+                  <span
+                    key={i}
+                    className={`${style.spanBody} ${
+                      word[0] === "#" && style.hashtag
+                    }`}
+                    onClick={(e: any) =>
+                      word[0] === "#"
+                        ? setFilterTag(e)
+                        : navigate("/post/" + post._id)
+                    }
+                  >
+                    {word}
+                  </span>
+                ))
+              : post.body}
 
-          {post.body.includes('#') 
-            ? post.body.split(' ').map((word,i) => 
-              <span 
-                key={i}
-                className={`${style.spanBody} ${word[0] === '#' && style.hashtag}`}
-                onClick={(e:any) => word[0] === '#' ? 
-                  setFilterTag(e) : navigate("/post/" + post._id)
-                }
-              >{word}</span>
-              )
-            : post.body}
-
-          /*  {post.body.split(" ").map((e) => (
+            {/* {post.body.split(" ").map((e) => (
               <span
                 className={`${style.spanBody} ${e[0] === "#" && style.hashtag}`}
                 onClick={handleClick}
               >
                 {e}
               </span>
-            ))}*/
-
+            ))} */}
           </p>
         );
       }
@@ -111,18 +115,17 @@ export default function Content({ post }: Props) {
   };
 
   return (
-
     <div
       onClick={() => {
-        post.typePost !== "share" && 
-        post.typePost !== "multimedia" && 
-        post.typePost !== "normal" && navigate("/post/" + post._id);
+        post.typePost !== "share" &&
+          post.typePost !== "multimedia" &&
+          post.typePost !== "normal" &&
+          navigate("/post/" + post._id);
       }}
-      >
+    >
       <div onClick={() => navigate("/post/" + post._id)}>{renderType()}</div>
     </div>
 
-   /* <div onClick={() => navigate("/post/" + post._id)}>{renderType()}</div>*/
-
+    /* <div onClick={() => navigate("/post/" + post._id)}>{renderType()}</div>*/
   );
 }
