@@ -14,7 +14,17 @@ type Props = {
 export default function Content({ post }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const setFilterTag = (e: any) => {
+    dispatch(filterByTag(e.target.textContent));
+    dispatch(setActiveSection(""));
+  };
+  const handleClick = (e: any) => {
+    console.log(e);
+    if (e.target.innerText[0] === "#") {
+      navigate("/");
+      setFilterTag(e);
+    } else navigate("/post/" + post._id);
+  };
   const renderType = () => {
     switch (post?.typePost) {
       case "boom": {
@@ -70,10 +80,6 @@ export default function Content({ post }: Props) {
         return <PostShare post={post} />;
       }
       default: {
-        const setFilterTag = (e: any) => {
-          dispatch(filterByTag(e.target.textContent));
-          dispatch(setActiveSection(""));
-        };
         return (
           <p>
           {post.body.includes('#') 
@@ -100,8 +106,8 @@ export default function Content({ post }: Props) {
         post.typePost !== "multimedia" && 
         post.typePost !== "normal" && navigate("/post/" + post._id);
       }}
-    >
-      {renderType()}
+      >
+      <div onClick={() => navigate("/post/" + post._id)}>{renderType()}</div>
     </div>
   );
 }
