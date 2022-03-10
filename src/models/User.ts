@@ -26,11 +26,6 @@ export interface INotification {
   new: boolean;
 }
 
-export interface ISolicitud {
-  username: string;
-  user_id: string;
-  role: string;
-}
 
 export interface IUser {
   _id?: string;
@@ -55,7 +50,6 @@ export interface IUser {
   company?: string;
   position?: string;
   master?:boolean;
-  solicitud?: ISolicitud[];
 }
 
 const userSchema = new Schema<IUser>({
