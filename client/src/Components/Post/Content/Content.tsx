@@ -14,7 +14,17 @@ type Props = {
 export default function Content({ post }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const setFilterTag = (e: any) => {
+    dispatch(filterByTag(e.target.textContent));
+    dispatch(setActiveSection(""));
+  };
+  const handleClick = (e: any) => {
+    console.log(e);
+    if (e.target.innerText[0] === "#") {
+      navigate("/");
+      setFilterTag(e);
+    } else navigate("/post/" + post._id);
+  };
   const renderType = () => {
     switch (post?.typePost) {
       case "boom": {
@@ -70,21 +80,12 @@ export default function Content({ post }: Props) {
         return <PostPregunta post={post} />;
       }
       default: {
-        const setFilterTag = (e: any) => {
-          dispatch(filterByTag(e.target.textContent));
-          dispatch(setActiveSection(""));
-        };
         return (
           <p>
             {post.body.split(" ").map((e) => (
               <span
                 className={`${style.spanBody} ${e[0] === "#" && style.hashtag}`}
-                onClick={(e: any) => {
-                  console.log(e);
-                  e[0] === "#"
-                    ? navigate("/post/" + post._id)
-                    : setFilterTag(e);
-                }}
+                onClick={handleClick}
               >
                 {e}
               </span>
@@ -95,5 +96,7 @@ export default function Content({ post }: Props) {
     }
   };
 
-  return <div>{renderType()}</div>;
+  return (
+    <div onClick={() => navigate("/post/" + post._id)}>{renderType()}</div>
+  );
 }
