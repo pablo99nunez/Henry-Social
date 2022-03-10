@@ -19,7 +19,7 @@ export default function LandingPage({ handleActionChange }: any) {
               src="https://assets.soyhenry.com/assets/LOGO-HENRY-03.png"
               alt="icon"
             />
-            <h1> | Social </h1>
+            <h1>| Social </h1>
           </div>
           {user?.username ? (
             <div className={style.headers_buttons}>
@@ -91,16 +91,17 @@ export default function LandingPage({ handleActionChange }: any) {
           <div id={style.grid_section}>
             <div>
               <img src={chat} alt="chat" />
+              <div id={style.description}>
+                <h3>Chat en vivo</h3>
+                <p>
+                  Puedes comunicarte con tus compañeros y colegas de toda la
+                  comunidad mediante nuestra aplicación de chat en vivo exclusiva
+                  para Henrys.
+                </p>
+              </div>
             </div>
-            <div id={style.description}>
-              <h3>Chat en vivo</h3>
-              <p>
-                Puedes comunicarte con tus compañeros y colegas de toda la
-                comunidad mediante nuestra aplicación de chat en vivo exclusiva
-                para Henrys.
-              </p>
-            </div>
-            <div id={style.description}>
+            <div>
+              <div id={style.description}>
               <h3>Compartir momentos</h3>
               <p>
                 Puedes postear y compartir lo que quieras, desde imágenes hasta
@@ -108,34 +109,33 @@ export default function LandingPage({ handleActionChange }: any) {
                 próxima oportunidad laboral o enterarte de cual de tus
                 compañeros ya consiguieron empleo.
               </p>
-            </div>
-            <div>
+              </div>
               <img src={post} alt="post" />
             </div>
             <div>
               <img src={questions} alt="questions" />
-            </div>
-            <div id={style.description}>
-              <h3>Resolver tus dudas</h3>
-              <p>
-                Si estas estancado con algún ejercicio o con alguna homework
-                puedes postear tu pregunta la cual sera enviada a los TA
-                presentes en esta app que sin duda enviaran tu respuesta para
-                que todos puedan verla, comentar y/o aportar mas conocimiento
-              </p>
-            </div>
-            <div id={style.description}>
-              <h3>Realizar donaciones</h3>
-              <p>
-                En el caso de que quieras realizar algún aporte a tus compañeros
-                que te ayudaron con esa duda que tenias o que hicieron un post
-                tan destacado que merece una recompensa, puedes realizar una
-                donación a ese usuario al que quieres apoyar mediante el uso de
-                nuestro botón para donar un cafe. Ah! Y tu también puedes
-                recibir donaciones de tus compañeros!!!
-              </p>
+              <div id={style.description}>
+                <h3>Resolver tus dudas</h3>
+                <p>
+                  Si estas estancado con algún ejercicio o con alguna homework
+                  puedes postear tu pregunta la cual sera enviada a los TA
+                  presentes en esta app que sin duda enviaran tu respuesta para
+                  que todos puedan verla, comentar y/o aportar mas conocimiento
+                </p>
+              </div>
             </div>
             <div>
+              <div id={style.description}>
+                <h3>Realizar donaciones</h3>
+                <p>
+                  En el caso de que quieras realizar algún aporte a tus compañeros
+                  que te ayudaron con esa duda que tenias o que hicieron un post
+                  tan destacado que merece una recompensa, puedes realizar una
+                  donación a ese usuario al que quieres apoyar mediante el uso de
+                  nuestro botón para donar un cafe. Ah! Y tu también puedes
+                  recibir donaciones de tus compañeros!!!
+                </p>
+              </div>
               <img src={donations} alt="donations" />
             </div>
           </div>
