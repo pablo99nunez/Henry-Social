@@ -15,7 +15,7 @@ export default function useLogin() {
     auth.onAuthStateChanged((user) => {
       if (user && user.email) {
         //if(user.emailVerified) navigate("/")
-        if(!user.emailVerified) navigate("/verification");
+        if (!user.emailVerified) navigate("/verification");
         dispatch(getUser(user.email));
         dispatch(setSocket());
       } else {
@@ -31,5 +31,5 @@ export default function useLogin() {
       socket?.connect();
       socket?.emit("add_user", user._id);
     }
-  }, [socket, user]);
+  }, [socket]);
 }
