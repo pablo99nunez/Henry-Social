@@ -8,18 +8,25 @@ import { getMomento } from "../../helpers/momento";
 import axios from "axios";
 import useUser from "../../Hooks/useUser";
 import { InfoAlert } from "../Alert/Alert";
+import { useDispatch } from "react-redux";
+import { getPost } from "../../redux/actions/actions";
 
 const Comment = ({ key, data }: any) => {
   const user = useUser()
+  const dispatch = useDispatch();
   const [remove, setRemove] = useState(false);
   const [options, setOptions] = useState(false);
 
   const handleDelete= () => {
     axios
       .delete(`/comment`, {
-        data: { postId: data?.postId },
+        data: {
+          _id: data?._id,
+          postId: data?.postId
+        },
       })
-      .then((data) => {
+      .then(({data}) => {
+        dispatch(getPost(data._id));
         InfoAlert.fire({
           title: "Comentario eliminado.",
           icon: "success",
