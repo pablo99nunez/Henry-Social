@@ -280,15 +280,18 @@ router.post("/comment", async (req, res) => {
 });
 
 router.delete("/comment", async (req, res) => {
-  const { postId } = req.body;
+  const { _id, postId } = req.body;
   try {
-    Comment.findByIdAndDelete(postId)
-    .then(() => {
-      Post.findByIdAndUpdate(postId, {
-        $inc: { numComments: 0 }
-      }).then((post) => {            
-        res.status(200).json(post)
-      })
+    Comment.findByIdAndDelete(_id)
+    .then((con) => {
+      if(con?.postId.toString() === postId) {
+        return Post.findByIdAndUpdate(postId, 
+          {$inc: { numComments: -1 }},
+          { new: true }
+        )
+      } else res.sendStatus(400);
+    }).then((post) => {
+      if(post) res.status(200).json(post)
     })
   } catch (e) {
       res.status(401).json({ error: e });
