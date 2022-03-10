@@ -51,6 +51,10 @@ const Comment = ({ key, data }: any) => {
           <div className="sizeLikes">
             <Like post={data} />
           </div>
+          {/* <div className="sizeComments" title="Comentarios">
+            <FaRegComment />
+            <p className="count">{data.countComments || 0}</p>
+          </div> */}
         </div>
       </div>
 

@@ -21,8 +21,8 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
   const dispatch = useDispatch();
   const imagePost = useRef<HTMLInputElement>(null);
   const imageComPost = useRef<HTMLInputElement>(null);
-  const { postEdit } = useSelector((state: IState) => state);
   const [loadSend, setLoadSend] = useState(false);
+  const { postEdit, socket } = useSelector((state: IState) => state);
   const [typePost, setTypePost] = useState(postEdit?.typePost || "normal");
 
   const [post, setPost] = useState({
@@ -170,6 +170,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
           setOpen(false);
           setEdit && setEdit(false);
           !pageUser && dispatch(getPosts());
+          socket?.emit("add_post");
           postEdit && dispatch(setPostEdit(null));
           setLoadSend(false)
           return data;

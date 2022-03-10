@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IMessage } from "../../../../src/models/Conversation";
 import { openChat } from "../../redux/actions/actions";
@@ -14,7 +14,7 @@ export default function Chats() {
   const socket = useSelector((state: IState) => state.socket);
   useEffect(() => {
     socket?.on("receive_private_message", (data: IMessage) => {
-      dispatch(openChat(data.name, data.sender, false));
+      dispatch(openChat(data.name, data.sender));
     });
   }, []);
   return (

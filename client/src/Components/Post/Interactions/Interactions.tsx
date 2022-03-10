@@ -45,7 +45,7 @@ export default function Interactions({
             </div>
          </div>
 
-         <div 
+         <div className={style.post_icon}
             onClick={() => {
             setOpenShare(!openShare)
             openComment && setOpenComment(!openComment)

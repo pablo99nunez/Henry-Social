@@ -6,7 +6,7 @@ import {
   GithubAuthProvider,
   signInWithEmailAndPassword,
   signOut,
-  sendEmailVerification
+  sendEmailVerification,
 } from "firebase/auth";
 import { IUser } from "../../../src/models/User";
 import axios from "axios";
@@ -42,19 +42,26 @@ export async function signUpWithEmail(userInfo: IUser) {
         : "https://s5.postimg.cc/537jajaxj/default.png";
 
     if (password)
-      await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
-        if(userCredential) sendEmailVerification(userCredential?.user, {
-          url: "http://localhost:3000"
+      await createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          if (userCredential)
+            sendEmailVerification(userCredential?.user, {
+              url: "http://localhost:3000",
+            });
+          axios.post("/user", {
+            name,
+            username,
+            email,
+            avatar: downloadURL,
+            uid: userCredential.user.uid,
+          });
+        })
+        .catch((e) => {
+          if (e.message === "EMAIL_EXIST") {
+            throw new Error("Ya existe una cuenta con ese usuario");
+          }
         });
-        axios.post("/user", {
-          name,
-          username,
-          email,
-          avatar: downloadURL,
-          uid: userCredential.user.uid,
-        });
-      });
-  } catch (e) {
+  } catch (e: any) {
     throw new Error("ERROR " + e);
   }
 }

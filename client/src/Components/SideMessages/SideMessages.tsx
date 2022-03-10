@@ -21,14 +21,14 @@ const SideMessages = () => {
 
   return usersConnect.length ?  (
     <aside className={style.aside_messages}>
-      <h2>Usuarios Conectados</h2>
+      <h2>Usuarios en linea</h2>
       <div className={style.aside_resume_messages}>
         {usersConnect?.map(
           (e: any, i: number) =>
             <div
               key={i}
               className={style.user}
-              onClick={() => dispatch(openChat(e.name, e.userId, true))}
+              onClick={() => dispatch(openChat(e.name, e.userId))}
             >
               <Avatar avatar={e.avatar}/>
               <h3> {e.name} </h3>

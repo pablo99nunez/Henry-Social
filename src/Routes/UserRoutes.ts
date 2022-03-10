@@ -44,8 +44,7 @@ router.get("/users", async (req, res) => {
       // @ts-ignore
       username.toLowerCase();
       const users = await User.find({
-        name: { $regex: username, $options:"i" },
-
+        name: { $regex: username, $options: "i" },
       });
       return res.json(users);
     }
@@ -221,7 +220,7 @@ router.post("/notification", async (req, res) => {
   try {
     const receptor = await User.findById(notification.receptor);
     const emisor = await User.findById(notification.emisor);
-    if (receptor && emisor) {
+    if (receptor && emisor && notification.emisor !== notification.receptor) {
       if (
         typeof receptor.username === "string" &&
         typeof emisor.username === "string" &&
@@ -268,6 +267,18 @@ router.post("/notification", async (req, res) => {
             {
               notification = {
                 content: `${emisor.name} le ha dado like a tu comentario`,
+                link: notification.link,
+                type: notification.type,
+                emisor: emisor.username,
+                avatar: emisor.avatar,
+                new: true,
+              };
+            }
+            break;
+          case NotificationType.Share:
+            {
+              notification = {
+                content: `${emisor.name} ha compartido tu publicacion.`,
                 link: notification.link,
                 type: notification.type,
                 emisor: emisor.username,

@@ -3,6 +3,7 @@ import useUser from "../../Hooks/useUser";
 import style from "./PrivateChat.module.scss";
 import { IMessage } from "../../../../src/models/Conversation";
 import { BiChevronsUp } from "react-icons/bi";
+import { BsEmojiSmile } from "react-icons/bs";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { IoSend } from "react-icons/io5";
 import Avatar from "../Avatar/Avatar";
@@ -10,6 +11,8 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
 import { closeChat } from "../../redux/actions/actions";
+import song from "../../assets/sounds/facebook-pop.mp3"
+import Picker from 'emoji-picker-react';
 import axios from "axios";
 
 type Props = {
@@ -18,12 +21,13 @@ type Props = {
   opened?: boolean;
 };
 
-const PrivateChat = ({ name, userB, opened }: Props) => {
+const PrivateChat = ({ name, userB }: Props) => {
   const socket = useSelector((state: IState) => state.socket);
   const dispatch = useDispatch();
   const user = useUser();
   const input = useRef<HTMLTextAreaElement>(null);
-  const [open, setOpen] = useState(opened);
+  const [open, setOpen] = useState(true);
+  const [sending, setSending] = useState(false);
   const [message, setMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState();
   const [newMessage, setNewMessage] = useState(0);
@@ -32,10 +36,13 @@ const PrivateChat = ({ name, userB, opened }: Props) => {
   const close = useRef<HTMLDivElement>(null);
   const [listMessage, setListMessage] = useState<any[]>([]);
   const [isHovering, setIsHovering] = useState(false);
+  const [toggle, setToggle] = useState(false);
 
   const handleClick = (e: any) => {
     e.target !== close.current && setOpen(!open);
   };
+
+  const audio = new Audio(song);
 
   function getTime(): string {
     const hours =
@@ -49,13 +56,27 @@ const PrivateChat = ({ name, userB, opened }: Props) => {
     return hours + ":" + minutes;
   }
 
+  const [chosenEmoji, setChosenEmoji] = useState(null);
+  const onEmojiClick = (event:any,emojiObject:any) => {
+    setChosenEmoji(emojiObject.emoji);
+    if(!chosenEmoji) return;
+    console.log(chosenEmoji)
+    setMessage(prev => prev+chosenEmoji)
+  };
+  const Toggle = () => {
+    setToggle(!toggle)
+    console.log(toggle)
+  }
+
   const SendMessage = async () => {
     if (
       message &&
       user?.username &&
       typeof user.avatar === "string" &&
-      user.name
+      user.name &&
+      !sending
     ) {
+      setSending(true);
       const messageData = {
         receiver: userB,
         sender: user._id,
@@ -71,6 +92,7 @@ const PrivateChat = ({ name, userB, opened }: Props) => {
       socket?.emit("send_private_message", messageData);
       setListMessage([...listMessage, messageData]);
       setMessage("");
+      setSending(false);
     }
   };
   useEffect(() => {
@@ -103,6 +125,7 @@ const PrivateChat = ({ name, userB, opened }: Props) => {
 
   useEffect(() => {
     socket?.on("receive_private_message", (data) => {
+      audio.play()
       console.log("recibiendo mensaje", data, data.sender);
       if (data.sender === userB) {
         setArrivalMessage(data);
@@ -216,7 +239,46 @@ const PrivateChat = ({ name, userB, opened }: Props) => {
               e.key === "Enter" && SendMessage();
             }} */
           />
-          <IoSend onClick={SendMessage}></IoSend>
+          <motion.div
+            animate={
+              sending
+                ? {
+                    rotateZ: 360,
+                    transition: { repeat: Infinity, ease: "linear" },
+                  }
+                : { rotateZ: 0 }
+            }
+            className={`${sending && style.disabled}`}
+          >         
+            <div>
+              <BsEmojiSmile onClick={()=>{Toggle()}}/>
+              { toggle && (
+                  <Picker
+                    pickerStyle={{
+                      position:"fixed",
+                      bottom:"100px",
+                      right:"36px",
+                      boxShadow:"none",
+                      height:"150px",
+                      width:"240px",
+                    }}
+                    groupNames={{
+                      smileys_people: '',
+                      animals_nature: '',
+                      food_drink: '',
+                      travel_places: '',
+                      activities: '',
+                      objects: '',
+                      symbols: '',
+                      flags: '',
+                    }} 
+                    disableSearchBar={true} 
+                    onEmojiClick={onEmojiClick} 
+                  />
+            )}
+            </div>
+            <IoSend onClick={SendMessage}></IoSend>
+          </motion.div>
         </div>
       </motion.div>
     </>

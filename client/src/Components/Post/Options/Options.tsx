@@ -10,15 +10,19 @@ import style from "./Options.module.scss";
 import { useDispatch } from "react-redux";
 import { getPosts, setPostEdit } from "../../../redux/actions/actions";
 
-
 type Props = {
-    post: IPost;
-    setEdit: Dispatch<SetStateAction<boolean>> | null;
-    setShowModal: Dispatch<SetStateAction<boolean>> | null;  
-    shared: boolean;
+  post: IPost;
+  setEdit?: Dispatch<SetStateAction<boolean>>;
+  setShowModal?: Dispatch<SetStateAction<boolean>>;
+  shared: boolean;
 };
 
-export default function Options({ post, setEdit, setShowModal, shared }: Props) {
+export default function Options({
+  post,
+  setEdit,
+  setShowModal,
+  shared,
+}: Props) {
   const userLogeado = useUser();
   const dispatch = useDispatch();
   const [demand, setDemand] = useState(false);
@@ -46,9 +50,11 @@ export default function Options({ post, setEdit, setShowModal, shared }: Props) 
   };
 
   const handleEdit = async () => {
-    setEdit && setEdit(true)
-    setShowModal && setShowModal(true)
-    dispatch(setPostEdit(post))
+    if (setEdit && setShowModal) {
+      setEdit(true);
+      setShowModal(true);
+      dispatch(setPostEdit(post));
+    }
   };
 
   const handleDelete = async () => {
@@ -74,8 +80,8 @@ export default function Options({ post, setEdit, setShowModal, shared }: Props) 
   };
 
   return !demand ? (
-    <div 
-      style={{display: shared ? 'none' : 'flex'}}
+    <div
+      style={{ display: shared ? "none" : "flex" }}
       className={style.post_options}
     >
       <BsThreeDots onClick={() => setOptions(!options)} />
