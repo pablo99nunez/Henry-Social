@@ -1,0 +1,43 @@
+@import "../../../Styles/variables.scss";
+
+.list {
+  display: flex;
+  flex-direction: column;
+  li {
+    display: grid;
+    align-items: center;
+    background-color: $greyDark;
+    grid-template-columns: repeat(3, 1fr) 40%;
+    h2 {
+      text-align: center;
+      font-weight: bold;
+    }
+    & > * {
+      border: 1px solid $greyLow;
+      height: 100%;
+      display: flex;
+      padding: 0.2rem 1rem;
+      gap: 1rem;
+      align-items: center;
+    }
+  }
+}
+.wrapEditRole {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  .editRole {
+    background-color: transparent;
+    color: currentColor;
+    padding: 1rem;
+    border: none;
+    min-width: 10vh;
+    font-size: 1.2rem;
+    font-weight: bold;
+    outline: none;
+    text-align: center;
+    &option {
+      border: 1px gray solid;
+    }
+  }
+}

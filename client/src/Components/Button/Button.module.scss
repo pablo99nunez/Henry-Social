@@ -22,5 +22,6 @@
 }
 .disabled {
   background-color: grey !important;
-  cursor: default !important; 
+  color: $black !important;
+  cursor: default !important;
 }
