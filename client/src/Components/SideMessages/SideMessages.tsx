@@ -19,7 +19,7 @@ const SideMessages = () => {
 
   return (
     <aside className={style.aside_messages}>
-      <h2>Mensajes</h2>
+      <h2>Usuarios en linea</h2>
       <div className={style.aside_resume_messages}>
         {users?.map(
           (e: any, i: number) =>
@@ -27,7 +27,7 @@ const SideMessages = () => {
               <div
                 key={i}
                 className={style.user}
-                onClick={() => dispatch(openChat(e.username, e.name, e.userId))}
+                onClick={() => dispatch(openChat(e.name, e.userId))}
               >
                 <Avatar avatar={e.avatar}></Avatar>
                 <div>

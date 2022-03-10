@@ -14,6 +14,8 @@ import axios from "axios";
 import { editUser, signOut } from "../../redux/actions/actions";
 import useUser from "../../Hooks/useUser";
 import { auth } from "../../firebase/firebase";
+import { InfoAlert } from "../Alert/Alert";
+import { IDone } from "../../../../src/models/Request";
 
 export default function Settings({ cancel }: any) {
   const user = useUser();
@@ -21,7 +23,6 @@ export default function Settings({ cancel }: any) {
   const dispatch = useDispatch();
   const btn = useRef<HTMLButtonElement>(null);
   const imgInput = useRef<HTMLInputElement>(null);
-
   interface Changes {
     username: string | null | undefined;
     bio: string | null | undefined;
@@ -50,12 +51,13 @@ export default function Settings({ cancel }: any) {
     github: false,
     portfolio: false,
   });
-  const [key, setKey] = useState(false);
-  const cambiarClave = () => {
-    setKey(true);
-  };
   const [complete, setComplete] = useState(false);
   const [newAvatar, setNewAvatar] = useState<string | null>(null);
+  const [key, setKey] = useState(false);
+
+  const changeKey = () => {
+    setKey(true);
+  };
 
   useEffect(() => {
     let complete = true;
@@ -197,46 +199,41 @@ export default function Settings({ cancel }: any) {
       imgUrl = await uploadFile(imgInput.current.files[0]);
       if (user?._id)
         dispatch(editUser(user._id, { ...changes, avatar: imgUrl }));
-
-      /* axios
-      .put("/user", {
-        _id: user?._id,
-        changes: { ...changes, avatar: imgUrl },
-      })
-      .then(({ data: user }) => {
-        cancel(e);
-        dispatch(editUser(user));
-        InfoAlert.fire({
-          title: "Se actualizó tu perfil!",
-          icon: "success",
-        });
-        navigate(`/profile/${changes.username}`);
-      })
-      .catch((error) => {
-        cancel(e);
-        console.log(error);
-        InfoAlert.fire({
-          title: "No se pudo actulizar tu perfil",
-          icon: "error",
-        });
-      }); */
     }
-    if (user?._id) dispatch(editUser(user._id, changes));
+    if (changes.role && !user?.admin) {
+      await axios.post("/request", {
+        user: user?._id,
+        solicitud: `${
+          user?.name.split(" ")[0]
+        } ha solicitado un cambio de rol a ${changes.role}`,
+        done: IDone.Rol,
+        data: JSON.stringify({
+          _id: user?._id,
+          changes: { role: changes.role },
+        }),
+      });
+      InfoAlert.fire("Solicitud enviada");
+    }
+    const { bio, github, linkedin, portfolio, username } = changes;
+    if (user?._id && user.admin) dispatch(editUser(user._id, changes));
+    else if (user?._id)
+      dispatch(
+        editUser(user._id, { bio, github, linkedin, portfolio, username })
+      );
   };
   const onChangeRole = (e: any): void => {
-    if (user?.admin) {
-      setChanges({
-        ...changes,
-        role: e.target.value,
-      });
-    } else throw new Error("Only admins can change roles");
+    setChanges({
+      ...changes,
+      role: e.target.value,
+    });
   };
 
   return (
     <>
       <Modal isOpen={key} setIsOpen={setKey} title="Cambiar contraseña">
         <ChangeKey
-          cancel={(e?: any) => {
+          cancel={(e?: any, closeParent?: boolean) => {
+            if (closeParent) cancel();
             e && e.preventDefault();
             return setKey(false);
           }}
@@ -244,26 +241,29 @@ export default function Settings({ cancel }: any) {
       </Modal>
       <form className={style.settings_wrap}>
         <div id={style.avt_cont}>
-          <img
-            src={
-              newAvatar ||
-              (typeof user?.avatar === "string" && user?.avatar) ||
-              "https://s5.postimg.cc/537jajaxj/default.png"
-            }
-            alt="avatar"
-          />
-          <label htmlFor="newAvatar" id={style.editIcon}>
-            <IconContext.Provider value={{ color: "yellow", size: "35px" }}>
-              <BiEdit />
-            </IconContext.Provider>
-          </label>
-          <input
-            ref={imgInput}
-            name="avatar"
-            id="newAvatar"
-            onChange={handleChanges}
-            type="file"
-          />
+          <div>
+            <img
+              src={
+                newAvatar ||
+                (typeof user?.avatar === "string" && user?.avatar) ||
+                "https://s5.postimg.cc/537jajaxj/default.png"
+              }
+              alt="avatar"
+            />
+            <label htmlFor="newAvatar" id={style.editIcon}>
+              <IconContext.Provider value={{ color: "yellow", size: "35px" }}>
+                <BiEdit />
+              </IconContext.Provider>
+            </label>
+            <input
+              ref={imgInput}
+              name="avatar"
+              id="newAvatar"
+              onChange={handleChanges}
+              type="file"
+            />
+          </div>
+          <p onClick={changeKey}>Cambiar contraseña</p>
         </div>
         <div>
           <div className={style.inputBox}>
@@ -298,7 +298,7 @@ export default function Settings({ cancel }: any) {
               type="button"
               active={changes?.role === "Estudiante"}
               onClick={onChangeRole}
-              disabled={user?.admin ? false : true}
+              disabled={user?.role === "Estudiante" ? true : false}
               value="Estudiante"
             >
               Estudiante
@@ -306,8 +306,8 @@ export default function Settings({ cancel }: any) {
             <Button
               type="button"
               active={changes?.role === "Instructor"}
+              disabled={user?.role === "Instructor" ? true : false}
               onClick={onChangeRole}
-              disabled={user?.admin ? false : true}
               value="Instructor"
             >
               Instructor
@@ -315,60 +315,76 @@ export default function Settings({ cancel }: any) {
             <Button
               type="button"
               active={changes?.role === "TA"}
+              disabled={user?.role === "TA" ? true : false}
               onClick={onChangeRole}
-              disabled={user?.admin ? false : true}
               value="TA"
             >
               TA
             </Button>
+            <div>
+              <button
+                title="En caso de que lo requieras puedes clickear en el rol que deseas y una 
+            solicitud sera enviada a nuestros admins."
+                className={style.solicitud}
+                disabled
+              >
+                ?
+              </button>
+              <span></span>
+            </div>
           </div>
-        </div>
-        <span className={style.spaneo}>
-          <input
-            type="text"
-            name="github"
-            onChange={handleChanges}
-            placeholder="."
-            defaultValue={changes?.github || ""}
-          ></input>
-          <span>Ingresa tu Usuario de Github</span>
-        </span>
 
-        <span className={style.spaneo}>
-          <input
-            type="url"
-            onChange={handleChanges}
-            placeholder="."
-            name="linkedin"
-            defaultValue={changes?.linkedin || ""}
-          ></input>
-          <span>Ingresa la Url de tu Linkedin</span>
-        </span>
+          <div className={style.inputBox}>
+            <span className={style.spaneo}>
+              <input
+                type="text"
+                name="github"
+                onChange={handleChanges}
+                placeholder="."
+                defaultValue={changes?.github || ""}
+              ></input>
+              <span>Ingresa tu Usuario de Github</span>
+            </span>
 
-        <span className={style.spaneo}>
-          <input
-            type="url"
-            onChange={handleChanges}
-            placeholder="."
-            name="portfolio"
-            defaultValue={changes?.portfolio || ""}
-          ></input>
-          <span>Ingresa la Url de tu portafolio</span>
-        </span>
-        <div className={style.buttons}>
-          <Button
-            type="submit"
-            backgroundColor="#000"
-            disabled={!complete}
-            onSubmit={cancel}
-            onClick={saveChanges}
-          >
-            Guardar cambios
-          </Button>
-          <Button onClick={cancel} backgroundColor="#FF1">
-            Cancelar
-          </Button>
-          <Button>Eliminar perfil</Button>
+            <span className={style.spaneo}>
+              <input
+                type="url"
+                onChange={handleChanges}
+                placeholder="."
+                name="linkedin"
+                defaultValue={changes?.linkedin || ""}
+              ></input>
+              <span>Ingresa la Url de tu Linkedin</span>
+            </span>
+
+            <span className={style.spaneo}>
+              <input
+                type="url"
+                onChange={handleChanges}
+                placeholder="."
+                name="portfolio"
+                //defaultValue={changes?.portfolio}
+              ></input>
+              <span>Ingresa la Url de tu portafolio</span>
+            </span>
+          </div>
+          <div className={style.buttons}>
+            <Button
+              type="submit"
+              backgroundColor="#000"
+              disabled={!complete}
+              onSubmit={cancel}
+              onClick={saveChanges}
+            >
+              Guardar cambios
+            </Button>
+            <Button onClick={cancel} backgroundColor="#FF1">
+              Cancelar
+            </Button>
+            <Button type="button" onClick={deleteUser}>
+              Eliminar perfil
+            </Button>
+          </div>
         </div>
       </form>
     </>

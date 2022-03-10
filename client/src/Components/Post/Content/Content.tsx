@@ -1,48 +1,66 @@
+import React from "react";
+import PostShare from "./PostShare";
+import { useDispatch } from "react-redux";
 import style from "./Content.module.scss";
 import { useNavigate } from "react-router-dom";
 import PostPregunta from "../Types/PostPregunta";
 import { IPost } from "../../../../../src/models/Post";
-import PostShare from './PostShare';
+import { filterByTag, setActiveSection } from "../../../redux/actions/actions";
+
 type Props = {
   post: IPost;
 };
 
 export default function Content({ post }: Props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const renderType = () => {
     switch (post?.typePost) {
       case "boom": {
         return (
-          <>
-            <h4 style={{textAlign:"center"}}/* ref={headerRef} */>
-              💥💥💥Contratad@ para {post?.company} como {post?.position} 
-              💥💥💥
+          <div className={style.contentBoom}>
+            {typeof post?.companyImage === "string" && post?.companyImage && (
+              <img src={post?.companyImage} alt="company" />
+            )}
+            <h4>
+              💥💥💥Contratad@ para {post?.company} como {post?.position} 💥💥💥
             </h4>
-            <br></br>
-            <div style={{fontSize:"15px"}}>
-            {post.body}
-            </div>
-          </>
+            <div style={{ fontSize: "15px" }}>{post.body}</div>
+          </div>
         );
       }
       case "empleo": {
         return (
-          <>
-            <p style={{fontSize:"20px"}}>Busqueda laboral:</p>
-            <p>
-              {post?.company} esta buscando {post?.position}
-            </p>
+          <div className={style.postEmpleo}>
+            {typeof post?.companyImage === "string" && post?.companyImage && (
+              <img src={post?.companyImage} alt="company" />
+            )}
+            <h3>
+              <strong>{post?.company}</strong> esta buscando{" "}
+              <strong>{post?.position}</strong>
+            </h3>
             <br></br>
-            <div style={{fontSize:"14px"}}>
-            {post?.body}
-            </div>
+            <div style={{ fontSize: "14px" }}>{post?.body}</div>
             <br></br>
             <div className={style.linkEmpleo}>
-            <a href={post?.companyLink}><strong style={{color:"#1a5fc7"}}>Link de la oferta</strong> 📌</a>
-            {post?.salary ? <p> <strong style={{color:"#1a5fc7"}}>Salario:</strong> {post?.salary}</p> : <p></p>}
+              {post?.companyLink && (
+                <a href={post?.companyLink}>
+                  <strong style={{ color: "#1a5fc7" }}>
+                    Link de la oferta
+                  </strong>{" "}
+                  📌
+                </a>
+              )}
+              {post?.salary && (
+                <p>
+                  {" "}
+                  <strong style={{ color: "#1a5fc7" }}>Salario:</strong>{" "}
+                  {post?.salary} {post?.salaryCoin}
+                </p>
+              )}
             </div>
-          </>
+          </div>
         );
       }
       case "share": {
@@ -52,18 +70,30 @@ export default function Content({ post }: Props) {
         return <PostPregunta post={post} />;
       }
       default: {
-        return post.body;
+        const setFilterTag = (e: any) => {
+          dispatch(filterByTag(e.target.textContent));
+          dispatch(setActiveSection(""));
+        };
+        return (
+          <p>
+            {post.body.split(" ").map((e) => (
+              <span
+                className={`${style.spanBody} ${e[0] === "#" && style.hashtag}`}
+                onClick={(e: any) => {
+                  console.log(e);
+                  e[0] === "#"
+                    ? navigate("/post/" + post._id)
+                    : setFilterTag(e);
+                }}
+              >
+                {e}
+              </span>
+            ))}
+          </p>
+        );
       }
     }
   };
 
-  return ( 
-    <div
-      onClick={() => {
-        post.typePost !== 'share' && navigate("/post/" + post._id);
-      }}
-    >
-      {renderType()}
-    </div>
-  );
+  return <div>{renderType()}</div>;
 }

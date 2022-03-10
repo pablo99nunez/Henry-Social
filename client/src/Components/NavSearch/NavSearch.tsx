@@ -6,6 +6,7 @@ import useUser from "../../Hooks/useUser";
 import { closeSession } from "../../../src/firebase/login-methods";
 import { searchUsers, signOut } from "../../redux/actions/actions";
 import { InfoAlert } from "../Alert/Alert";
+import { RiAdminFill } from "react-icons/ri";
 import { useState } from "react";
 import Notifications from "../Notifications/Notifications";
 import ListSearch from "../ListSearch/ListSearch";
@@ -64,7 +65,7 @@ const NavSearch = () => {
             placeholder="Busca otros Henry's "
             autoComplete="off"
           />
-          {!input ? null : users.length === 0 ? <ListSearch /> : <ListSearch />}
+          {!input ? null : users.length === 0 ? "" : <ListSearch />}
         </div>
         <div
           style={{
@@ -74,6 +75,14 @@ const NavSearch = () => {
           }}
           className={styles.notifications}
         >
+          {(user?.admin || user?.master) && (
+            <RiAdminFill
+              size={"2rem"}
+              color="#fff"
+              cursor={"pointer"}
+              onClick={() => navigate("/admin")}
+            />
+          )}
           <Notifications />
 
           <div

@@ -6,8 +6,8 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  background: black;
   .post {
+    background: black;
     gap: 1rem;
     width: 100%;
     padding: 1.5rem;
@@ -22,7 +22,8 @@
       box-shadow: 0 0 5px 5px #1a5fc733;
       border: 1px solid #1a5fc7;
       .post_wrap {
-        width: max-content;
+        width: 100%;
+        margin-right: 4rem;
       }
     }
     &.postBoom {

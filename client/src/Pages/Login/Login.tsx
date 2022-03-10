@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BsGoogle, BsGithub } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { BiEdit } from "react-icons/bi";
 import { IconContext } from "react-icons";
+import { Helmet } from "react-helmet";
 
 import {
   signUpWithEmail,
@@ -15,18 +16,19 @@ import useUser from "../../Hooks/useUser";
 import Button from "../../Components/Button/Button";
 import { InfoAlert } from "../../Components/Alert/Alert";
 import LoginInput from "../../Components/LoginInput/LoginInput";
+import Modal from "../../Components/Modal/Modal";
+import ResetPassword from "../../Components/ResetPassword/ResetPassword";
 import valForm from "./valForm";
 import axios from "axios";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 
-enum USER_ACTION {
-  signUp,
-  logIn,
-}
-
 let userExists: boolean;
 
-export default function Login(): JSX.Element {
+export default function Login({
+  USER_ACTION,
+  action,
+  handleActionChange,
+}: any): JSX.Element {
   const [input, setInput] = useState<any>({
     firstName: "",
     lastName: "",
@@ -48,17 +50,11 @@ export default function Login(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [formComplete, setFromComplete] = useState(false);
   const [userAlreadyExist, setUserAlreadyExist] = useState(false);
-  const [action, setAction] = useState(USER_ACTION.logIn);
   const [newAvatar, setNewAvatar] = useState<string | null>(null);
+  const [password, setPassword] = useState(false);
   const navigate = useNavigate();
   const user = useUser();
   const btn = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    document.title = `${
-      action ? "Iniciar Sesion" : " Registrate"
-    } | Henry Social`;
-  }, [action]);
 
   useEffect(() => {
     const { firstName, lastName, username, password, email } = input;
@@ -111,13 +107,11 @@ export default function Login(): JSX.Element {
           delete newUser.lastName;
           await signUpWithEmail(newUser).then(() => {
             InfoAlert.fire("Usuario creado con exito");
+            navigate("/verification");
           });
         } else if (input.password != undefined) {
           await signInWithEmail(input.email, input.password);
         }
-
-        navigate("/");
-        setLoading(false);
       } catch (e) {
         console.error(e);
         InfoAlert.fire({ title: "Algo salio mal", icon: "error" });
@@ -144,9 +138,14 @@ export default function Login(): JSX.Element {
           });
           navigate("/");
         }
-      } catch (e) {
-        console.error(e);
-        InfoAlert.fire({ title: "Algo salio mal", icon: "error" });
+      } catch (e: any) {
+        console.log(e);
+        if (e.message === "EMAIL_EXIST") {
+          InfoAlert.fire({
+            title: "Ya existe una cuenta con este correo",
+            icon: "error",
+          });
+        } else InfoAlert.fire({ title: "Algo salio mal" + e, icon: "error" });
       }
     }
   };
@@ -209,9 +208,8 @@ export default function Login(): JSX.Element {
     if (formComplete && btn.current) btn.current.disabled = false;
   }
 
-  const handleActionChange = () => {
-    const Act = action ? USER_ACTION.signUp : USER_ACTION.logIn;
-    setAction(Act);
+  const resetPassword = () => {
+    setPassword(true);
   };
 
   return (
@@ -220,14 +218,28 @@ export default function Login(): JSX.Element {
         <LoadingPage />
       ) : (
         <div id={style.cont}>
+          <Helmet>
+            <meta charSet="utf-8" />
+            <meta
+              name={`Página de ${
+                action ? "Inicio de sesión" : "registro"
+              } | Henry Social`}
+              content="Formulario"
+            />
+            <title>
+              {action ? "Iniciar Sesion" : " Registrate"} | Henry Social
+            </title>
+          </Helmet>
           <header>
-            <div id={style.title_cont}>
-              <img
-                src="https://assets.soyhenry.com/assets/LOGO-HENRY-03.png"
-                alt="icon"
-              />
-              <h1> | Social </h1>
-            </div>
+            <Link to="/landing">
+              <div id={style.title_cont}>
+                <img
+                  src="https://assets.soyhenry.com/assets/LOGO-HENRY-03.png"
+                  alt="icon"
+                />
+                <h1> | Social </h1>
+              </div>
+            </Link>
             <button className={style.act_btn} onClick={handleActionChange}>
               {" "}
               {action === USER_ACTION.signUp
@@ -235,6 +247,18 @@ export default function Login(): JSX.Element {
                 : "Registrarse"}{" "}
             </button>
           </header>
+          <Modal
+            isOpen={password}
+            setIsOpen={setPassword}
+            title="Reestablecer contraseña"
+          >
+            <ResetPassword
+              cancel={(e?: any) => {
+                e && e.preventDefault();
+                return setPassword(false);
+              }}
+            />
+          </Modal>
           <div id={style.form_cont}>
             <form onSubmit={handleSubmit}>
               <h1>
@@ -253,7 +277,7 @@ export default function Login(): JSX.Element {
               <LoginInput
                 valid={!errors.password}
                 id="password"
-                title="Mínimo 8 caracteres, obligarotio un número y una mayúscula."
+                title="Mínimo 8 caracteres, obligatorio un número y una mayúscula."
                 type="password"
                 name="password"
                 placeholder="Contraseña"
@@ -324,12 +348,23 @@ export default function Login(): JSX.Element {
               ) : (
                 <></>
               )}
-              <button disabled={loading} type="submit" ref={btn}>
-                {" "}
-                {action === USER_ACTION.signUp
-                  ? "Registrate"
-                  : "Inicia sesión"}{" "}
-              </button>
+              <div>
+                {action === USER_ACTION.signUp ? (
+                  <> </>
+                ) : (
+                  <p onClick={resetPassword} className={style.forgotPassword}>
+                    Olvidaste tu contraseña?
+                  </p>
+                )}
+              </div>
+              <div>
+                <button disabled={loading} type="submit" ref={btn}>
+                  {" "}
+                  {action === USER_ACTION.signUp
+                    ? "Registrate"
+                    : "Inicia sesión"}{" "}
+                </button>
+              </div>
             </form>
             <div id={style.alt_cont}>
               <Button

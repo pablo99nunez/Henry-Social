@@ -24,7 +24,7 @@ const Seguido = ({ username, index }: any) => {
       <Avatar avatar={user?.avatar}></Avatar>
     </Link>
   ) : (
-    <Placeholder />
+    <></> //Quite el <PlaceHolder />
   );
 };
 

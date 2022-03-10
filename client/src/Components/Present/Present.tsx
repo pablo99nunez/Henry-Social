@@ -8,7 +8,11 @@ import axios from "axios";
 export default function Present() {
   async function handlePayment() {
     const url = await axios
-      .post("http://localhost:3001/create-checkout-session")
+      .post(
+        import.meta.env.DEV
+          ? "http://localhost:3001/create-checkout-session"
+          : "https://henry-social-back.herokuapp.com/create-checkout-session"
+      )
       .then((e) => e.data.url);
     window.location.href = url;
   }

@@ -8,15 +8,16 @@ export interface IPost {
   postTime: string;
   nLikes: [string];
   numComments: number;
-  nShares:number;
+  nShares: number;
   author: IUser;
-  _id: number;
+  _id: string;
   typePost: string;
   company: string;
   position: string;
   companyLink: string;
   companyImage: string | File | null;
   salary: number;
+  salaryCoin: string;
   reportedTimes: number;
   question: IQuestions;
   tags: string[];
@@ -40,7 +41,6 @@ interface Comment {
   text: string;
   author: IUser;
   nLikes: [string];
-
 }
 interface Like {
   referenceId: ObjectId; // Reference to post
@@ -61,7 +61,7 @@ const postSchema = new Schema({
   },
   nShares: {
     type: Number,
-    default: 0
+    default: 0,
   },
   numComments: {
     type: Number,
@@ -90,6 +90,9 @@ const postSchema = new Schema({
   },
   salary: {
     type: Number,
+  },
+  salaryCoin: {
+    type: String,
   },
   question: {
     type: [],

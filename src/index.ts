@@ -7,6 +7,7 @@ const morgan = require("morgan");
 import "dotenv/config.js";
 import axios from "axios";
 import userRouter from "./Routes/UserRoutes";
+import requestRouter from "./Routes/RequestRoutes";
 import postRouter from "./Routes/PostRoutes";
 import stripeRouter from "./Routes/StripeRoutes";
 import conversationRouter from "./Routes/ConversationRoutes";
@@ -39,6 +40,7 @@ app.get("/", (req, res) => {
 app.use("/", userRouter);
 app.use("/", postRouter);
 app.use("/", stripeRouter);
+app.use("/", requestRouter);
 app.use("/conversation", conversationRouter);
 
 const server = http.createServer(app);
@@ -113,6 +115,9 @@ io.on("connection", (socket) => {
           }
         }
       });
+  });
+  socket.on("add_post", () => {
+    socket.broadcast.emit("receive_posts");
   });
   socket.on("send_message", (data) => {
     socket.broadcast.emit("receive_message", data);

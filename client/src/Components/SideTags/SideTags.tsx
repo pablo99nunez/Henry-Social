@@ -6,26 +6,25 @@ import styles from "./SideTags.module.scss";
 import { HiLink } from "react-icons/hi";
 import {
   filterByTag,
-  filterBySection,
+  filterByType,
   getPosts,
+  setActiveSection,
 } from "../../redux/actions/actions";
+import useUser from "../../Hooks/useUser";
 
 const SideTags = () => {
-  const [activeSection, setActiveSection] = useState<any>("all");
-
-  const posts = useSelector((state: IState) => state.posts);
+  const user = useUser();
   const dispatch = useDispatch();
+  const { posts, activeSection} = useSelector((state: IState) => state);
   const [tags, setTags] = useState([]);
 
   const handleClick = (e: any) => {
     if (e.target.classList.contains("category")) {
-      setActiveSection(e.target.id);
-      if (e.target.id === "all") {
-        return dispatch(getPosts());
-      }
-      return dispatch(filterBySection(e.target.id));
+      dispatch(setActiveSection(e.target.id))
+      if (e.target.id === "all") dispatch(getPosts());
+      return dispatch(filterByType(e.target.id));
     } else {
-      setActiveSection("");
+      dispatch(setActiveSection(''))
       return dispatch(filterByTag(e.target.title));
     }
   };
@@ -94,6 +93,7 @@ const SideTags = () => {
           >
             Booms
           </li>
+          {/*
           <li
             className={
               activeSection === "servicio"
@@ -105,6 +105,7 @@ const SideTags = () => {
           >
             Servicios
           </li>
+          */}
           <li
             className={
               activeSection === "pregunta"
@@ -116,6 +117,7 @@ const SideTags = () => {
           >
             Preguntas Frecuentes
           </li>
+
           {/*  <li
             className={
               activeSection.recurso ? `${styles.active} category` : "category"
@@ -140,14 +142,15 @@ const SideTags = () => {
         <h2>Tags Populares</h2>
         <nav className={styles.aside_tags_enlaces}>
           <ul>
-            {tags.length &&
-              tags.map((e) => {
-                return (
-                  <li className="tags" onClick={handleClick} title={e[0]}>
-                    {e[0]}
-                  </li>
-                );
-              })}
+            {tags.length
+              ? tags.map((e) => {
+                  return (
+                    <li className="tags" onClick={handleClick} title={e[0]}>
+                      {e[0]}
+                    </li>
+                  );
+                })
+              : null}
           </ul>
         </nav>
       </div>
