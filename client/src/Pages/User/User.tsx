@@ -209,32 +209,9 @@ export default function User() {
               </div>
               <div className={style.userInfo}>
                 <h1>{user?.name}</h1>
-                {userLogeado?.admin && !isOwner ? (
-                  <select className={style.editRole} onChange={changeRole}>
-                    <option
-                      value="Estudiante"
-                      selected={user?.role === "Estudiante" ? true : false}
-                    >
-                      Estudiante
-                    </option>
-                    <option
-                      value="TA"
-                      selected={user?.role === "TA" ? true : false}
-                    >
-                      TA
-                    </option>
-                    <option
-                      value="Instructor"
-                      selected={user?.role === "Instructor" ? true : false}
-                    >
-                      Instructor
-                    </option>
-                  </select>
-                ) : (
                   <h2 style={{ color: "#aaa" }}>
                     {user?.role + (user?.cohorte ? " | " + user?.cohorte : "")}
                   </h2>
-                )}
                 <div className={style.bio}>
                   <h3>{isOwner ? userLogeado?.bio : user?.bio}</h3>
                 </div>
