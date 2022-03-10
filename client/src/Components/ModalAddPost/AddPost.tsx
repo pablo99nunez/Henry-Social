@@ -101,7 +101,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
       companyImage: null,
       pregunta: "",
       salary: 0,
-      salaryCoin: 'DOL',
+      salaryCoin: 'USD',
       // costoClases: 0,
       // temasClases: "",
       // tecnologíaClases: "",
@@ -207,7 +207,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
     },
   ];
 
-  const coins = ['DOL', 'ARS', 'MXN', 'EUR', 'PEN'];
+  const coins = ['USD', 'ARS', 'MXN', 'EUR', 'PEN'];
 
   return (
     <motion.form
@@ -300,14 +300,19 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
                     </span>
                     {errors?.position && <p>{errors.position}</p>}
                   </div>
+                  <div className={styles.input_with_error}>
+                    <span className={styles.input_effects}>
                   <input
                     type="file"
                     accept=".png"
                     ref={imageComPost}
                     name="companyImage"
+                    className={styles.special}
                     onChange={(e) => handleChange(e)}
                     placeholder="Imagen de la empresa"
                   />
+                  </span>
+                  </div>
                 </>
               )}
               {typePost === "empleo" && (
@@ -341,6 +346,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
                     <select 
                       name="salaryCoin"
                       onChange={(e: any) => handleChange(e)}
+                      className={styles.select}
                     >
                       <option value={post.salaryCoin}>{post.salaryCoin}</option> 
                       {coins.map((e,i) =>

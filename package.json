@@ -23,6 +23,7 @@
         "axios": "^0.26.0",
         "cors": "^2.8.5",
         "dotenv": "^16.0.0",
+        "emoji-picker-react": "^3.5.1",
         "express": "^4.17.2",
         "firebase": "^9.6.6",
         "firebase-admin": "^10.0.2",
