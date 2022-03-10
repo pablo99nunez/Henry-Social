@@ -73,23 +73,37 @@ export default function Content({ post }: Props) {
           </div>
         );
       }
-      case "share": {
-        return <PostShare post={post} />;
-      }
       case "pregunta": {
         return <PostPregunta post={post} />;
+      }
+      case "share": {
+        return <PostShare post={post} />;
       }
       default: {
         return (
           <p>
-            {post.body.split(" ").map((e) => (
+
+          {post.body.includes('#') 
+            ? post.body.split(' ').map((word,i) => 
+              <span 
+                key={i}
+                className={`${style.spanBody} ${word[0] === '#' && style.hashtag}`}
+                onClick={(e:any) => word[0] === '#' ? 
+                  setFilterTag(e) : navigate("/post/" + post._id)
+                }
+              >{word}</span>
+              )
+            : post.body}
+
+          /*  {post.body.split(" ").map((e) => (
               <span
                 className={`${style.spanBody} ${e[0] === "#" && style.hashtag}`}
                 onClick={handleClick}
               >
                 {e}
               </span>
-            ))}
+            ))}*/
+
           </p>
         );
       }
@@ -97,6 +111,18 @@ export default function Content({ post }: Props) {
   };
 
   return (
-    <div onClick={() => navigate("/post/" + post._id)}>{renderType()}</div>
+
+    <div
+      onClick={() => {
+        post.typePost !== "share" && 
+        post.typePost !== "multimedia" && 
+        post.typePost !== "normal" && navigate("/post/" + post._id);
+      }}
+      >
+      <div onClick={() => navigate("/post/" + post._id)}>{renderType()}</div>
+    </div>
+
+   /* <div onClick={() => navigate("/post/" + post._id)}>{renderType()}</div>*/
+
   );
 }

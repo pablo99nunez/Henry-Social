@@ -2,14 +2,41 @@ import "./Comment.scss";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Like } from "../Like/Like";
-import { FaRegComment, FaEllipsisH, FaBan, FaRegFrown } from "react-icons/fa";
+import { FaEllipsisH, FaBan, FaRegFrown, FaTrash } from "react-icons/fa";
 import Avatar from "../Avatar/Avatar";
 import { getMomento } from "../../helpers/momento";
+import axios from "axios";
+import useUser from "../../Hooks/useUser";
+import { InfoAlert } from "../Alert/Alert";
+import { useDispatch } from "react-redux";
+import { getPost } from "../../redux/actions/actions";
 
 const Comment = ({ key, data }: any) => {
+  const user = useUser()
+  const dispatch = useDispatch();
+  const [remove, setRemove] = useState(false);
   const [options, setOptions] = useState(false);
 
-  return (
+  const handleDelete= () => {
+    axios
+      .delete(`/comment`, {
+        data: {
+          _id: data?._id,
+          postId: data?.postId
+        },
+      })
+      .then(({data}) => {
+        dispatch(getPost(data._id));
+        InfoAlert.fire({
+          title: "Comentario eliminado.",
+          icon: "success",
+        });
+        setRemove(true)
+        return data;
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+  return remove ? <></> :(
     <div className="comment" key={key}>
       <div className="picture">
         <Avatar avatar={data.author.avatar} />
@@ -44,25 +71,31 @@ const Comment = ({ key, data }: any) => {
           className="icon"
           onClick={() => setOptions(true)}
         />
-        <div
-          className={`menu ${options ? "view" : "hide"}`}
-          onMouseOver={() => (document.onclick = null)}
-          onMouseOut={() =>
-            (document.onclick = () => {
-              setOptions(false);
-              return (document.onclick = null);
-            })
-          }
-        >
-          <p className="item">
-            <FaRegFrown />
-            Este comentario no es útil.
-          </p>
-          <p className="item">
-            <FaBan />
-            Bloquear usuario
-          </p>
-        </div>
+        {user?.username === data?.author?.username &&
+          <div
+            className={`menu ${options ? "view" : "hide"}`}
+            onMouseOver={() => (document.onclick = null)}
+            onMouseOut={() =>
+              (document.onclick = () => {
+                setOptions(false);
+                return (document.onclick = null);
+              })
+            }
+          >
+              <p className='item' onClick={handleDelete}>
+                <FaTrash />
+                Eliminar comentario.
+              </p>
+            {/* <p className="item">
+              <FaRegFrown />
+              Este comentario no es útil.
+            </p>
+            <p className="item">
+              <FaBan />
+              Bloquear usuario
+            </p> */}
+          </div>
+        }
       </div>
     </div>
   );

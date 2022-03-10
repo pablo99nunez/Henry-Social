@@ -220,7 +220,10 @@ router.post("/notification", async (req, res) => {
   try {
     const receptor = await User.findById(notification.receptor);
     const emisor = await User.findById(notification.emisor);
-    if (receptor && emisor && notification.emisor !== notification.receptor) {
+    if(notification.emisor === notification.receptor) {
+      return res.sendStatus(200);
+    }
+    if (receptor && emisor) {
       if (
         typeof receptor.username === "string" &&
         typeof emisor.username === "string" &&

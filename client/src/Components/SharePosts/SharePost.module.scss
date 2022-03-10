@@ -16,6 +16,7 @@
     background: transparent;
     &[type="submit"] {
       padding: 10px;
+      color: black;
       cursor: pointer;
       font-size: 14px;
       margin-left: auto;
@@ -25,6 +26,11 @@
       transition: transform 0.5s ease;
       &:hover {
         transform: scale(1.1);
+      }
+      &:disabled{
+        opacity: .5;
+        cursor: default;
+        &:hover{transform: none;}
       }
     }
   }

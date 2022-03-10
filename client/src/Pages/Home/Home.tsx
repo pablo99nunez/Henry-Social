@@ -7,7 +7,6 @@ import SideTags from "../../Components/SideTags/SideTags";
 import Posts from "../../Components/Posts/Posts";
 import SideMessages from "../../Components/SideMessages/SideMessages";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
-
 import useUser from "../../Hooks/useUser";
 import { getPosts } from "../../redux/actions/actions";
 import Present from "../../Components/Present/Present";
@@ -43,15 +42,15 @@ const Home = () => {
           <NavSearch/>
           <div className={style.home_position}>
             <div className={style.aside}>
-              <SideTags />
+              <SideTags/>
             </div>
             <Posts />
             <div className={style.aside}>
-              <SideMessages />
-              <Present></Present>
+              <SideMessages/>
+              <Present/>
             </div>
           </div>
-          <Chats></Chats>
+          <Chats/>
         </div>
       )}
     </>

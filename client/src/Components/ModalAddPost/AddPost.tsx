@@ -13,7 +13,7 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/ban-types
   setOpen: Function;
   edit: boolean;
-  setEdit: Dispatch<SetStateAction<boolean>>;
+  setEdit: Dispatch<SetStateAction<boolean>> | null;
 };
 
 const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
@@ -21,6 +21,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
   const dispatch = useDispatch();
   const imagePost = useRef<HTMLInputElement>(null);
   const imageComPost = useRef<HTMLInputElement>(null);
+  const [loadSend, setLoadSend] = useState(false);
   const { postEdit, socket } = useSelector((state: IState) => state);
   const [typePost, setTypePost] = useState(postEdit?.typePost || "normal");
 
@@ -57,7 +58,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
     const name = e.target.name
     const value = e.target.value
     const files = e.target.files
-    console.log(e)
+    
     if (
       (name === "companyImage" || 
       (name === "image" && files)) && files
@@ -70,7 +71,7 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
       setPost({
         ...post, 
         text: value,
-        tags: value.includes('#') ? value.match(/(#)\w+/g) : []
+        tags: value.includes('#') ? value.match(/(#)\S+/g) : []
       })
     else setPost({ ...post, [name]: value });
 
@@ -124,7 +125,6 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const downloadURLCompany =
       imageComPost.current?.files &&
       imageComPost.current?.files[0] instanceof File
@@ -158,6 +158,8 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
           }
         : dates;
 
+      const pageUser = location.href.includes("profile");
+      setLoadSend(true)
       axios
         .post(ruta, content)
         .then((data) => {
@@ -166,10 +168,11 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
             icon: "success",
           });
           setOpen(false);
-          setEdit(false);
+          setEdit && setEdit(false);
+          !pageUser && dispatch(getPosts());
           socket?.emit("add_post");
-          dispatch(getPosts());
           postEdit && dispatch(setPostEdit(null));
+          setLoadSend(false)
           return data;
         })
         .catch((error) => console.error("Error:", error));
@@ -215,8 +218,6 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
         scaleY: 1,
       }}
     >
-      {console.log('edit', postEdit)}
-      {console.log('post', post)}
       <div className={styles.add_post_content}>
         {typePost === "pregunta" ? (
           <div className={styles.content__inputs}>
@@ -419,8 +420,8 @@ const AddPost: FC<Props> = ({ setOpen, edit, setEdit }) => {
       <div className={styles.add_post_buttons}>
         <input
           type="submit"
-          value={edit ? "Editar" : "Publicar"}
-          className={errors.getError ? styles.disabledSubmit : ""}
+          value={loadSend ? 'Creando Post...' : edit ? "Editar" : "Publicar"}
+          disabled={loadSend || Object.values(errors).some(e => e)}
         />
         <button
           type="button"

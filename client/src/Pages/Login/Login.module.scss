@@ -285,3 +285,42 @@
     }
   }
 }
+
+@media screen and (max-width:768px){
+  #cont{
+      width: 100%;
+      // overflow: hidden;
+      padding: 20px;
+      top: 30px;
+      header{
+          padding: 0px 20px;
+          align-items: center;
+          justify-content: space-between;
+          #title_cont img{
+              margin: 0;
+          }
+          .headers_buttons{
+              gap: 10px;
+          }
+      }
+      #form_cont {
+        width: 100%;
+        form{
+          padding: 15px 0px;
+          text-align: center;
+          height: max-content;
+          #avt_cont{
+            position: relative;
+            left: 0;
+          }
+        }
+        #alt_cont{
+          gap: 10px;
+          align-items: center;
+          flex-direction: column;
+          margin-top: 30px;
+          position: relative;
+        }
+      }    
+  }
+}

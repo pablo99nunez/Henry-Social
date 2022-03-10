@@ -37,6 +37,8 @@ import {
   InfoAlert,
 } from "../../Components/Alert/Alert";
 import Chats from "../../Components/Chats/Chats";
+import AddPost from "../../Components/ModalAddPost/AddPost";
+
 export async function handleDeleteUser(
   userId: string,
   adminId: string,
@@ -68,7 +70,8 @@ export async function handleDeleteUser(
   }
 }
 export default function User() {
-  const [edit, setEdit] = useState(false);
+  const [view, setView] = useState(false);
+  const [typeEdit, setTypeEdit] = useState('perfil');
   const { username } = useParams();
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState(1);
@@ -115,7 +118,8 @@ export default function User() {
   }, [user]);
 
   const editProfile = (e: any) => {
-    return setEdit(true);
+    setTypeEdit('profile')
+    return setView(true);
   };
 
   const changeRole = (e: any) => {
@@ -138,13 +142,25 @@ export default function User() {
         <title>{`${user?.name} | Henry Social`}</title>
       </Helmet>
       <NavSearch />
-      <Modal isOpen={edit} setIsOpen={setEdit} title="Editar Perfil">
-        <Settings
-          cancel={(e?: any) => {
-            e && e.preventDefault();
-            return setEdit(false);
-          }}
-        />
+      <Modal 
+        isOpen={view}
+        setIsOpen={setView} 
+        title={`Editar ${typeEdit==='post'?'Post':'Perfil'}`}
+      >
+        {typeEdit === 'post' 
+          ? <AddPost
+              edit={true}
+              setEdit={null}
+              setOpen={setView} 
+            />
+          : <Settings
+              cancel={(e?: any) => {
+                e && e.preventDefault();
+                setTypeEdit('post')
+                return setView(false);
+              }}
+            />
+        } 
       </Modal>
       <div className={style.User}>
         <div className={style.head_profile}>
@@ -350,7 +366,12 @@ export default function User() {
                 </h3>
               </div>
               {posts?.map((e, i) => (
-                <Post post={e} key={i}></Post>
+                <Post
+                  key={i}
+                  post={e} 
+                  setEdit={null}
+                  setShowModal={setView}
+                />
               ))}
             </div>
             <div>

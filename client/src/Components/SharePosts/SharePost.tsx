@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useRef, FC } from "react";
+import React, { useRef, FC, useState } from "react";
 import { InfoAlert } from "../Alert/Alert";
 import useUser from "../../Hooks/useUser";
 import styles from "./SharePost.module.scss";
@@ -17,6 +17,7 @@ type Props = {
 export const SharePost: FC<Props> = ({ post, openShare, setOpenShare }) => {
   const user = useUser();
   const dispatch = useDispatch();
+  const [loadSend, setLoadSend] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const autosize = () => {
@@ -33,6 +34,7 @@ export const SharePost: FC<Props> = ({ post, openShare, setOpenShare }) => {
     e.preventDefault();
     const textarea = textareaRef.current;
     if (user && textarea) {
+      setLoadSend(true)
       axios
         .post(`/share`, {
           author: user,
@@ -48,6 +50,7 @@ export const SharePost: FC<Props> = ({ post, openShare, setOpenShare }) => {
           setOpenShare(!openShare);
           dispatch(getPosts());
           textarea.value = "";
+          setLoadSend(true)
           return data;
         })
         .catch((error) => console.error("Error:", error));
@@ -90,7 +93,7 @@ export const SharePost: FC<Props> = ({ post, openShare, setOpenShare }) => {
             onKeyDown={() => autosize()}
             placeholder="Haz un comentario..."
           />
-          <input type="submit" value="Compartir ahora" />
+          <input type="submit" value="Compartir ahora" disabled={loadSend}/>
         </motion.form>
       )}
     </AnimatePresence>

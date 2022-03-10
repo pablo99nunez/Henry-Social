@@ -5,6 +5,7 @@ import { IState } from "../../redux/reducer";
 
 export default function Comments() {
   const comments = useSelector((state: IState) => state.comments);
+  console.log(comments)
   return (
     <div className="commentsPost">
       {comments?.map((p, i) => (

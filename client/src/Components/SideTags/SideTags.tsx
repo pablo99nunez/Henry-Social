@@ -21,7 +21,7 @@ const SideTags = () => {
   const handleClick = (e: any) => {
     if (e.target.classList.contains("category")) {
       dispatch(setActiveSection(e.target.id))
-      if (e.target.id === "all") dispatch(getPosts());
+      if (e.target.id === "all") {return dispatch(getPosts())}
       return dispatch(filterByType(e.target.id));
     } else {
       dispatch(setActiveSection(''))
@@ -138,22 +138,24 @@ const SideTags = () => {
           </li> */}
         </ul>
       </nav>
-      <div className={styles.aside_tags_popular}>
-        <h2>Tags Populares</h2>
-        <nav className={styles.aside_tags_enlaces}>
-          <ul>
-            {tags.length
-              ? tags.map((e) => {
-                  return (
-                    <li className="tags" onClick={handleClick} title={e[0]}>
-                      {e[0]}
-                    </li>
-                  );
-                })
-              : null}
-          </ul>
-        </nav>
-      </div>
+      {tags.length ? (
+        <div className={styles.aside_tags_popular}>
+          <h2>Tags Populares</h2>
+          <nav className={styles.aside_tags_enlaces}>
+            <ul>
+              {tags.map((e,i) => (
+                  <li 
+                    key={i}
+                    className="tags" 
+                    onClick={handleClick} title={e[0]}
+                  >
+                    {e[0]}
+                  </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      ) : <></>}
 
       <div className={styles.aside_enlaces}>
         <div className={styles.aside_tags_enlaces}>
