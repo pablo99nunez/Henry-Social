@@ -50,3 +50,32 @@
     }
   }
 }
+
+@media screen and (max-width:768px){
+  .nav {
+    .nav_wrap {
+      flex-wrap: wrap;
+      .nav_logo{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+      .nav_search {
+        display: none;
+      } 
+      .notifications{
+        width: 100%;
+        padding: 10px 0px;
+        justify-content: space-evenly;
+      }
+      .nav_button_profile {
+        .avatar{
+          display: none;
+        }
+        .nav_profile_info{
+          display: none;
+        } 
+      }
+    }
+  }
+}

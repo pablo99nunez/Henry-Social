@@ -2,6 +2,7 @@
 @import "../../Styles/mixins.scss";
 
 .postContainer {
+  width: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -18,6 +19,9 @@
     display: flex;
     color: $white;
     position: relative;
+    @media screen and (max-width:768px){
+      flex-direction: column;
+    }
     &.postJob {
       box-shadow: 0 0 5px 5px #1a5fc733;
       border: 1px solid #1a5fc7;
@@ -97,3 +101,4 @@
     }
   }
 }
+
