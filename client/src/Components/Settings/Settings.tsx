@@ -15,6 +15,7 @@ import { editUser, signOut } from "../../redux/actions/actions";
 import useUser from "../../Hooks/useUser";
 import { auth } from "../../firebase/firebase";
 import { InfoAlert } from "../Alert/Alert";
+import { IDone } from "../../../../src/models/Request";
 
 export default function Settings({ cancel }: any) {
   const user = useUser();
@@ -198,51 +199,41 @@ export default function Settings({ cancel }: any) {
       imgUrl = await uploadFile(imgInput.current.files[0]);
       if (user?._id)
         dispatch(editUser(user._id, { ...changes, avatar: imgUrl }));
-
-      /* axios
-      .put("/user", {
-        _id: user?._id,
-        changes: { ...changes, avatar: imgUrl },
-      })
-      .then(({ data: user }) => {
-        cancel(e);
-        dispatch(editUser(user));
-        InfoAlert.fire({
-          title: "Se actualizó tu perfil!",
-          icon: "success",
-        });
-        navigate(`/profile/${changes.username}`);
-      })
-      .catch((error) => {
-        cancel(e);
-        console.log(error);
-        InfoAlert.fire({
-          title: "No se pudo actulizar tu perfil",
-          icon: "error",
-        });
-      }); */
     }
-    if (user?._id) dispatch(editUser(user._id, changes));
+    if (changes.role && !user?.admin) {
+      await axios.post("/request", {
+        user: user?._id,
+        solicitud: `${
+          user?.name.split(" ")[0]
+        } ha solicitado un cambio de rol a ${changes.role}`,
+        done: IDone.Rol,
+        data: JSON.stringify({
+          _id: user?._id,
+          changes: { role: changes.role },
+        }),
+      });
+      InfoAlert.fire("Solicitud enviada");
+    }
+    const { bio, github, linkedin, portfolio, username } = changes;
+    if (user?._id && user.admin) dispatch(editUser(user._id, changes));
+    else if (user?._id)
+      dispatch(
+        editUser(user._id, { bio, github, linkedin, portfolio, username })
+      );
   };
   const onChangeRole = (e: any): void => {
-    if (user?.admin) {
-      setChanges({
-        ...changes,
-        role: e.target.value,
-      });
-    } else {
-      
-      InfoAlert.fire({ title: "Solicitud enviada!", icon: "success" });
-      return cancel(false)
-    }
+    setChanges({
+      ...changes,
+      role: e.target.value,
+    });
   };
 
   return (
     <>
       <Modal isOpen={key} setIsOpen={setKey} title="Cambiar contraseña">
         <ChangeKey
-          cancel={(e?: any, closeParent?: boolean,) => {
-            if(closeParent) cancel();
+          cancel={(e?: any, closeParent?: boolean) => {
+            if (closeParent) cancel();
             e && e.preventDefault();
             return setKey(false);
           }}
@@ -272,9 +263,7 @@ export default function Settings({ cancel }: any) {
               type="file"
             />
           </div>
-          <p
-            onClick={changeKey}
-          >Cambiar contraseña</p>
+          <p onClick={changeKey}>Cambiar contraseña</p>
         </div>
         <div>
           <div className={style.inputBox}>
@@ -333,65 +322,69 @@ export default function Settings({ cancel }: any) {
               TA
             </Button>
             <div>
-            <button 
-            title="En caso de que lo requieras puedes clickear en el rol que deseas y una 
-            solicitud sera enviada a nuestros admins." 
-            className={style.solicitud} 
-            disabled>?</button>
-            <span></span>
+              <button
+                title="En caso de que lo requieras puedes clickear en el rol que deseas y una 
+            solicitud sera enviada a nuestros admins."
+                className={style.solicitud}
+                disabled
+              >
+                ?
+              </button>
+              <span></span>
             </div>
           </div>
-       
-        <div className={style.inputBox}>
-        <span className={style.spaneo}>
-          <input
-            type="text"
-            name="github"
-            onChange={handleChanges}
-            placeholder="."
-            defaultValue={changes?.github || ""}
-          ></input>
-          <span>Ingresa tu Usuario de Github</span>
-        </span>
 
-        <span className={style.spaneo}>
-          <input
-            type="url"
-            onChange={handleChanges}
-            placeholder="."
-            name="linkedin"
-            defaultValue={changes?.linkedin || ""}
-          ></input>
-          <span>Ingresa la Url de tu Linkedin</span>
-        </span>
+          <div className={style.inputBox}>
+            <span className={style.spaneo}>
+              <input
+                type="text"
+                name="github"
+                onChange={handleChanges}
+                placeholder="."
+                defaultValue={changes?.github || ""}
+              ></input>
+              <span>Ingresa tu Usuario de Github</span>
+            </span>
 
-        <span className={style.spaneo}>
-        <input
-          type="url"
-          onChange={handleChanges}
-          placeholder="."
-          name="portfolio"
-          //defaultValue={changes?.portfolio}
-        ></input><span>Ingresa la Url de tu portafolio</span>
-        </span> 
-        </div>
-        <div className={style.buttons}>
-          <Button
-            type="submit"
-            backgroundColor="#000"
-            disabled={!complete}
-            onSubmit={cancel}
-            onClick={saveChanges}
-          >
-            Guardar cambios
-          </Button>
-          <Button onClick={cancel} backgroundColor="#FF1">
-            Cancelar
-          </Button>
-          <Button type="button" onClick={deleteUser}>
-            Eliminar perfil
-          </Button>
-        </div>
+            <span className={style.spaneo}>
+              <input
+                type="url"
+                onChange={handleChanges}
+                placeholder="."
+                name="linkedin"
+                defaultValue={changes?.linkedin || ""}
+              ></input>
+              <span>Ingresa la Url de tu Linkedin</span>
+            </span>
+
+            <span className={style.spaneo}>
+              <input
+                type="url"
+                onChange={handleChanges}
+                placeholder="."
+                name="portfolio"
+                //defaultValue={changes?.portfolio}
+              ></input>
+              <span>Ingresa la Url de tu portafolio</span>
+            </span>
+          </div>
+          <div className={style.buttons}>
+            <Button
+              type="submit"
+              backgroundColor="#000"
+              disabled={!complete}
+              onSubmit={cancel}
+              onClick={saveChanges}
+            >
+              Guardar cambios
+            </Button>
+            <Button onClick={cancel} backgroundColor="#FF1">
+              Cancelar
+            </Button>
+            <Button type="button" onClick={deleteUser}>
+              Eliminar perfil
+            </Button>
+          </div>
         </div>
       </form>
     </>

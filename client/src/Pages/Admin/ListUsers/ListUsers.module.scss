@@ -3,11 +3,20 @@
 .list {
   display: flex;
   flex-direction: column;
+  .header {
+    background-color: $bg-color;
+    h2 {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+    }
+  }
   li {
     display: grid;
     align-items: center;
     background-color: $greyDark;
     grid-template-columns: repeat(3, 1fr) 40%;
+
     h2 {
       text-align: center;
       font-weight: bold;
@@ -16,8 +25,9 @@
       border: 1px solid $greyLow;
       height: 100%;
       display: flex;
-      padding: 0.2rem 1rem;
+      padding: 0.7rem 1rem;
       gap: 1rem;
+
       align-items: center;
     }
   }

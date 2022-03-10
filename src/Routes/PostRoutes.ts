@@ -42,10 +42,9 @@ router.post("/post", async (req, res) => {
 });
 
 router.post("/editPost", async (req, res) => {
-  const { post, idPost } = req.body
+  const { post, idPost } = req.body;
   try {
-    Post.findByIdAndUpdate(idPost, post)
-    .then((post) => res.json(post))
+    Post.findByIdAndUpdate(idPost, post).then((post) => res.json(post));
   } catch (e) {
     res.status(401).json({ error: e });
   }
@@ -54,18 +53,18 @@ router.post("/editPost", async (req, res) => {
 router.delete("/post", async (req, res) => {
   const { _id } = req.body;
   try {
-    Post.findById(_id)
-      .then((post) => {
-        post?.typePost === 'share' && 
-          Post.findByIdAndUpdate(post.company, {
-            $inc: { nShares: -1 }
-          }).then(() => {console.log('Se quito una compartida')})
-        Post.deleteOne({ _id })
-          .then((postDelete) => {
-            if (postDelete === null) throw new Error("No se encontro el post");
-            res.status(200).json(postDelete)
-          })
-      })
+    Post.findById(_id).then((post) => {
+      post?.typePost === "share" &&
+        Post.findByIdAndUpdate(post.company, {
+          $inc: { nShares: -1 },
+        }).then(() => {
+          console.log("Se quito una compartida");
+        });
+      Post.deleteOne({ _id }).then((postDelete) => {
+        if (postDelete === null) throw new Error("No se encontro el post");
+        res.status(200).json(postDelete);
+      });
+    });
   } catch (e) {
     res.status(401).json({ error: e });
   }
@@ -81,7 +80,7 @@ router.post("/posts", async (req, res) => {
             _id,
           },
         })
-          .populate("author", "name avatar username")
+          .populate("author", "name avatar username role")
           .populate("respuestaAuthor", "name username")
       : liked
       ? await Post.find({
@@ -89,18 +88,18 @@ router.post("/posts", async (req, res) => {
             _id: liked,
           },
         })
-          .populate("author", "name avatar username")
+          .populate("author", "name avatar username role")
           .populate("respuestaAuthor", "name username")
       : tag
       ? await Post.find({
           tags: tag,
         })
-          .populate("author", "name avatar username")
+          .populate("author", "name avatar username role")
           .populate("respuestaAuthor", "name username")
       : await Post.find({
           ...props,
         })
-          .populate("author", "name avatar username")
+          .populate("author", "name avatar username role")
           .populate("respuestaAuthor", "name username");
 
     res.json(posts);
@@ -218,31 +217,32 @@ router.post("/like", async (req, res) => {
   }
 });
 
-router.post("/share", async (req,res) => {
-  const { author, company : idPost } = req.body
+router.post("/share", async (req, res) => {
+  const { author, company: idPost } = req.body;
   try {
     Post.create(req.body)
-    .then(e => {
-      Post.findByIdAndUpdate(idPost, {
-        $inc: { nShares: 1 }
-      }).then((post) => {
-        if (post) {
-          axios.post("/notification", {
-            type: NotificationType.Share,
-            receptor: post.author,
-            emisor: author,
-            link: "/post/" + post._id,
-          });
-          res.json(post);
-        }
+      .then((e) => {
+        Post.findByIdAndUpdate(idPost, {
+          $inc: { nShares: 1 },
+        }).then((post) => {
+          if (post) {
+            axios.post("/notification", {
+              type: NotificationType.Share,
+              receptor: post.author,
+              emisor: author,
+              link: "/post/" + post._id,
+            });
+            res.json(post);
+          }
+        });
       })
-    }).catch((e) => {
-      throw new Error(e);
-    });
+      .catch((e) => {
+        throw new Error(e);
+      });
   } catch (e) {
     res.status(500).json({ error: e });
   }
-})
+});
 
 router.get("/comments/:id", (req, res) => {
   Comment.find({ postId: req.params.id })

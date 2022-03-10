@@ -23,18 +23,13 @@ export default function Denuncias() {
 
   useEffect(() => {
     dispatch(getPosts());
-    console.log(
-      posts
-        ?.filter((e) => e.reportedTimes > 0)
-        .sort((a, b) => (a.reportedTimes > b.reportedTimes ? 1 : -1))
-    );
   }, []);
   return (
     <div className={style.denuncias}>
       <h1>Publicaciones Denunciadas</h1>
       {posts
         ?.filter((e) => e.reportedTimes > 0)
-        .sort((a, b) => (a.reportedTimes > b.reportedTimes ? 1 : -1))
+        .sort((a, b) => (a.reportedTimes > b.reportedTimes ? -1 : 1))
         .map((e) => {
           return (
             <div className={style.post}>

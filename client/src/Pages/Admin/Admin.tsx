@@ -1,12 +1,21 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import NavSearch from "../../Components/NavSearch/NavSearch";
+import useUser from "../../Hooks/useUser";
 import style from "./Admin.module.scss";
 import Denuncias from "./Denuncias/Denuncias";
 import Roles from "./Roles/Roles";
+import Solicitudes from "./Solicitudes/Solicitudes";
 
 export default function Admin() {
   const [page, setPage] = useState("");
-
+  const user = useUser();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user?.admin && !user?.master) {
+      navigate("/error");
+    }
+  });
   return (
     <>
       <NavSearch></NavSearch>
@@ -26,6 +35,12 @@ export default function Admin() {
             >
               <h3>Publicaciones denunciadas</h3>
             </li>
+            <li
+              onClick={() => setPage("Solicitudes")}
+              className={`${page === "Solicitudes" && style.active}`}
+            >
+              <h3>Solicitudes</h3>
+            </li>
           </ul>
         </aside>
         <div className={style.main}>
@@ -44,6 +59,7 @@ export default function Admin() {
               ),
               Roles: <Roles></Roles>,
               Denuncias: <Denuncias></Denuncias>,
+              Solicitudes: <Solicitudes></Solicitudes>,
             }[page]
           }
         </div>

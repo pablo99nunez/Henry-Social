@@ -12,11 +12,13 @@ import useUser from "../../Hooks/useUser";
 import { getPosts } from "../../redux/actions/actions";
 import Present from "../../Components/Present/Present";
 import Chats from "../../Components/Chats/Chats";
+import useLogin from "../../Hooks/useLogin";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
+  useLogin();
   const user = useUser();
   useEffect(() => {
     if (user?.username) {
