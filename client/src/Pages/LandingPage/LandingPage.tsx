@@ -47,37 +47,37 @@ export default function LandingPage({ handleActionChange }:any){
                 <div id={style.first_section}>
                     <h1>Henry Social</h1>
                     <div id={style.control_animation}>
-                    <h2 id={style.animation}>
-                        <span>La </span>
-                        <div id={style.animation_div1}>
-                            <ul id={style.ul1}>
-                                <li>red social </li>
-                                <li>comunidad </li>
-                            </ul>
-                        </div>
-                    </h2>
-                    <h2 id={style.animation}>
-                        <span> hecha</span>
-                        <div id={style.animation_div1}>
-                            <ul id={style.ul2}>
-                                <li>para </li>
-                                <li>por </li>
-                            </ul>    
-                        </div>
-                    </h2>
-                    <h2 id={style.animation}>
-                        <span>Henrys </span> 
-                        <div id={style.animation_div1}>
-                            <ul id={style.ul3}>
-                                <li>🚀</li>
-                                <li>👩‍💻</li>
-                                <li>😎</li>
-                                <li>👨‍🎓</li>
-                                <li>👨‍🚀</li>
-                            </ul>
-                        </div>
+                        <h2 id={style.animation}>
+                            <span>La </span>
+                            <div id={style.animation_div1}>
+                                <ul id={style.ul1}>
+                                    <li>red social </li>
+                                    <li>comunidad </li>
+                                </ul>
+                            </div>
                         </h2>
-                        </div>
+                        <h2 id={style.animation}>
+                            <span> hecha</span>
+                            <div id={style.animation_div1}>
+                                <ul id={style.ul2}>
+                                    <li>para </li>
+                                    <li>por </li>
+                                </ul>    
+                            </div>
+                        </h2>
+                        <h2 id={style.animation}>
+                            <span>Henrys </span> 
+                            <div id={style.animation_div1}>
+                                <ul id={style.ul3}>
+                                    <li>🚀</li>
+                                    <li>👩‍💻</li>
+                                    <li>😎</li>
+                                    <li>👨‍🎓</li>
+                                    <li>👨‍🚀</li>
+                                </ul>
+                            </div>
+                        </h2>
+                    </div>
                     <img src={welcome} alt="welcome"/>
                 </div>
                 <section id={style.second_section}>

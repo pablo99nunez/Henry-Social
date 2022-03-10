@@ -279,6 +279,22 @@ router.post("/comment", async (req, res) => {
   }
 });
 
+router.delete("/comment", async (req, res) => {
+  const { postId } = req.body;
+  try {
+    Comment.findByIdAndDelete(postId)
+    .then(() => {
+      Post.findByIdAndUpdate(postId, {
+        $inc: { numComments: 0 }
+      }).then((post) => {            
+        res.status(200).json(post)
+      })
+    })
+  } catch (e) {
+      res.status(401).json({ error: e });
+    }
+  });
+
 router.get("/deleteComments", (req, res) => {
   Comment.deleteMany({}).then((e) => {
     Post.updateMany({}, { numComments: 0 }).then(() => {

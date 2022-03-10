@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
-import { FaEdit , FaBan } from "react-icons/fa";
+import { FaEdit , FaThumbsDown, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { IPost } from "../../../../../src/models/Post";
 import useUser from "../../../Hooks/useUser";
@@ -61,7 +61,7 @@ export default function Options({ post, setEdit, setShowModal, shared }: Props) 
         InfoAlert.fire({
           title: redirect
             ? "Fuiste redirigido a Home."
-            : "Tu publicación fue eliminada.",
+            : "Publicación eliminada.",
           icon: "success",
         });
         dispatch(getPosts());
@@ -84,20 +84,21 @@ export default function Options({ post, setEdit, setShowModal, shared }: Props) 
           ${options ? style.view : style.hide}`}
       >
         {userLogeado?.username === post?.author?.username ? (
-          <>
-            <p className={style.item} onClick={handleEdit}>
-              <FaEdit/>
-              Editar publicación
-            </p>
-            <p className={style.item} onClick={handleDelete}>
-              <FaBan/>
-              Eliminar publicación
-            </p>
-          </>
+          <p className={style.item} onClick={handleEdit}>
+            <FaEdit/>
+            Editar publicación
+          </p>        
         ) : (
           <p className={style.item} onClick={handleDemand}>
-            <FaBan/>
+            <FaThumbsDown/>
             Denunciar publicación.
+          </p>
+        )}
+        {(userLogeado?.username === post?.author?.username ||
+          userLogeado?.admin) && (
+          <p className={style.item} onClick={handleDelete}>
+            <FaTrash/>
+            Eliminar publicación
           </p>
         )}
       </div>

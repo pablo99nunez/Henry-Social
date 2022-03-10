@@ -12,7 +12,9 @@
   flex-direction: column;
   place-content: center;
   h2 {
+    font-weight: bold;
     text-align: center;
+    margin-bottom: 15px;
   }
   .aside_resume_messages {
     display: flex;
@@ -27,16 +29,21 @@
       gap: 1rem;
       position: relative;
       gap: 1rem;
-      div::after {
+      h3::after {
         content: "";
         width: 10px;
         z-index: 30;
         top: calc(50% - 5px);
         right: 0;
         aspect-ratio: 1/1;
-        background-color: green;
+        background-color: rgb(33, 189, 33);
         border-radius: 50%;
         position: absolute;
+        opacity: .8;
+        animation: connect .5s infinite alternate;
+        @keyframes connect {
+          to {opacity: 1;}
+        }
       }
     }
   }

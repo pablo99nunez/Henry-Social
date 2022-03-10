@@ -60,11 +60,11 @@ export default function Content({ post }: Props) {
           </div>
         );
       }
-      case "share": {
-        return <PostShare post={post} />;
-      }
       case "pregunta": {
         return <PostPregunta post={post} />;
+      }
+      case "share": {
+        return <PostShare post={post} />;
       }
       default: {
         const setFilterTag = (e: any) => {
@@ -74,11 +74,14 @@ export default function Content({ post }: Props) {
         return (
           <p>
           {post.body.includes('#') 
-            ? post.body.split(' ').map(e => 
+            ? post.body.split(' ').map((word,i) => 
               <span 
-                className={`${style.spanBody} ${e[0] === '#' && style.hashtag}`}
-                onClick={(e:any) => e[0] === '#' ? navigate("/post/" + post._id) : setFilterTag(e)}
-              >{e}</span>
+                key={i}
+                className={`${style.spanBody} ${word[0] === '#' && style.hashtag}`}
+                onClick={(e:any) => word[0] === '#' ? 
+                  setFilterTag(e) : navigate("/post/" + post._id)
+                }
+              >{word}</span>
               )
             : post.body}
           </p>
@@ -91,6 +94,7 @@ export default function Content({ post }: Props) {
     <div
       onClick={() => {
         post.typePost !== "share" && 
+        post.typePost !== "multimedia" && 
         post.typePost !== "normal" && navigate("/post/" + post._id);
       }}
     >

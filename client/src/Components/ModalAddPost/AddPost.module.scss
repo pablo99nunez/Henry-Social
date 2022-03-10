@@ -233,10 +233,11 @@ $isDark: false;
       &:hover {
         transform: scale(1.1);
       }
-    }
-    .disabledSubmit {
-      border: 1px solid #df1313;
-      pointer-events: none;
+      &:disabled {
+        pointer-events: none;
+        border: rgb(59, 59, 59);
+        background: rgb(59, 59, 59);
+      }  
     }
   }
   .error_button {
