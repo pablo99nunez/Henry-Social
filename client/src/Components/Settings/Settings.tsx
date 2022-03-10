@@ -14,7 +14,7 @@ import axios from "axios";
 import { editUser, signOut } from "../../redux/actions/actions";
 import useUser from "../../Hooks/useUser";
 import { auth } from "../../firebase/firebase";
-import { InfoAlert } from "../Alert/Alert";
+import { ConfirmAlert, InfoAlert } from "../Alert/Alert";
 import { IDone } from "../../../../src/models/Request";
 
 export default function Settings({ cancel }: any) {
@@ -82,14 +82,20 @@ export default function Settings({ cancel }: any) {
 
   const deleteUser = async () => {
     if (user?._id) {
-      dispatch(signOut());
-      await axios.delete("/delete-user", {
-        data: {
-          userId: user._id,
-          adminId: user._id,
-          uid: user.uid,
-        },
-      });
+      cancel();
+      ConfirmAlert.fire("Estas apunto de eliminar tu cuenta y todo lo relacionado a esta, no habrá vuelta atrás, ¿Estás seguro que deseas continuar?")
+        .then(async res => {
+          if(res.isConfirmed) {
+            dispatch(signOut());
+            await axios.delete("/delete-user", {
+              data: {
+                userId: user._id,
+                adminId: user._id,
+                uid: user.uid,
+              },
+            });
+          };
+        });
     }
   };
 

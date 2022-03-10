@@ -3,7 +3,6 @@ import axios from "axios";
 // import { func } from "joi";
 import { IPost } from "../../../../src/models/Post";
 import { IUser } from "../../../../src/models/User";
-import { closeSession } from "../../firebase/login-methods";
 export const GET_USER = "GET_USER";
 export const FOLLOW_USER = "FOLLOW_USER";
 export const SIGN_OUT = "SIGN_OUT";
@@ -52,7 +51,6 @@ export function editUser(_id: string, changes: any) {
 
 export function signOut() {
   return async (dispatch: Function) => {
-    // await closeSession();
     return dispatch({ type: SIGN_OUT });
   };
 }

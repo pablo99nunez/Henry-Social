@@ -28,6 +28,7 @@ import {
 } from "../actions/actions";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { io, Socket } from "socket.io-client";
+import { closeSession } from "../../firebase/login-methods";
 
 export interface IState {
   user: IUser | null;
@@ -80,6 +81,7 @@ export default function rootReducer(state = initialState, action: IAction) {
     }
 
     case SIGN_OUT: {
+      closeSession();
       return {
         ...state,
         user: null,

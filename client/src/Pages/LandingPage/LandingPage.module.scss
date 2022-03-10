@@ -197,6 +197,13 @@
         -moz-border-radius: 5px;
         -ms-border-radius: 5px;
         -o-border-radius: 5px;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $black;
+            color: $white;
+            outline: 1px yellow solid;
+        }
     }
 }
 

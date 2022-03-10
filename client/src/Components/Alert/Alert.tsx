@@ -30,5 +30,5 @@ export const ConfirmAlert = Swal.mixin({
   confirmButtonColor: "#000",
   iconColor: "#FF2F2B",
   cancelButtonColor: "#d33",
-  confirmButtonText: "Si, borrar usuario!",
+  confirmButtonText: "Sí, borrar usuario!",
 });
