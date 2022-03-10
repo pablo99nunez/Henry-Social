@@ -11,6 +11,7 @@ import {
 import { ErrorAlert, InfoAlert } from "../../../Components/Alert/Alert";
 import Button from "../../../Components/Button/Button";
 import useUser from "../../../Hooks/useUser";
+import { request } from "express";
 
 export default function Solicitudes() {
   const [requests, setRequests] = useState<IRequest[]>([]);
@@ -43,6 +44,7 @@ export default function Solicitudes() {
   }, []);
   return (
     <div>
+      {!requests.length && <h2>No hay solicitudes</h2>}
       {requests.map((e) => {
         return (
           <div
