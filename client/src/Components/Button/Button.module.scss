@@ -3,15 +3,17 @@
   cursor: pointer;
   background: inherit;
   color: currentColor;
-  border: 2px solid;
-  border-color: currentColor;
-  border-radius: 8px;
+  border: none;
+  outline: 1px solid;
+  outline-color: currentColor;
+  border-radius: 12px;
   align-items: center;
   width: max-content;
   height: fit-content;
+  font-weight: lighter;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
   font-size: 1.3rem;
-  font-weight: 700;
-  padding: 0.3rem 0.3rem;
+  padding: 0.5rem 1rem;
   display: flex;
   gap: 0.5rem;
 

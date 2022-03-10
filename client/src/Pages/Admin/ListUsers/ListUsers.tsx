@@ -54,7 +54,7 @@ export default function ListUsers({ users, header = true }: Props) {
   return (
     <ul className={style.list}>
       {users.length !== 0 && header && (
-        <li>
+        <li className={style.header}>
           <h2>Nombre</h2>
           <h2>Email</h2>
           <h2>Username</h2>
@@ -64,26 +64,28 @@ export default function ListUsers({ users, header = true }: Props) {
       {users.length ? (
         users?.map((user) => (
           <li>
-            <h3>{user.name}</h3>
-            <h3>{user.email}</h3>
-            <h3>{user.username}</h3>
+            <h3>{user?.name}</h3>
+            <h3>{user?.email}</h3>
+            <h3>{user?.username}</h3>
             <div className={style.buttons}>
               <Button
-                backgroundColor="#0c0c0c"
+                backgroundColor="#1c1c1c"
+                color="#ff2f2b"
                 onClick={() => deleteUser(user._id, user.uid)}
-                disabled={(user.admin || user.master) && !userLog?.master}
+                disabled={(user?.admin || user?.master) && !userLog?.master}
               >
                 Eliminar usuario
               </Button>
               {/*    <Button
-                backgroundColor="#0c0c0c"
-                disabled={(user.admin || user.master) && !userLog?.master}
+                backgroundColor="#1c1c1c"
+                disabled={(user.admin 57a1f5| user.master) && !userLog?.master}
               >
                 Banear usuario
               </Button> */}
               <Button
-                backgroundColor="#0c0c0c"
-                disabled={(user.admin || user.master) && !userLog?.master}
+                backgroundColor="#1c1c1c"
+                color="#dddddd"
+                disabled={(user?.admin || user?.master) && !userLog?.master}
                 onClick={() => {
                   setUser(user);
                   setEditRole(true);
@@ -93,13 +95,15 @@ export default function ListUsers({ users, header = true }: Props) {
               </Button>
               {userLog?.master && (
                 <Button
-                  backgroundColor="#0c0c0c"
-                  disabled={(user.admin || user.master) && !userLog?.master}
+                  backgroundColor="#1c1c1c"
+                  color="#dddddd"
+                  disabled={(user?.admin || user?.master) && !userLog?.master}
                   onClick={() =>
-                    typeof user.username == "string" && makeAdmin(user.username)
+                    typeof user?.username == "string" &&
+                    makeAdmin(user.username)
                   }
                 >
-                  {user.admin ? "Eliminar rol de Admin" : "Dar rol de admin"}
+                  {user?.admin ? "Eliminar rol de Admin" : "Dar rol de admin"}
                 </Button>
               )}
             </div>

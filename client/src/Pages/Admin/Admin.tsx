@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import NavSearch from "../../Components/NavSearch/NavSearch";
+import useUser from "../../Hooks/useUser";
 import style from "./Admin.module.scss";
 import Denuncias from "./Denuncias/Denuncias";
 import Roles from "./Roles/Roles";
@@ -7,7 +9,13 @@ import Solicitudes from "./Solicitudes/Solicitudes";
 
 export default function Admin() {
   const [page, setPage] = useState("");
-
+  const user = useUser();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user?.admin && !user?.master) {
+      navigate("/error");
+    }
+  });
   return (
     <>
       <NavSearch></NavSearch>
