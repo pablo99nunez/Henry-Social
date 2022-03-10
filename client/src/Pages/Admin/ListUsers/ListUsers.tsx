@@ -10,10 +10,11 @@ import { editUser, searchUsers } from "../../../redux/actions/actions";
 import { handleDeleteUser } from "../../User/User";
 type Props = {
   users: IUser[];
+  header?: boolean;
 };
 import style from "./ListUsers.module.scss";
 
-export default function ListUsers({ users }: Props) {
+export default function ListUsers({ users, header = true }: Props) {
   const userLog = useUser();
   const [user, setUser] = useState<IUser>();
   const [role, setRole] = useState("");
@@ -52,7 +53,7 @@ export default function ListUsers({ users }: Props) {
 
   return (
     <ul className={style.list}>
-      {users.length !== 0 && (
+      {users.length !== 0 && header && (
         <li>
           <h2>Nombre</h2>
           <h2>Email</h2>
