@@ -82,6 +82,7 @@ export default function Content({ post }: Props) {
       default: {
         return (
           <p>
+
           {post.body.includes('#') 
             ? post.body.split(' ').map((word,i) => 
               <span 
@@ -93,6 +94,16 @@ export default function Content({ post }: Props) {
               >{word}</span>
               )
             : post.body}
+
+          /*  {post.body.split(" ").map((e) => (
+              <span
+                className={`${style.spanBody} ${e[0] === "#" && style.hashtag}`}
+                onClick={handleClick}
+              >
+                {e}
+              </span>
+            ))}*/
+
           </p>
         );
       }
@@ -100,6 +111,7 @@ export default function Content({ post }: Props) {
   };
 
   return (
+
     <div
       onClick={() => {
         post.typePost !== "share" && 
@@ -109,5 +121,8 @@ export default function Content({ post }: Props) {
       >
       <div onClick={() => navigate("/post/" + post._id)}>{renderType()}</div>
     </div>
+
+   /* <div onClick={() => navigate("/post/" + post._id)}>{renderType()}</div>*/
+
   );
 }
