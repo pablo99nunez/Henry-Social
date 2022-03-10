@@ -98,19 +98,32 @@ export function getPosts(_id: string | undefined = "") {
 
 export function filterByType(typePost: string) {
   return async (dispatch: Function) => {
-    try {
-      const res = await axios.post("/posts", {
-        props: {
-          typePost,
-        },
-      });
-      return dispatch({
-        type: FILTER_BY_TYPE,
-        payload: { data: res.data, type: typePost },
-      });
-    } catch (error) {
-      console.log(error);
+    if(typePost !== "all") {
+      try {
+        const res = await axios.post("/posts", {
+          props: {
+            typePost,
+          },
+        });
+        return dispatch({
+          type: FILTER_BY_TYPE,
+          payload: { data: res.data, type: typePost },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const res = await axios.post("/posts");
+        return dispatch({
+          type: FILTER_BY_TYPE,
+          payload: { data: res.data, type: typePost },
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
+
   };
 }
 

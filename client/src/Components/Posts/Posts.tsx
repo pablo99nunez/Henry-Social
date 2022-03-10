@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IState } from "../../redux/reducer";
-import { filterByOrder } from "../../redux/actions/actions";
+import { filterByOrder, filterByType } from "../../redux/actions/actions";
 import { BsPlusCircleFill } from "react-icons/bs";
 
 import styles from "./Posts.module.scss";
@@ -13,9 +13,10 @@ import useUser from "../../Hooks/useUser";
 const Posts = () => {
   const dispatch = useDispatch();
   const posts = useSelector((state: IState) => state.results);
+  const order = useSelector((state: IState) => state.order);
   const user = useUser();
   const filter = useSelector((state: IState) => state.filter);
-  const [order, setOrder] = useState("Reciente");
+
   const [showModal, setShowModal] = useState(false);
   const [edit, setEdit] = useState(false);
   const plusVariants = {
@@ -36,10 +37,10 @@ const Posts = () => {
     hidden: { opacity: 0, y: 100 },
     show: { opacity: 1, y: 0 },
   };
-
-  useEffect(() => {
-    dispatch(filterByOrder(order));
-  }, [order]);
+  console.log("posts",posts)
+  useEffect(()=>{
+    dispatch(filterByType(filter))
+  },[order])
 
   return (
     <div className={styles.posts_wrap}>
@@ -47,14 +48,14 @@ const Posts = () => {
         <div className={styles.orders}>
           <h2
             className={order === "Reciente" ? styles.active : ""}
-            onClick={() => setOrder("Reciente")}
+            onClick={() => dispatch(filterByOrder("Reciente"))}
           >
             Reciente
           </h2>
           <h2>|</h2>
           <h2
             className={order === "Relevante" ? styles.active : ""}
-            onClick={() => setOrder("Relevante")}
+            onClick={() => dispatch(filterByOrder("Relevante"))}
           >
             Relevante
           </h2>
@@ -63,7 +64,7 @@ const Posts = () => {
               <h2>|</h2>
               <h2
                 className={order === "Pendientes" ? styles.active : ""}
-                onClick={() => setOrder("Pendientes")}
+                onClick={() => dispatch(filterByOrder("Pendientes"))}
               >
                 Pendientes
               </h2>
