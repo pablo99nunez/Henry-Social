@@ -127,10 +127,11 @@ export default function User() {
     setChanges({ role: e.target.value });
   };
   useEffect(() => {
-    if (user?._id) {
-      dispatch(editUser(user._id, changes));
+    if (user?._id !== userLogeado?._id && user?._id) {
+      dispatch(editUser(user?._id, changes));
     }
   }, [changes]);
+  
 
   return loading ? (
     <LoadingPage />
@@ -224,32 +225,9 @@ export default function User() {
               </div>
               <div className={style.userInfo}>
                 <h1>{user?.name}</h1>
-                {user?.admin ? (
-                  <select className={style.editRole} onChange={changeRole}>
-                    <option
-                      value="Estudiante"
-                      selected={user?.role === "Estudiante" ? true : false}
-                    >
-                      Estudiante
-                    </option>
-                    <option
-                      value="TA"
-                      selected={user?.role === "TA" ? true : false}
-                    >
-                      TA
-                    </option>
-                    <option
-                      value="Instructor"
-                      selected={user?.role === "Instructor" ? true : false}
-                    >
-                      Instructor
-                    </option>
-                  </select>
-                ) : (
                   <h2 style={{ color: "#aaa" }}>
                     {user?.role + (user?.cohorte ? " | " + user?.cohorte : "")}
                   </h2>
-                )}
                 <div className={style.bio}>
                   <h3>{isOwner ? userLogeado?.bio : user?.bio}</h3>
                 </div>

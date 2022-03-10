@@ -28,6 +28,7 @@ export interface INotification {
   new: boolean;
 }
 
+
 export interface IUser {
   _id?: string;
   uid: string;
