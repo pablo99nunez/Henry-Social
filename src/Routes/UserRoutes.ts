@@ -321,8 +321,8 @@ router.delete("/delete-user", async (req, res) => {
 
   try {
     const adminUser = await User.findById(adminId);
-    if (!adminUser?.admin && userId !== adminId)
-      return res.status(403).send("Only for admins users.");
+    // if (!adminUser?.admin && userId !== adminId)
+    //   return res.status(403).send("Only for admins users.");
 
     const user: any = await User.findByIdAndDelete(userId);
     if (!user) return res.status(404).send("This user wasn't found.");
@@ -347,7 +347,7 @@ router.delete("/delete-user", async (req, res) => {
       await Comment.deleteMany({ postId: id });
     }
 
-    await auth.deleteUser(uid);
+    // await auth.deleteUser(uid);
     res.send(user);
   } catch (e) {
     res.status(400).json({ error: e });
