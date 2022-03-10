@@ -142,9 +142,15 @@ export default function LandingPage({ handleActionChange }: any) {
         </section>
         <footer id={style.footer}>
           <h2>Que esperas para unirte?</h2>
-          <button className={style.act_btn2}>
-            <Link to="/login">Registrarse</Link>
-          </button>
+          <Link to="/login">
+            <button 
+              className={style.act_btn2}
+              onClick={handleActionChange}
+              value="signUp"
+            >
+              Registrarse
+            </button>
+          </Link>
         </footer>
       </div>
     </div>

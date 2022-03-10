@@ -1,0 +1,46 @@
+@import "../../Styles/variables.scss";
+.admin {
+  display: flex;
+  background: $blackLow;
+  width: 100vw;
+  min-height: 100%;
+  .panel {
+    background-color: $black;
+    box-shadow: 0 0 10px $black;
+    color: $white;
+    display: flex;
+    flex-direction: column;
+    h1 {
+      margin-bottom: 1rem;
+      padding: 1rem;
+    }
+    ul {
+      li {
+        padding: 1rem 2rem;
+        list-style: none;
+        cursor: pointer;
+        &:hover {
+          background: $greyLow;
+        }
+      }
+    }
+  }
+  .main {
+    width: 100%;
+    padding: 2rem;
+    color: $white;
+    .title {
+      margin: 0 auto;
+    }
+  }
+  .active {
+    color: $black;
+    background-color: $yellow;
+    h3 {
+      font-weight: bold;
+    }
+    &:hover {
+      color: $white;
+    }
+  }
+}

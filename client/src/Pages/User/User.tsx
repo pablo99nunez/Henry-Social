@@ -39,6 +39,36 @@ import {
 import Chats from "../../Components/Chats/Chats";
 import AddPost from "../../Components/ModalAddPost/AddPost";
 
+export async function handleDeleteUser(
+  userId: string,
+  adminId: string,
+  uid: string
+) {
+  try {
+    ConfirmAlert.fire("¿Estas seguro que deseas eliminar el usuario?").then(
+      async (res) => {
+        if (res.isConfirmed) {
+          await axios
+            .delete("/delete-user", {
+              data: {
+                userId,
+                adminId,
+                uid,
+              },
+            })
+            .then((e) => {
+              InfoAlert.fire("Has eliminado a " + e.data?.name);
+            })
+            .catch(() => {
+              ErrorAlert.fire("Algo salio mal");
+            });
+        }
+      }
+    );
+  } catch (e) {
+    ErrorAlert.fire("Error" + e);
+  }
+}
 export default function User() {
   const [view, setView] = useState(false);
   const [typeEdit, setTypeEdit] = useState('perfil');
@@ -69,26 +99,7 @@ export default function User() {
   function handleAdmin() {
     if (username) dispatch(makeAdmin(username));
   }
-  async function handleDeleteUser(userId: string, adminId: string) {
-    try {
-      ConfirmAlert.fire("¿Estas seguro que deseas eliminar el usuario?").then(
-        async (res) => {
-          if (res.isConfirmed) {
-            await axios.delete("/delete-user", {
-              data: {
-                userId,
-                adminId,
-              },
-            });
-            navigate("/");
-            InfoAlert.fire("Has eliminado a " + user?.name);
-          }
-        }
-      );
-    } catch (e) {
-      ErrorAlert.fire("Error" + e);
-    }
-  }
+
   useEffect(() => {
     return () => {
       dispatch(clear("profile"));
@@ -184,7 +195,11 @@ export default function User() {
                     <Button
                       onClick={() => {
                         if (user?._id && userLogeado?._id) {
-                          handleDeleteUser(user._id, userLogeado._id);
+                          handleDeleteUser(
+                            user._id,
+                            userLogeado._id,
+                            user.uid
+                          ).then(() => navigate("/"));
                         }
                       }}
                     >
@@ -297,7 +312,7 @@ export default function User() {
                     <a href={userLogeado?.portfolio} target="_blank">
                       <div>
                         <img
-                          src={github}
+                          src={portafolioIcon}
                           alt="portfolio-logo"
                           className={style.github_logo}
                         />
@@ -307,7 +322,7 @@ export default function User() {
                     <a href={user?.portfolio} target="_blank">
                       <div>
                         <img
-                          src={github}
+                          src={portafolioIcon}
                           alt="portfolio-logo"
                           className={style.github_logo}
                         />
