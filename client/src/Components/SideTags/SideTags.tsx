@@ -22,9 +22,9 @@ const SideTags = () => {
     if (e.target.classList.contains("category")) {
       setActiveSection(e.target.id);
       if (e.target.id === "all") {
-        return dispatch(getPosts());
+        return dispatch(filterByType("all"));
       }
-      return dispatch(filterByType(e.target.id));
+      dispatch(filterByType(e.target.id));
     } else {
       setActiveSection("");
       return dispatch(filterByTag(e.target.title));
@@ -94,17 +94,6 @@ const SideTags = () => {
             id="boom"
           >
             Booms
-          </li>
-          <li
-            className={
-              activeSection === "servicio"
-                ? `${styles.active} category`
-                : "category"
-            }
-            onClick={handleClick}
-            id="servicio"
-          >
-            Servicios
           </li>
           <li
             className={

@@ -45,6 +45,7 @@ export interface IUser {
   portfolio?: string;
   bio?: string;
   admin: boolean;
+  master?: boolean;
   notifications: INotification[];
   company?: string;
   position?: string;
@@ -88,6 +89,10 @@ const userSchema = new Schema<IUser>({
     default: Roles.Estudiante,
   },
   admin: {
+    type: Boolean,
+    default: false,
+  },
+  master: {
     type: Boolean,
     default: false,
   },

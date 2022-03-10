@@ -24,6 +24,7 @@ import {
   OPEN_CHAT,
   CLOSE_CHAT,
   SET_POST_EDIT,
+  MAKE_MASTER
 } from "../actions/actions";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { io, Socket } from "socket.io-client";
@@ -41,6 +42,7 @@ export interface IState {
   filter: string;
   usersOnline: any[];
   chats: any[];
+  order:string;
 }
 
 const initialState = {
@@ -56,6 +58,7 @@ const initialState = {
   socket: null,
   usersOnline: [],
   chats: [],
+  order:"Reciente"
 } as IState;
 
 const urlBackend = import.meta.env.PROD
@@ -91,11 +94,11 @@ export default function rootReducer(state = initialState, action: IAction) {
     }
 
     case GET_POSTS: {
-      let results = action.payload.sort((a: IPost, b: IPost) => {
+      state.results = action.payload.sort((a: IPost, b: IPost) => {
         return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
       });
       if (state.user?.role === "Estudiante") {
-        results = results.filter((e: IPost) => {
+         state.results =  state.results.filter((e: IPost) => {
           if (e.typePost === "pregunta") {
             return e.respuesta;
           } else return true;
@@ -104,7 +107,7 @@ export default function rootReducer(state = initialState, action: IAction) {
       return {
         ...state,
         posts: action.payload,
-        results,
+        results: state.results,
         filter: "all",
       };
     }
@@ -117,6 +120,7 @@ export default function rootReducer(state = initialState, action: IAction) {
     }
 
     case FILTER_BY_TYPE: {
+
       let results = action.payload.data.sort((a: IPost, b: IPost) => {
         return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
       });
@@ -127,6 +131,26 @@ export default function rootReducer(state = initialState, action: IAction) {
           } else return true;
         });
       }
+      switch (state.order) {
+        case "Reciente":
+          {
+            results = results?.sort((a: IPost, b: IPost) => {
+              return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
+            });
+          }
+          break;
+        case "Relevante":
+          {
+            results = results?.sort((a: IPost, b: IPost) => {
+              return a.nLikes.length < b.nLikes.length ? 1 : -1;
+            });
+          }
+          break;
+        case "Pendientes": {
+          results = results?.filter((e: IPost) => !e.respuesta);
+        }
+      }
+
       return {
         ...state,
         results,
@@ -179,6 +203,13 @@ export default function rootReducer(state = initialState, action: IAction) {
         profile: action.payload,
       };
     }
+    
+    case MAKE_MASTER: {
+      return {
+        ...state,
+        profile: action.payload,
+      };
+    }
 
     case SEE_NOTIFICATION: {
       return {
@@ -195,30 +226,10 @@ export default function rootReducer(state = initialState, action: IAction) {
     }
 
     case ORDER_BY: {
-      let result = state.results[0] ? [...state.results] : [...state.posts];
 
-      switch (action.payload.order) {
-        case "Reciente":
-          {
-            result = result?.sort((a: IPost, b: IPost) => {
-              return new Date(a.postTime) < new Date(b.postTime) ? 1 : -1;
-            });
-          }
-          break;
-        case "Relevante":
-          {
-            result = result?.sort((a: IPost, b: IPost) => {
-              return a.nLikes.length < b.nLikes.length ? 1 : -1;
-            });
-          }
-          break;
-        case "Pendientes": {
-          result = result?.filter((e: IPost) => !e.respuesta);
-        }
-      }
       return {
         ...state,
-        results: result,
+        order:action.payload.order
       };
     }
 

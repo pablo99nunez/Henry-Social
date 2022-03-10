@@ -53,28 +53,13 @@ export default function User() {
       setIsFollowing(!isFollowing);
     }
   }
-  function handleAdmin() {
-    if (username) dispatch(makeAdmin(username));
-  }
-  async function handleDeleteUser(userId: string, adminId: string) {
-    try {
-      ConfirmAlert.fire("¿Estas seguro que deseas eliminar el usuario?").then(
-        async (res) => {
-          if (res.isConfirmed) {
-            await axios.delete("/delete-user", {
-              data: {
-                userId,
-                adminId,
-              },
-            });
-            navigate("/");
-            InfoAlert.fire("Has eliminado a " + user?.name);
-          }
-        }
-      );
-    } catch (e) {
-      ErrorAlert.fire("Error" + e);
-    }
+  console.log(user)
+  function handleMaster() {
+    if (username) {
+      dispatch(makeAdmin(username))
+
+      user?.admin ? InfoAlert.fire("El usuario " + user?.name + " ahora es admin") : InfoAlert.fire("El usuario " + user?.name + " ha dejado der ser admin");
+    };
   }
   useEffect(() => {
     return () => {
@@ -136,19 +121,10 @@ export default function User() {
             </div>
             <div className={style.details}>
               <div className={style.buttons}>
-                {userLogeado?.admin ? (
+                {userLogeado?.master ? (
                   <>
-                    <Button onClick={handleAdmin}>
-                      {user?.admin ? "Eliminar rol de Admin" : "Hacer Admin"}
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        if (user?._id && userLogeado?._id) {
-                          handleDeleteUser(user._id, userLogeado._id);
-                        }
-                      }}
-                    >
-                      Delete user
+                    <Button onClick={handleMaster}>
+                      {user?.master ? "Hacer Admin" : user?.admin ? "Eliminar rol de admin" : "Hacer Admin"}
                     </Button>
                   </>
                 ) : null}

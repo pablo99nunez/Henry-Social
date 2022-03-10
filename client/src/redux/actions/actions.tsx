@@ -14,6 +14,7 @@ export const CLEAR_POST = "CLEAR_POST";
 export const CLEAR_PROFILE = "CLEAR_PROFILE";
 export const LIKE_POST = "LIKE_POST";
 export const MAKE_ADMIN = "MAKE_ADMIN";
+export const MAKE_MASTER = "MAKE_MASTER";
 export const SEE_NOTIFICATION = "SEE_NOTIFICATION";
 export const FILTER_BY_TYPE = "FILTER_BY_TYPE";
 export const FILTER_BY_LIKE = "FILTER_BY_LIKE";
@@ -97,19 +98,32 @@ export function getPosts(_id: string | undefined = "") {
 
 export function filterByType(typePost: string) {
   return async (dispatch: Function) => {
-    try {
-      const res = await axios.post("/posts", {
-        props: {
-          typePost,
-        },
-      });
-      return dispatch({
-        type: FILTER_BY_TYPE,
-        payload: { data: res.data, type: typePost },
-      });
-    } catch (error) {
-      console.log(error);
+    if(typePost !== "all") {
+      try {
+        const res = await axios.post("/posts", {
+          props: {
+            typePost,
+          },
+        });
+        return dispatch({
+          type: FILTER_BY_TYPE,
+          payload: { data: res.data, type: typePost },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const res = await axios.post("/posts");
+        return dispatch({
+          type: FILTER_BY_TYPE,
+          payload: { data: res.data, type: typePost },
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
+
   };
 }
 
@@ -183,6 +197,13 @@ export function makeAdmin(username: string) {
     axios
       .post("/admin", { username })
       .then((e) => dispatch({ type: MAKE_ADMIN, payload: e.data }));
+  };
+}
+export function makeMaster(username: string) {
+  return (dispatch: Function) => {
+    axios
+      .post("/master", { username })
+      .then((e) => dispatch({ type: MAKE_MASTER, payload: e.data }));
   };
 }
 
