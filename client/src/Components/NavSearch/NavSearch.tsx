@@ -75,7 +75,7 @@ const NavSearch = () => {
           }}
           className={styles.notifications}
         >
-          {user?.admin && (
+          {(user?.admin || user?.master) && (
             <RiAdminFill
               size={"2rem"}
               color="#fff"

@@ -14,6 +14,8 @@ export enum NotificationType {
   Comment,
   CommentLike,
   Share,
+  RequestAccepted,
+  RequestRejected,
 }
 
 export interface INotification {
@@ -48,7 +50,7 @@ export interface IUser {
   notifications: INotification[];
   company?: string;
   position?: string;
-  master?:boolean;
+  master?: boolean;
 }
 
 const userSchema = new Schema<IUser>({
@@ -92,7 +94,7 @@ const userSchema = new Schema<IUser>({
     type: Boolean,
     default: false,
   },
-  master : {
+  master: {
     type: Boolean,
     default: false,
   },

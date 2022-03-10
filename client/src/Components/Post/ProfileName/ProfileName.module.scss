@@ -1,18 +1,24 @@
 @import "../../../Styles/variables.scss";
 
 .post_profile {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    h4 {
-      color: $grey;
-    }
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  h4 {
+    color: $grey;
+  }
+  img {
+    width: 20%;
+    max-height: 3rem;
+    object-fit: cover;
+    float: right;
+    align-self: flex-end;
+    justify-self: right;
+  }
+  .role {
     img {
-      width: 20%;
-      max-height: 3rem;
-      object-fit: cover;
-      float: right;
-      align-self: flex-end;
-      justify-self: right;
+      width: 2rem;
+      object-fit: scale-down;
     }
   }
+}
