@@ -1,3 +1,4 @@
+@import "../../../Styles/variables.scss";
 .postEmpleo {
   display: flex;
   flex-direction: column;
@@ -42,7 +43,10 @@
   margin-right: 4px;
   line-height: 1.4;
   display: inline-block;
-  &.hashtag{
+  &.hashtag {
     color: #0091ff;
+    &:hover {
+      color: $yellow;
+    }
   }
 }
