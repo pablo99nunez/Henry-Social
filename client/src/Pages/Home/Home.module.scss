@@ -7,15 +7,18 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  @media screen and (max-width:768px){
+    gap: 2rem;
+  }
   .home_position {
-    // display: flex;
-    // gap: 2rem;
-    // justify-content: space-around;
     max-width: 1200px;
     display: grid;
     width: 100%;
     grid-template-columns: 0.8fr 2fr 0.8fr;
     gap: 2rem 2rem;
+    @media screen and (max-width:768px){
+      display: block;
+    }
   }
   .aside {
     display: flex;
@@ -24,5 +27,8 @@
     position: sticky;
     top: 100px;
     align-self: flex-start;
+    @media screen and (max-width:768px){
+      display: none;
+    }
   }
 }

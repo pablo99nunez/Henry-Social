@@ -58,3 +58,18 @@
     flex-direction: column;
   }
 }
+@media screen and (max-width:768px){
+  .posts_wrap{
+    width: 100%;
+    .header {
+      top: 0;
+      position: relative;
+      margin-bottom: 10px;
+      justify-content: space-around;  
+    }
+    .posts{
+      width: 100%;
+      padding: 0px 20px;
+    }
+  }
+}
